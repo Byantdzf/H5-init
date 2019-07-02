@@ -50,11 +50,11 @@ router.beforeEach((to, from, next) => {
   if (to.query.community_share) {
     localStorage.setItem('community_share', to.query.community_share)
   }
-  if (to.name === 'wxGroup') {
-    localStorage.setItem('community_share', 1)
-  } else {
-    localStorage.setItem('community_share', 0)
-  }
+  // if (to.name === 'wxGroup') {
+  //   localStorage.setItem('community_share', 1)
+  // } else {
+  //   localStorage.setItem('community_share', 0)
+  // }
   store.commit('updateLoadingStatus', {isLoading: true})
   next()
   if (to.query && to.query.paas) {

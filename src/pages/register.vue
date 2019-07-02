@@ -78,7 +78,7 @@
       register () {
         let data = {}
         console.log(localStorage.getItem('community_share'),'asssssssss')
-        if (localStorage.getItem('community_share') === 1) {
+        if (localStorage.getItem('community_share') == '1') {
           data = {
             mobile: this.mobile,
             code: this.code,
@@ -87,7 +87,7 @@
         } else {
           data = {
             mobile: this.mobile,
-            code: this.code,
+            code: this.code
           }
         }
         if (!this.mobile) {

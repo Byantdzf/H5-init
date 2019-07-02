@@ -182,10 +182,14 @@
           url = location.href
         } else {
           let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+
           if (location.href.includes('?')) {
             url = location.href + '&from_user_id=' + userInfo.id
           } else {
             url = location.href + '?from_user_id=' + userInfo.id
+          }
+          if (localStorage.getItem('community_share')) {
+            url = location.href + `&from_user_id=${userInfo.id}&community_share=` + localStorage.getItem('community_share')
           }
         }
         if (localStorage.getItem('paasTitle')) {

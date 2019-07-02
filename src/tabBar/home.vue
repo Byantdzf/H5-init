@@ -115,7 +115,7 @@
     },
     methods: {
       goToDetail (item) {
-        if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null && this.$isWeiXin() === true) {
+        if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null && this.$isWeiXin() === false) {
           this.$router.push({name: 'wxGroup', params: {id: item.id}})
         } else {
           if (localStorage.getItem('mobile') && localStorage.getItem('mobile') !== null) {

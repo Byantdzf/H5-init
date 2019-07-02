@@ -47,6 +47,14 @@ router.beforeEach((to, from, next) => {
   if (to.query.from_platform) {
     localStorage.setItem('from_platform', to.query.from_platform)
   }
+  if (to.query.community_share) {
+    localStorage.setItem('community_share', to.query.community_share)
+  }
+  if (to.name === 'wxGroup') {
+    localStorage.setItem('community_share', 1)
+  } else {
+    localStorage.removeItem('community_share')
+  }
   store.commit('updateLoadingStatus', {isLoading: true})
   next()
   if (to.query && to.query.paas) {

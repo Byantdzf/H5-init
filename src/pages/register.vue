@@ -78,7 +78,8 @@
       register () {
         let data = {
           mobile: this.mobile,
-          code: this.code
+          code: this.code,
+          community_share: localStorage.getItem('community_share')
         }
         if (!this.mobile) {
           return $toastWarn('无手机号码')

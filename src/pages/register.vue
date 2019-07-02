@@ -76,10 +76,18 @@
         })
       },
       register () {
-        let data = {
-          mobile: this.mobile,
-          code: this.code,
-          community_share: localStorage.getItem('community_share')
+        let data = {}
+        if (localStorage.getItem('community_share') === 1) {
+          data = {
+            mobile: this.mobile,
+            code: this.code,
+            community_share: localStorage.getItem('community_share')
+          }
+        } else {
+          data = {
+            mobile: this.mobile,
+            code: this.code,
+          }
         }
         if (!this.mobile) {
           return $toastWarn('无手机号码')

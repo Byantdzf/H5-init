@@ -143,7 +143,24 @@
     mounted () {
       this.id = this.$route.params.id
       this.getUser()
-      localStorage.setItem('community_share', 1)
+      let url = ''
+      if (!localStorage.getItem('userInfo') || localStorage.getItem('userInfo') === null) {
+        url = location.href
+      } else {
+        let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+        if (location.href.includes('?')) {
+          url = location.href + '&from_user_id=' + userInfo.id + `&community_share=1`
+        } else {
+          url = location.href + '?from_user_id=' + userInfo.id + `&community_share=1`
+        }
+      }
+      if (localStorage.getItem('paasTitle')) {
+        this.$shareList(localStorage.getItem('logo'), url, localStorage.getItem('paasTitle'), localStorage.getItem('paasIntro'))
+        document.title = localStorage.getItem('paasTitle')
+      } else {
+        this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '智能共享平台', '福恋家庭幸福平台')
+        document.title = '福恋家庭幸福平台'
+      }
     }
   }
 </script>

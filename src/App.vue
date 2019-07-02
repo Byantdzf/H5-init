@@ -188,9 +188,9 @@
           } else {
             url = location.href + '?from_user_id=' + userInfo.id
           }
-          if (localStorage.getItem('community_share')) {
-            url = location.href + `&from_user_id=${userInfo.id}&community_share=` + localStorage.getItem('community_share')
-          }
+        }
+        if (localStorage.getItem('community_share')) {
+          url = url + `&community_share=` + localStorage.getItem('community_share')
         }
         if (localStorage.getItem('paasTitle')) {
           this.$shareList(localStorage.getItem('logo'), url, localStorage.getItem('paasTitle'), localStorage.getItem('paasIntro'))

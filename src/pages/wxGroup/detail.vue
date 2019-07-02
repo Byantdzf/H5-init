@@ -143,6 +143,7 @@
     mounted () {
       this.id = this.$route.params.id
       this.getUser()
+      localStorage.setItem('community_share', 1)
     }
   }
 </script>

@@ -186,7 +186,7 @@
         }
       }
       .info-text{
-        width: 68%;
+        width: 58%;
         margin-top: 12px;
         padding-left: 10px;
         .title{}

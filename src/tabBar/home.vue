@@ -92,7 +92,7 @@
             id: 3
           },
           {
-            icon: 'http://images.ufutx.com/201907/01/9e0ee9cfa69b46e37576ce393a874ec3.png',
+            icon: 'http://images.ufutx.com/201907/01/1a6e685971a396376488e9183dbb8899.png',
             title: '城市群',
             id: 4
           }
@@ -115,14 +115,10 @@
     },
     methods: {
       goToDetail (item) {
-        if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null && this.$isWeiXin() === false) {
+        if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null && this.$isWeiXin() === true) {
           this.$router.push({name: 'wxGroup', params: {id: item.id}})
         } else {
-          if (localStorage.getItem('mobile') && localStorage.getItem('mobile') !== null) {
-            window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&type=community&id=${item.id}`
-          } else {
-            window.location.href = `https://love.ufutx.com/wx/bind?type=community&id=${item.id}`
-          }
+          window.location.href = `https://love.ufutx.com/wx/bind?type=community&id=${item.id}`
         }
       },
       swiperItem (currentIndex) {

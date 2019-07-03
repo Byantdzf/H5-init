@@ -44,4 +44,10 @@
 </script>
 
 <style  lang="less" scoped>
+  .bc_share {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    background: rgba(0, 0, 0, 0.3);
+  }
 </style>

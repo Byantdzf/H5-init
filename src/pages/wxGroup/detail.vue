@@ -3,7 +3,7 @@
     <div class="main-info colorff">
       <div class="info-user text-center">
         <div class="photo">
-          <img :src="information.owner_photo" >
+          <img :src="information.owner_photo">
         </div>
         <div class="font26">群主：{{information.owner_name}}</div>
       </div>
@@ -23,13 +23,13 @@
       </div>
     </div>
     <div class="main-share" @click="showShare = true">
-      <img src="http://images.ufutx.com/201907/01/f81de887ad948f0769e1175c9bcd5716.png" alt="" >
+      <img src="http://images.ufutx.com/201907/01/f81de887ad948f0769e1175c9bcd5716.png" alt="">
     </div>
     <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
     <LoadMore tip="群成员" :show-loading="false"></LoadMore>
     <div class="main-otherUser">
       <div class="item-photo" v-for="item,index in information.members">
-        <img :src="item.photo" >
+        <img :src="item.photo">
       </div>
     </div>
     <div class="box_bottom">
@@ -43,25 +43,49 @@
           <p class="share">分享</p>
         </div>
       </div>
-      <div class="applyNow" @click="apply" v-if="information.is_applied == '0'">免费入群</div>
-      <div class="applyNow" @click="showQr = true" v-else>查看群码</div>
+      <div v-if="showUpload && token">
+        <div class="applyNow" @click="showUploadPhoto = true" v-if="information.is_applied == '0'">免费入群</div>
+        <div class="applyNow" @click="showQr = true" v-else>查看群码</div>
+      </div>
+      <div v-else>
+        <div class="applyNow" @click="apply" v-if="information.is_applied == '0'">免费入群</div>
+        <div class="applyNow" @click="showQr = true" v-else>查看群码</div>
+      </div>
     </div>
     <moadlUp :show.sync="showQr" @hideModal="hideQr">
       <div class="main-qr">
         <img :src="information.qrcode" alt="" @click="showImage">
-        <div class="text text-center">群主微信：{{information.owner_wechat}}</div>
+        <div class="text text-center">群主微信：
+          <input type="text" id="success_form_input" readonly="readonly" v-model="information.owner_wechat"/>
+          <button  id="copy" ref="copy" @click="copyLink" data-clipboard-action="copy" data-clipboard-target="#success_form_input">
+            <img src="http://images.ufutx.com/201907/03/b1f746f48da868f953fba244df8ff9be.png" alt="">
+          </button>
+        </div>
       </div>
     </moadlUp>
+    <moadlDown :show.sync="showUploadPhoto" @hideModal="hideUploadPhoto">
+      <div class="main-upload color6">
+        <div class="bold">温馨提示：</div>
+        <div class="text">系统检测到你尚未上传头像,请先上传头像！</div>
+        <div class="text-center upload">
+          <uploadOss @onSuccess="onSuccess"></uploadOss>
+          <img :src="photo" alt="" @click="showImage">
+        </div>
+        <div class="save text-center" @click="save">确定</div>
+      </div>
+    </moadlDown>
     <div v-transfer-dom>
-      <previewer :list="list" ref="previewer"  @on-index-change="logIndexChange"></previewer>
+      <previewer :list="list" ref="previewer" @on-index-change="logIndexChange"></previewer>
     </div>
   </div>
 </template>
 <script>
-  import {$loadingShow, $loadingHide} from '../../config/util'
+  import {$toastSuccess, $toastWarn, $loadingShow, $loadingHide} from '../../config/util'
   import {LoadMore, Previewer, TransferDom} from 'vux'
   import shareModal from '../../components/shareMoadl'
   import moadlUp from '../../components/moadlUp'
+  import moadlDown from '../../components/moadlDown'
+  import uploadOss from '../../components/upload_oss'
 
   export default {
     name: 'authentication',
@@ -72,20 +96,60 @@
       shareModal,
       LoadMore,
       moadlUp,
-      Previewer
+      Previewer,
+      uploadOss,
+      moadlDown
     },
     data () {
       return {
         name: '',
+        showUpload: false,
+        copyBtn: null, // 存储初始化复制按钮事件
         card_num: '',
         information: {},
         showShare: false,
         showQr: false,
         show: false,
+        showUploadPhoto: false,
+        photo: 'http://images.ufutx.com/201907/03/0c90095f21650cacf992e1a9d4b4e982.png',
+        token: localStorage.getItem('ACCESS_TOKEN'),
         list: []
       }
     },
     methods: {
+      copyLink () {  // 复制
+        let _this = this
+        let clipboard = _this.copyBtn
+        clipboard.on('success', function () {
+          _this.showQr = false
+          setTimeout(() => {
+            $toastSuccess('复制成功')
+          }, 500)
+        })
+        clipboard.on('error', function () {
+          _this.showQr = false
+          setTimeout(() => {
+            $toastWarn('复制失败，请手动选择复制！')
+          }, 500)
+        })
+      },
+      onSuccess (val) {
+        this.photo = val
+      },
+      save () {
+        this.showUploadPhoto = false
+        let data = {
+          photo: this.photo
+        }
+        this.$http.put('/official/users/photo', data).then(({data}) => {
+          let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+          userInfo.photo = this.photo
+          localStorage.setItem('userInfo', JSON.stringify(userInfo))
+          this.apply()
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
       showImage () {
         this.showQr = false
         this.$refs.previewer.show(0)
@@ -98,6 +162,9 @@
       },
       hideQr (value) {
         this.showQr = value
+      },
+      hideUploadPhoto (value) {
+        this.showUploadPhoto = value
       },
       routeTo (name) {
         this.$router.push({name: name})
@@ -142,12 +209,13 @@
     },
     mounted () {
       this.id = this.$route.params.id
+      this.copyBtn = new this.$clipboard(this.$refs.copy) // 复制文本
       this.getUser()
       let url = ''
+      let userInfo = JSON.parse(localStorage.getItem('userInfo'))
       if (!localStorage.getItem('userInfo') || localStorage.getItem('userInfo') === null) {
         url = location.href
       } else {
-        let userInfo = JSON.parse(localStorage.getItem('userInfo'))
         if (location.href.includes('?')) {
           url = location.href + '&from_user_id=' + userInfo.id + `&community_share=1`
         } else {
@@ -161,58 +229,80 @@
         this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '智能共享平台', '福恋家庭幸福平台')
         document.title = '福恋家庭幸福平台'
       }
+      let {photo} = userInfo
+      if (!photo) {
+        this.showUpload = true
+      }
     }
   }
 </script>
 <style scoped lang="less">
-  body{background: white}
-  .main-box{
-    .main-info{
+  body {
+    background: white
+  }
+
+  .main-box {
+    .main-info {
       background: black;
       padding-top: 22px;
       overflow: hidden;
-      .info-user{
+
+      .info-user {
         float: left;
         padding: 20px;
-        .photo{
+
+        .photo {
           width: 150px;
           height: 150px;
           border-radius: 50%;
           overflow: hidden;
           margin-bottom: 12px;
-          img{
+
+          img {
             width: 100%;
           }
         }
       }
-      .info-text{
+
+      .info-text {
         width: 58%;
         margin-top: 12px;
         padding-left: 10px;
-        .title{}
-        .intro{
+
+        .title {
+        }
+
+        .intro {
           margin-top: 16px;
         }
       }
     }
-    .main-tab{
+
+    .main-tab {
       overflow: hidden;
       padding: 26px 40px;
       border-bottom: 10px solid #f6f6f6;
-      img{
+
+      img {
         width: 26px;
         vertical-align: middle;
         margin-top: -10px;
       }
-      .main-num{}
-      .main-liveness{}
+
+      .main-num {
+      }
+
+      .main-liveness {
+      }
     }
-    .main-share{
-      img{
+
+    .main-share {
+      img {
         width: 100%;
       }
     }
   }
+
   .box_bottom {
     overflow: hidden;
     position: fixed;
@@ -242,6 +332,7 @@
     }
 
     /*首页图片*/
+
     .icon_home {
       width: 42px;
       height: 42px;
@@ -249,6 +340,7 @@
     }
 
     /*分享图片*/
+
     .icon_share {
       width: 42px;
       height: 42px;
@@ -256,6 +348,7 @@
     }
 
     /*分享text*/
+
     .home, .share {
       font-size: 20px;
       color: #8e8e8e;
@@ -265,6 +358,7 @@
     }
 
     /*立即报名*/
+
     .applyNow {
       width: 100-36%;
       height: 105px;
@@ -281,11 +375,13 @@
       height: 105px;
     }
   }
-  .main-otherUser{
+
+  .main-otherUser {
     margin-top: -32px;
     overflow: hidden;
     padding-left: 30px;
-    .item-photo{
+
+    .item-photo {
       width: 80px;
       height: 80px;
       border-radius: 50%;
@@ -293,24 +389,71 @@
       overflow: hidden;
       margin-right: 20px;
       margin-bottom: 20px;
-      img{
+
+      img {
         width: 100%;
       }
     }
   }
-  .main-qr{
+
+  .main-qr {
     width: 86%;
     margin: auto;
     background: white;
     margin-top: 32px;
     border-radius: 12px;
     padding: 22px;
-    img{
+
+    img {
       width: 100%;
       border-radius: 6px;
     }
-    .text{
+
+    .text {
       padding: 22px;
+    }
+  }
+
+  .main-upload {
+    width: 86%;
+    margin: auto;
+    background: white;
+    margin-bottom: 10%;
+    border-radius: 12px;
+    padding: 32px 26px 26px 22px;
+
+    .text {
+      padding: 22px 0;
+    }
+
+    .upload {
+      margin: 32px 0;
+      position: relative;
+
+      img {
+        width: 200px;
+      }
+    }
+
+    .save {
+      width: 120px;
+      margin: 32px auto;
+      padding: 12px;
+      border-bottom: 2px solid #666666;
+    }
+  }
+  #success_form_input{
+    border: none;
+    max-width: 120px;
+    background: #ffffff;
+  }
+  #copy{
+    background: none;
+    border: none;
+    img{
+      width: 46px;
+      vertical-align: middle;
+      margin-bottom: 6px;
     }
   }
 </style>

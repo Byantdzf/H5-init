@@ -12,6 +12,8 @@ import '../src/config/api'
 import md5 from 'js-md5'
 import {$toastWarn} from './config/util'
 import share from './share'
+import clipboard from 'clipboard' // 复制
+Vue.prototype.$clipboard = clipboard
 Vue.use(share)
 Vue.prototype.$md5 = md5
 FastClick.attach(document.body)
@@ -81,10 +83,10 @@ Vue.prototype.$href = (url) => {
 Vue.prototype.$isWeiXin = () => {
   var ua = window.navigator.userAgent.toLowerCase()
   if (ua.includes('micromessenger')) {
-    console.log('微信平台')
+    console.log('微信平台', 'true')
     return true
   } else {
-    console.log('非微信平台')
+    console.log('非微信平台', 'false')
     return false
   }
 }

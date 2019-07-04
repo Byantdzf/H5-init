@@ -10,7 +10,7 @@ import {LoadingPlugin, WechatPlugin, DatetimePlugin, ConfirmPlugin, XImg} from '
 import '../src/config/api'
 // import '../src/config/wxConfig'
 import md5 from 'js-md5'
-import {$toastWarn} from './config/util'
+import {$toastWarn, $alert} from './config/util'
 import share from './share'
 import clipboard from 'clipboard' // 复制
 Vue.prototype.$clipboard = clipboard
@@ -56,6 +56,10 @@ router.beforeEach((to, from, next) => {
   }
   if (to.query.community_share) {
     localStorage.setItem('community_share', to.query.community_share)
+  }
+  // console.log(to.query)
+  if (to.query.openid_bind === '1') {
+    $alert('温馨提示', '该微信已绑定账号，请更换微信')
   }
   // if (to.name === 'wxGroup') {
   //   localStorage.setItem('community_share', 1)

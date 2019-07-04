@@ -1,9 +1,24 @@
-import {ToastPlugin, LoadingPlugin} from 'vux'
+import {ToastPlugin, LoadingPlugin, AlertModule} from 'vux'
 import Vue from 'vue'
 
 Vue.use(ToastPlugin)
 Vue.use(LoadingPlugin)
+Vue.use(AlertModule)
 
+export const $alert = (title, content) => {
+  // return new Promise((resolve, reject) => {
+  AlertModule.show({
+    title: title,
+    content: content,
+    onShow () {
+      console.log('Module: I\'m showing')
+    },
+    onHide () {
+      console.log('Module: I\'m hiding now')
+    }
+  })
+  // })
+}
 export const $toastSuccess = (title) => {
   Vue.$vux.toast.show({
     text: title,

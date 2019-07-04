@@ -234,17 +234,12 @@
       this.copyBtn = new this.$clipboard(this.$refs.copy) // 复制文本
       this.getUser()
       let url = ''
+      // let error = this.$route.params.error
       let userInfo = JSON.parse(localStorage.getItem('userInfo'))
-      // console.log(location.href.split('?')[0])
-      // debugger
       if (!localStorage.getItem('userInfo') || localStorage.getItem('userInfo') === null) {
         url = location.href.split('?')[0]
       } else {
-        // if (location.href.includes('?')) {
-        //   url = location.href.split('?')[0] + '&from_user_id=' + userInfo.id + `&community_share=1`
-        // } else {
         url = location.href.split('?')[0] + '?from_user_id=' + userInfo.id + `&community_share=1`
-        // }
       }
       url = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}&community_share=1`
       if (localStorage.getItem('paasTitle')) {

@@ -100,9 +100,13 @@
           return $toastWarn('手机号码错误')
         }
         this.$http.post('/official/login/mobile', data).then(({data}) => {
+          if (data.wechat && data.wechat.openid) {
+            localStorage.setItem('official_openid', data.wechat.openid)
+          } else {
+            localStorage.removeItem('official_openid')
+          }
           localStorage.setItem('ACCESS_TOKEN', data.token)
           localStorage.setItem('mobile', data.user.mobile)
-          if (data.wechat && data.wechat.official_openid) localStorage.setItem('official_openid', data.wechat.official_openid)
           if (data.user && data.user.type) {
             let userInfo = {
               id: data.user.id,

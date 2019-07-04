@@ -235,14 +235,16 @@
       this.getUser()
       let url = ''
       let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+      // console.log(location.href.split('?')[0])
+      // debugger
       if (!localStorage.getItem('userInfo') || localStorage.getItem('userInfo') === null) {
-        url = location.href
+        url = location.href.split('?')[0]
       } else {
-        if (location.href.includes('?')) {
-          url = location.href + '&from_user_id=' + userInfo.id + `&community_share=1`
-        } else {
-          url = location.href + '?from_user_id=' + userInfo.id + `&community_share=1`
-        }
+        // if (location.href.includes('?')) {
+        //   url = location.href.split('?')[0] + '&from_user_id=' + userInfo.id + `&community_share=1`
+        // } else {
+        url = location.href.split('?')[0] + '?from_user_id=' + userInfo.id + `&community_share=1`
+        // }
       }
       if (localStorage.getItem('paasTitle')) {
         this.$shareList(localStorage.getItem('logo'), url, localStorage.getItem('paasTitle'), localStorage.getItem('paasIntro'))

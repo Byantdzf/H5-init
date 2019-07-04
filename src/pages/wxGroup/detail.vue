@@ -74,6 +74,13 @@
         <div class="save text-center" @click="save">确定</div>
       </div>
     </moadlDown>
+    <moadlDown :show.sync="showOpenId" @hideModal="hideOppenId">
+      <div class="main-upload color6">
+        <div class="bold font30">温馨提示：</div>
+        <div class="text font28">系统未获取到您的信息,将无法给你红包！</div>
+        <div class="getOpenid text-center" @click="getOpenid">获取红包资格</div>
+      </div>
+    </moadlDown>
     <div v-transfer-dom>
       <previewer :list="list" ref="previewer" @on-index-change="logIndexChange"></previewer>
     </div>
@@ -111,8 +118,10 @@
         showQr: false,
         show: false,
         showUploadPhoto: false,
+        showOpenId: false,
         photo: 'http://images.ufutx.com/201907/03/0c90095f21650cacf992e1a9d4b4e982.png',
         token: localStorage.getItem('ACCESS_TOKEN'),
+        official_openid: localStorage.getItem('official_openid'),
         list: []
       }
     },
@@ -135,6 +144,16 @@
       },
       onSuccess (val) {
         this.photo = val
+      },
+      getOpenid () {
+        if (this.$isWeiXin() === true) {
+          this.showOpenid = false
+          if (localStorage.getItem('mobile') && localStorage.getItem('mobile') !== null) {
+            window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&type=community&id=${this.id}`
+          } else {
+            window.location.href = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}`
+          }
+        }
       },
       save () {
         this.showUploadPhoto = false
@@ -165,6 +184,9 @@
       },
       hideUploadPhoto (value) {
         this.showUploadPhoto = value
+      },
+      hideOppenId (value) {
+        this.showOpenId = value
       },
       routeTo (name) {
         this.$router.push({name: name})
@@ -233,6 +255,11 @@
         let {photo} = userInfo
         if (!photo) {
           this.showUpload = true
+        }
+      }
+      if (this.$isWeiXin() === true) {
+        if (!this.official_openid || this.official_openid === 'undefined' || this.official_openid === 'null') {
+          this.showOpenId = true
         }
       }
     }
@@ -437,11 +464,14 @@
       }
     }
 
-    .save {
+    .save,.getOpenid {
       width: 120px;
       margin: 32px auto;
       padding: 12px;
-      border-bottom: 2px solid #666666;
+      border-bottom: 2px solid red;
+    }
+    .getOpenid{
+      width: 200px;
     }
   }
   #success_form_input{

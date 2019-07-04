@@ -9,7 +9,7 @@
       </div>
       <div class="info-user info-text">
         <div class="font28 title bold" style="color: red">{{information.title}}</div>
-        <div class="font22 intro">{{information.intro}}</div>
+        <div class="font22 intro">{{information.intro}} <span >更多详情</span></div>
       </div>
     </div>
     <div class="main-tab font28 color6">
@@ -242,12 +242,10 @@
         url = location.href.split('?')[0] + '?from_user_id=' + userInfo.id + `&community_share=1`
       }
       url = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}&community_share=1`
-      if (localStorage.getItem('paasTitle')) {
-        let pic = userInfo.photo ? userInfo.photo : localStorage.getItem('logo')
-        let title = userInfo.name ? userInfo.name : localStorage.getItem('paasTitle')
-        let intro = userInfo.name ? `${userInfo.name}邀请你加入${this.information.title}` : localStorage.getItem('paasIntro')
-        this.$shareList(pic, url, intro, title)
-      }
+      let pic = userInfo.photo ? userInfo.photo : `${this.information.logo}`
+      let title = userInfo.name ? userInfo.name : `福恋交友平台`
+      let intro = userInfo.name ? `${userInfo.name}邀请你加入《${this.information.title}》` : `邀请你加入《${this.information.title}》`
+      this.$shareList(pic, url, intro, title)
       if (userInfo) {
         let {photo} = userInfo
         if (!photo) {
@@ -280,7 +278,7 @@
       .info-user {
         float: left;
         padding: 20px;
-
+        padding-top: 6px;
         .photo {
           width: 150px;
           height: 150px;
@@ -296,14 +294,10 @@
 
       .info-text {
         width: 58%;
-        margin-top: 12px;
+        margin-top: 4px;
         padding-left: 10px;
-
-        .title {
-        }
-
         .intro {
-          margin-top: 16px;
+          margin-top: 6px;
         }
       }
     }

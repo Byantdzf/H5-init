@@ -474,7 +474,7 @@
       border-bottom: 2px solid red;
     }
     .getOpenid{
-      width: 200px;
+      width: 220px;
     }
   }
   #success_form_input{

@@ -256,7 +256,9 @@
       }
       if (this.$isWeiXin() === true) {
         if (!this.official_openid || this.official_openid === 'undefined' || this.official_openid === 'null') {
-          if (!openid_bind){
+          if (openid_bind) {
+            this.showOpenId = false
+          } else {
             this.showOpenId = true
           }
         }

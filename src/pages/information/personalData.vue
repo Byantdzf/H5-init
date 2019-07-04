@@ -156,14 +156,18 @@
         }
         this.$http.put('/official/users/profile', data).then(({data}) => {
           localStorage.setItem('firstTime', true)
-          if (type === 'single') {
-            this.$router.push({
-              name: 'singleData'
-            })
+          if (localStorage.getItem('jump')) {
+            window.location.href = localStorage.getItem('jump')
           } else {
-            this.$router.push({
-              name: 'marriageData'
-            })
+            if (type === 'single') {
+              this.$router.push({
+                name: 'singleData'
+              })
+            } else {
+              this.$router.push({
+                name: 'marriageData'
+              })
+            }
           }
         }).catch((error) => {
           console.log(error)

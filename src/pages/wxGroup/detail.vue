@@ -5,7 +5,7 @@
         <div class="photo">
           <img :src="information.owner_photo">
         </div>
-        <div class="font26">群主：{{information.owner_name}}</div>
+        <div class="font26">{{information.owner_name}}</div>
       </div>
       <div class="info-user info-text">
         <div class="font28 title bold" style="color: red">{{information.title}}</div>
@@ -29,7 +29,7 @@
     <LoadMore tip="群成员" :show-loading="false"></LoadMore>
     <div class="main-otherUser">
       <div class="item-photo" v-for="item,index in information.members">
-        <img :src="item.photo">
+        <div class="img" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
       </div>
     </div>
     <div class="box_bottom">
@@ -246,6 +246,7 @@
         url = location.href.split('?')[0] + '?from_user_id=' + userInfo.id + `&community_share=1`
         // }
       }
+      url = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}&community_share=1`
       if (localStorage.getItem('paasTitle')) {
         this.$shareList(localStorage.getItem('logo'), url, localStorage.getItem('paasTitle'), localStorage.getItem('paasIntro'))
         document.title = localStorage.getItem('paasTitle')
@@ -420,9 +421,10 @@
       overflow: hidden;
       margin-right: 20px;
       margin-bottom: 20px;
-
-      img {
+      .img {
         width: 100%;
+        background-repeat: no-repeat;
+        background-size: cover;
       }
     }
   }

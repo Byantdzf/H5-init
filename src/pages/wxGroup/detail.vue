@@ -234,7 +234,7 @@
       this.copyBtn = new this.$clipboard(this.$refs.copy) // 复制文本
       this.getUser()
       let url = ''
-      // let error = this.$route.params.error
+      let openid_bind = this.$route.params.openid_bind
       let userInfo = JSON.parse(localStorage.getItem('userInfo'))
       if (!localStorage.getItem('userInfo') || localStorage.getItem('userInfo') === null) {
         url = location.href.split('?')[0]
@@ -256,7 +256,9 @@
       }
       if (this.$isWeiXin() === true) {
         if (!this.official_openid || this.official_openid === 'undefined' || this.official_openid === 'null') {
-          this.showOpenId = true
+          if (!openid_bind){
+            this.showOpenId = true
+          }
         }
       }
     }

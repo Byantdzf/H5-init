@@ -59,7 +59,8 @@ router.beforeEach((to, from, next) => {
   }
   // console.log(to.query)
   if (to.query.openid_bind === '1') {
-    $alert('温馨提示', '该微信已绑定账号，请更换微信')
+    let bindMobile = to.query.bind_mobile
+    $alert('温馨提示', `该微信已绑定账号 ${bindMobile}`)
   }
   // if (to.name === 'wxGroup') {
   //   localStorage.setItem('community_share', 1)

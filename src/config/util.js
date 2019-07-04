@@ -10,6 +10,7 @@ export const $alert = (title, content) => {
   AlertModule.show({
     title: title,
     content: content,
+    dialogTransition: 'vux-fade',
     onShow () {
       console.log('Module: I\'m showing')
     },

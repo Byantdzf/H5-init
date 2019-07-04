@@ -119,9 +119,13 @@
               })
             }
           } else {
-            this.$router.push({
-              name: 'personalData'
-            })
+            if (localStorage.getItem('fromPage') === 'wxGroup') {
+              window.location.href = localStorage.getItem('jump')
+            } else {
+              this.$router.push({
+                name: 'personalData'
+              })
+            }
           }
         }).catch((error) => {
           console.log(error)

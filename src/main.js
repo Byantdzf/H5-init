@@ -37,6 +37,11 @@ store.registerModule('vux', { // 名字自己定义
   }
 })
 router.beforeEach((to, from, next) => {
+  if (from.name === 'wxGroup' && to.name === 'register') {
+    localStorage.setItem('fromPage', 'wxGroup')
+  } else {
+    localStorage.setItem('fromPage', 'otherPage')
+  }
   if (to.query.ACCESS_TOKEN) {
     localStorage.setItem('ACCESS_TOKEN', to.query.ACCESS_TOKEN)
   }

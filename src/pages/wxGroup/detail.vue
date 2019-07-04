@@ -8,7 +8,7 @@
         <div class="font26">群主：{{information.owner_name}}</div>
       </div>
       <div class="info-user info-text">
-        <div class="font28 title">{{information.titile}}</div>
+        <div class="font28 title bold" style="color: red">{{information.title}}</div>
         <div class="font22 intro">{{information.intro}}</div>
       </div>
     </div>
@@ -229,9 +229,11 @@
         this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '智能共享平台', '福恋家庭幸福平台')
         document.title = '福恋家庭幸福平台'
       }
-      let {photo} = userInfo
-      if (!photo) {
-        this.showUpload = true
+      if (userInfo) {
+        let {photo} = userInfo
+        if (!photo) {
+          this.showUpload = true
+        }
       }
     }
   }

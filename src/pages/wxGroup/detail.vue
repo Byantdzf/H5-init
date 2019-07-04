@@ -256,7 +256,7 @@
         .photo {
           width: 150px;
           height: 150px;
-          border-radius: 50%;
+          border-radius: 12px;
           overflow: hidden;
           margin-bottom: 12px;
 

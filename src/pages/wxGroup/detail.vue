@@ -9,7 +9,7 @@
       </div>
       <div class="info-user info-text">
         <div class="font28 title bold" style="color: red">{{information.title}}</div>
-        <div class="font22 intro">{{information.intro}} <span >更多详情</span></div>
+        <div class="font22 intro">{{information.intro}} <span @click="gotoDetail(information.intro_path)" v-if="information.intro_path" style="color: orange">更多详情</span></div>
       </div>
     </div>
     <div class="main-tab font28 color6">
@@ -144,6 +144,9 @@
       },
       onSuccess (val) {
         this.photo = val
+      },
+      gotoDetail (url) {
+        window.location.href = url
       },
       getOpenid () {
         if (this.$isWeiXin() === true) {

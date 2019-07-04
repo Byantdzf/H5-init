@@ -55,11 +55,15 @@
     <moadlUp :show.sync="showQr" @hideModal="hideQr">
       <div class="main-qr">
         <img :src="information.qrcode" alt="" @click="showImage">
-        <div class="text text-center">群主微信：
+        <div class="text text-left">群主微信：
           <input type="text" id="success_form_input" readonly="readonly" v-model="information.owner_wechat"/>
           <button  id="copy" ref="copy" @click="copyLink" data-clipboard-action="copy" data-clipboard-target="#success_form_input">
             <img src="http://images.ufutx.com/201907/03/b1f746f48da868f953fba244df8ff9be.png" alt="">
           </button>
+        </div>
+        <div class="text-center font22 color6">
+          <img src="http://images.ufutx.com/201907/04/0eaf2cfa1d2dcb3ac25f20ad1117d52d.png" alt="" class="qrImage">
+          长按识别二维码
         </div>
       </div>
     </moadlUp>
@@ -237,6 +241,8 @@
       this.copyBtn = new this.$clipboard(this.$refs.copy) // 复制文本
       this.getUser()
       let url = ''
+      let titleV = this.$route.query.title ? this.$route.query.title : '福恋群'
+      let icon = this.$route.query.icon ? this.$route.query.title : 'https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png'
       let openidBind = this.$route.query.openid_bind
       let userInfo = JSON.parse(localStorage.getItem('userInfo'))
       if (!localStorage.getItem('userInfo') || localStorage.getItem('userInfo') === null) {
@@ -244,10 +250,11 @@
       } else {
         url = location.href.split('?')[0] + '?from_user_id=' + userInfo.id + `&community_share=1`
       }
+      console.log(titleV)
       url = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}&community_share=1`
-      let pic = userInfo.photo ? userInfo.photo : `${this.information.logo}`
+      let pic = userInfo.photo ? userInfo.photo : icon
       let title = userInfo.name ? userInfo.name : `福恋交友平台`
-      let intro = userInfo.name ? `${userInfo.name}邀请你加入《${this.information.title}》` : `邀请你加入《${this.information.title}》`
+      let intro = userInfo.name ? `${userInfo.name}邀请你加入《${titleV}》` : `邀请你加入《${titleV}》`
       this.$shareList(pic, url, intro, title)
       if (userInfo) {
         let {photo} = userInfo
@@ -486,5 +493,10 @@
       vertical-align: middle;
       margin-bottom: 6px;
     }
+  }
+  .qrImage{
+    width: 26px !important;
+    vertical-align: middle;
+    margin-bottom: 4px;
   }
 </style>

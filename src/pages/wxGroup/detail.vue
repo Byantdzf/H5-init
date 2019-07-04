@@ -28,7 +28,7 @@
     <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
     <LoadMore tip="群成员" :show-loading="false"></LoadMore>
     <div class="main-otherUser">
-      <div class="item-photo" v-for="item,index in information.members">
+      <div class="item-photo" v-for="item,index in information.members" v-if="item.photo">
         <div class="img" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
       </div>
     </div>
@@ -248,11 +248,10 @@
       }
       url = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}&community_share=1`
       if (localStorage.getItem('paasTitle')) {
-        this.$shareList(localStorage.getItem('logo'), url, localStorage.getItem('paasTitle'), localStorage.getItem('paasIntro'))
-        document.title = localStorage.getItem('paasTitle')
-      } else {
-        this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '智能共享平台', '福恋家庭幸福平台')
-        document.title = '福恋家庭幸福平台'
+        let pic = userInfo.photo ? userInfo.photo : localStorage.getItem('logo')
+        let title = userInfo.name ? userInfo.name : localStorage.getItem('paasTitle')
+        let intro = userInfo.name ? `${userInfo.name}邀请你加入${this.information.title}` : localStorage.getItem('paasIntro')
+        this.$shareList(pic, url, intro, title)
       }
       if (userInfo) {
         let {photo} = userInfo

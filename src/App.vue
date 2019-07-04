@@ -190,7 +190,7 @@
           }
         }
         if (localStorage.getItem('paasTitle')) {
-          this.$shareList(localStorage.getItem('logo'), url, localStorage.getItem('paasTitle'), localStorage.getItem('paasIntro'))
+          this.$shareList(localStorage.getItem('logo'), url, localStorage.getItem('paasIntro'), localStorage.getItem('paasTitle'))
           document.title = localStorage.getItem('paasTitle')
         } else {
           this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '智能共享平台', '福恋家庭幸福平台')

@@ -123,6 +123,7 @@
         show: false,
         showUploadPhoto: false,
         showOpenId: false,
+        userInfo: {},
         photo: 'http://images.ufutx.com/201907/03/0c90095f21650cacf992e1a9d4b4e982.png',
         token: localStorage.getItem('ACCESS_TOKEN'),
         official_openid: localStorage.getItem('official_openid'),
@@ -204,11 +205,13 @@
       getUser () {
         this.$http.get(`/official/communities/${this.id}`).then(({data}) => {
           this.information = data
-          this.list.push(
-            {
-              src: data.qrcode
-            }
-          )
+          let url = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}&community_share=1`
+          let pic = this.userInfo.photo ? this.userInfo.photo : data.logo
+          let title = this.userInfo.name ? `${this.userInfo.name}邀请你加入《${data.title}》` : `邀请你加入《${data.title}》`
+          let intro = data.intro
+          console.log(pic, url, intro, title)
+          this.$shareList(pic, url, intro, title)
+          this.list.push({src: data.qrcode})
           if (this.$isWeiXin()) {
             if (!data.user.official_openid || data.user.official_openid === null) {
               this.$router.push({name: 'user'})
@@ -240,24 +243,10 @@
       this.id = this.$route.params.id
       this.copyBtn = new this.$clipboard(this.$refs.copy) // 复制文本
       this.getUser()
-      let url = ''
-      let titleV = this.$route.query.title ? this.$route.query.title : '福恋群'
-      let icon = this.$route.query.icon ? this.$route.query.title : 'https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png'
       let openidBind = this.$route.query.openid_bind
-      let userInfo = JSON.parse(localStorage.getItem('userInfo'))
-      if (!localStorage.getItem('userInfo') || localStorage.getItem('userInfo') === null) {
-        url = location.href.split('?')[0]
-      } else {
-        url = location.href.split('?')[0] + '?from_user_id=' + userInfo.id + `&community_share=1`
-      }
-      console.log(titleV)
-      url = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}&community_share=1`
-      let pic = userInfo.photo ? userInfo.photo : icon
-      let title = userInfo.name ? userInfo.name : `福恋交友平台`
-      let intro = userInfo.name ? `${userInfo.name}邀请你加入《${titleV}》` : `邀请你加入《${titleV}》`
-      this.$shareList(pic, url, intro, title)
-      if (userInfo) {
-        let {photo} = userInfo
+      this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
+      if (this.userInfo) {
+        let {photo} = this.userInfo
         if (!photo) {
           this.showUpload = true
         }

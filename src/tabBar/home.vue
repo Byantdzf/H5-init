@@ -123,9 +123,9 @@
             })
           } else {
             if (localStorage.getItem('mobile') && localStorage.getItem('mobile') !== null) {
-              window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&type=community&id=${item.id}`
+              window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&type=community&id=${item.id}&from_official_openid=` + localStorage.setItem('from_official_openid')
             } else {
-              window.location.href = `https://love.ufutx.com/wx/bind?type=community&id=${item.id}`
+              window.location.href = `https://love.ufutx.com/wx/bind?type=community&id=${item.id}&from_official_openid=` + localStorage.setItem('from_official_openid')
             }
           }
         } else {

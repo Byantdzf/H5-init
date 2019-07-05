@@ -196,7 +196,7 @@
           this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '用科技让交友变简单', '福恋交友平台')
           document.title = '福恋交友平台'
         }
-        if (location.href.includes('paas')) {
+        if (location.href.includes('paas') && !location.href.includes('wxGroup')) {
           // if (localStorage.getItem('paasName') != location.href.split('paas=')[1]) {
           vm.$http.get(`/official/paas`).then(({data}) => {
             if (data && data !== null) {

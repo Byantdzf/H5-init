@@ -206,7 +206,8 @@
       getUser () {
         this.$http.get(`/official/communities/${this.id}`).then(({data}) => {
           this.information = data
-          let url = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}&community_share=1`
+          let officialOpenid = localStorage.getItem('official_openid')
+          let url = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}&community_share=1&from_user_id=${this.userInfo.id}&from_official_openid=${officialOpenid}`
           let pic = this.userInfo.photo ? this.userInfo.photo : data.logo
           let title = this.userInfo.name ? `${this.userInfo.name}邀请你加入《${data.title}》` : `邀请你加入《${data.title}》`
           let intro = data.intro

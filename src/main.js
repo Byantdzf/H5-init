@@ -46,7 +46,7 @@ router.beforeEach((to, from, next) => {
     localStorage.setItem('ACCESS_TOKEN', to.query.ACCESS_TOKEN)
   }
   if (to.query.from_official_openid) {
-    localStorage.setItem('from_official_openid', to.query.official_openid)
+    localStorage.setItem('from_official_openid', to.query.from_official_openid)
   }
   if (to.query.from_user_id) {
     localStorage.setItem('from_user_id', to.query.from_user_id)

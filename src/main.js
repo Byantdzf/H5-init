@@ -48,6 +48,9 @@ router.beforeEach((to, from, next) => {
   if (to.query.from_official_openid) {
     localStorage.setItem('from_official_openid', to.query.from_official_openid)
   }
+  if (to.query.community_share) {
+    localStorage.setItem('community_share', to.query.community_share)
+  }
   if (to.query.from_user_id) {
     localStorage.setItem('from_user_id', to.query.from_user_id)
   }

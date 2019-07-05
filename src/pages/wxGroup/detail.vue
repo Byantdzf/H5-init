@@ -157,9 +157,9 @@
         if (this.$isWeiXin() === true) {
           this.showOpenid = false
           if (localStorage.getItem('mobile') && localStorage.getItem('mobile') !== null) {
-            window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&type=community&id=${this.id}`
+            window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&type=community&id=${this.id}&from_user_id=${this.userInfo.id}`
           } else {
-            window.location.href = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}`
+            window.location.href = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}&from_user_id=${this.userInfo.id}`
           }
         }
       },
@@ -200,7 +200,8 @@
         this.$router.push({name: name})
       },
       goHome () {
-        this.$router.push({name: 'home'})
+        this.$router.push(
+          {name: 'home'})
       },
       getUser () {
         this.$http.get(`/official/communities/${this.id}`).then(({data}) => {

@@ -28,6 +28,7 @@ const api = () => {
       paas: localStorage.getItem('paasName'), // 平台名字
       from_user_id: localStorage.getItem('from_user_id'), // 推荐人id
       official_openid: localStorage.getItem('official_openid'), // openID
+      from_official_openid: localStorage.getItem('from_official_openid'), // from_openID
       from_platform: localStorage.getItem('from_platform'),
       location_latitude: localStorage.getItem('latitude'),
       location_longitude: localStorage.getItem('longitude')

@@ -189,36 +189,35 @@
             url = location.href + '?from_user_id=' + userInfo.id
           }
         }
-        if (location.href.includes('wxGroup')) {
-          return
-        }
-        if (localStorage.getItem('paasTitle')) {
-          this.$shareList(localStorage.getItem('logo'), url, localStorage.getItem('paasIntro'), localStorage.getItem('paasTitle'))
-          document.title = localStorage.getItem('paasTitle')
-        } else {
-          this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '用科技让交友变简单', '福恋交友平台')
-          document.title = '福恋交友平台'
-        }
-        if (location.href.includes('paas')) {
-          // if (localStorage.getItem('paasName') != location.href.split('paas=')[1]) {
-          vm.$http.get(`/official/paas`).then(({data}) => {
-            if (data && data !== null) {
-              localStorage.setItem('paasTitle', data.title)
-              localStorage.setItem('paasIntro', data.intro)
-              this.$shareList(data.logo, url, data.intro, data.title)
-              if (data.logo) {
-                localStorage.setItem('logo', data.logo)
+        if (!location.href.includes('wxGroup')) {
+          if (localStorage.getItem('paasTitle')) {
+            this.$shareList(localStorage.getItem('logo'), url, localStorage.getItem('paasIntro'), localStorage.getItem('paasTitle'))
+            document.title = localStorage.getItem('paasTitle')
+          } else {
+            this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '用科技让交友变简单', '福恋交友平台')
+            document.title = '福恋交友平台'
+          }
+          if (location.href.includes('paas')) {
+            // if (localStorage.getItem('paasName') != location.href.split('paas=')[1]) {
+            vm.$http.get(`/official/paas`).then(({data}) => {
+              if (data && data !== null) {
+                localStorage.setItem('paasTitle', data.title)
+                localStorage.setItem('paasIntro', data.intro)
+                this.$shareList(data.logo, url, data.intro, data.title)
+                if (data.logo) {
+                  localStorage.setItem('logo', data.logo)
+                }
+                document.title = data.title
+              } else {
+                this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '用科技让交友变简单', '福恋交友平台')
+                document.title = '福恋交友平台'
+                localStorage.setItem('paasName', 'FL')
               }
-              document.title = data.title
-            } else {
-              this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '用科技让交友变简单', '福恋交友平台')
-              document.title = '福恋交友平台'
-              localStorage.setItem('paasName', 'FL')
-            }
-          }).catch((error) => {
-            console.log(error)
-          })
-          // }
+            }).catch((error) => {
+              console.log(error)
+            })
+            // }
+          }
         }
       }
     },

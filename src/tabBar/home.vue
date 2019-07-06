@@ -20,7 +20,7 @@
           </swiper>
         </div>
       </div>
-      <img src="http://images.ufutx.com/201907/01/419369bfc0834908da80d03d383c79dd.png" alt="" style="width: 100%">
+      <img src="http://images.ufutx.com/201907/01/419369bfc0834908da80d03d383c79dd.png" alt="" @click="gotoLink" style="width: 100%">
       <div class="groupicon">
         <div class="item-icon" v-for="item,index in groupList" @click="goToDetail(item)">
           <img :src="item.icon" alt="">
@@ -114,6 +114,9 @@
       }
     },
     methods: {
+      gotoLink () {
+        window.location.href = 'https://mp.weixin.qq.com/s/JOOAf693lS3cWpSngompLA'
+      },
       goToDetail (item) {
         if (this.$isWeiXin() === true) {
           if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {

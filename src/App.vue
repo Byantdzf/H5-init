@@ -98,6 +98,10 @@
         // console.log(this.isLoading)
       },
       $route (to, from) {
+        // console.log(to, 'to')
+        // if (to.name === 'wxGroup') {
+        //   return
+        // }
         this.shareInfo()
       }
     },
@@ -188,6 +192,12 @@
           } else {
             url = location.href + '?from_user_id=' + userInfo.id
           }
+        }
+        if (this.$route.name === 'wxGroup') {
+          // console.log(this.$route, 'asssssss')
+          let {id} = this.$route.params
+          let officialOpenid = localStorage.getItem('official_openid')
+          url = `https://love.ufutx.com/wx/bind?type=community&id=${id}&community_share=1&&from_official_openid=${officialOpenid}`
         }
         if (localStorage.getItem('paasTitle')) {
           this.$shareList(localStorage.getItem('logo'), url, localStorage.getItem('paasIntro'), localStorage.getItem('paasTitle'))

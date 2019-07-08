@@ -43,7 +43,7 @@
           <p class="share">分享</p>
         </div>
       </div>
-      <div v-if="showUpload && token">
+      <div v-if="showUpload">
         <div class="applyNow" @click="showUploadPhoto = true" v-if="information.is_applied == '0'">免费入群</div>
         <div class="applyNow" @click="showQr = true" v-else>查看群码</div>
       </div>

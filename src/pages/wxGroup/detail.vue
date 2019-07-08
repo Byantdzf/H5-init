@@ -231,6 +231,7 @@
       },
       apply () {
         if (!this.token) {
+          localStorage.setItem('jump', window.location.href)
           this.$router.push({name: 'register'})
           return
         }

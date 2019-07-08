@@ -207,9 +207,9 @@
         this.$http.get(`/official/communities/${this.id}`).then(({data}) => {
           this.information = data
           let officialOpenid = localStorage.getItem('official_openid')
-          let url = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}&community_share=1&from_user_id=${this.userInfo.id}&from_official_openid=${officialOpenid}`
-          let pic = this.userInfo.photo ? this.userInfo.photo : data.logo
-          let title = this.userInfo.name ? `${this.userInfo.name}邀请你加入《${data.title}》` : `邀请你加入《${data.title}》`
+          let url = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}&community_share=1&from_user_id=${this.userInfo ? this.userInfo.id : ''}&from_official_openid=${officialOpenid}`
+          let pic = this.userInfo ? this.userInfo.photo : data.logo
+          let title = this.userInfo ? `${this.userInfo.name}邀请你加入《${data.title}》` : `邀请你加入《${data.title}》`
           let intro = data.intro
           console.log(pic, url, intro, title)
           this.$shareList(pic, url, intro, title)
@@ -220,11 +220,20 @@
             }
           }
           localStorage.setItem('official_openid', data.official_openid)
+          if (!data.is_photo) {
+            this.showUpload = true
+          } else {
+            this.showUpload = false
+          }
         }).catch((error) => {
           console.log(error)
         })
       },
       apply () {
+        if (!this.token) {
+          this.$router.push({name: 'register'})
+          return
+        }
         $loadingShow('加载中...')
         // if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
         this.$http.post(`/official/apply/communities/${this.id}`).then(({data}) => {
@@ -247,12 +256,6 @@
       this.getUser()
       let openidBind = this.$route.query.openid_bind
       this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
-      if (this.userInfo) {
-        let {photo} = this.userInfo
-        if (!photo) {
-          this.showUpload = true
-        }
-      }
       if (this.$isWeiXin() === true) {
         if (!this.official_openid || this.official_openid === 'undefined' || this.official_openid === 'null') {
           if (openidBind) {

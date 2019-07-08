@@ -220,7 +220,7 @@
             }
           }
           localStorage.setItem('official_openid', data.official_openid)
-          if (!data.is_photo) {
+          if (data.is_photo === 0) {
             this.showUpload = true
           } else {
             this.showUpload = false

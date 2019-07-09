@@ -54,7 +54,7 @@
 </template>
 
 <script>
-  import {$loadingShow, $loadingHide, $toastWarn} from '../../../src/config/util'
+  import {$loadingShow, $loadingHide, $toastWarn, $toastSuccess} from '../../../src/config/util'
   import shareModal from '../../components/shareMoadl'
 
   export default {
@@ -90,6 +90,13 @@
         }
         vm.$http.post(`/official/wx/bind/mobile`, data).then(({data}) => {
           vm.hideModal()
+          $loadingShow('疯抢中...')
+          setTimeout(() => {
+            $loadingHide()
+            setTimeout(() => {
+              $toastSuccess('领取成功')
+            }, 500)
+          }, 500)
         }).catch((error) => {
           vm.hideModal()
           vm.information.is_register = 1
@@ -125,7 +132,7 @@
       this.getData()
       let officialOpenid = localStorage.getItem('official_openid')
       let url = `http://love.hankin.ufutx.cn/wx/bind/v2?from_official_openid=${officialOpenid}`
-      let pic = 'http://images.ufutx.com/201907/09/cc698e63f0f09d189d34dc4857d50270.png'
+      let pic = 'http://images.ufutx.com/201907/09/29eeb6bfe457e92d0c3624abd86d47e7.png'
       let title = `福恋红包大派送，领红包还帮身边的单身脱单！`
       let intro = `很多单身群，和热心的介绍人群，总有适合的等你进！`
       console.log(pic, url, intro, title)

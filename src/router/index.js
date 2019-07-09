@@ -162,6 +162,11 @@ export default new Router({
       path: '/protocol2',
       name: 'protocol2',
       component: (resolve) => require(['@/pages/user/protocol2'], resolve)
+    },
+    { // 分享页面
+      path: '/sharePage',
+      name: 'sharePage',
+      component: (resolve) => require(['@/pages/user/sharePage'], resolve)
     }
 
   ]

@@ -9,7 +9,7 @@
           </router-link>
         </div>
         <div class="font30 announcements" v-if="announcements.length > 0">
-          <swiper auto height="30px" direction="vertical" :interval=2000 class="text-scroll" :show-dots="false" >
+          <swiper auto height="30px" direction="vertical" :interval=2000 class="text-scroll" :show-dots="false">
             <swiper-item v-for="item in announcements" :key="item.id">
               <p class="ellipsis_1 color6" @click="$href(item.type == 'OF'?item.path:'#')">
                 <img src="https://images.ufutx.com/201904/27/3a6720333a2434da29453d42ede484cf.png" alt="" width="22px"
@@ -20,21 +20,22 @@
           </swiper>
         </div>
       </div>
-      <img src="http://images.ufutx.com/201907/01/419369bfc0834908da80d03d383c79dd.png" alt="" @click="gotoLink" style="width: 100%">
+      <img src="http://images.ufutx.com/201907/01/419369bfc0834908da80d03d383c79dd.png" alt="" @click="gotoLink"
+           style="width: 100%">
       <div class="groupicon">
         <div class="item-icon" v-for="item,index in groupList" @click="goToDetail(item)">
           <img :src="item.icon" alt="">
           <div class="font22 color6 title">{{item.title}}</div>
         </div>
       </div>
-      <p class="bc_title font34 bold">推荐</p>
+      <p class="bc_title font34 bold" @click="showModal = !showModal">推荐</p>
       <swiperComponent :list.sync="recommend"></swiperComponent>
       <!--<swiper  :min-moving-distance="120" :show-desc-mask="true"  :auto="true" :interval="2000" @on-index-change="swiperItem">-->
-        <!--<swiper-item v-for="item,index in recommend" :key="item.id" >-->
-          <!--<div :class="[index == current?'animationData': 'animationData2']">-->
-            <!--<div class="recommend-image backCover"  v-bind:style="{backgroundImage:'url(' + item.photo + ')'}" @click="routeToDetail(item.user.type, item.user.id)"></div>-->
-          <!--</div>-->
-        <!--</swiper-item>-->
+      <!--<swiper-item v-for="item,index in recommend" :key="item.id" >-->
+      <!--<div :class="[index == current?'animationData': 'animationData2']">-->
+      <!--<div class="recommend-image backCover"  v-bind:style="{backgroundImage:'url(' + item.photo + ')'}" @click="routeToDetail(item.user.type, item.user.id)"></div>-->
+      <!--</div>-->
+      <!--</swiper-item>-->
       <!--</swiper>-->
       <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
         <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
@@ -46,11 +47,15 @@
       </div>
       <div class="height160"></div>
     </mescroll-vue>
+    <div class="vessel" v-if="showModal">
+      <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close" @click="hideModal">
+      <div class="modal-vessel" @click="gotoShare"></div>
+    </div>
   </div>
 </template>
 
 <script>
-  import { Group, Cell, XHeader, Swiper, XInput, Search, SwiperItem } from 'vux'
+  import {Group, Cell, XHeader, Swiper, XInput, Search, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import swiperComponent from '../components/swiper'
 
@@ -71,6 +76,7 @@
         value: '',
         current: 0,
         search: '',
+        showModal: true,
         init: false,
         recommend: [],
         noData: false,
@@ -114,8 +120,16 @@
       }
     },
     methods: {
+      hideModal () {
+        this.showModal = false
+      },
       gotoLink () {
         window.location.href = 'https://mp.weixin.qq.com/s/JOOAf693lS3cWpSngompLA'
+      },
+      gotoShare () {
+        this.showModal = false
+        window.location.href = `http://love.hankin.ufutx.cn/wx/bind/v2`
+        // this.$router.push({name: 'sharePage'})
       },
       goToDetail (item) {
         if (this.$isWeiXin() === true) {
@@ -188,8 +202,8 @@
   }
 </script>
 
-<style  lang="less" scoped>
-  body{
+<style lang="less" scoped>
+  body {
     background: #f7f7f7 !important;
 
     .announcementIcon {
@@ -197,21 +211,25 @@
       vertical-align: middle;
     }
   }
+
   .vux-demo {
     text-align: center;
   }
+
   .logo {
     width: 100px;
     height: 100px
   }
-  .search-box{
+
+  .search-box {
     width: 690px;
     height: 88px;
     margin: 22px auto;
     background: white;
     border-radius: 6px;
     border: 2px solid #f0f0f3;
-    .homeSearch{
+
+    .homeSearch {
       width: 100%;
       height: 100%;
       border: none;
@@ -219,24 +237,29 @@
       /*box-shadow: 1px 1px 12px #e9e9e9;*/
     }
   }
-  .bc_title{
+
+  .bc_title {
     margin-top: 12px;
     margin-left: 22px;
     margin-bottom: 12px;
   }
-  .vux-img{
+
+  .vux-img {
     width: 90% !important;
     margin: auto;
     border-radius: 6px;
     box-shadow: 1px 1px 12px #d3d3d3;
   }
-  .vux-swiper{
+
+  .vux-swiper {
     text-align: center;
-    p{
+
+    p {
       color: #666666;
     }
   }
-  .list-item{
+
+  .list-item {
     width: 646px;
     height: 736px;
     padding: 22px;
@@ -247,20 +270,23 @@
     margin-top: 22px;
     box-shadow: -1px 8px 18px #dadada;
     margin-bottom: 26px;
-    .image{
+
+    .image {
       width: 100%;
       height: 646px;
       background-repeat: no-repeat;
       background-size: cover;
     }
   }
-  .recommend-image{
+
+  .recommend-image {
     width: 100%;
     height: 100%;
     background-repeat: no-repeat;
     background-size: cover;
   }
-  .vux-swiper{
+
+  .vux-swiper {
     height: 400px;
   }
 
@@ -301,19 +327,55 @@
 
     }
   }
-  .groupicon{
+
+  .groupicon {
     padding: 32px 0;
     overflow: hidden;
     border-bottom: 8px solid #ECECEC;
-    .item-icon{
+
+    .item-icon {
       width: 25%;
       float: left;
       text-align: center;
-      img{
+
+      img {
         width: 88px;
       }
-      .title{
+
+      .title {
         margin-top: 4px;
+      }
+    }
+  }
+
+  .vessel {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, .7);
+    .close{
+      width: 60px;
+      position: absolute;
+      top: 20%;
+      right: 12%;
+    }
+    .modal-vessel {
+      background-image: url("http://images.ufutx.com/201907/09/7f45e1fa8d1774f7f1e9f30b7516221d.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      animation: myMove 300ms linear;
+      animation-fill-mode: forwards;
+      @keyframes myMove {
+        from {
+          width: 0;
+          height: 0;
+          margin: 27% auto;
+        }
+        to {
+          width: 86%;
+          height: 72%;
+          margin: 42% auto;
+        }
       }
     }
   }

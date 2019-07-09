@@ -131,7 +131,7 @@
       console.log(this.information)
       this.getData()
       let officialOpenid = localStorage.getItem('official_openid')
-      let url = `http://love.ufutx.cn/wx/bind/v2?from_official_openid=${officialOpenid}`
+      let url = `http://love.ufutx.com/wx/bind/v2?from_official_openid=${officialOpenid}`
       let pic = 'http://images.ufutx.com/201907/09/29eeb6bfe457e92d0c3624abd86d47e7.png'
       let title = `福恋红包大派送，领红包还帮身边的单身脱单！`
       let intro = `很多单身群，和热心的介绍人群，总有适合的等你进！`

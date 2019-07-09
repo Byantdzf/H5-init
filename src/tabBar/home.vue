@@ -76,7 +76,7 @@
         value: '',
         current: 0,
         search: '',
-        showModal: true,
+        showModal: false,
         init: false,
         recommend: [],
         noData: false,

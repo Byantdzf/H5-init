@@ -247,7 +247,7 @@
     .close{
       width: 60px;
       position: absolute;
-      top: 20%;
+      top: 12%;
       right: 12%;
     }
     .modal-vessel {
@@ -297,7 +297,7 @@
         to {
           width: 60%;
           height: 40%;
-          margin: 69% auto;
+          margin: 36% auto;
         }
       }
     }

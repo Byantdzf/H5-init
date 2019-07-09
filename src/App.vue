@@ -193,39 +193,49 @@
             url = location.href + '?from_user_id=' + userInfo.id
           }
         }
-        if (this.$route.name === 'wxGroup') {
-          // console.log(this.$route, 'asssssss')
-          let {id} = this.$route.params
+        if (this.$route.name === 'sharePage') {
           let officialOpenid = localStorage.getItem('official_openid')
-          url = `https://love.ufutx.com/wx/bind?type=community&id=${id}&community_share=1&&from_official_openid=${officialOpenid}`
-        }
-        if (localStorage.getItem('paasTitle')) {
-          this.$shareList(localStorage.getItem('logo'), url, localStorage.getItem('paasIntro'), localStorage.getItem('paasTitle'))
-          document.title = localStorage.getItem('paasTitle')
+          let url = `http://love.ufutx.com/wx/bind/v2?from_official_openid=${officialOpenid}`
+          let pic = 'http://images.ufutx.com/201907/09/29eeb6bfe457e92d0c3624abd86d47e7.png'
+          let title = `福恋红包大派送，领红包还帮身边的单身脱单！`
+          let intro = `很多单身群，和热心的介绍人群，总有适合的等你进！`
+          console.log(pic, url, intro, title)
+          this.$shareList(pic, url, intro, title)
         } else {
-          this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '用科技让交友变简单', '福恋交友平台')
-          document.title = '福恋交友平台'
-        }
-        if (location.href.includes('paas') && !location.href.includes('wxGroup')) {
-          // if (localStorage.getItem('paasName') != location.href.split('paas=')[1]) {
-          vm.$http.get(`/official/paas`).then(({data}) => {
-            if (data && data !== null) {
-              localStorage.setItem('paasTitle', data.title)
-              localStorage.setItem('paasIntro', data.intro)
-              this.$shareList(data.logo, url, data.intro, data.title)
-              if (data.logo) {
-                localStorage.setItem('logo', data.logo)
+          if (this.$route.name === 'wxGroup') {
+            // console.log(this.$route, 'asssssss')
+            let {id} = this.$route.params
+            let officialOpenid = localStorage.getItem('official_openid')
+            url = `https://love.ufutx.com/wx/bind?type=community&id=${id}&community_share=1&&from_official_openid=${officialOpenid}`
+          }
+          if (localStorage.getItem('paasTitle')) {
+            this.$shareList(localStorage.getItem('logo'), url, localStorage.getItem('paasIntro'), localStorage.getItem('paasTitle'))
+            document.title = localStorage.getItem('paasTitle')
+          } else {
+            this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '用科技让交友变简单', '福恋交友平台')
+            document.title = '福恋交友平台'
+          }
+          if (location.href.includes('paas') && !location.href.includes('wxGroup')) {
+            // if (localStorage.getItem('paasName') != location.href.split('paas=')[1]) {
+            vm.$http.get(`/official/paas`).then(({data}) => {
+              if (data && data !== null) {
+                localStorage.setItem('paasTitle', data.title)
+                localStorage.setItem('paasIntro', data.intro)
+                this.$shareList(data.logo, url, data.intro, data.title)
+                if (data.logo) {
+                  localStorage.setItem('logo', data.logo)
+                }
+                document.title = data.title
+              } else {
+                this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '用科技让交友变简单', '福恋交友平台')
+                document.title = '福恋交友平台'
+                localStorage.setItem('paasName', 'FL')
               }
-              document.title = data.title
-            } else {
-              this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '用科技让交友变简单', '福恋交友平台')
-              document.title = '福恋交友平台'
-              localStorage.setItem('paasName', 'FL')
-            }
-          }).catch((error) => {
-            console.log(error)
-          })
-          // }
+            }).catch((error) => {
+              console.log(error)
+            })
+            // }
+          }
         }
       }
     },

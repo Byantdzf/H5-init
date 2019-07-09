@@ -126,6 +126,9 @@
       }
     },
     mounted () {
+      if (this.$route.query.token) {
+        localStorage.setItem('ACCESS_TOKEN', this.$route.query.token)
+      }
       this.information.is_register = this.$route.query.is_register
       this.information.official_openid = this.$route.query.official_openid
       console.log(this.information)

@@ -101,6 +101,7 @@
             $loadingHide()
             setTimeout(() => {
               $toastSuccess('领取成功')
+              vm.information.is_register = 1
             }, 500)
           }, 500)
         }).catch((error) => {

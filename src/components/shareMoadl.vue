@@ -2,9 +2,9 @@
   <div v-transfer-dom>
     <popup v-model="showModal" :is-transparent="true">
       <div class="bc_share backCover" @click="hideModal">
-        <img src="http://images.ufutx.com/201907/09/34bdd025c1c4aecbaf26ebf47887ebdc.png" alt="" width="100%"
+        <img src="https://images.ufutx.com/201907/10/c914e9a9edfcd61b3f9af1bb4d022525.png" alt="" width="100%"
              style="position:fixed;top: 0;z-index: 9999">
-        <img src="http://images.ufutx.com/201907/09/057b2343fc8ed4e76fe8ddf5cd244b4f.png" alt="" width="100%"
+        <img src="https://images.ufutx.com/201907/10/c77e6e27f763d29e2a7bf47c4707dcae.png" alt="" width="100%"
              class="fixed_bot">
       </div>
     </popup>

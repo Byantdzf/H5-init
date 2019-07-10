@@ -118,9 +118,12 @@
       },
       getData () {
         let vm = this
-        vm.$http.get(`/official/community/share`).then(({data}) => {
+        vm.$http.get(`/official/community/share?official_openid=${vm.information.official_openid}`).then(({data}) => {
           this.groupData = data.communities
           this.red_amount = data.red_amount.toFixed(2)
+          if (data.token) {
+            localStorage.setItem('ACCESS_TOKEN', data.token)
+          }
           // localStorage.setItem('red_amount', this.red_amount)
           console.log(data)
         }).catch((error) => {
@@ -129,9 +132,6 @@
       }
     },
     mounted () {
-      if (this.$route.query.token) {
-        localStorage.setItem('ACCESS_TOKEN', this.$route.query.token)
-      }
       this.information.is_register = this.$route.query.is_register
       this.information.official_openid = this.$route.query.official_openid
       console.log(this.information)

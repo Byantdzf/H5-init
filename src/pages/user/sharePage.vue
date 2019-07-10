@@ -118,7 +118,7 @@
       },
       getData () {
         let vm = this
-        vm.$http.get(`/official/community/share?official_openid=${vm.information.official_openid}`).then(({data}) => {
+        vm.$http.get(`/official/community/share?official_openid=${vm.information.official_openid}&is_register=${vm.information.is_register}`).then(({data}) => {
           this.groupData = data.communities
           this.red_amount = data.red_amount.toFixed(2)
           if (data.token) {

@@ -1,23 +1,26 @@
 <template>
   <div class="main-box">
     <!--@click="hideModal"-->
-    <div class="vessel" v-if="showModal" >
-      <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close" @click="hideModal">
-      <div class="modal-vessel" >
+    <div class="vessel" v-if="showModal">
+      <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close"
+           @click="hideModal">
+      <div class="modal-vessel">
         <div v-if="!showPic">
-          <img src="http://images.ufutx.com/201907/09/cc698e63f0f09d189d34dc4857d50270.png"   alt="" @click.stop="showPic = true">
+          <img src="http://images.ufutx.com/201907/09/cc698e63f0f09d189d34dc4857d50270.png" alt=""
+               @click.stop="showPic = true">
         </div>
         <div v-else>
           <div class="change" v-if="showPic">
-            <p class="text-center colorff"><span class="bc_p">{{red_amount}}</span>  <span class="colorff">元</span></p>
+            <p class="text-center colorff"><span class="bc_p">{{red_amount}}</span> <span class="colorff">元</span></p>
             <p class="font22 colorff text-center">邀请好友，更大的红包等你抢！</p>
-            <div class="text-center bc_input"><input type="number" placeholder="请输入微信绑定手机号" class="font28" v-model="mobile"/></div>
+            <div class="text-center bc_input"><input type="number" placeholder="请输入微信绑定手机号" class="font28"
+                                                     v-model="mobile"/></div>
             <div class="linkbtn" @click="pullDown"></div>
           </div>
         </div>
       </div>
     </div>
-      <div class="main-paas">
+    <div class="main-paas">
       <img src="http://images.ufutx.com/201907/09/f4666cc8c335cb67e9a0ddfc22c7f815.png" alt="" class="bc-image">
       <div class="text-center">
         <img src="http://images.ufutx.com/201907/09/8f2443d5a12769c43b6548130b0d8ca8.png" class="bc-icon">
@@ -99,7 +102,7 @@
           }, 500)
         }).catch((error) => {
           vm.hideModal()
-          vm.information.is_register = 1
+          // vm.information.is_register = 1
           console.log(error)
         })
       },
@@ -151,6 +154,7 @@
       position: relative;
       z-index: 9;
       overflow: hidden;
+
       .bc-image {
         width: 100%;
         position: absolute;
@@ -247,19 +251,22 @@
     height: 100vh;
     background: rgba(0, 0, 0, .7);
     z-index: 12;
-    .close{
+
+    .close {
       width: 60px;
       position: absolute;
       top: 12%;
       right: 12%;
     }
+
     .modal-vessel {
       /*background-image: url("");*/
       /*background-size: contain;*/
       /*background-repeat: no-repeat;*/
       animation: myMove 300ms linear;
       animation-fill-mode: forwards;
-      img{
+
+      img {
         width: 100%;
       }
 
@@ -272,11 +279,13 @@
         background-size: contain;
         position: relative;
         padding-top: 50%;
+
         .bc_p {
           font-size: 72px;
         }
-        .bc_input{
-          input{
+
+        .bc_input {
+          input {
             padding: 0px 6px;
             height: 60px;
             border: none;
@@ -284,13 +293,15 @@
             border-radius: 8px;
           }
         }
-        .linkbtn{
+
+        .linkbtn {
           width: 100%;
           height: 60px;
           /*background: red;*/
           margin-top: 40px;
         }
       }
+
       @keyframes myMove {
         from {
           width: 0;

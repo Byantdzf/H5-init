@@ -29,9 +29,9 @@
       </div>
     </div>
     <div class="main-rule text-center">
-      <img src="http://images.ufutx.com/201907/09/01648586fc59ddfd281362ac0928f68e.png" class="bc-icon flo_l">
-      <img src="http://images.ufutx.com/201907/09/1c67e0b7a74a69b1e36fb1726613b543.png" class="bc-icon">
-      <img src="http://images.ufutx.com/201907/09/33485eec0860efe7e14f6ea11e517f95.png" class="bc-icon flo_r">
+      <img src="https://images.ufutx.com/201907/10/3977842b6aeb97d9dfc681e45401696f.png" class="bc-icon flo_l">
+      <img src="https://images.ufutx.com/201907/10/390dd6af8e29356a3c7d68bf06424b78.png" class="bc-icon">
+      <img src="https://images.ufutx.com/201907/10/b610ac9d82f446f211c833ac7f52ae39.png" class="bc-icon flo_r">
     </div>
     <div class="main-btn text-center colorff" @click="robFn" v-if="information.is_register != 1">立 即 抢 红 包</div>
     <div class="main-btn text-center colorff" @click="showShare = true" v-else>分 享 赢 大 红 包</div>

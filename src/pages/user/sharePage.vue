@@ -5,19 +5,23 @@
       <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close"
            @click="hideModal">
       <div class="modal-vessel">
-        <div v-if="!showPic">
-          <img src="http://images.ufutx.com/201907/09/cc698e63f0f09d189d34dc4857d50270.png" alt=""
-               @click.stop="showPic = true">
+        <div>
+          <img src="http://images.ufutx.com/201907/11/73feb0d6af41a09c48615e7b2cd1f3c6.png" alt=""
+               @click.stop="hideModal">
         </div>
-        <div v-else>
-          <div class="change" v-if="showPic">
-            <p class="text-center colorff"><span class="bc_p">{{red_amount}}</span> <span class="colorff">元</span></p>
-            <p class="font22 colorff text-center">邀请好友，更大的红包等你抢！</p>
-            <div class="text-center bc_input"><input type="number" placeholder="请输入微信绑定手机号" class="font28"
-                                                     v-model="mobile"/></div>
-            <div class="linkbtn" @click="pullDown"></div>
-          </div>
-        </div>
+<!--        <div v-if="!showPic">-->
+<!--          <img src="http://images.ufutx.com/201907/09/cc698e63f0f09d189d34dc4857d50270.png" alt=""-->
+<!--               @click.stop="showPic = true">-->
+<!--        </div>-->
+<!--        <div v-else>-->
+<!--          <div class="change" v-if="showPic">-->
+<!--            <p class="text-center colorff"><span class="bc_p">{{red_amount}}</span> <span class="colorff">元</span></p>-->
+<!--            <p class="font22 colorff text-center">邀请好友，更大的红包等你抢！</p>-->
+<!--            <div class="text-center bc_input"><input type="number" placeholder="请输入微信绑定手机号" class="font28"-->
+<!--                                                     v-model="mobile"/></div>-->
+<!--            <div class="linkbtn" @click="pullDown"></div>-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
     </div>
     <div class="main-paas">
@@ -33,8 +37,8 @@
       <img src="https://images.ufutx.com/201907/10/390dd6af8e29356a3c7d68bf06424b78.png" class="bc-icon">
       <img src="https://images.ufutx.com/201907/10/b610ac9d82f446f211c833ac7f52ae39.png" class="bc-icon flo_r">
     </div>
-    <div class="main-btn text-center colorff" @click="robFn" v-if="information.is_register != 1">立 即 抢 红 包</div>
-    <div class="main-btn text-center colorff" @click="showShare = true" v-else>分 享 赢 大 红 包</div>
+<!--    <div class="main-btn text-center colorff" @click="robFn" v-if="information.is_register != 1">立 即 抢 红 包</div>-->
+    <div class="main-btn text-center colorff" @click="showShare = true">分 享 加 入 福 恋</div>
     <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
     <div class="main-group">
       <div style="width: 100%;" v-for="item,index in groupData"
@@ -68,7 +72,7 @@
         groupData: [],
         information: {},
         red_amount: 0,
-        showModal: false,
+        showModal: true,
         mobile: '',
         showShare: false,
         showPic: false
@@ -271,7 +275,8 @@
       animation-fill-mode: forwards;
 
       img {
-        width: 100%;
+        width: 110%;
+        margin-left: -5%;
       }
 
       .change {

@@ -92,6 +92,9 @@
           mobile: this.mobile
         }
         vm.$http.post(`/official/wx/bind/mobile`, data).then(({data}) => {
+          if (data.token) {
+            localStorage.setItem('ACCESS_TOKEN', data.token)
+          }
           vm.hideModal()
           $loadingShow('疯抢中...')
           setTimeout(() => {

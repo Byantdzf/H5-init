@@ -5,10 +5,24 @@
     <div class="vessel" v-if="showModalTimeDown">
       <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close"
            @click="hideModal">
-      <div class="modal-vessel">
-        <div>
-          <img src="https://images.ufutx.com/201907/11/2ee6c592e362854b5d0ed8d8ab7e4fca.png" alt=""
-               @click.stop="hideModal">
+      <div class="modal-vessel" v-if="showModalTimeDown">
+        <div class="main-countDown">
+          <!--<div class="bc_countDown">-->
+            <!--<div class="countDown-text text-center">-->
+              <!--<count-down v-on:end_callback="countDownE_cb()"-->
+                          <!--:currentTime="currentTime"-->
+                          <!--:startTime="startTime"-->
+                          <!--:endTime="endTime"-->
+                          <!--:dayTxt="'天'"-->
+                          <!--:hourTxt="':'"-->
+                          <!--:minutesTxt="':'"-->
+                          <!--:secondsTxt="''"  v-bind:style="{opacity:showModalTimeDown?1:0}">-->
+              <!--</count-down>-->
+            <!--</div>-->
+          <!--</div>-->
+
+          <img src="https://images.ufutx.com/201907/11/331c92c7442d5f16a1abcd2d8c11cfb4.png" alt="" @click.stop="hideModal">
+          <!--<img src="https://images.ufutx.com/201907/11/2ee6c592e362854b5d0ed8d8ab7e4fca.png" alt="" @click.stop="hideModal">-->
         </div>
       </div>
     </div>
@@ -54,7 +68,7 @@
     </div>
     <div class="main-rule text-center">
       <img src="https://images.ufutx.com/201907/10/3977842b6aeb97d9dfc681e45401696f.png" class="bc-icon flo_l">
-      <img src="https://images.ufutx.com/201907/10/390dd6af8e29356a3c7d68bf06424b78.png" class="bc-icon"  @click="robFn" >
+      <img src="https://images.ufutx.com/201907/10/390dd6af8e29356a3c7d68bf06424b78.png" class="bc-icon"  >
       <img src="https://images.ufutx.com/201907/10/b610ac9d82f446f211c833ac7f52ae39.png" class="bc-icon flo_r">
     </div>
         <!--<div class="main-btn text-center colorff" @click="robFn" v-if="information.is_register != 1">立 即 抢 红 包</div>-->
@@ -180,7 +194,7 @@
         setTimeout(() => {
           this.showPic = true
           this.image_amin = false
-        }, 2400)
+        }, 1800)
       },
       pullDown () {
         let vm = this
@@ -247,7 +261,7 @@
         ) // 当天0点
         let end = new Date( // 当天23:59
           new Date(new Date().toLocaleDateString()).getTime() +
-          20 * 60 * 60 * 1000
+          18 * 60 * 60 * 1000
         )
         let startTime = new Date(new Date().getTime() - 1 * 60 * 60 * 1000) // 当前时间的前一小时
         let endTime = new Date(new Date().getTime()) // 当前时间
@@ -400,7 +414,7 @@
       }
 
       .image_amin {
-        animation: shake-slow 2400ms linear;
+        animation: shake-slow 1800ms linear;
         animation-fill-mode: forwards;
         @-webkit-keyframes shake-slow {
           0% {
@@ -623,7 +637,7 @@
             color: #D92553;
             height: 40px;
             line-height: 40px;
-            margin-top: 5px;
+            margin-top: 8px;
             padding-left: 14px;
             border-left: 1px solid #b0b0b0;
             /*background: chartreuse;*/
@@ -653,6 +667,23 @@
             vertical-align: middle;
             margin-left: 4px;
           }
+        }
+      }
+      .main-countDown{
+        .bc_countDown{
+          width: 130%;
+          height: 65vh;
+          margin-left: -15%;
+          background-image: url("https://images.ufutx.com/201907/11/d2f972d3f4dc66ff3fe0ce008162c079.png");
+          background-size: contain;
+          background-repeat: no-repeat;
+          position: relative;
+        }
+        .countDown-text{
+          position: relative;
+          top: 17%;
+          font-size: 80px;
+          color: #f75c5a;
         }
       }
 

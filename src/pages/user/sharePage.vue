@@ -73,18 +73,18 @@
     </div>
         <!--<div class="main-btn text-center colorff" @click="robFn" v-if="information.is_register != 1">立 即 抢 红 包</div>-->
     <div class="main-btn text-center colorff" @click="showShare = true">分 享 加 入 福 恋</div>
-    <div class="countDown text-center">
-      距离活动开始：
-      <count-down v-on:end_callback="countDownE_cb()"
-                  :currentTime="currentTime"
-                  :startTime="startTime"
-                  :endTime="endTime"
-                  :dayTxt="'天'"
-                  :hourTxt="':'"
-                  :minutesTxt="':'"
-                  :secondsTxt="''" class="inline-block">
-      </count-down>
-    </div>
+    <!--<div class="countDown text-center">-->
+      <!--距离活动开始：-->
+      <!--<count-down v-on:end_callback="countDownE_cb()"-->
+                  <!--:currentTime="currentTime"-->
+                  <!--:startTime="startTime"-->
+                  <!--:endTime="endTime"-->
+                  <!--:dayTxt="'天'"-->
+                  <!--:hourTxt="':'"-->
+                  <!--:minutesTxt="':'"-->
+                  <!--:secondsTxt="''" class="inline-block">-->
+      <!--</count-down>-->
+    <!--</div>-->
     <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
     <div class="main-group">
       <div style="width: 100%;" v-for="item,index in groupData"

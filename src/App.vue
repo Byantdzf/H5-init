@@ -256,6 +256,7 @@
 
 <style lang="less">
   @import '../src/assets/style/reset';
+  @import '../src/assets/style/theme';
 
   html, body {
     height: 100%;

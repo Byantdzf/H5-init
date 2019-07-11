@@ -6,7 +6,7 @@
            @click="hideModal">
       <div class="modal-vessel">
         <div>
-          <img src="http://images.ufutx.com/201907/11/73feb0d6af41a09c48615e7b2cd1f3c6.png" alt=""
+          <img src="https://images.ufutx.com/201907/11/331c92c7442d5f16a1abcd2d8c11cfb4.png" alt=""
                @click.stop="hideModal">
         </div>
 <!--        <div v-if="!showPic">-->

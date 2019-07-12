@@ -240,6 +240,14 @@
       }
     },
     mounted () {
+      /**
+       * 处理iOS 微信客户端6.7.4 键盘收起页面未下移bug
+       */
+      ;(/iphone|ipod|ipad/i.test(navigator.appVersion)) && document.addEventListener('blur', (e) => {
+        // 这里加了个类型判断，因为a等元素也会触发blur事件
+        ['input', 'textarea'].includes(e.target.localName) && document.body.scrollIntoView(false)
+      }, true)
+
       let href = window.location.href
       if (href.indexOf('groupmessage') > -1 || href.indexOf('singlemessage') > -1 || href.indexOf('timeline') > -1) {
         href = href.replace(/\?from=(groupmessage|singlemessage|timeline)(\S*)#/, '#')

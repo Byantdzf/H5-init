@@ -25,7 +25,7 @@
       <group title=" " >
         <cell title="清除缓存" is-link>
           <!--<badge text="1"></badge>-->
-          <img slot="icon" width="20" class="item_icon" src="https://images.ufutx.com/201904/27/3473f59ee31a1fc8f3696639dcb2ae32.png">
+          <img slot="icon" width="28" class="item_icon" src="https://images.ufutx.com/201907/10/94eff1590dd48ec7315059e8246a50c1.png">
           <span class="be" v-if="user.rank_deadline"></span>
         </cell>
       </group>
@@ -34,13 +34,13 @@
       <group title=" ">
         <cell title="意见反馈" is-link>
           <!--<badge text="1"></badge>-->
-          <img slot="icon" width="20" class="item_icon" src="https://images.ufutx.com/201904/02/6b86b27ecd45bf9bdea13beff075b60f.png">
+          <img slot="icon" width="28" class="item_icon" src="https://images.ufutx.com/201907/10/04e01aa4a6b0196dd84d235633307ba4.png">
         </cell>
       </group>
     </div>
     <!--{{count}}-->
     <div class="text-center">
-      <div @click="onClick" class="outLogin color6 inline-block font32">退出登录</div>
+      <div @click="onClick" class="outLogin colorff theme_bc inline-block font32">退出登录</div>
     </div>
   </div>
 </template>
@@ -236,6 +236,6 @@
 
   .item_icon {
     display:block;
-    margin-right: 20px;
+    margin-right: 4px;
   }
 </style>

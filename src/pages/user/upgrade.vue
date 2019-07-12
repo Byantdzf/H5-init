@@ -1,15 +1,15 @@
 <template>
   <div class="upgrade">
     <div>
-      <img class="diamondPicture"  src="https://images.ufutx.com/201904/03/0c266b91baffd71e415fbba91c13c468.png" alt="">
+      <img class="diamondPicture"  src="https://images.ufutx.com/201907/10/6492f939896e5c4a9d5faaae3fd3d9b4.png" alt="">
       <div class="head_card">
         <div class="box_card">
-          <img class="card" src="https://images.ufutx.com/201904/09/5f6729651bddb1029bdf8b0a6414d8d5.png" alt="">
+          <img class="card" src="https://images.ufutx.com/201907/10/4f985f47bc52f9fdc8e7ae28319c0a8e.png" alt="">
         </div>
         <div class="head_portrait">
           <div class="portrait_name_diamond">
-            <div class="portrait backCover " :class="user.rank_id > 0?'icon_diamond':'icon_noOpen'"  :style="{backgroundImage:'url(' + user.avatar + ')'}"></div>
-            <p class="ic_name colorff font34 ellipsis_1 inline-block">{{user.name}}</p>
+            <div class="portrait backCover " :class="user.rank_id > 0?'icon_diamond':'icon_noOpen'" :style="{backgroundImage:'url(' + user.avatar + ')'}"></div>
+            <p class="ic_name font34 ellipsis_1 inline-block">{{user.name}}</p>
             <span class="ic_diamond">{{user.rank_name}}VIP</span>
           </div>
           <p class="ic_text">成为VIP，拥有尊享特权</p>
@@ -22,7 +22,7 @@
       </tab>
       <!--<hr class="hr"/>-->
       <div class="ic_privilege">
-        <p class="privilege font26">会员特权</p>
+        <p class="privilege font26"><span class="theme_clo">会员特权</span></p>
       </div>
       <div class="box_privilege">
         <div class="privilege_introduce">
@@ -42,7 +42,7 @@
         </p>
       </div>
       <div class="dist"></div>
-      <div class="box_bottom" v-if="sub_ranks.length > 1">
+      <div class="box_bottom theme_bc" v-if="sub_ranks.length > 1">
         <p class="month" @click="conversion(sub_ranks[0].id)">
           <span class="ic_month">￥{{sub_ranks[0].discount_price}}/年</span>
           <span class="original">原价￥{{sub_ranks[0].price}}</span>
@@ -161,6 +161,7 @@
       getOrderList () {
         $loadingShow('加载中...')
         this.$http.get(`/official/ranks?name=${this.type}`).then(({data}) => {
+          console.log(data, '666')
           this.user = data.user
           this.rank = data.rank
           this.score = data.score

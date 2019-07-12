@@ -245,7 +245,10 @@
   }
 
   input, button, select, textarea {
-    outline: none
+    outline: none;
+  }
+  input{
+    -webkit-user-select:text !important;
   }
 
   .weui-tabbar, .vux-header {

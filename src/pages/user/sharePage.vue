@@ -73,6 +73,7 @@
     </div>
         <!--<div class="main-btn text-center colorff" @click="robFn" v-if="information.is_register != 1">立 即 抢 红 包</div>-->
     <div class="main-btn text-center colorff" @click="showShare = true">分 享 加 入 福 恋</div>
+    <div @click="robFn" style="width: 80px;height: 80px;position: absolute;bottom: 0;left: 0;"></div>
     <!--<div class="countDown text-center">-->
       <!--距离活动开始：-->
       <!--<count-down v-on:end_callback="countDownE_cb()"-->

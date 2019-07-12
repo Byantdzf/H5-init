@@ -245,6 +245,9 @@
       getData () {
         let vm = this
         vm.$http.get(`/official/community/share?official_openid=${vm.information.official_openid}&is_register=${vm.information.is_register}`).then(({data}) => {
+          if (data.official_openid) {
+            localStorage.setItem('official_openid', data.official_openid)
+          }
           this.groupData = data.communities
           this.red_amount = data.red_amount.toFixed(2)
           if (data.token) {
@@ -275,11 +278,11 @@
       }
     },
     mounted () {
-      this.getDate()
+      this.getDate() // 时间
       this.information.is_register = this.$route.query.is_register
       this.information.official_openid = this.$route.query.official_openid
       console.log(this.information)
-      this.getData()
+      this.getData()  // 数据
       let officialOpenid = localStorage.getItem('official_openid')
       let url = `http://love.ufutx.com/wx/bind/v2?from_official_openid=${officialOpenid}`
       let pic = 'http://images.ufutx.com/201907/09/29eeb6bfe457e92d0c3624abd86d47e7.png'

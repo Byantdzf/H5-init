@@ -5,7 +5,7 @@
            @click="routeToDetail('PreviewData')" :style="{backgroundImage:'url(' + user.photo + ')'}"></div>
       <div class="name inline-block">
         <span class="font36 bold">{{user.name}}</span><br/>
-        <span class="font26">
+        <span class="font26 theme_clo">
           <img width="16" style="display:inline-block;margin-bottom: 4px;" class="middle"
                src="https://images.ufutx.com/201904/15/45bfd2a6b4f2dd8bb227f6bafd8ca836.png">
           {{user.rank_name}}
@@ -18,21 +18,21 @@
       </div>
       <div class="clearfloat"></div>
       <ul class="mutual text-center">
-        <li class="after"><p class="bold color6" @click="routeToDetail('myFriend', 'fans')">{{user.fans_count}}</p>喜欢我
+        <li class="after"><p class="bold theme_clo" @click="routeToDetail('myFriend', 'fans')">{{user.fans_count}}</p>喜欢我
         </li>
-        <li class="after"><p class="bold color6" @click="routeToDetail('myFriend', 'attention')">
+        <li class="after"><p class="bold theme_clo" @click="routeToDetail('myFriend', 'attention')">
           {{user.follow_count}}</p>我喜欢
         </li>
-        <li><p class="bold color6" @click="routeToDetail('myFriend', 'friend')">{{user.friend_count}}</p>好友</li>
+        <li><p class="bold theme_clo" @click="routeToDetail('myFriend', 'friend')">{{user.friend_count}}</p>好友</li>
       </ul>
     </div>
     <div @click="routeToDetail('upgrade')" v-if="user.type === 'single'">
       <group title=" ">
         <cell title="VIP办理" is-link>
           <!--<badge text="1"></badge>-->
-          <img slot="icon" width="20" class="item_icon"
-               src="https://images.ufutx.com/201904/02/ff09a194b571b1fa88c7516af916b122.png">
-          <span class="be" v-if="user.rank_deadline">{{user.rank_deadline}}到期</span>
+          <img slot="icon" width="28" class="item_icon"
+               src="https://images.ufutx.com/201907/10/0b222bc235c341d0b27c800f331dffc3.png">
+          <span class="be theme_clo" v-if="user.rank_deadline">{{user.rank_deadline}}到期</span>
         </cell>
       </group>
     </div>
@@ -40,8 +40,8 @@
       <group title=" ">
         <cell title="实名认证" is-link>
           <!--<badge text="1"></badge>-->
-          <img slot="icon" width="20" class="item_icon"
-               src="https://images.ufutx.com/201904/02/22ae44de7e489989752d4091d4e4bada.png">
+          <img slot="icon" width="28" class="item_icon"
+               src="https://images.ufutx.com/201907/10/470f76864081676ac322132bd0b8de56.png">
         </cell>
       </group>
     </div>
@@ -49,8 +49,8 @@
       <group title=" ">
         <cell title="意见反馈" is-link>
           <!--<badge text="1"></badge>-->
-          <img slot="icon" width="20" class="item_icon"
-               src="https://images.ufutx.com/201904/02/6b86b27ecd45bf9bdea13beff075b60f.png">
+          <img slot="icon" width="28" class="item_icon"
+               src="https://images.ufutx.com/201907/10/04e01aa4a6b0196dd84d235633307ba4.png">
         </cell>
       </group>
     </div>
@@ -58,8 +58,8 @@
       <group title=" ">
         <cell title="设置" is-link>
           <!--<badge text="1"></badge>-->
-          <img slot="icon" width="20" class="item_icon"
-               src="https://images.ufutx.com/201904/27/5c55d4f63e9ddba13c598cbb0c814f8e.png">
+          <img slot="icon" width="28" class="item_icon"
+               src="https://images.ufutx.com/201907/10/975b8a657710b588ffbff8a4023164a2.png">
         </cell>
       </group>
     </div>
@@ -283,6 +283,6 @@
 
   .item_icon {
     display: block;
-    margin-right: 20px;
+    margin-right: 4px;
   }
 </style>

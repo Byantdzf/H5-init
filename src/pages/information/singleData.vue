@@ -88,7 +88,7 @@
       </li>
     </ul>
     <div class="height160"></div>
-    <div class="fixed_bot subjectColor colorff bc_box font32 text-center" @click="submit">
+    <div class="fixed_bot colorff theme_bc bc_box font32 text-center" @click="submit">
       提交
     </div>
     <div v-transfer-dom>

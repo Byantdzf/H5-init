@@ -1,7 +1,7 @@
 <template>
   <div class="whole">
     <div class="background">
-      <img class="diamond" src="https://images.ufutx.com/201904/03/0c266b91baffd71e415fbba91c13c468.png" alt="">
+      <img class="diamond" src="https://images.ufutx.com/201907/10/01a9a17f4039927c694e67baca4e70ba.png" alt="">
       <div class="picture backCover" v-bind:style="{backgroundImage:'url(' + avatar + ')'}">
         <uploadOss @onSuccess="onSuccess"></uploadOss>
       </div>
@@ -21,7 +21,7 @@
     </div>
     <div class="not_have"></div>
     <div class="height160"></div>
-    <div class="box_bottom" @click="goUser">返回</div>
+    <div class="box_bottom theme_bc" @click="goUser">返回</div>
   </div>
 </template>
 <script>

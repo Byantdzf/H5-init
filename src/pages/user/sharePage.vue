@@ -20,7 +20,6 @@
               <!--</count-down>-->
             <!--</div>-->
           <!--</div>-->
-
           <img src="https://images.ufutx.com/201907/11/331c92c7442d5f16a1abcd2d8c11cfb4.png" alt="" @click.stop="hideModal">
           <!--<img src="https://images.ufutx.com/201907/11/2ee6c592e362854b5d0ed8d8ab7e4fca.png" alt="" @click.stop="hideModal">-->
         </div>
@@ -36,7 +35,7 @@
                @click.stop="openRedBag" :class="image_amin?'image_amin':''">
         </div>
         <div v-else>
-          <div class="change" v-if="showPic">
+          <div class="change">
             <p class="text-center colorff"><span class="bc_p">{{red_amount}}</span> <span class="colorff">元</span></p>
             <p class="font22 text-center" style="color: #f2eef0">邀请好友，更大的红包等你抢！</p>
             <div class="text-center bc_input ff">
@@ -68,15 +67,18 @@
     </div>
     <div class="main-rule text-center">
       <img src="https://images.ufutx.com/201907/10/3977842b6aeb97d9dfc681e45401696f.png" class="bc-icon flo_l">
-      <img src="https://images.ufutx.com/201907/10/390dd6af8e29356a3c7d68bf06424b78.png" class="bc-icon"  >
+      <img src="https://images.ufutx.com/201907/10/390dd6af8e29356a3c7d68bf06424b78.png" class="bc-icon">
       <img src="https://images.ufutx.com/201907/10/b610ac9d82f446f211c833ac7f52ae39.png" class="bc-icon flo_r">
     </div>
-        <!--<div class="main-btn text-center colorff" @click="robFn" v-if="information.is_register != 1">立 即 抢 红 包</div>-->
-    <div class="main-btn text-center colorff" @click="showShare = true">分 享 加 入 福 恋</div>
+    <div class="main-btn text-center colorff" @click="robFn"
+         v-if="information.is_register&&information.is_register != 1">立 即 抢 红 包
+    </div>
+    <div class="main-btn text-center colorff main-btn-gray" v-else @click="toastText">立 即 抢 红 包</div>
+    <div class="text-right font28 shareList" @click="gotoPage">红包列表</div>
     <div @click="robFn" style="width: 80px;height: 80px;position: absolute;bottom: 0;left: 0;"></div>
     <!--<div class="countDown text-center">-->
-      <!--距离活动开始：-->
-      <!--<count-down v-on:end_callback="countDownE_cb()"-->
+    <!--距离活动开始：-->
+    <!--<count-down v-on:end_callback="countDownE_cb()"-->
                   <!--:currentTime="currentTime"-->
                   <!--:startTime="startTime"-->
                   <!--:endTime="endTime"-->
@@ -109,7 +111,7 @@
 </template>
 
 <script>
-  import {$loadingShow, $loadingHide, $toastSuccess} from '../../../src/config/util'
+  import {$loadingShow, $loadingHide, $toastSuccess, $toastWarn} from '../../../src/config/util'
   import shareModal from '../../components/shareMoadl'
   import CountDown from 'vue2-countdown'
 
@@ -168,6 +170,9 @@
       }
     },
     methods: {
+      toastText () {
+        $toastWarn('红包已抢完，敬请期待下一轮...')
+      },
       getCode () { // 发送验证码
         if (this.warn) return
         this.showCode = false
@@ -242,6 +247,16 @@
         this.showModalTimeUp = false
         this.showPic = false
         // this.$router.push({name: 'sharePage'})
+      },
+      gotoPage () {
+        this.$router.push(
+          {
+            path: 'shareList',
+            query: {
+              official_openid: localStorage.getItem('official_openid')
+            }
+          }
+        )
       },
       getData () {
         let vm = this
@@ -341,6 +356,13 @@
       line-height: 76px;
       margin-bottom: 24px;
     }
+    .main-btn-gray{
+      background: #b0b0b0;
+    }
+    .shareList{
+      padding: 0 40px 22px 6px;
+      color: #d92553;
+    }
 
     .main-group {
       border-top: 40px solid #f6f6f6;
@@ -377,7 +399,7 @@
       }
 
       .min-btn {
-        width: 110px;
+        width: 92px;
         height: 40px;
         background: #D82653;
         border-radius: 6px;

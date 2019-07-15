@@ -167,6 +167,11 @@ export default new Router({
       path: '/sharePage',
       name: 'sharePage',
       component: (resolve) => require(['@/pages/user/sharePage'], resolve)
+    },
+    { // 分享列表
+      path: '/shareList',
+      name: 'sharelist',
+      component: (resolve) => require(['@/pages/user/shareList'], resolve)
     }
 
   ]

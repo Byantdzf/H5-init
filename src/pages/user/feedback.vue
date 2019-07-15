@@ -17,7 +17,7 @@
         <!--<div class="clearfloat"></div>-->
       <!--</div>-->
       <div class="camera_bottom">
-        <div class="save font28" @click="save">提交</div>
+        <div class="save font28 theme_bc" @click="save">提交</div>
         <div class="clearfloat"></div>
       </div>
       <div class="clearfloat"></div>

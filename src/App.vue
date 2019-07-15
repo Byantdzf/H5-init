@@ -27,37 +27,37 @@
       <!--</x-header>-->
       <tabbar class="vux-demo-tabbar" icon-class="vux-center tabbar-icon" v-show="!isTabbarDemo" slot="bottom">
         <tabbar-item :link="{path:'/'}" :selected="path === '/'">
-          <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;top: -2px;">
+          <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
             <img src="../src/assets/icon/home.png" alt="home">
           </span>
-          <span class="demo-icon-22" slot="icon-active">
+          <span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">
             <img src="../src/assets/icon/homeActive.png" alt="home">
           </span>
           <span slot="label">首页</span>
         </tabbar-item>
         <tabbar-item :link="{path:'/activity'}" :selected="path === '/activity'">
-          <span class="demo-icon-22" slot="icon">
+          <span class="demo-icon-22" slot="icon" style="position:relative;bottom: -3px">
             <img src="../src/assets/icon/attention.png" alt="home">
           </span>
-          <span class="demo-icon-22" slot="icon-active">
+          <span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">
             <img src="../src/assets/icon/attentionActive.png" alt="home">
           </span>
           <span slot="label">活动</span>
         </tabbar-item>
         <tabbar-item :link="{path:'/chitchat'}" :badge="chat_num == 0?'':chat_num" :selected="path === '/chitchat'">
-          <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;top: -2px;">
+          <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
             <img src="../src/assets/icon/message.png" alt="home">
           </span>
-          <span class="demo-icon-22" slot="icon-active">
+          <span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">
             <img src="../src/assets/icon/messageActive.png" alt="home">
           </span>
           <span slot="label">聊天</span>
         </tabbar-item>
         <tabbar-item :link="{path:'/user'}" :badge="notice_num == 0?'':notice_num" :selected="path === '/user'">
-          <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;top: -2px;">
+          <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
             <img src="../src/assets/icon/my.png" alt="home">
           </span>
-          <span class="demo-icon-22" slot="icon-active">
+          <span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">
             <img src="../src/assets/icon/myActive.png" alt="home">
           </span>
           <span slot="label">我的</span>
@@ -98,10 +98,6 @@
         // console.log(this.isLoading)
       },
       $route (to, from) {
-        // console.log(to, 'to')
-        // if (to.name === 'wxGroup') {
-        //   return
-        // }
         this.shareInfo()
       }
     },
@@ -193,61 +189,37 @@
             url = location.href + '?from_user_id=' + userInfo.id
           }
         }
-        if (this.$route.name === 'sharePage') {
-          let officialOpenid = localStorage.getItem('official_openid')
-          let url = `http://love.ufutx.com/wx/bind/v2?from_official_openid=${officialOpenid}`
-          let pic = 'http://images.ufutx.com/201907/09/29eeb6bfe457e92d0c3624abd86d47e7.png'
-          let title = `福恋红包大派送，领红包还帮身边的单身脱单！`
-          let intro = `很多单身群，和热心的介绍人群，总有适合的等你进！`
-          console.log(pic, url, intro, title)
-          this.$shareList(pic, url, intro, title)
+        if (localStorage.getItem('paasTitle')) {
+          this.$shareList(localStorage.getItem('logo'), url, localStorage.getItem('paasIntro'), localStorage.getItem('paasTitle'))
+          document.title = localStorage.getItem('paasTitle')
         } else {
-          if (this.$route.name === 'wxGroup') {
-            // console.log(this.$route, 'asssssss')
-            let {id} = this.$route.params
-            let officialOpenid = localStorage.getItem('official_openid')
-            url = `https://love.ufutx.com/wx/bind?type=community&id=${id}&community_share=1&&from_official_openid=${officialOpenid}`
-          }
-          if (localStorage.getItem('paasTitle')) {
-            this.$shareList(localStorage.getItem('logo'), url, localStorage.getItem('paasIntro'), localStorage.getItem('paasTitle'))
-            document.title = localStorage.getItem('paasTitle')
-          } else {
-            this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '用科技让交友变简单', '福恋交友平台')
-            document.title = '福恋交友平台'
-          }
-          if (location.href.includes('paas') && !location.href.includes('wxGroup')) {
-            // if (localStorage.getItem('paasName') != location.href.split('paas=')[1]) {
-            vm.$http.get(`/official/paas`).then(({data}) => {
-              if (data && data !== null) {
-                localStorage.setItem('paasTitle', data.title)
-                localStorage.setItem('paasIntro', data.intro)
-                this.$shareList(data.logo, url, data.intro, data.title)
-                if (data.logo) {
-                  localStorage.setItem('logo', data.logo)
-                }
-                document.title = data.title
-              } else {
-                this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '用科技让交友变简单', '福恋交友平台')
-                document.title = '福恋交友平台'
-                localStorage.setItem('paasName', 'FL')
+          this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '用科技让交友变简单', '福恋交友平台')
+          document.title = '福恋交友平台'
+        }
+        if (location.href.includes('paas')) {
+          // if (localStorage.getItem('paasName') != location.href.split('paas=')[1]) {
+          vm.$http.get(`/official/paas`).then(({data}) => {
+            if (data && data !== null) {
+              localStorage.setItem('paasTitle', data.title)
+              localStorage.setItem('paasIntro', data.intro)
+              this.$shareList(data.logo, url, data.intro, data.title)
+              if (data.logo) {
+                localStorage.setItem('logo', data.logo)
               }
-            }).catch((error) => {
-              console.log(error)
-            })
-            // }
-          }
+              document.title = data.title
+            } else {
+              this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '用科技让交友变简单', '福恋交友平台')
+              document.title = '福恋交友平台'
+              localStorage.setItem('paasName', 'FL')
+            }
+          }).catch((error) => {
+            console.log(error)
+          })
+          // }
         }
       }
     },
     mounted () {
-      /**
-       * 处理iOS 微信客户端6.7.4 键盘收起页面未下移bug
-       */
-      ;(/iphone|ipod|ipad/i.test(navigator.appVersion)) && document.addEventListener('blur', (e) => {
-        // 这里加了个类型判断，因为a等元素也会触发blur事件
-        ['input', 'textarea'].includes(e.target.localName) && document.body.scrollIntoView(false)
-      }, true)
-
       let href = window.location.href
       if (href.indexOf('groupmessage') > -1 || href.indexOf('singlemessage') > -1 || href.indexOf('timeline') > -1) {
         href = href.replace(/\?from=(groupmessage|singlemessage|timeline)(\S*)#/, '#')
@@ -264,7 +236,6 @@
 
 <style lang="less">
   @import '../src/assets/style/reset';
-  @import '../src/assets/style/theme';
 
   html, body {
     height: 100%;
@@ -302,8 +273,8 @@
     padding: 6px 0 !important;
 
     .weui-tabbar__icon {
-      width: 22px !important;
-      height: 22px !important;
+      width: 30px !important;
+      height: 30px !important;
     }
   }
 

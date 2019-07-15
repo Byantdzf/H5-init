@@ -21,7 +21,7 @@
       <div class="time">
         <img class="icon flo_l" style="margin-top: 1vw;"
              src="https://images.ufutx.com/201904/02/16ace8949356fd1796e9b56e5ad454bd.png" alt="">
-        <p class="font28">{{information.start_time}} 至 {{information.end_time}}</p>
+        <p class="font28"><span class="theme_clo">{{information.start_time}}</span> 至 <span class="theme_clo">{{information.end_time}}</span></p>
       </div>
       <div class="site">
         <img class="icon flo_l" src="https://images.ufutx.com/201904/02/4240186a184e36f6cad310b21a7f05b1.png" alt="">
@@ -30,7 +30,7 @@
       <div class="my">
         <img class="icon flo_l" style="margin-top: 0.8vw;"
              src="https://images.ufutx.com/201904/02/eb837cb440c4e38ce6ca7543b6151a7d.png" alt="">
-        已申请{{information.members?information.members.length:''}}人
+        已申请<span class="theme_clo">{{information.members?information.members.length:''}}</span>人
       </div>
       <div class="money">
         <img class="icon flo_l" style="margin-top: 0.4vw;"
@@ -47,9 +47,9 @@
     <div v-for="item,index in information.detail_pic" :key="index" v-if="information.detail_pic">
       <img class="plenaryLecture" :src="item" alt="">
     </div>
-    <div class="For_more_details" @click="goDetail">
+    <div class="For_more_details theme_clo" @click="goDetail">
       查看更多详情
-      <img class="icon_arrows_bottom" src="https://images.ufutx.com/201904/02/0715881d01f9ac79e4a200192df45684.png"
+      <img class="icon_arrows_bottom" src="http://images.ufutx.com/201907/08/bee3a1bbd391784fe8278513cb16bd35.png"
            alt="">
     </div>
     <div class="height105"></div>
@@ -64,7 +64,7 @@
           <p class="share">分享</p>
         </div>
       </div>
-      <div class="applyNow" @click="showModal = !showModal">立即报名</div>
+      <div class="applyNow theme_bc" @click="showModal = !showModal">立即报名</div>
     </div>
     <div v-transfer-dom>
       <popup v-model="showModal">
@@ -78,7 +78,7 @@
           <!--<input type="number" class="flo_r" v-model="mobile"/>-->
           <!--</p>-->
         </div>
-        <div class="applyNow" style="width: 100%" @click="confirmPay">确定支付</div>
+        <div class="applyNow theme_bc" style="width: 100%" @click="confirmPay">确定支付</div>
       </popup>
     </div>
     <div v-transfer-dom>
@@ -319,7 +319,7 @@
     padding-top: 12px;
     background-color: rgba(255, 255, 255, 0.8);
     font-size: 30px;
-    color: #1c9ce3;
+    /*color: #1c9ce3;*/
     letter-spacing: 1px;
     position: relative;
   }
@@ -388,7 +388,6 @@
     width: 100-36%;
     height: 105px;
     font-size: 32px;
-    background-color: #344a5d;
     line-height: 105px;
     text-align: center;
     letter-spacing: 3px;

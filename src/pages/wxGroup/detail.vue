@@ -44,12 +44,12 @@
         </div>
       </div>
       <div v-if="showUpload">
-        <div class="applyNow" @click="showUploadPhoto = true" v-if="information.is_applied == '0'">免费入群</div>
-        <div class="applyNow" @click="showQr = true" v-else>查看群码</div>
+        <div class="applyNow theme_bc" @click="showUploadPhoto = true" v-if="information.is_applied == '0'">免费入群</div>
+        <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
       </div>
       <div v-else>
-        <div class="applyNow" @click="apply" v-if="information.is_applied == '0'">免费入群</div>
-        <div class="applyNow" @click="showQr = true" v-else>查看群码</div>
+        <div class="applyNow theme_bc" @click="apply" v-if="information.is_applied == '0'">免费入群</div>
+        <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
       </div>
     </div>
     <moadlUp :show.sync="showQr" @hideModal="hideQr">
@@ -392,7 +392,7 @@
       width: 100-36%;
       height: 105px;
       font-size: 32px;
-      background-color: #344a5d;
+      /*background-color: #344a5d;*/
       line-height: 105px;
       text-align: center;
       letter-spacing: 3px;

@@ -377,7 +377,7 @@
       }
 
       .min-btn {
-        width: 110px;
+        width: 92px;
         height: 40px;
         background: #D82653;
         border-radius: 6px;

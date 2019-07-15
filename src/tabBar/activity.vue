@@ -3,7 +3,7 @@
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div class="list-item" v-for="item in list" @click="gotoDetail(item.id)">
         <!--<router-link :to="{name:'activityDetail',params:{id:1}}">-->
-          <div class="bc_date font26">
+          <div class="bc_date font26 theme_clo">
             {{item.created_at}}
             <img src="../assets/icon/go.png" alt="icon" class="icon flo_r">
           </div>
@@ -114,7 +114,7 @@
       border-bottom: 4px solid #ececec;
       padding-bottom: 30px;
       margin-bottom: 30px;
-      color: #6f6f6f;
+      /*color: #6f6f6f;*/
     }
     .image{
       width: 646px;

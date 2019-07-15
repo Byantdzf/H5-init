@@ -1,18 +1,18 @@
 <template>
   <div class="homepage">
     <div class="caution">
-      <img class="icon_caution" src="https://images.ufutx.com/201904/01/d8c9f0d8b48c0621f9843a6df7008c34.png" alt="">
-      <span class="font30 bold">为什么要身份认证</span>
+      <img class="icon_caution" src="https://images.ufutx.com/201907/10/3db15ebf30d80ba8a9b9e1728ae72370.png" alt="">
+      <span class="font30 bold theme_clo">为什么要身份认证</span>
       <p class="caution_particulars font28">福恋作为一个真实、严肃的婚恋平台，我们要求用户必须完成身份认证，对于以结婚为目的的用户。</p>
     </div>
     <div class="caution">
-      <img class="icon_caution" style="transform: rotate(180deg);" src="https://images.ufutx.com/201904/01/06b9a01df541d3ec740acf812de80ae1.png" alt="">
-      <span class="font30 bold">关于隐私安全</span>
+      <img class="icon_caution" style="transform: rotate(180deg);" src="https://images.ufutx.com/201907/10/e149bcc2756b6b0c12a4e9cc54e453bd.png" alt="">
+      <span class="font30 bold theme_clo">关于隐私安全</span>
       <p class="caution_particulars font28">您上传的任何身份证照片等资料，仅供审核使用且TA人无法看到，此外，我们会对照片进行安全处理，敬请放心。</p>
     </div>
     <p class=" certificate">
-      <span class=" certificate_id">身份认证</span>
-      <span class="font22">（请务必按示例上传身份证照片）</span>
+      <span class="certificate_id theme_clo">身份认证</span>
+      <span class="font22 theme_clo">(请务必按示例上传身份证照片)</span>
     </p>
     <div>
       <p class="text_name" >姓名：</p>
@@ -23,7 +23,7 @@
       <input class="input_IdNumber"  type="number" v-model="card_num" placeholder="请输入">
     </div>
     <div class=" font26 state info ff">
-      <p class="font28 title bold">注意事项</p>
+      <p class="font28 title bold theme_clo">注意事项</p>
       <p class="color6">
         <p>1、购买成功后，你将有三次提交机会，每次提交会消耗一次机会，若三次均未能通过,请<span class="orange" >上传身份证</span>人工认证；
         </p>
@@ -35,11 +35,11 @@
       </p>
     </div>
     <div class="dist"></div>
-    <div class="submit ok" v-if="user.is_approved == 1">已成功认证!<img src="https://images.ufutx.com/201904/10/872192ded66adf0c822215e1544f01ee.png" alt=""></div>
+    <div class="submit ok theme_bc" v-if="user.is_approved == 1">已成功认证!<img src="https://images.ufutx.com/201904/10/872192ded66adf0c822215e1544f01ee.png" alt=""></div>
     <div v-else>
-      <div class="submit" @click="save" v-if="user.approve_time > 0">提交 <span class="font26">（剩余{{user.approve_time}}次）</span></div>
-      <div class="submit" @click="buyAuthentication" v-if="user.approve_time == 0 && user.approve_time == 0">购买认证</div>
-      <div class="submit" @click="routeTo('uploadIdCard')" v-if="user.approve_time == 0 && user.approve_order == 1">人工认证</div>
+      <div class="submit theme_bc" @click="save" v-if="user.approve_time > 0">提交 <span class="font26">（剩余{{user.approve_time}}次）</span></div>
+      <div class="submit theme_bc" @click="buyAuthentication" v-if="user.approve_time == 0 && user.approve_time == 0">购买认证</div>
+      <div class="submit theme_bc" @click="routeTo('uploadIdCard')" v-if="user.approve_time == 0 && user.approve_order == 1">人工认证</div>
     </div>
     <div v-transfer-dom>
       <popup v-model="show">
@@ -297,7 +297,7 @@
     text-align: center;
     font-size: 34px;
     color: #fffffd;
-    background-color: #344a5d;
+    /*background-color: #344a5d;*/
     position: fixed;
     bottom: 0;
     width: 100vw;

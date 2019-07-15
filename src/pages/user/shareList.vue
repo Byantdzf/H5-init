@@ -159,7 +159,7 @@
         padding: 2px 6px;
         /*border: 1px solid #D82653;*/
         border-radius: 8px;
-        font-size: 18px;
+        font-size: 20px;
       }
       p{
         display: block;
@@ -167,7 +167,7 @@
     }
     [class*=" weui-icon-"]:before, [class^=weui-icon-]:before {
       vertical-align: middle;
-      margin-bottom: 0.3em;
+      margin-bottom: 0.38em;
       font-size: 12px;
     }
 

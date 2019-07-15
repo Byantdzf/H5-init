@@ -164,6 +164,11 @@
         display: block;
       }
     }
+    [class*=" weui-icon-"]:before, [class^=weui-icon-]:before {
+      vertical-align: middle;
+      margin-bottom: 0.3em;
+      font-size: 12px;
+    }
 
   }
 </style>

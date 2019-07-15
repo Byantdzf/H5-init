@@ -7,20 +7,22 @@
            @click="hideModal">
       <div class="modal-vessel" v-if="showModalTimeDown">
         <div class="main-countDown">
-          <!--<div class="bc_countDown">-->
-            <!--<div class="countDown-text text-center">-->
-              <!--<count-down v-on:end_callback="countDownE_cb()"-->
-                          <!--:currentTime="currentTime"-->
-                          <!--:startTime="startTime"-->
-                          <!--:endTime="endTime"-->
-                          <!--:dayTxt="'天'"-->
-                          <!--:hourTxt="':'"-->
-                          <!--:minutesTxt="':'"-->
-                          <!--:secondsTxt="''"  v-bind:style="{opacity:showModalTimeDown?1:0}">-->
-              <!--</count-down>-->
-            <!--</div>-->
-          <!--</div>-->
-          <img src="https://images.ufutx.com/201907/11/331c92c7442d5f16a1abcd2d8c11cfb4.png" alt="" @click.stop="hideModal">
+          <div class="bc_countDown" @click="hideModal" v-if="status == 0">
+            <div class="countDown-text text-center">
+              <count-down v-on:end_callback="countDownE_cb()"
+                          :currentTime="currentTime"
+                          :startTime="startTime"
+                          :endTime="endTime"
+                          :dayTxt="'天'"
+                          :hourTxt="':'"
+                          :minutesTxt="':'"
+                          :secondsTxt="''" >
+              </count-down>
+            </div>
+          </div>
+          <div v-else>
+            <img src="https://images.ufutx.com/201907/11/331c92c7442d5f16a1abcd2d8c11cfb4.png" alt="" @click.stop="hideModal">
+          </div>
           <!--<img src="https://images.ufutx.com/201907/11/2ee6c592e362854b5d0ed8d8ab7e4fca.png" alt="" @click.stop="hideModal">-->
         </div>
       </div>
@@ -73,7 +75,20 @@
     <div class="main-btn text-center colorff" @click="robFn"
          v-if="information.is_register&&information.is_register != 1">立 即 抢 红 包
     </div>
-    <div class="main-btn text-center colorff main-btn-gray" v-else @click="toastText">立 即 抢 红 包</div>
+    <div class="main-btn text-center colorff main-btn-gray" v-else @click="toastText">
+      立 即 抢 红 包
+      <div class="time" v-if="endTime && status == 0">
+        （<count-down v-on:end_callback="countDownE_cb()"
+                     :currentTime="currentTime"
+                     :startTime="startTime"
+                     :endTime="endTime"
+                     :dayTxt="'天'"
+                     :hourTxt="':'"
+                     :minutesTxt="':'"
+                     :secondsTxt="''" class="inline-block font26 ">
+      </count-down>）
+      </div>
+    </div>
     <div class="text-right font28 shareList" @click="gotoPage">红包列表</div>
     <div @click="robFn" style="width: 80px;height: 80px;position: absolute;bottom: 0;left: 0;"></div>
     <!--<div class="countDown text-center">-->
@@ -129,9 +144,9 @@
     },
     data () {
       return {
-        currentTime: 1481450106,
-        startTime: 1481450110,
-        endTime: 1481450115,
+        currentTime: 0,
+        startTime: 0,
+        endTime: 0,
         groupData: [],
         information: {},
         red_amount: 0,
@@ -145,6 +160,7 @@
         time: 60,
         warn: true,
         text: '获取验证码',
+        status: 0,
         timer: '',
         showCode: true,
         official_openid: '',
@@ -265,11 +281,13 @@
             localStorage.setItem('official_openid', data.official_openid)
             this.official_openid = data.official_openid
           }
+          this.getDate(data.start_time)
           this.groupData = data.communities
           this.red_amount = data.red_amount.toFixed(2)
           if (data.token) {
             localStorage.setItem('ACCESS_TOKEN', data.token)
           }
+          this.status = data.status
           if (data.status === 0 || data.status === 1) {
             this.showModalTimeDown = true
           }
@@ -283,26 +301,29 @@
           console.log(error)
         })
       },
-      getDate () { // 获取倒计时时间
-        let start = new Date(
-          new Date(new Date().toLocaleDateString()).getTime()
-        ) // 当天0点
-        let end = new Date( // 当天23:59
-          new Date(new Date().toLocaleDateString()).getTime() +
-          18 * 60 * 60 * 1000
-        )
-        let startTime = new Date(new Date().getTime() - 1 * 60 * 60 * 1000) // 当前时间的前一小时
+      getDate (startTime) { // 获取倒计时时间
+        // let start = new Date(
+        //   new Date(new Date().toLocaleDateString()).getTime()
+        // ) // 当天0点
+        // let end = new Date( // 当天23:59
+        //   new Date(new Date().toLocaleDateString()).getTime() +
+        //   18 * 60 * 60 * 1000
+        // )
+        // let startTime = new Date(new Date().getTime() - 1 * 60 * 60 * 1000) // 当前时间的前一小时
         let endTime = new Date(new Date().getTime()) // 当前时间
 
-        console.log(start, end)
-        console.log(startTime, endTime)
+        // console.log(start, end)
+        // console.log(startTime, endTime)
         this.currentTime = endTime.getTime()
         this.startTime = endTime.getTime()
-        this.endTime = end.getTime()
+        this.endTime = startTime
+        // console.log(
+        //   new Date(parseInt(startTime) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
+        // )
       }
     },
     mounted () {
-      this.getDate() // 时间
+      // this.getDate() // 时间
       this.information.is_register = this.$route.query.is_register
       this.information.official_openid = this.$route.query.official_openid
       console.log(this.information)
@@ -361,6 +382,12 @@
     }
     .main-btn-gray{
       background: #d9d9d9;
+      position: relative;
+      .time{
+        position: absolute;
+        right: 22px;
+        bottom: 0px;
+      }
     }
     .shareList{
       padding: 0 40px 22px 6px;

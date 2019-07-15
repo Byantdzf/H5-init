@@ -135,7 +135,7 @@
         groupData: [],
         information: {},
         red_amount: 0,
-        showModalTimeDown: true, // 时间未到
+        showModalTimeDown: false, // 时间未到
         showModalTimeUp: false, // 时间到了
         mobile: '',
         code: '',
@@ -269,6 +269,9 @@
           this.red_amount = data.red_amount.toFixed(2)
           if (data.token) {
             localStorage.setItem('ACCESS_TOKEN', data.token)
+          }
+          if (data.status === 0 || data.status === 1) {
+            this.showModalTimeDown = true
           }
           let url = `http://love.ufutx.com/wx/bind/v2?from_official_openid=${this.official_openid}`
           let pic = 'http://images.ufutx.com/201907/09/29eeb6bfe457e92d0c3624abd86d47e7.png'

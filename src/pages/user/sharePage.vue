@@ -357,7 +357,7 @@
       margin-bottom: 24px;
     }
     .main-btn-gray{
-      background: #b0b0b0;
+      background: #d9d9d9;
     }
     .shareList{
       padding: 0 40px 22px 6px;

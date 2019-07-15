@@ -19,17 +19,17 @@
              :class="{'btn_active_V': btnActive}" v-else class="love">
       </div>
       <p class="message">
-        <span class="font26 colorbe">{{information.age}} · {{information.city}} · {{information.stature}}cm</span>
+        <span class="font26 colorbe">{{information.age? information.age + '岁 ' : ''}} {{information.city? '· ' + information.city : ''}} {{information.stature? '· ' + information.stature + 'cm' : ''}}</span>
       </p>
     </div>
     <div class="introduction">
-      <p style="width: 20%" class="font28 flo_l">自我介绍</p>
+      <p style="width: 20%" class="font28 flo_l theme_clo">自我介绍</p>
       <p class="colorbe flo_r font26" style="width: 80%">{{information.introduction}}</p>
       <p class="clearfloat"></p>
     </div>
     <p class="bc_dist"></p>
     <div class="basics">
-      <p style="width: 20%" class="font28 flo_l" >基本资料</p>
+      <p style="width: 20%" class="font28 flo_l theme_clo">基本资料</p>
       <div class="colorbe flo_r basicsData" style="width: 80%" v-if="(JSON.stringify(information) !== '{}')">
         <p class="item font26">{{information.age}}</p>
         <p class="item font26">{{information.birthday}}</p>
@@ -48,14 +48,14 @@
       </div>
       <p class="clearfloat"></p>
       <div class="idealLove">
-        <p style="width: 20%" class="font28 flo_l">理想对象</p>
+        <p style="width: 20%" class="font28 flo_l theme_clo">理想对象</p>
         <p class="colorbe flo_r font26" style="width: 80%;margin-top: 0.8vw;">{{information.ideal_mate}}</p>
         <p class="clearfloat"></p>
       </div>
     </div>
     <div class="height160"></div>
-    <div class="submit" v-if="information.is_friend === 1" @click="routeToDetail(information.type, information.id)">聊天</div>
-    <div class="submit" v-else @click="addFriend">加为好友</div>
+    <div class="submit theme_bc" v-if="information.is_friend === 1" @click="routeToDetail(information.type, information.id)">聊天</div>
+    <div class="submit theme_bc" v-else @click="addFriend">加为好友</div>
   </div>
 </template>
 

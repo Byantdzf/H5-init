@@ -159,7 +159,7 @@
         padding: 2px 6px;
         /*border: 1px solid #D82653;*/
         border-radius: 8px;
-        font-size: 12px;
+        font-size: 18px;
       }
       p{
         display: block;

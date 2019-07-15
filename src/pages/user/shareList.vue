@@ -30,8 +30,8 @@
           <div class="main-money flo_r">
             <span class="font36 bold">+{{item.amount}}</span>
             <span class="font26">元</span>
-            <p class="font22 main-pain weui-icon-safe-success" v-if="item.err_code == 'SUCCESS'">领取成功</p>
-            <p class="font22 main-pain weui-icon-back" v-else @click="lookPlan(item.return_msg)">查看进度</p>
+            <p class="main-pain weui-icon-safe-success" v-if="item.err_code == 'SUCCESS'">领取成功</p>
+            <p class="main-pain weui-icon-back" v-else @click="lookPlan(item.return_msg)">查看进度</p>
           </div>
         </div>
       </div>
@@ -159,6 +159,7 @@
         padding: 2px 6px;
         /*border: 1px solid #D82653;*/
         border-radius: 8px;
+        font-size: 12px;
       }
       p{
         display: block;

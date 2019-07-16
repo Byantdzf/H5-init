@@ -206,7 +206,7 @@
     },
     methods: {
       gotoLink () {
-        window.location.href = 'https://mp.weixin.qq.com/s/wXlic76crbnEYT1sqSF8ig'
+        window.location.href = 'https://mp.weixin.qq.com/s/-73opJk-qoTCgjLVFxFVQg'
       },
       toastText () {
         $toastWarn('红包已抢完，敬请期待下一轮...')

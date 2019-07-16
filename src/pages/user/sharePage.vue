@@ -91,6 +91,7 @@
         <span v-if="information.is_register === 1 && status === -1">
           红 包 已 领 完
         </span>
+        <span v-else>当 前 人 数 过 多</span>
         <div class="time" v-if="endTime && status == 0">
           （<count-down v-on:end_callback="countDownE_cb()"
                        :currentTime="currentTime"

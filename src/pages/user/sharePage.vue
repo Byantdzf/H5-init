@@ -95,7 +95,8 @@
           </count-down>）
         </div>
       </div>
-      <div class="text-right font28 shareList" @click="gotoPage">红包列表</div>
+      <div class="text-right font28 shareList flo_r" @click="gotoPage">红包列表</div>
+      <div class="clearfloat"></div>
       <!--<div @click="robFn" style="width: 80px;height: 80px;position: absolute;bottom: 0;left: 0;"></div>-->
       <!--<div class="countDown text-center">-->
       <!--距离活动开始：-->

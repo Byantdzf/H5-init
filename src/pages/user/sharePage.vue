@@ -82,7 +82,15 @@
       <!--<img src="https://images.ufutx.com/201907/10/b610ac9d82f446f211c833ac7f52ae39.png" class="bc-icon flo_r">-->
       <div class="main-btn text-center colorff" v-if="information.is_register === 0 && status === 1" @click="robFn" >立 即 抢 红 包</div>
       <div class="main-btn text-center colorff main-btn-gray" v-else @click="toastText">
-        红 包 已 抢 完
+        <span v-if="information.is_register === 1 && status === 1">
+          已 领 取 啦
+        </span>
+        <span v-if="information.is_register === 1 && status === 0">
+          时 间 未 到
+        </span>
+        <span v-if="information.is_register === 1 && status === -1">
+          红 包 已 领 完
+        </span>
         <div class="time" v-if="endTime && status == 0">
           （<count-down v-on:end_callback="countDownE_cb()"
                        :currentTime="currentTime"

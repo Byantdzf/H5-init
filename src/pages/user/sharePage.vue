@@ -81,17 +81,9 @@
       <!--<img src="https://images.ufutx.com/201907/10/390dd6af8e29356a3c7d68bf06424b78.png" class="bc-icon">-->
       <!--<img src="https://images.ufutx.com/201907/10/b610ac9d82f446f211c833ac7f52ae39.png" class="bc-icon flo_r">-->
       <div class="main-btn text-center colorff" v-if="information.is_register === 0 && status === 1" @click="robFn" >立 即 抢 红 包</div>
-      <div class="main-btn text-center colorff main-btn-gray" v-else @click="toastText">
-        <!--<span v-if="information.is_register === 1 && status === 1">-->
-          <!--已 领 取 啦-->
-        <!--</span>-->
-        <!--<span v-if="information.is_register === 1 && status === 0">-->
-          <!--时 间 未 到-->
-        <!--</span>-->
-        <!--<span v-if="information.is_register === 1 && status === -1">-->
-          <!--红 包 已 领 完-->
-        <!--</span>-->
-        <span>当 前 人 数 过 多</span>
+      <div class="main-btn text-center colorff main-btn-gray" v-else>
+        <p  @click="toastText('当前人数过多')" v-if="information.is_register === 0">当 前 人 数 过 多</p>
+        <p  @click="toastText('你已领取过啦')" v-else>你 已 领 取 过 啦</p>
         <div class="time" v-if="endTime && status == 0">
           （<count-down v-on:end_callback="countDownE_cb()"
                        :currentTime="currentTime"
@@ -217,8 +209,8 @@
       gotoLink () {
         window.location.href = 'https://mp.weixin.qq.com/s/-73opJk-qoTCgjLVFxFVQg '
       },
-      toastText () {
-        $toastWarn('当前人数过多，请刷新...')
+      toastText (title) {
+        $toastWarn(title)
       },
       getCode () { // 发送验证码
         if (this.warn) return

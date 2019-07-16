@@ -83,7 +83,7 @@
       <div class="main-btn text-center colorff" v-if="information.is_register === 0 && status === 1" @click="robFn" >立 即 抢 红 包</div>
       <div class="main-btn text-center colorff main-btn-gray" v-else>
         <p  @click="toastText('你已领取过啦')" v-if="information.is_register === 1">你 已 领 取 过 啦</p>
-        <p  @click="toastText('当前人数过多')" v-else>当 前 人 数 过 多</p>
+        <p  @click="toastText('当前人数过多,请稍后重试')" v-else>当 前 人 数 过 多</p>
         <div class="time" v-if="endTime && status == 0">
           （<count-down v-on:end_callback="countDownE_cb()"
                        :currentTime="currentTime"

@@ -40,7 +40,7 @@
 </template>
 
 <script>
-  import {$toastWarn} from '../../../src/config/util'
+  import {$toastText} from '../../../src/config/util'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   export default {
     name: 'shareList',
@@ -77,7 +77,7 @@
         this.mescroll = mescroll
       },
       lookPlan (msg) {
-        $toastWarn(msg)
+        $toastText(msg)
       },
       getList (page, mescroll) {
         let url = `/official/users/red/packets?page=${page.num}`

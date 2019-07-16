@@ -272,7 +272,7 @@
             }, 500)
           }).catch((error) => {
             vm.hideModal()
-            vm.information.is_register = 1
+            // vm.information.is_register = 1
             console.log(error)
           })
         }

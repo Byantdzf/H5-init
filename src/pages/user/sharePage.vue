@@ -218,7 +218,7 @@
         window.location.href = 'https://mp.weixin.qq.com/s/-73opJk-qoTCgjLVFxFVQg '
       },
       toastText () {
-        $toastWarn('红包已抢完，敬请期待下一轮...')
+        $toastWarn('当前人数过多，请刷新...')
       },
       getCode () { // 发送验证码
         if (this.warn) return

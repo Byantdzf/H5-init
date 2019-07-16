@@ -77,7 +77,7 @@
         this.mescroll = mescroll
       },
       lookPlan (msg) {
-        $toastText(msg)
+        $toastText(msg ? msg : '暂无进度信息...')
       },
       getList (page, mescroll) {
         let url = `/official/users/red/packets?page=${page.num}`

@@ -80,8 +80,7 @@
       <!--<img src="https://images.ufutx.com/201907/10/3977842b6aeb97d9dfc681e45401696f.png" class="bc-icon flo_l">-->
       <!--<img src="https://images.ufutx.com/201907/10/390dd6af8e29356a3c7d68bf06424b78.png" class="bc-icon">-->
       <!--<img src="https://images.ufutx.com/201907/10/b610ac9d82f446f211c833ac7f52ae39.png" class="bc-icon flo_r">-->
-      <div class="main-btn text-center colorff" @click="robFn" v-if="information.is_register == 0">立 即 抢 红 包
-      </div>
+      <div class="main-btn text-center colorff" v-if="information.is_register === 0 && status === 1" @click="robFn" >立 即 抢 红 包</div>
       <div class="main-btn text-center colorff main-btn-gray" v-else @click="toastText">
         立 即 抢 红 包
         <div class="time" v-if="endTime && status == 0">
@@ -93,10 +92,14 @@
                        :hourTxt="':'"
                        :minutesTxt="':'"
                        :secondsTxt="''" class="inline-block font26 ">
-        </count-down>）
+          </count-down>）
         </div>
       </div>
-      <div class="text-right font28 shareList" @click="gotoPage">红包列表</div>
+      <div class="text-right font28 shareList flo_r" @click="gotoPage">红包列表</div>
+      <div class="clearfloat"></div>
+      <div @click="gotoLink">
+        <img src="https://images.ufutx.com/201907/16/77e8b486c8124b28695c3394755ba9fc.jpeg" alt="" style="width: 100%;">
+      </div>
       <!--<div @click="robFn" style="width: 80px;height: 80px;position: absolute;bottom: 0;left: 0;"></div>-->
       <!--<div class="countDown text-center">-->
       <!--距离活动开始：-->
@@ -154,7 +157,16 @@
         currentTime: 0,
         startTime: 0,
         endTime: 0,
-        groupData: [],
+        groupData: [
+          // {
+          //   click_num: 12502,
+          //   id: 1,
+          //   intro: '本群是以结婚为目的的交友群，把网络交友现实化，满足单身同层次社交、建立单身社交关系链，形成多层社交圈。',
+          //   logo: 'https://images.ufutx.com/201907/11/3abf66f0fe7af27195c6fc8793dd278d.jpeg',
+          //   member_num: 1635,
+          //   title: '单身群'
+          // }
+        ],
         information: {},
         red_amount: 0,
         showModalTimeDown: false, // 时间未到
@@ -224,10 +236,7 @@
       },
       openRedBag () { // 拆开红包
         this.image_amin = true
-        setTimeout(() => {
-          this.showPic = true
-          this.image_amin = false
-        }, 1800)
+        this.getredAmount()
       },
       pullDown () {
         let vm = this
@@ -258,7 +267,7 @@
             }, 500)
           }).catch((error) => {
             vm.hideModal()
-            // vm.information.is_register = 1
+            vm.information.is_register = 1
             console.log(error)
           })
         }
@@ -283,34 +292,57 @@
           }
         )
       },
+      getredAmount () {
+        let vm = this
+        if (vm.red_amount > 0) {
+          setTimeout(() => {
+            vm.showPic = true
+            vm.image_amin = false
+          }, 1800)
+          return
+        }
+        vm.$http.post(`/official/opend/red/packet`)
+          .then(({data}) => {
+            vm.red_amount = data.red_amount.toFixed(2)
+            setTimeout(() => {
+              vm.showPic = true
+              vm.image_amin = false
+            }, 800)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      },
       getData () {
         let vm = this
-        vm.$http.get(`/official/community/share?official_openid=${vm.information.official_openid}&is_register=${vm.information.is_register}`).then(({data}) => {
-          if (data.official_openid) {
-            localStorage.setItem('official_openid', data.official_openid)
-            this.official_openid = data.official_openid
-          }
-          this.getDate(data.start_time)
-          this.groupData = data.communities
-          this.red_amount = data.red_amount.toFixed(2)
-          if (data.token) {
-            localStorage.setItem('ACCESS_TOKEN', data.token)
-          }
-          this.status = data.status
-          if (data.status === 0) {
-            this.showModalTimeDown = true
-          } else if (data.status === 1 && (data.is_register && data.is_register !== 1)) {
-            this.showModalTimeUp = true
-          }
-          let url = `http://love.ufutx.com/wx/bind/v2?from_official_openid=${this.official_openid}`
-          let pic = 'http://images.ufutx.com/201907/09/29eeb6bfe457e92d0c3624abd86d47e7.png'
-          let title = `福恋红包大派送，领红包还帮身边的单身脱单！`
-          let intro = `很多单身群，和热心的介绍人群，总有适合的等你进！`
-          console.log(pic, url, intro, title)
-          this.$shareList(pic, url, intro, title)
-        }).catch((error) => {
-          console.log(error)
-        })
+        vm.$http.get(`/official/community/share?official_openid=${vm.information.official_openid}&is_register=${vm.information.is_register}`)
+          .then(({data}) => {
+            if (data.official_openid) {
+              localStorage.setItem('official_openid', data.official_openid)
+              this.official_openid = data.official_openid
+            }
+            this.getDate(data.start_time)
+            this.groupData = data.communities
+            if (data.token) {
+              localStorage.setItem('ACCESS_TOKEN', data.token)
+            }
+            this.information.is_register = data.is_register
+            this.status = data.status
+            if (data.status === 0 || data.status === -1) {
+              this.showModalTimeDown = true
+            } else if (data.status === 1 && data.is_register === 0) {
+              this.showModalTimeUp = true
+            }
+            let url = `http://love.ufutx.com/wx/bind/v2?from_official_openid=${this.official_openid}`
+            let pic = 'http://images.ufutx.com/201907/09/29eeb6bfe457e92d0c3624abd86d47e7.png'
+            let title = `福恋红包大派送，领红包还帮身边的单身脱单！`
+            let intro = `很多单身群，和热心的介绍人群，总有适合的等你进！`
+            console.log(pic, url, intro, title)
+            this.$shareList(pic, url, intro, title)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
       },
       getDate (startTime) { // 获取倒计时时间
         // let start = new Date(
@@ -334,9 +366,9 @@
       }
     },
     mounted () {
-      // this.getDate() // 时间
-      this.information.is_register = this.$route.query.is_register
-      this.information.official_openid = this.$route.query.official_openid
+      // this.information.is_register = this.$route.query.is_register
+      let official_openid = localStorage.getItem('official_openid')
+      this.information.official_openid = official_openid ? official_openid : this.$route.query.official_openid
       console.log(this.information)
       this.getData()  // 数据
     }
@@ -406,8 +438,9 @@
     }
 
     .main-group {
-      border-top: 40px solid #f6f6f6;
+      /*border-top: 40px solid #f6f6f6;*/
       /*margin: 24px 0 40px 40px;*/
+      margin-top: 12px;
       padding: 0 40px 26px 40px;
       overflow: hidden;
 
@@ -450,7 +483,7 @@
       .dost {
         width: 100%;
         height: 1px;
-        background: #b0b0b0;
+        background: #cfcfcf;
         margin-top: 24px;
       }
     }
@@ -652,8 +685,6 @@
 
         .bc_input {
           width: 56%;
-          padding: 12px 0;
-          /*height: 60px;*/
           border: none;
           margin: auto;
           margin-top: 20px;
@@ -665,6 +696,7 @@
             border: none;
             padding: 8px 22px;
             font-size: 26px;
+            /*background: #04be02;*/
           }
 
           input::-webkit-input-placeholder {
@@ -673,6 +705,8 @@
 
           input:nth-child(1) {
             width: 85%;
+            margin-top: 12px;
+            margin-bottom: 8px;
           }
 
           input:nth-child(2) {
@@ -682,6 +716,7 @@
             float: left;
             margin-left: 6px;
             padding-top: 10px;
+            margin-bottom: 12px;
           }
 
           .bc_mobile {

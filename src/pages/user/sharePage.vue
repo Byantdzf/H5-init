@@ -80,22 +80,21 @@
       <!--<img src="https://images.ufutx.com/201907/10/3977842b6aeb97d9dfc681e45401696f.png" class="bc-icon flo_l">-->
       <!--<img src="https://images.ufutx.com/201907/10/390dd6af8e29356a3c7d68bf06424b78.png" class="bc-icon">-->
       <!--<img src="https://images.ufutx.com/201907/10/b610ac9d82f446f211c833ac7f52ae39.png" class="bc-icon flo_r">-->
-      <div class="main-btn text-center colorff" @click="robFn" >立 即 抢 红 包
+      <!--<div class="main-btn text-center colorff" @click="robFn" >立 即 抢 红 包</div>-->
+      <div class="main-btn text-center colorff main-btn-gray" @click="toastText">
+        立 即 抢 红 包
+        <div class="time" v-if="endTime && status == 0">
+          （<count-down v-on:end_callback="countDownE_cb()"
+                       :currentTime="currentTime"
+                       :startTime="startTime"
+                       :endTime="endTime"
+                       :dayTxt="'天'"
+                       :hourTxt="':'"
+                       :minutesTxt="':'"
+                       :secondsTxt="''" class="inline-block font26 ">
+          </count-down>）
+        </div>
       </div>
-      <!--<div class="main-btn text-center colorff main-btn-gray" v-else @click="toastText">-->
-        <!--立 即 抢 红 包-->
-        <!--<div class="time" v-if="endTime && status == 0">-->
-          <!--（<count-down v-on:end_callback="countDownE_cb()"-->
-                       <!--:currentTime="currentTime"-->
-                       <!--:startTime="startTime"-->
-                       <!--:endTime="endTime"-->
-                       <!--:dayTxt="'天'"-->
-                       <!--:hourTxt="':'"-->
-                       <!--:minutesTxt="':'"-->
-                       <!--:secondsTxt="''" class="inline-block font26 ">-->
-        <!--</count-down>）-->
-        <!--</div>-->
-      <!--</div>-->
       <div class="text-right font28 shareList" @click="gotoPage">红包列表</div>
       <!--<div @click="robFn" style="width: 80px;height: 80px;position: absolute;bottom: 0;left: 0;"></div>-->
       <!--<div class="countDown text-center">-->

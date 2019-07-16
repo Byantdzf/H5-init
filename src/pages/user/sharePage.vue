@@ -21,7 +21,7 @@
                 </count-down>
               </div>
             </div>
-            <div v-else>
+            <div v-if="status == -1">
               <img src="https://images.ufutx.com/201907/11/331c92c7442d5f16a1abcd2d8c11cfb4.png" alt="" @click.stop="hideModal">
             </div>
             <!--<img src="https://images.ufutx.com/201907/11/2ee6c592e362854b5d0ed8d8ab7e4fca.png" alt="" @click.stop="hideModal">-->
@@ -264,7 +264,6 @@
       robFn () {
         let vm = this
         vm.showModalTimeUp = true
-        console.log('qian')
       },
       hideModal () {
         this.showModalTimeDown = false
@@ -296,8 +295,10 @@
             localStorage.setItem('ACCESS_TOKEN', data.token)
           }
           this.status = data.status
-          if (data.status === 0 || data.status === 1) {
+          if (data.status === 0) {
             this.showModalTimeDown = true
+          } else if (data.status === 1 && (data.is_register && data.is_register != 1)) {
+            this.showModalTimeUp = true
           }
           let url = `http://love.ufutx.com/wx/bind/v2?from_official_openid=${this.official_openid}`
           let pic = 'http://images.ufutx.com/201907/09/29eeb6bfe457e92d0c3624abd86d47e7.png'

@@ -206,7 +206,7 @@
     },
     methods: {
       gotoLink () {
-        window.location.href = 'https://mp.weixin.qq.com/s/-73opJk-qoTCgjLVFxFVQg'
+        window.location.href = 'https://mp.weixin.qq.com/s/-73opJk-qoTCgjLVFxFVQg '
       },
       toastText () {
         $toastWarn('红包已抢完，敬请期待下一轮...')
@@ -229,7 +229,11 @@
         console.log(x)
       },
       countDownE_cb (x) {
-        console.log(x)
+        console.log(x, 'chai')
+        if (this.information.is_register === 0) {
+          this.showModalTimeDown = false
+          this.status = 1
+        }
       },
       hideShare (value) {
         this.showShare = value
@@ -360,6 +364,7 @@
         this.currentTime = endTime.getTime()
         this.startTime = endTime.getTime()
         this.endTime = startTime
+        // this.endTime = 1563278079
         // console.log(
         //   new Date(parseInt(startTime) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
         // )
@@ -367,8 +372,8 @@
     },
     mounted () {
       // this.information.is_register = this.$route.query.is_register
-      let official_openid = localStorage.getItem('official_openid')
-      this.information.official_openid = official_openid ? official_openid : this.$route.query.official_openid
+      let officialOpenid = localStorage.getItem('official_openid')
+      this.information.official_openid = officialOpenid ? officialOpenid : this.$route.query.official_openid
       console.log(this.information)
       this.getData()  // 数据
     }

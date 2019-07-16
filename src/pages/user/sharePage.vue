@@ -1,128 +1,136 @@
 <template>
-  <div class="main-box">
-    <!--@click="hideModal"-->
-    <!--活动时间未到-->
-    <div class="vessel" v-if="showModalTimeDown">
-      <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close"
-           @click="hideModal">
-      <div class="modal-vessel" v-if="showModalTimeDown">
-        <div class="main-countDown">
-          <div class="bc_countDown" @click="hideModal" v-if="status == 0">
-            <div class="countDown-text text-center">
-              <count-down v-on:end_callback="countDownE_cb()"
-                          :currentTime="currentTime"
-                          :startTime="startTime"
-                          :endTime="endTime"
-                          :dayTxt="'天'"
-                          :hourTxt="':'"
-                          :minutesTxt="':'"
-                          :secondsTxt="''" >
-              </count-down>
+  <div>
+    <div class="main-box">
+      <!--@click="hideModal"-->
+      <!--活动时间未到-->
+      <div class="vessel" v-if="showModalTimeDown">
+        <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close"
+             @click="hideModal">
+        <div class="modal-vessel" v-if="showModalTimeDown">
+          <div class="main-countDown">
+            <div class="bc_countDown" @click="hideModal" v-if="status == 0">
+              <div class="countDown-text text-center">
+                <count-down v-on:end_callback="countDownE_cb()"
+                            :currentTime="currentTime"
+                            :startTime="startTime"
+                            :endTime="endTime"
+                            :dayTxt="'天'"
+                            :hourTxt="':'"
+                            :minutesTxt="':'"
+                            :secondsTxt="''" >
+                </count-down>
+              </div>
             </div>
+            <div v-if="status == -1">
+              <img src="https://images.ufutx.com/201907/11/331c92c7442d5f16a1abcd2d8c11cfb4.png" alt="" @click.stop="hideModal">
+            </div>
+            <!--<img src="https://images.ufutx.com/201907/11/2ee6c592e362854b5d0ed8d8ab7e4fca.png" alt="" @click.stop="hideModal">-->
+          </div>
+        </div>
+      </div>
+      <!--活动时间到了-->
+      <div class="vessel" v-if="showModalTimeUp">
+        <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close"
+             @click="hideModal">
+        <div class="modal-vessel shake-slow">
+          <div v-if="!showPic">
+            <img src="https://images.ufutx.com/201907/11/403d2174039ff35f9267fa1c3b14a7b7.png" alt=""
+                 @click.stop="openRedBag" :class="image_amin?'image_amin':''">
           </div>
           <div v-else>
-            <img src="https://images.ufutx.com/201907/11/331c92c7442d5f16a1abcd2d8c11cfb4.png" alt="" @click.stop="hideModal">
-          </div>
-          <!--<img src="https://images.ufutx.com/201907/11/2ee6c592e362854b5d0ed8d8ab7e4fca.png" alt="" @click.stop="hideModal">-->
-        </div>
-      </div>
-    </div>
-    <!--活动时间到了-->
-    <div class="vessel" v-if="showModalTimeUp">
-      <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close"
-           @click="hideModal">
-      <div class="modal-vessel shake-slow">
-        <div v-if="!showPic">
-          <img src="https://images.ufutx.com/201907/11/403d2174039ff35f9267fa1c3b14a7b7.png" alt=""
-               @click.stop="openRedBag" :class="image_amin?'image_amin':''">
-        </div>
-        <div v-else>
-          <div class="change">
-            <p class="text-center colorff"><span class="bc_p">{{red_amount}}</span> <span class="colorff">元</span></p>
-            <p class="font22 text-center" style="color: #f2eef0">邀请好友，更大的红包等你抢！</p>
-            <div class="text-center bc_input ff">
-              <div class="bc_mobile">
-                <input type="number" placeholder="请输入微信绑定手机号" v-focus="mobileFocus" class="font28" v-model="mobile"/>
-                <img src="https://images.ufutx.com/201903/28/458109eca8206129719b768be914382f.png" class="icon"
-                     v-show="warn && mobile">
+            <div class="change">
+              <p class="text-center colorff"><span class="bc_p">{{red_amount}}</span> <span class="colorff">元</span></p>
+              <p class="font22 text-center" style="color: #f2eef0">邀请好友，更大的红包等你抢！</p>
+              <div class="text-center bc_input ff">
+                <div class="bc_mobile">
+                  <input type="number" placeholder="请输入微信绑定手机号" v-focus="mobileFocus" class="font28" v-model="mobile"/>
+                  <img src="https://images.ufutx.com/201903/28/458109eca8206129719b768be914382f.png" class="icon"
+                       v-show="warn && mobile">
+                </div>
+                <input type="number" placeholder="验证码" v-focus="codeFocus" class="font28" v-model="code"/>
+                <span class="flo_l font26" @click="getCode" v-if="showCode">{{text}}</span>
+                <span class="flo_l font26" v-else>{{time}} 秒后重试</span>
               </div>
-              <input type="number" placeholder="验证码" v-focus="codeFocus" class="font28" v-model="code"/>
-              <span class="flo_l font26" @click="getCode" v-if="showCode">{{text}}</span>
-              <span class="flo_l font26" v-else>{{time}} 秒后重试</span>
-            </div>
-            <div class="linkbtn" @click="pullDown"></div>
-            <div class="rule white font26 text-right">
-              活动规则
-              <img src="https://images.ufutx.com/201907/11/fa401a4a9f91d6eaad56e3ece1e5383e.png" alt="" class="">
+              <div class="linkbtn" @click="pullDown"></div>
+              <div class="rule white font26 text-right" @click="gotoLink">
+                活动规则
+                <img src="https://images.ufutx.com/201907/11/fa401a4a9f91d6eaad56e3ece1e5383e.png" alt="" class="">
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="main-paas">
-      <img src="http://images.ufutx.com/201907/09/f4666cc8c335cb67e9a0ddfc22c7f815.png" alt="" class="bc-image">
-      <div class="text-center">
-        <img src="http://images.ufutx.com/201907/09/8f2443d5a12769c43b6548130b0d8ca8.png" class="bc-icon">
-        <p class="color6 font32">福恋交友平台</p>
-        <p class="colorb0 font26">用科技让交友变简单</p>
+      <div class="main-paas">
+        <img src="http://images.ufutx.com/201907/09/f4666cc8c335cb67e9a0ddfc22c7f815.png" alt="" class="bc-image">
+        <div class="text-center">
+          <img src="http://images.ufutx.com/201907/09/8f2443d5a12769c43b6548130b0d8ca8.png" class="bc-icon">
+          <p class="color6 font32">福恋交友平台</p>
+          <p class="colorb0 font26">用科技让交友变简单</p>
+        </div>
       </div>
     </div>
     <div class="main-rule text-center">
-      <img src="https://images.ufutx.com/201907/10/3977842b6aeb97d9dfc681e45401696f.png" class="bc-icon flo_l">
-      <img src="https://images.ufutx.com/201907/10/390dd6af8e29356a3c7d68bf06424b78.png" class="bc-icon">
-      <img src="https://images.ufutx.com/201907/10/b610ac9d82f446f211c833ac7f52ae39.png" class="bc-icon flo_r">
+      <img src="https://images.ufutx.com/201907/16/592bcdec3c21a999178399c75774275f.jpeg" class="bc-icon" style="width: 100%;">
+      <!--<img src="https://images.ufutx.com/201907/10/3977842b6aeb97d9dfc681e45401696f.png" class="bc-icon flo_l">-->
+      <!--<img src="https://images.ufutx.com/201907/10/390dd6af8e29356a3c7d68bf06424b78.png" class="bc-icon">-->
+      <!--<img src="https://images.ufutx.com/201907/10/b610ac9d82f446f211c833ac7f52ae39.png" class="bc-icon flo_r">-->
     </div>
-    <div class="main-btn text-center colorff" @click="robFn"
-         v-if="information.is_register&&information.is_register != 1">立 即 抢 红 包
-    </div>
-    <div class="main-btn text-center colorff main-btn-gray" v-else @click="toastText">
-      立 即 抢 红 包
-      <div class="time" v-if="endTime && status == 0">
-        （<count-down v-on:end_callback="countDownE_cb()"
-                     :currentTime="currentTime"
-                     :startTime="startTime"
-                     :endTime="endTime"
-                     :dayTxt="'天'"
-                     :hourTxt="':'"
-                     :minutesTxt="':'"
-                     :secondsTxt="''" class="inline-block font26 ">
-      </count-down>）
+    <div class="main-box" style="margin-top: 22px;">
+      <!--<img src="https://images.ufutx.com/201907/16/592bcdec3c21a999178399c75774275f.jpeg" class="bc-icon" style="width: 100%;">-->
+      <!--<img src="https://images.ufutx.com/201907/10/3977842b6aeb97d9dfc681e45401696f.png" class="bc-icon flo_l">-->
+      <!--<img src="https://images.ufutx.com/201907/10/390dd6af8e29356a3c7d68bf06424b78.png" class="bc-icon">-->
+      <!--<img src="https://images.ufutx.com/201907/10/b610ac9d82f446f211c833ac7f52ae39.png" class="bc-icon flo_r">-->
+      <div class="main-btn text-center colorff" @click="robFn"
+           v-if="information.is_register != null&&information.is_register != 1">立 即 抢 红 包
       </div>
-    </div>
-    <div class="text-right font28 shareList" @click="gotoPage">红包列表</div>
-    <div @click="robFn" style="width: 80px;height: 80px;position: absolute;bottom: 0;left: 0;"></div>
-    <!--<div class="countDown text-center">-->
-    <!--距离活动开始：-->
-    <!--<count-down v-on:end_callback="countDownE_cb()"-->
-                  <!--:currentTime="currentTime"-->
-                  <!--:startTime="startTime"-->
-                  <!--:endTime="endTime"-->
-                  <!--:dayTxt="'天'"-->
-                  <!--:hourTxt="':'"-->
-                  <!--:minutesTxt="':'"-->
-                  <!--:secondsTxt="''" class="inline-block">-->
-      <!--</count-down>-->
-    <!--</div>-->
-    <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
-    <div class="main-group">
-      <div style="width: 100%;" v-for="item,index in groupData"
-           @click="$router.push({name:'wxGroup',params:{id: item.id}})">
-        <div class="bc-img flo_l" v-bind:style="{backgroundImage:'url(' + item.logo + ')'}"></div>
-        <div class="color6 font32 flo_l title">{{item.title}}</div>
-        <div class="flo_l colorb0 info font26 ellipsis_2 infoH">{{item.intro}}</div>
-        <div class="flo_l color6 info font22" style="margin-top: 8px;">
-          <img src="http://images.ufutx.com/201907/09/8506a4b082060d9a03dadec282cca3d2.png" alt="" class="icon">
-          入群会员：<span class="colorb0">{{item.member_num}}</span>
-          <img src="http://images.ufutx.com/201907/09/b0fce85bcff15a7798fd96f7bd4a3085.png" alt="" class="icon"
-               style="margin-left: 8px;">
-          <span class="colorb0">{{item.click_num}}</span>
-          <div class="min-btn text-center colorff flo_r">入群</div>
+      <div class="main-btn text-center colorff main-btn-gray" v-else @click="toastText">
+        立 即 抢 红 包
+        <div class="time" v-if="endTime && status == 0">
+          （<count-down v-on:end_callback="countDownE_cb()"
+                       :currentTime="currentTime"
+                       :startTime="startTime"
+                       :endTime="endTime"
+                       :dayTxt="'天'"
+                       :hourTxt="':'"
+                       :minutesTxt="':'"
+                       :secondsTxt="''" class="inline-block font26 ">
+        </count-down>）
         </div>
-        <div class="dost flo_r"></div>
+      </div>
+      <div class="text-right font28 shareList" @click="gotoPage">红包列表</div>
+      <!--<div @click="robFn" style="width: 80px;height: 80px;position: absolute;bottom: 0;left: 0;"></div>-->
+      <!--<div class="countDown text-center">-->
+      <!--距离活动开始：-->
+      <!--<count-down v-on:end_callback="countDownE_cb()"-->
+      <!--:currentTime="currentTime"-->
+      <!--:startTime="startTime"-->
+      <!--:endTime="endTime"-->
+      <!--:dayTxt="'天'"-->
+      <!--:hourTxt="':'"-->
+      <!--:minutesTxt="':'"-->
+      <!--:secondsTxt="''" class="inline-block">-->
+      <!--</count-down>-->
+      <!--</div>-->
+      <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
+      <div class="main-group">
+        <div style="width: 100%;" v-for="item,index in groupData"
+             @click="$router.push({name:'wxGroup',params:{id: item.id}})">
+          <div class="bc-img flo_l" v-bind:style="{backgroundImage:'url(' + item.logo + ')'}"></div>
+          <div class="color6 font32 flo_l title">{{item.title}}</div>
+          <div class="flo_l colorb0 info font26 ellipsis_2 infoH">{{item.intro}}</div>
+          <div class="flo_l color6 info font22" style="margin-top: 8px;">
+            <img src="http://images.ufutx.com/201907/09/8506a4b082060d9a03dadec282cca3d2.png" alt="" class="icon">
+            入群会员：<span class="colorb0">{{item.member_num}}</span>
+            <img src="http://images.ufutx.com/201907/09/b0fce85bcff15a7798fd96f7bd4a3085.png" alt="" class="icon"
+                 style="margin-left: 8px;">
+            <span class="colorb0">{{item.click_num}}</span>
+            <div class="min-btn text-center colorff flo_r">入群</div>
+          </div>
+          <div class="dost flo_r"></div>
+        </div>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -186,6 +194,9 @@
       }
     },
     methods: {
+      gotoLink () {
+        window.location.href = 'https://mp.weixin.qq.com/s/wXlic76crbnEYT1sqSF8ig'
+      },
       toastText () {
         $toastWarn('红包已抢完，敬请期待下一轮...')
       },
@@ -256,7 +267,6 @@
       robFn () {
         let vm = this
         vm.showModalTimeUp = true
-        console.log('qian')
       },
       hideModal () {
         this.showModalTimeDown = false
@@ -288,8 +298,10 @@
             localStorage.setItem('ACCESS_TOKEN', data.token)
           }
           this.status = data.status
-          if (data.status === 0 || data.status === 1) {
+          if (data.status === 0) {
             this.showModalTimeDown = true
+          } else if (data.status === 1 && (data.is_register && data.is_register != 1)) {
+            this.showModalTimeUp = true
           }
           let url = `http://love.ufutx.com/wx/bind/v2?from_official_openid=${this.official_openid}`
           let pic = 'http://images.ufutx.com/201907/09/29eeb6bfe457e92d0c3624abd86d47e7.png'

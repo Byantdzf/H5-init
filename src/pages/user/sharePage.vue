@@ -52,7 +52,7 @@
                 <span class="flo_l font26" v-else>{{time}} 秒后重试</span>
               </div>
               <div class="linkbtn" @click="pullDown"></div>
-              <div class="rule white font26 text-right">
+              <div class="rule white font26 text-right" @click="gotoLink">
                 活动规则
                 <img src="https://images.ufutx.com/201907/11/fa401a4a9f91d6eaad56e3ece1e5383e.png" alt="" class="">
               </div>
@@ -194,6 +194,9 @@
       }
     },
     methods: {
+      gotoLink () {
+        window.location.href = 'https://mp.weixin.qq.com/s/wXlic76crbnEYT1sqSF8ig'
+      },
       toastText () {
         $toastWarn('红包已抢完，敬请期待下一轮...')
       },

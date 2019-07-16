@@ -21,7 +21,7 @@
                 </count-down>
               </div>
             </div>
-            <div v-if="status == -1">
+            <div v-if="status == '-1'">
               <img src="https://images.ufutx.com/201907/11/331c92c7442d5f16a1abcd2d8c11cfb4.png" alt="" @click.stop="hideModal">
             </div>
             <!--<img src="https://images.ufutx.com/201907/11/2ee6c592e362854b5d0ed8d8ab7e4fca.png" alt="" @click.stop="hideModal">-->

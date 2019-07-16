@@ -82,8 +82,8 @@
       <!--<img src="https://images.ufutx.com/201907/10/b610ac9d82f446f211c833ac7f52ae39.png" class="bc-icon flo_r">-->
       <div class="main-btn text-center colorff" v-if="information.is_register === 0 && status === 1" @click="robFn" >立 即 抢 红 包</div>
       <div class="main-btn text-center colorff main-btn-gray" v-else>
-        <p  @click="toastText('你已领取过啦，快去分享吧')" v-if="information.is_register === 1">你 已 领 取 过 啦</p>
-        <p  @click="toastText('当前人数过多，请稍后重试')" v-else>当 前 人 数 过 多</p>
+        <p  @click="toastText('你已领取过啦，快去分享吧...')" v-if="information.is_register === 1">你 已 领 取 过 啦</p>
+        <p  @click="toastText('当前人数过多，请稍后重试...')" v-else>当 前 人 数 过 多</p>
         <div class="time" v-if="endTime && status == 0">
           （<count-down v-on:end_callback="countDownE_cb()"
                        :currentTime="currentTime"

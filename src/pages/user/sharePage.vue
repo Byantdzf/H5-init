@@ -80,7 +80,7 @@
       <!--<img src="https://images.ufutx.com/201907/10/3977842b6aeb97d9dfc681e45401696f.png" class="bc-icon flo_l">-->
       <!--<img src="https://images.ufutx.com/201907/10/390dd6af8e29356a3c7d68bf06424b78.png" class="bc-icon">-->
       <!--<img src="https://images.ufutx.com/201907/10/b610ac9d82f446f211c833ac7f52ae39.png" class="bc-icon flo_r">-->
-      <div class="main-btn text-center colorff" v-if="information.is_register === 0" @click="robFn" >立 即 抢 红 包</div>
+      <div class="main-btn text-center colorff" v-if="information.is_register === 0 && status === 1" @click="robFn" >立 即 抢 红 包</div>
       <div class="main-btn text-center colorff main-btn-gray" v-else @click="toastText">
         立 即 抢 红 包
         <div class="time" v-if="endTime && status == 0">

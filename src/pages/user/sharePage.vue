@@ -81,7 +81,7 @@
       <!--<img src="https://images.ufutx.com/201907/10/390dd6af8e29356a3c7d68bf06424b78.png" class="bc-icon">-->
       <!--<img src="https://images.ufutx.com/201907/10/b610ac9d82f446f211c833ac7f52ae39.png" class="bc-icon flo_r">-->
       <div class="main-btn text-center colorff" @click="robFn"
-           v-if="information.is_register != null&&information.is_register != 1">立 即 抢 红 包
+           v-if="information.is_register == 0">立 即 抢 红 包
       </div>
       <div class="main-btn text-center colorff main-btn-gray" v-else @click="toastText">
         立 即 抢 红 包

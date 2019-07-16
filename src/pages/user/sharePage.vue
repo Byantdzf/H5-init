@@ -21,7 +21,7 @@
                 </count-down>
               </div>
             </div>
-            <div v-if="status == '-1'">
+            <div v-if="status == -1">
               <img src="https://images.ufutx.com/201907/11/331c92c7442d5f16a1abcd2d8c11cfb4.png" alt="" @click.stop="hideModal">
             </div>
             <!--<img src="https://images.ufutx.com/201907/11/2ee6c592e362854b5d0ed8d8ab7e4fca.png" alt="" @click.stop="hideModal">-->
@@ -296,7 +296,7 @@
             localStorage.setItem('ACCESS_TOKEN', data.token)
           }
           this.status = data.status
-          if (data.status === 0) {
+          if (data.status === 0 || data.status === -1) {
             this.showModalTimeDown = true
           } else if (data.status === 1 && (data.is_register && data.is_register !== 1)) {
             this.showModalTimeUp = true

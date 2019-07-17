@@ -107,8 +107,8 @@
           </count-down>）
         </div>
       </div>
-      <div class="text-right font28 shareList flo_r" @click="gotoPage">红包列表</div>
-      <div class="clearfloat"></div>
+      <div class="text-right font28 shareList" @click="gotoPage">红包列表</div>
+      <!--<div class="clearfloat"></div>-->
       <div @click="gotoLink">
         <img src="https://images.ufutx.com/201907/16/77e8b486c8124b28695c3394755ba9fc.jpeg" alt="" style="width: 100%;">
       </div>

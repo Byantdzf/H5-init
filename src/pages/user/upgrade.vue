@@ -350,7 +350,7 @@
       line-height: 1.5;
     }
     .icon_membership{
-      width: 44px;
+      width: 80px;
     }
     .icon_addFriends{
       width: 53px;

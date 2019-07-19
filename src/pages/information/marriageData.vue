@@ -26,7 +26,7 @@
         <div class="clearfloat"></div>
       </li>
     </ul>
-    <div class="fixed_bot subjectColor colorff bc_box font32 text-center" @click="submit">
+    <div class="fixed_bot theme_bc colorff bc_box font32 text-center" @click="submit">
       提交
     </div>
     <group>
@@ -42,7 +42,7 @@
                   <img src="../../assets/icon/back.png" width="20" alt="icon" class="icon middle">
                   服务格言
                 </span>
-                <p class="color flo_r" @click="showTextarea = !showTextarea">保存</p>
+                <p class="theme_clo flo_r " @click="showTextarea = !showTextarea">保存</p>
               </div>
               <div class="center ff">
                 <textarea name="" id="" class="textarea"  v-model="slogan" placeholder="请输入内容" maxlength="300"></textarea>

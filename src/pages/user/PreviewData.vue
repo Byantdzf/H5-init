@@ -1,7 +1,7 @@
 <template>
   <div class="whole">
     <div class="background">
-      <img class="diamond" src="https://images.ufutx.com/201907/10/01a9a17f4039927c694e67baca4e70ba.png" alt="">
+      <img class="diamond" src="https://images.ufutx.com/201907/19/06e64f099dab71189ce1298c776c537f.png" alt="">
       <div class="picture backCover" v-bind:style="{backgroundImage:'url(' + avatar + ')'}">
         <uploadOss @onSuccess="onSuccess"></uploadOss>
       </div>

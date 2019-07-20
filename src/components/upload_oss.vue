@@ -29,7 +29,7 @@
 <script>
   import { Flexbox, FlexboxItem, Previewer, InlineLoading } from 'vux'
   // import lrz from 'lrz'
-  import {$toastWarn, $toastSuccess, $loadingShow, $loadingHide} from '../config/util'
+  import {$toastWarn, $loadingShow, $loadingHide} from '../config/util'
 
   export default {
     name: 'UploadOss',

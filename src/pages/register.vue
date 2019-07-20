@@ -3,7 +3,7 @@
     <div class="center"></div>
     <div class="main-center">
       <div style="position: relative;">
-        <input type="number" v-model="mobile" class="font30 colorff mobile" placeholder="请输入您的账号">
+        <input type="number" v-model="mobile" class="font30 colorff mobile" placeholder="请输入您的手机号">
         <img src="https://images.ufutx.com/201907/20/cbfe1071a8b4aad7ba98540b52d864b8.png" alt="icon" class="iphone_icon">
         <img src="https://images.ufutx.com/201903/28/f04cd2fd382dbd6da45260e825ff61ef.png" alt="icon" class="del_icon"
              v-show="mobile" @click="mobile = ''">
@@ -120,9 +120,11 @@
             if (localStorage.getItem('jump')) {
               window.location.href = localStorage.getItem('jump')
             } else {
-              this.$router.push({
-                name: 'home'
-              })
+              if (localStorage.getItem('paasName')) {
+                this.$router.push({name: 'home'})
+              } else {
+                this.$router.push({name: 'communityHome'})
+              }
             }
           } else {
             this.$router.push({

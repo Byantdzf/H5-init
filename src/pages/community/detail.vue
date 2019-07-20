@@ -36,7 +36,7 @@
     <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
     <LoadMore tip="群成员" :show-loading="false"></LoadMore>
     <div class="main-otherUser">
-      <div class="item-photo" v-for="item,index in information.members" v-if="item.photo">
+      <div class="item-photo" v-for="item,index in information.members" v-if="item.photo" @click="routeToDetail(item.type, item.id)">
         <div class="img" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
       </div>
     </div>
@@ -51,14 +51,21 @@
           <p class="share">分享</p>
         </div>
       </div>
-      <div v-if="showUpload">
-        <div class="applyNow theme_bc" @click="showUploadPhoto = true" v-if="information.is_applied == '0'">免费入群</div>
-        <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
+      <div v-if="token">
+        <div v-if="showUpload">
+          <div class="applyNow theme_bc" @click="showUploadPhoto = true" v-if="information.is_applied == '0'">免费入群</div>
+          <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
+        </div>
+        <div v-else>
+          <div class="applyNow theme_bc" @click="apply" v-if="information.is_applied == '0'">免费入群</div>
+          <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
+        </div>
       </div>
       <div v-else>
         <div class="applyNow theme_bc" @click="apply" v-if="information.is_applied == '0'">免费入群</div>
         <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
       </div>
+
     </div>
     <moadlUp :show.sync="showQr" @hideModal="hideQr">
       <div class="main-qr">
@@ -208,6 +215,7 @@
         }
       },
       save () {
+        $loadingShow('识别中...')
         this.showUploadPhoto = false
         let data = {
           photo: this.photo
@@ -231,6 +239,18 @@
       hideShare (value) {
         this.showShare = value
       },
+      routeToDetail (type, id) { // 跳转
+        return
+        if (this.information.is_applied === 1) {
+          if (type === 'single') {
+            this.$router.push({name: 'information', params: {id: id}})
+          } else {
+            this.$router.push({name: 'introducer', params: {id: id}})
+          }
+        } else {
+          $toastWarn('请先加入群！')
+        }
+      },
       hideQr (value) {
         this.showQr = value
       },
@@ -247,8 +267,11 @@
         this.$router.push({name: name})
       },
       goHome () {
-        this.$router.push(
-          {name: 'home'})
+        if (localStorage.getItem('paasName')) {
+          this.$router.push({name: 'home'})
+        } else {
+          this.$router.push({name: 'communityHome'})
+        }
       },
       getUser () {
         this.$http.get(`/official/communities/${this.id}`).then(({data}) => {
@@ -267,6 +290,8 @@
             }
           }
           localStorage.setItem('official_openid', data.official_openid)
+          localStorage.setItem('avatar', data.avatar)
+          localStorage.setItem('nickname', data.nickname)
           if (data.is_photo === 0) {
             this.showUpload = true
           } else {
@@ -543,10 +568,13 @@
     }
 
     .save,.getOpenid {
-      width: 120px;
+      width: 230px;
       margin: 32px auto;
       padding: 12px;
-      border-bottom: 2px solid red;
+      /*border-bottom: 2px solid red;*/
+      background: #D92553;
+      color: white;
+      border-radius: 12px;
     }
     .getOpenid{
       width: 220px;

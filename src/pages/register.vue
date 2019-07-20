@@ -3,12 +3,12 @@
     <div class="center"></div>
     <div class="main-center">
       <div style="position: relative;">
-        <input type="number" v-model="mobile" class="font30 colorff mobile" placeholder="请输入您的账号">
+        <input type="number" v-model="mobile" class="font30 colorff mobile" placeholder="请输入您的手机号">
         <img src="https://images.ufutx.com/201907/20/cbfe1071a8b4aad7ba98540b52d864b8.png" alt="icon" class="iphone_icon">
         <img src="https://images.ufutx.com/201903/28/f04cd2fd382dbd6da45260e825ff61ef.png" alt="icon" class="del_icon"
              v-show="mobile" @click="mobile = ''">
-        <img src="https://images.ufutx.com/201903/28/458109eca8206129719b768be914382f.png" alt="icon" class="del_icon"
-             v-show="warn && mobile" style="right: -6px;">
+        <!--<img src="https://images.ufutx.com/201903/28/458109eca8206129719b768be914382f.png" alt="icon" class="del_icon"-->
+             <!--v-show="warn && mobile" style="right: 28px;">-->
       </div>
       <div style="position: relative;">
         <input type="number" v-model="code" class="font30 colorff code" placeholder="验证码" @keyup.enter="register">
@@ -114,15 +114,19 @@
               id: data.user.id,
               name: data.user.name,
               photo: data.user.photo,
-              type: data.user.type
+              type: data.user.type,
+              avatar: localStorage.getItem('avatar'),
+              nickname: localStorage.getItem('nickname')
             }
             localStorage.setItem('userInfo', JSON.stringify(userInfo))
             if (localStorage.getItem('jump')) {
               window.location.href = localStorage.getItem('jump')
             } else {
-              this.$router.push({
-                name: 'home'
-              })
+              if (localStorage.getItem('paasName')) {
+                this.$router.push({name: 'home'})
+              } else {
+                this.$router.push({name: 'communityHome'})
+              }
             }
           } else {
             this.$router.push({
@@ -168,7 +172,7 @@
       }
       .main-center{
         background: white;
-        width: 84vw;
+        width: 86vw;
         margin: auto;
         padding: 68px 0 96px 0;
         border-radius: 12px;

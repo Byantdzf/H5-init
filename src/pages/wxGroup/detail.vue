@@ -200,8 +200,11 @@
         this.$router.push({name: name})
       },
       goHome () {
-        this.$router.push(
-          {name: 'home'})
+        if (localStorage.getItem('paasName')) {
+          this.$router.push({name: 'home'})
+        } else {
+          this.$router.push({name: 'communityHome'})
+        }
       },
       getUser () {
         this.$http.get(`/official/communities/${this.id}`).then(({data}) => {

@@ -2,25 +2,25 @@
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div class="main-creation" @click="create">
-        <img class="flo_l" src="https://images.ufutx.com/201907/20/6e0bb82048c9ab0b1833d28aa83c6d7f.png">
-        <p class="flo_l font28 bold color6">杨子思</p>
+        <img class="flo_l" :src="user.photo">
+        <p class="flo_l font28 bold color6">{{user.name}}</p>
         <div class="flo_l font26 colorb0 infor">
           <div class="text-center infor-item flo_l">
-            <span class="theme_clo  font36">3</span>
+            <span class="theme_clo  font36">{{user.community_count}}</span>
             <p class="color6">总群数</p>
           </div>
-          <div class="text-center infor-item flo_l" @click="gotoLink">
-            <span class="theme_clo font36">3</span>
+          <div class="text-center infor-item flo_l" >
+            <span class="theme_clo font36">{{user.community_member_num}}</span>
             <p class="color6">总成员</p>
           </div>
           <div class="text-center infor-item flo_l">
-            <span class="theme_clo font36">3</span>
+            <span class="theme_clo font36">{{user.community_click_num}}</span>
             <p class="color6">总热度</p>
           </div>
         </div>
       </div>
       <div class="color6 font26 bc_num"></div>
-      <div class="main-member" v-for="item,index in 12">
+      <div class="main-member" v-for="item,index in list">
         <img class="flo_l" src="https://images.ufutx.com/201907/20/6e0bb82048c9ab0b1833d28aa83c6d7f.png">
         <p class="flo_l font26 bold color6">杨子思</p>
         <p class="flo_r font26 colorb0">2019-12-12 12:22</p><br/>
@@ -61,31 +61,12 @@
         type: '我创建的群',
         search: '',
         showModal: false,
+        user: {},
         init: false,
         recommend: [],
         noData: false,
         page: 1,
         groupList: [
-          {
-            icon: 'http://images.ufutx.com/201907/01/9e0ee9cfa69b46e37576ce393a874ec3.png',
-            title: '单身群',
-            id: 1
-          },
-          {
-            icon: 'http://images.ufutx.com/201907/01/a3722ff97f8e49079c55c3ba1eb2e7a5.png',
-            title: '红娘群',
-            id: 2
-          },
-          {
-            icon: 'http://images.ufutx.com/201907/01/064d6bd1672193af0d116f1b23164480.png',
-            title: '介绍人群',
-            id: 3
-          },
-          {
-            icon: 'http://images.ufutx.com/201907/01/1a6e685971a396376488e9183dbb8899.png',
-            title: '城市群',
-            id: 4
-          }
         ],
         announcements: [],
         mescroll: null, //  mescroll实例对象
@@ -151,21 +132,22 @@
       },
       getOrderList (page, mescroll) {
         let vm = this
-        vm.$http.get(`/official/home?page=${page.num}`).then(({data}) => {
-          vm.announcements = data.announcements
-          vm.recommend = data.recommend
-          vm.$http.get(`/official/home/likers?page=${page.num}`).then(({data}) => {
-            vm.init = true
-            let dataV = page.num === 1 ? [] : this.list
-            dataV.push(...data.data)
-            vm.list = dataV
+        let url = `/official/user/community/members?page=${page.num}`
+        vm.$http.get(url).then(({data}) => {
+          vm.user = data.user
+          vm.user.community_click_num = data.community_click_num
+          vm.user.community_count = data.community_count
+          vm.user.community_member_num = data.community_member_num
+          vm.init = true
+          let dataV = page.num === 1 ? [] : vm.list
+          dataV.push(...data.members.data)
+          vm.list = dataV
+          if (mescroll) {
             vm.$nextTick(() => {
-              mescroll.endSuccess(data.data.length)
+              mescroll.endSuccess(data.members.data.length)
             })
-            vm.getMessageNum()
-          }).catch((error) => {
-            console.log(error)
-          })
+          }
+          console.log(vm.user)
         }).catch((error) => {
           console.log(error)
         })

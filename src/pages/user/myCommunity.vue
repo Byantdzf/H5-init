@@ -140,7 +140,7 @@
       goToDetail (item) {
         this.$router.push({
           name: `communityDetail`,
-          params: {id: 1}
+          params: {id: item.id}
         })
       },
       swiperItem (currentIndex) {
@@ -177,9 +177,11 @@
           let dataV = page.num === 1 ? [] : vm.list
           dataV.push(...data.communities.data)
           vm.list = dataV
-          vm.$nextTick(() => {
-            mescroll.endSuccess(data.communities.data.length)
-          })
+          if (mescroll) {
+            vm.$nextTick(() => {
+              mescroll.endSuccess(data.communities.data.length)
+            })
+          }
           console.log(vm.user)
         }).catch((error) => {
           console.log(error)

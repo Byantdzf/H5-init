@@ -2,7 +2,7 @@
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div class="main-input">
-        <input type="text" placeholder="搜索感兴趣的群" v-model="search"/>
+        <input type="text" placeholder="搜索感兴趣的群" v-model="search" @change="searchUser"/>
       </div>
       <div class="main-creation" @click="create">
         <img class="flo_l" src="https://images.ufutx.com/201907/20/6e0bb82048c9ab0b1833d28aa83c6d7f.png">
@@ -106,7 +106,9 @@
     },
     methods: {
       searchUser () { // 输入框搜索
-        this.getOrderList(1)
+        this.list = []
+        console.log(this.search)
+        this.getOrderList({num: 1})
       },
       create () {
         $toastText('该功能正在开发中...')
@@ -159,14 +161,16 @@
       },
       getOrderList (page, mescroll) {
         let vm = this
-        vm.$http.get(`/official/community/groups?page=${page.num}`).then(({data}) => {
+        vm.$http.get(`/official/community/groups?page=${page.num}&keyword=${vm.search}`).then(({data}) => {
           vm.init = true
           let dataV = page.num === 1 ? [] : this.list
           dataV.push(...data.data)
           vm.list = dataV
-          vm.$nextTick(() => {
-            mescroll.endSuccess(data.data.length)
-          })
+          if (mescroll) {
+            vm.$nextTick(() => {
+              mescroll.endSuccess(data.data.length)
+            })
+          }
           console.log(vm.list)
         }).catch((error) => {
           console.log(error)

@@ -107,10 +107,27 @@
         // this.$router.push({name: 'sharePage'})
       },
       goToDetail (item) {
-        this.$router.push({
-          name: `communityDetail`,
-          params: {id: item.id}
-        })
+        if (this.$isWeiXin() === true) {
+          if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
+            this.$router.push({
+              name: `communityDetail`,
+              params: {id: item.id},
+              query: {title: item.title, logo: item.icon}
+            })
+          } else {
+            if (localStorage.getItem('mobile') && localStorage.getItem('mobile') !== null) {
+              window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&type=community&id=${item.id}&from_official_openid=` + localStorage.getItem('from_official_openid')
+            } else {
+              window.location.href = `https://love.ufutx.com/wx/bind?type=community&id=${item.id}`
+            }
+          }
+        } else {
+          this.$router.push({
+            name: `communityDetail`,
+            params: {id: item.id},
+            query: {title: item.title, logo: item.icon}
+          })
+        }
       },
       swiperItem (currentIndex) {
         this.currentIndex = currentIndex

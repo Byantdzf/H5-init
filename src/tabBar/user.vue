@@ -81,6 +81,7 @@
 
 <script>
   import {Group, Cell, XHeader, XInput, Badge} from 'vux'
+  import {$loadingShow, $loadingHide} from '../config/util'
 
   export default {
     name: 'user',
@@ -161,9 +162,16 @@
             onCancel: () => {
             },
             onConfirm: () => {
-              let url = location.href + '?paas=' + localStorage.getItem('paasName')
+              let url = location.href.split('?')[0]
               localStorage.clear()
-              this.$href(url)
+              localStorage.setItem('jump', url)
+              $loadingShow('已清除！跳转中...')
+              setTimeout(() => {
+                $loadingHide()
+                this.$router.push({name: 'register'})
+              }, 1000)
+
+              // this.$href(url)
             }
           })
         }.bind(this), 1000)

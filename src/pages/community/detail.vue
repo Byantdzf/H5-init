@@ -275,6 +275,8 @@
       },
       getUser () {
         this.$http.get(`/official/communities/${this.id}`).then(({data}) => {
+          localStorage.setItem('avatar', data.avatar)
+          localStorage.setItem('nickname', data.nickname)
           this.information = data
           let officialOpenid = localStorage.getItem('official_openid')
           let url = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}&community_share=1&from_user_id=${this.userInfo ? this.userInfo.id : ''}&from_official_openid=${officialOpenid}`
@@ -290,8 +292,6 @@
             }
           }
           localStorage.setItem('official_openid', data.official_openid)
-          localStorage.setItem('avatar', data.avatar)
-          localStorage.setItem('nickname', data.nickname)
           if (data.is_photo === 0) {
             this.showUpload = true
           } else {

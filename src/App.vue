@@ -26,7 +26,7 @@
       <!--</span>-->
       <!--</x-header>-->
       <tabbar class="vux-demo-tabbar" icon-class="vux-center tabbar-icon" v-show="!isTabbarDemo" slot="bottom">
-        <tabbar-item :link="{path:'/'}" :selected="path === '/'">
+        <tabbar-item :link="{path:'/community'}" :selected="path === '/community'" v-if="paasName === ''">
           <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
             <img src="../src/assets/icon/home.png" alt="home">
           </span>
@@ -35,7 +35,25 @@
           </span>
           <span slot="label">首页</span>
         </tabbar-item>
-        <tabbar-item :link="{path:'/activity'}" :selected="path === '/activity'">
+        <tabbar-item :link="{path:'/'}" :selected="path === '/'" v-else>
+          <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
+            <img src="../src/assets/icon/home.png" alt="home">
+          </span>
+          <span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">
+            <img src="../src/assets/icon/homeActive.png" alt="home">
+          </span>
+          <span slot="label">首页</span>
+        </tabbar-item>
+        <tabbar-item :link="{path:'/plaza'}" :selected="path === '/plaza'" v-if="paasName === ''">
+          <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
+            <img src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="home">
+          </span>
+          <span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">
+            <img src="https://images.ufutx.com/201907/20/e0e896fda78195fbaa95f23e3af5c516.png" alt="home">
+          </span>
+          <span slot="label">广场</span>
+        </tabbar-item>
+        <tabbar-item :link="{path:'/activity'}" :selected="path === '/activity'" v-else>
           <span class="demo-icon-22" slot="icon" style="position:relative;bottom: -3px">
             <img src="../src/assets/icon/attention.png" alt="home">
           </span>
@@ -90,7 +108,8 @@
       return {
         entryUrl: document.location.href,
         chat_num: '',
-        notice_num: ''
+        notice_num: '',
+        paasName: localStorage.getItem('paasName') ? localStorage.getItem('paasName') : ''
       }
     },
     watch: {
@@ -111,6 +130,8 @@
       }),
       isTabbarDemo () {
         if (this.route.path === '/') return false
+        if (this.route.path === '/community') return false
+        if (this.route.path === '/plaza') return false
         if (this.route.path === '/activity') return false
         if (this.route.path === '/chitchat') return false
         if (this.route.path === '/user') return false

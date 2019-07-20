@@ -45,6 +45,15 @@
         </cell>
       </group>
     </div>
+    <div @click="routeToDetail('myCommunity', user.id)">
+      <group title=" ">
+        <cell title="我的群组" is-link>
+          <!--<badge text="1"></badge>-->
+          <img slot="icon" width="28" class="item_icon"
+               src="https://images.ufutx.com/201907/20/5354c933a921217bb6e7ec628687ca15.png">
+        </cell>
+      </group>
+    </div>
     <div @click="routeToDetail('feedback')">
       <group title=" ">
         <cell title="意见反馈" is-link>
@@ -98,6 +107,10 @@
     },
     methods: {
       routeToDetail (name, type) {
+        if (name === 'myCommunity') {
+          this.$router.push({name: name, query: {id: type}})
+          return
+        }
         if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
           if (type) {
             this.$router.push({name: name, params: {type: type}})
@@ -211,14 +224,14 @@
 
       .after {
         position: relative;
-
         &:after {
           content: '';
           width: 2px;
-          height: 32px;
+          height: 42px;
           background: #848484;
           position: absolute;
           right: 0;
+          top: 32px
         }
       }
 

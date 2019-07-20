@@ -384,8 +384,8 @@
     },
     mounted () {
       // this.information.is_register = this.$route.query.is_register
-      let officialOpenid = localStorage.getItem('official_openid')
-      this.information.official_openid = officialOpenid ? officialOpenid : this.$route.query.official_openid
+      let officialOpenid = localStorage.getItem('official_openid') ? localStorage.getItem('official_openid') : this.$route.query.official_openid
+      this.information.official_openid = officialOpenid
       console.log(this.information)
       this.getData()  // 数据
     }

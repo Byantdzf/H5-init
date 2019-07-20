@@ -114,7 +114,9 @@
               id: data.user.id,
               name: data.user.name,
               photo: data.user.photo,
-              type: data.user.type
+              type: data.user.type,
+              avatar: localStorage.getItem('avatar'),
+              nickname: localStorage.getItem('nickname')
             }
             localStorage.setItem('userInfo', JSON.stringify(userInfo))
             if (localStorage.getItem('jump')) {

@@ -36,7 +36,7 @@
     <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
     <LoadMore tip="群成员" :show-loading="false"></LoadMore>
     <div class="main-otherUser">
-      <div class="item-photo" v-for="item,index in information.members" v-if="item.photo">
+      <div class="item-photo" v-for="item,index in information.members" v-if="item.photo" @click="routeToDetail(item.type, item.id)">
         <div class="img" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
       </div>
     </div>
@@ -239,6 +239,18 @@
       hideShare (value) {
         this.showShare = value
       },
+      routeToDetail (type, id) { // 跳转
+        return
+        if (this.information.is_applied === 1) {
+          if (type === 'single') {
+            this.$router.push({name: 'information', params: {id: id}})
+          } else {
+            this.$router.push({name: 'introducer', params: {id: id}})
+          }
+        } else {
+          $toastWarn('请先加入群！')
+        }
+      },
       hideQr (value) {
         this.showQr = value
       },
@@ -278,6 +290,8 @@
             }
           }
           localStorage.setItem('official_openid', data.official_openid)
+          localStorage.setItem('avatar', data.avatar)
+          localStorage.setItem('nickname', data.nickname)
           if (data.is_photo === 0) {
             this.showUpload = true
           } else {

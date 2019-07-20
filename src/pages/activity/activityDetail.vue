@@ -144,7 +144,11 @@
         })
       },
       goHome () {
-        this.$router.push({name: 'home'})
+        if (localStorage.getItem('paasName')) {
+          this.$router.push({name: 'home'})
+        } else {
+          this.$router.push({name: 'communityHome'})
+        }
       },
       share () {
         // $toastText('未设置分享')

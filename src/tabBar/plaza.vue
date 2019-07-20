@@ -129,7 +129,7 @@
         this.mescroll = mescroll
       },
       getOrderList (page, mescroll) {
-        let vm = this
+        // let vm = this
       //   vm.$http.get(`/official/community/groups?page=${page.num}`).then(({data}) => {
       //     vm.init = true
       //     let dataV = page.num === 1 ? [] : this.list

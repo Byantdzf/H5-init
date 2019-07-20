@@ -84,7 +84,9 @@
         data = {
           mobile: this.mobile,
           code: this.code,
-          community_share: localStorage.getItem('community_share')
+          community_share: localStorage.getItem('community_share'),
+          avatar: localStorage.getItem('avatar'),
+          nickname: localStorage.getItem('nickname')
         }
         // } else {
         //   data = {
@@ -109,14 +111,12 @@
           }
           localStorage.setItem('ACCESS_TOKEN', data.token)
           localStorage.setItem('mobile', data.user.mobile)
-          if (data.user && data.user.type) {
+          if (data.avatar) {
             let userInfo = {
               id: data.user.id,
               name: data.user.name,
               photo: data.user.photo,
-              type: data.user.type,
-              avatar: localStorage.getItem('avatar'),
-              nickname: localStorage.getItem('nickname')
+              type: data.user.type
             }
             localStorage.setItem('userInfo', JSON.stringify(userInfo))
             if (localStorage.getItem('jump')) {

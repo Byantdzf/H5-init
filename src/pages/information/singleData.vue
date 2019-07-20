@@ -101,7 +101,7 @@
                   <img src="../../assets/icon/back.png" width="20" alt="icon" class="icon middle">
                 {{title}}
                 </span>
-                <p class="color flo_r" @click="showTextarea = !showTextarea">保存</p>
+                <p class="theme_clo flo_r" @click="showTextarea = !showTextarea">保存</p>
               </div>
               <div class="center ff">
                 <textarea name="" id="" class="textarea" v-model="text" placeholder="请输入内容" maxlength="300" @change="save"></textarea>

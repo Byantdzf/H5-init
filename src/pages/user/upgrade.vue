@@ -1,23 +1,23 @@
 <template>
   <div class="upgrade">
     <div>
-      <img class="diamondPicture"  src="https://images.ufutx.com/201907/10/6492f939896e5c4a9d5faaae3fd3d9b4.png" alt="">
+      <img class="diamondPicture" src="https://images.ufutx.com/201907/19/06e64f099dab71189ce1298c776c537f.png" alt="">
       <div class="head_card">
-        <div class="box_card">
-          <img class="card" src="https://images.ufutx.com/201907/10/4f985f47bc52f9fdc8e7ae28319c0a8e.png" alt="">
-        </div>
+        <!--<div class="box_card">-->
+          <!--<img class="card" src="https://images.ufutx.com/201907/19/e911f5e26b22aef5d95bdd9a91bb6555.png" alt="">-->
+        <!--</div>-->
         <div class="head_portrait">
+          <div class="portrait" :class="user.rank_id > 0?'icon_diamond':'icon_noOpen'" :style="{backgroundImage:'url(' + user.avatar + ')'}"></div>
           <div class="portrait_name_diamond">
-            <div class="portrait backCover " :class="user.rank_id > 0?'icon_diamond':'icon_noOpen'" :style="{backgroundImage:'url(' + user.avatar + ')'}"></div>
             <p class="ic_name font34 ellipsis_1 inline-block">{{user.name}}</p>
-            <span class="ic_diamond">{{user.rank_name}}VIP</span>
+            <p class="ic_diamond">{{user.rank_name}}VIP</p>
+            <p class="ic_text">成为VIP，拥有尊享特权</p>
           </div>
-          <p class="ic_text">成为VIP，拥有尊享特权</p>
         </div>
       </div>
     </div>
     <div>
-      <tab style="margin-top: 30px" class="text-center"  custom-bar-width="60px" >
+      <tab style="margin-top: 10px" class="text-center" custom-bar-width="60px" >
         <tab-item :selected="tabIndex == item.id" style="background: none;" @on-item-click="tabItem(item.type, item.id)" v-for="(item,index) in tabs" :key="index">{{item.name}}</tab-item>
       </tab>
       <!--<hr class="hr"/>-->
@@ -236,35 +236,42 @@
     }
     .head_portrait{
       width: 100vw;
-      text-align: center;
-      margin-top: -236px;
+      overflow: hidden;
+      margin-top: -26px;
     }
     .portrait{
+      float: left;
+      margin-left: 60px;
       width: 122px;
       height: 122px;
       border-radius: 50%;
       background-color: #e9e9e9;
-      margin: auto;
-      position: relative;
+      display: inline-block;
+      /*margin: auto;*/
+      /*position: relative;*/
       background-repeat: no-repeat;
       background-size: cover;
       position: relative;
     }
     .ic_text,.ic_diamond{
+      margin-top: 5px;
       font-size: 18px;
     }
     .ic_name{
+      margin-left: 35px;
       max-width: 140px;
     }
     .portrait_name_diamond{
-      margin-bottom: 12px;
+      margin-top: 30px;
       position: relative;
     }
     .ic_diamond{
+      display: inline-block;
       margin-left: 4px;
       color: #f56a22;
     }
     .ic_text{
+      margin-left: 220px;
       color: #024261;
     }
     .dist{
@@ -350,7 +357,9 @@
       line-height: 1.5;
     }
     .icon_membership{
-      width: 44px;
+      margin-top: -10px;
+      margin-bottom: -10px;
+      width: 80px;
     }
     .icon_addFriends{
       width: 53px;

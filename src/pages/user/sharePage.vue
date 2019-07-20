@@ -81,8 +81,20 @@
       <!--<img src="https://images.ufutx.com/201907/10/390dd6af8e29356a3c7d68bf06424b78.png" class="bc-icon">-->
       <!--<img src="https://images.ufutx.com/201907/10/b610ac9d82f446f211c833ac7f52ae39.png" class="bc-icon flo_r">-->
       <div class="main-btn text-center colorff" v-if="information.is_register === 0 && status === 1" @click="robFn" >立 即 抢 红 包</div>
-      <div class="main-btn text-center colorff main-btn-gray" v-else @click="toastText">
-        立 即 抢 红 包
+      <div class="main-btn text-center colorff main-btn-gray" v-else>
+        <div v-if="status&&status === 1">
+          <p  @click="toastText('你已领取过啦，快去分享吧...')" v-if="information.is_register === 1">你 已 领 取 过 啦</p>
+          <p  @click="toastText('当前人数过多，请稍后重试...')" v-else>当 前 人 数 过 多</p>
+        </div>
+        <div v-if="status&&status === -1">
+          <p  @click="toastText('活动已结束，敬请期待下一轮活动...')">活 动 已 结 束</p>
+        </div>
+        <div v-if="status&&status === 0">
+          <p  @click="toastText('活动马上开始...')">活 动 即 将 开 始</p>
+        </div>
+        <div v-else>
+          <p  @click="toastText('当前人数过多，请稍后重试...')">当 前 人 数 过 多</p>
+        </div>
         <div class="time" v-if="endTime && status == 0">
           （<count-down v-on:end_callback="countDownE_cb()"
                        :currentTime="currentTime"
@@ -95,8 +107,8 @@
           </count-down>）
         </div>
       </div>
-      <div class="text-right font28 shareList flo_r" @click="gotoPage">红包列表</div>
-      <div class="clearfloat"></div>
+      <div class="text-right font28 shareList" @click="gotoPage">红包列表</div>
+      <!--<div class="clearfloat"></div>-->
       <div @click="gotoLink">
         <img src="https://images.ufutx.com/201907/16/77e8b486c8124b28695c3394755ba9fc.jpeg" alt="" style="width: 100%;">
       </div>
@@ -206,10 +218,10 @@
     },
     methods: {
       gotoLink () {
-        window.location.href = 'https://mp.weixin.qq.com/s/wXlic76crbnEYT1sqSF8ig'
+        window.location.href = 'https://mp.weixin.qq.com/s/-73opJk-qoTCgjLVFxFVQg '
       },
-      toastText () {
-        $toastWarn('红包已抢完，敬请期待下一轮...')
+      toastText (title) {
+        $toastWarn(title)
       },
       getCode () { // 发送验证码
         if (this.warn) return
@@ -229,7 +241,11 @@
         console.log(x)
       },
       countDownE_cb (x) {
-        console.log(x)
+        console.log(x, 'chai')
+        if (this.information.is_register === 0) {
+          this.showModalTimeDown = false
+          this.status = 1
+        }
       },
       hideShare (value) {
         this.showShare = value
@@ -267,7 +283,7 @@
             }, 500)
           }).catch((error) => {
             vm.hideModal()
-            vm.information.is_register = 1
+            // vm.information.is_register = 1
             console.log(error)
           })
         }
@@ -360,6 +376,7 @@
         this.currentTime = endTime.getTime()
         this.startTime = endTime.getTime()
         this.endTime = startTime
+        // this.endTime = 1563278079
         // console.log(
         //   new Date(parseInt(startTime) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
         // )
@@ -367,8 +384,8 @@
     },
     mounted () {
       // this.information.is_register = this.$route.query.is_register
-      let official_openid = localStorage.getItem('official_openid')
-      this.information.official_openid = official_openid ? official_openid : this.$route.query.official_openid
+      let officialOpenid = localStorage.getItem('official_openid') ? localStorage.getItem('official_openid') : this.$route.query.official_openid
+      this.information.official_openid = officialOpenid
       console.log(this.information)
       this.getData()  // 数据
     }

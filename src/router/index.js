@@ -10,9 +10,19 @@ export default new Router({
     //   component: (resolve) => require(['@/tabBar/home'], resolve)
     // },
     {
-      path: '/',
+      path: '/', // paas 普通用户
       name: 'home',
       component: (resolve) => require(['@/tabBar/home'], resolve)
+    },
+    {
+      path: '/community', // community 社群用户
+      name: 'communityHome',
+      component: (resolve) => require(['@/tabBar/community'], resolve)
+    },
+    {
+      path: '/plaza', // plaza 广场
+      name: 'plaza',
+      component: (resolve) => require(['@/tabBar/plaza'], resolve)
     },
     {
       path: '/activity',
@@ -43,6 +53,14 @@ export default new Router({
       component: (resolve) => require(['@/pages/information/personalData'], resolve)
     },
     {
+      path: '/map',
+      meta: {
+        keepAlive: true // 需要被缓存
+      },
+      name: 'map',
+      component: (resolve) => require(['@/pages/map/detail'], resolve)
+    },
+    {
       path: '/marriageData',
       name: 'marriageData',
       meta: {
@@ -69,14 +87,29 @@ export default new Router({
       component: (resolve) => require(['@/pages/user/authentication'], resolve)
     },
     {
+      path: '/myCommunity', // 我的群组
+      name: 'myCommunity',
+      component: (resolve) => require(['@/pages/user/myCommunity'], resolve)
+    },
+    {
+      path: '/communityMember', // 群组成员
+      name: 'communityMember',
+      component: (resolve) => require(['@/pages/community/member'], resolve)
+    },
+    {
       path: '/setting', // 设置
       name: 'setting',
       component: (resolve) => require(['@/pages/user/setting'], resolve)
     },
-    { // 单身详情
-      path: '/wxGroup/:id',
-      name: 'wxGroup',
-      component: (resolve) => require(['@/pages/wxGroup/detail'], resolve)
+    { // 社群分类
+      path: '/communityClass/:id',
+      name: 'communityClass',
+      component: (resolve) => require(['@/pages/community/class'], resolve)
+    },
+    { // 社群详情
+      path: '/communityDetail/:id',
+      name: 'communityDetail',
+      component: (resolve) => require(['@/pages/community/detail'], resolve)
     },
     { // 单身详情
       path: '/information/:id',

@@ -1,30 +1,32 @@
 <template>
   <div id="register" class="wrapper text-center">
     <div class="center"></div>
-    <div style="position: relative;">
-      <input type="number" v-model="mobile" class="font30 colorff mobile" placeholder="手机号">
-      <img src="https://images.ufutx.com/201903/28/8026e39a4bd864b41293b4276203026d.png" alt="icon" class="iphone_icon">
-      <img src="https://images.ufutx.com/201903/28/f04cd2fd382dbd6da45260e825ff61ef.png" alt="icon" class="del_icon"
-           v-show="mobile" @click="mobile = ''">
-      <img src="https://images.ufutx.com/201903/28/458109eca8206129719b768be914382f.png" alt="icon" class="del_icon"
-           v-show="warn && mobile" style="right: 12px;">
-    </div>
-    <div style="position: relative;">
-      <input type="number" v-model="code" class="font30 colorff code" placeholder="验证码" @keyup.enter="register">
-      <img src="https://images.ufutx.com/201903/28/0d60138223b3bf6ca002682946adacf6.png" alt="icon" class="iphone_icon"
-           style="top: 7.2vw;">
-      <p class="getCode font28" @click="getCode" v-if="time == 60">{{text}}</p>
-      <p class="getCode font28" v-else>{{time}} 秒后重试</p>
-    </div>
-    <button class="colorff button text-center font28" @click="register">立即登录</button>
-    <p class="font26 protocol">
-      <span style="color: #9a9a9a;">
+    <div class="main-center">
+      <div style="position: relative;">
+        <input type="number" v-model="mobile" class="font30 colorff mobile" placeholder="请输入您的账号">
+        <img src="https://images.ufutx.com/201907/20/cbfe1071a8b4aad7ba98540b52d864b8.png" alt="icon" class="iphone_icon">
+        <img src="https://images.ufutx.com/201903/28/f04cd2fd382dbd6da45260e825ff61ef.png" alt="icon" class="del_icon"
+             v-show="mobile" @click="mobile = ''">
+        <img src="https://images.ufutx.com/201903/28/458109eca8206129719b768be914382f.png" alt="icon" class="del_icon"
+             v-show="warn && mobile" style="right: -6px;">
+      </div>
+      <div style="position: relative;">
+        <input type="number" v-model="code" class="font30 colorff code" placeholder="验证码" @keyup.enter="register">
+        <img src="https://images.ufutx.com/201907/20/eb6285a118416b8b4cf7125d5348e46f.png" alt="icon" class="iphone_icon"
+             style="top: 5.2vw;">
+        <p class="getCode font28" @click="getCode" v-if="time == 60">{{text}}</p>
+        <p class="getCode font28" v-else>{{time}} 秒后重试</p>
+      </div>
+      <button class="colorff button text-center font28" @click="register">立即登录</button>
+      <p class="font26 protocol">
+      <span class="color6">
         点击立即登录默认您同意
       </span>
-      <span style="color: #cadefc;text-decoration:underline;">
-        <router-link to="protocol" style="color: #cadefc; text-decoration: none;">《福恋注册协议》</router-link>
+        <span style="color: #cadefc;text-decoration:underline;">
+        <router-link to="protocol" style="color: #D92553; text-decoration: none;">《福恋注册协议》</router-link>
       </span>
-    </p>
+      </p>
+    </div>
   </div>
 </template>
 
@@ -148,19 +150,29 @@
       background-size: cover;
       background-repeat: no-repeat;
       background-position-x: center;
-      background-image: url('https://images.ufutx.com/201903/27/eab72e299990c7264ed4385556e471b6.jpeg');
+      background-image: url('https://images.ufutx.com/201907/20/65e11a061e85c4b9367a6477bb08a6ba.png');
 
       input {
-        width: 488px;
-        height: 100px;
+        width: 68%;
+        height: 90px;
         background: none;
-        border: 1px solid #808080;
-        border-radius: 4px;
+        border: none;
+        background: #eaeaea;
+        border-radius: 12px;
         margin-top: 20px;
+        color: #666666;
       }
 
       .center {
         padding-top: 340px;
+      }
+      .main-center{
+        background: white;
+        width: 84vw;
+        margin: auto;
+        padding: 68px 0 96px 0;
+        border-radius: 12px;
+        box-shadow: 1px 1px 16px #cfcfcf;
       }
 
       .mobile {
@@ -169,55 +181,46 @@
 
       .getCode {
         min-width: 164px;
-        color: #C1E0FA;
         position: relative;
         position: absolute;
-        right: 95px;
-        top: 50px;
-
-        &:before {
-          content: '';
-          background: #404040;
-          width: 2px;
-          height: 52px;
-          position: absolute;
-          left: -52px;
-          top: -4px;
-        }
+        right: 48px;
+        top: 44px;
+        color: #D92553;
       }
 
       .iphone_icon {
-        width: 30px;
+        width: 52px;
         position: absolute;
-        left: 95px;
-        top: 48px;
+        left: 58px;
+        top: 40px;
       }
 
       .del_icon {
-        width: 30px;
+        width: 36px;
         position: absolute;
-        right: 95px;
-        top: 56px;
+        right: 56px;
+        top: 48px;
       }
 
       .code {
-        width: 295px;
-        padding: 0 244px 0 76px;
+        width: 56%;
+        background: #eaeaea;
+        padding: 0 20% 0 12%;
       }
 
       .button {
-        width: 615px;
-        height: 100px;
-        background: #344A5D;
+        width: 88%;
+        height: 86px;
+        background: #D92553;
         border: none;
-        border-radius: 6px;
-        margin-top: 20px;
+        border-radius: 12px;
+        margin-top: 58px;
       }
     }
 
     .protocol {
       margin-top: 30px;
-      letter-spacing: 1px;
+      /*letter-spacing: 1px;*/
     }
   }
 </style>

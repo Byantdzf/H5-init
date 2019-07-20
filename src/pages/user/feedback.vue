@@ -111,9 +111,9 @@
     /*background: black !important;*/
   }
   .camera_bottom{
-    padding-bottom: 60px;
-    padding-right: 36px;
-    margin-top: 120px;
+    padding-bottom: 22px;
+    padding-right: 26px;
+    margin-top: 12px;
   }
   .save{
     padding: 12px 22px;

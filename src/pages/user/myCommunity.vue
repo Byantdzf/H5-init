@@ -140,7 +140,7 @@
       goToDetail (item) {
         this.$router.push({
           name: `communityDetail`,
-          params: {id: 1}
+          params: {id: item.id}
         })
       },
       swiperItem (currentIndex) {

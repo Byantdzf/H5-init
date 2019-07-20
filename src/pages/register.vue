@@ -86,7 +86,8 @@
           code: this.code,
           community_share: localStorage.getItem('community_share'),
           avatar: localStorage.getItem('avatar'),
-          nickname: localStorage.getItem('nickname')
+          nickname: localStorage.getItem('nickname'),
+          official_openid: localStorage.getItem('official_openid')
         }
         // } else {
         //   data = {

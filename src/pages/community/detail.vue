@@ -51,14 +51,21 @@
           <p class="share">分享</p>
         </div>
       </div>
-      <div v-if="showUpload">
-        <div class="applyNow theme_bc" @click="showUploadPhoto = true" v-if="information.is_applied == '0'">免费入群</div>
-        <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
+      <div v-if="token">
+        <div v-if="showUpload">
+          <div class="applyNow theme_bc" @click="showUploadPhoto = true" v-if="information.is_applied == '0'">免费入群</div>
+          <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
+        </div>
+        <div v-else>
+          <div class="applyNow theme_bc" @click="apply" v-if="information.is_applied == '0'">免费入群</div>
+          <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
+        </div>
       </div>
       <div v-else>
         <div class="applyNow theme_bc" @click="apply" v-if="information.is_applied == '0'">免费入群</div>
         <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
       </div>
+
     </div>
     <moadlUp :show.sync="showQr" @hideModal="hideQr">
       <div class="main-qr">
@@ -208,6 +215,7 @@
         }
       },
       save () {
+        $loadingShow('识别中...')
         this.showUploadPhoto = false
         let data = {
           photo: this.photo
@@ -546,10 +554,13 @@
     }
 
     .save,.getOpenid {
-      width: 120px;
+      width: 230px;
       margin: 32px auto;
       padding: 12px;
-      border-bottom: 2px solid red;
+      /*border-bottom: 2px solid red;*/
+      background: #D92553;
+      color: white;
+      border-radius: 12px;
     }
     .getOpenid{
       width: 220px;

@@ -162,7 +162,7 @@
         this.$http.post(this.host, formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(({data}) => {
           console.log(filePath)
           this.$emit('onSuccess', filePath)
-          $toastSuccess('上传成功')
+          // $toastSuccess('上传成功')
           $loadingHide()
         }).catch((error) => {
           $toastWarn(error)

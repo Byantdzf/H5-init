@@ -21,10 +21,10 @@
       </div>
       <div class="color6 font26 bc_num"></div>
       <div class="main-member" v-for="item,index in list">
-        <img class="flo_l" src="https://images.ufutx.com/201907/20/6e0bb82048c9ab0b1833d28aa83c6d7f.png">
-        <p class="flo_l font26 bold color6">杨子思</p>
-        <p class="flo_r font26 colorb0">2019-12-12 12:22</p><br/>
-        <p class="flo_l font26 colorb0">15707534403</p>
+        <img class="flo_l" :src="item.user.photo">
+        <p class="flo_l font26 bold color6">{{item.user.name}}</p>
+        <p class="flo_r font26 colorb0">{{item.created_at}}</p><br/>
+        <p class="flo_l font26 colorb0">{{item.user.mobile}}</p>
       </div>
       <div class="height160"></div>
     </mescroll-vue>

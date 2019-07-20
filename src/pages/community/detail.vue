@@ -240,12 +240,11 @@
         this.showShare = value
       },
       routeToDetail (type, id) { // 跳转
-        return
         if (this.information.is_applied === 1) {
-          if (type === 'single') {
-            this.$router.push({name: 'information', params: {id: id}})
-          } else {
+          if (type === 'marriage') {
             this.$router.push({name: 'introducer', params: {id: id}})
+          } else {
+            this.$router.push({name: 'information', params: {id: id}})
           }
         } else {
           $toastWarn('请先加入群！')

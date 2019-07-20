@@ -9,8 +9,7 @@
             <span class="theme_clo  font36">{{user.community_count}}</span>
             <p class="color6">总群数</p>
           </div>
-          <div class="text-center infor-item flo_l" >
-            <!--@click="gotoLink"-->
+          <div class="text-center infor-item flo_l" @click="gotoLink">
             <span class="theme_clo font36">{{user.community_member_num}}</span>
             <p class="color6">总成员</p>
           </div>
@@ -200,7 +199,7 @@
 
 <style lang="less" scoped="scoped">
   .scrollView{
-    background: white;
+    background: white !important;
   }
   .main-creation{
     overflow: hidden;

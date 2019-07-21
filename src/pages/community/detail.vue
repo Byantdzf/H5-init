@@ -47,8 +47,9 @@
           <p class="home">首页</p>
         </div>
         <div class="share_" @click="goPlaza">
-          <img class="icon_share" src="https://images.ufutx.com/201904/02/7b1981496eb2cd024c3830a018c4c89e.png" alt="">
-          <p class="share">广场</p>
+          <!--img class="icon_share" src="https://images.ufutx.com/201904/02/7b1981496eb2cd024c3830a018c4c89e.png" alt=""-->
+          <img class="icon_share" src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="">
+          <p class="share">动态</p>
         </div>
       </div>
       <div v-if="token">

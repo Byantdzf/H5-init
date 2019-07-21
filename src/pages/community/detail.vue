@@ -208,10 +208,11 @@
       getOpenid () {
         if (this.$isWeiXin() === true) {
           this.showOpenid = false
+          let paas = localStorage.getItem('paasName')
           if (localStorage.getItem('mobile') && localStorage.getItem('mobile') !== null) {
-            window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&type=community&id=${this.id}&from_user_id=${this.userInfo ? this.userInfo.id : ''}`
+            window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&paas=${paas}&type=community&id=${this.id}&from_user_id=${this.userInfo ? this.userInfo.id : ''}`
           } else {
-            window.location.href = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}&from_user_id=${this.userInfo ? this.userInfo.id : ''}`
+            window.location.href = `https://love.ufutx.com/wx/bind?type=community&paas=${paas}&id=${this.id}&from_user_id=${this.userInfo ? this.userInfo.id : ''}`
           }
         }
       },

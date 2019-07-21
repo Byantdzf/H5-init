@@ -15,6 +15,19 @@
       </div>
       <div class="height160"></div>
     </mescroll-vue>
+    <div class="box_bottom">
+      <div class="home_and_share">
+        <div class="home_" @click="goHome">
+          <img class="icon_home" src="https://images.ufutx.com/201904/02/c2a2e6539c0aba992088b1b51a54a18b.png" alt="">
+          <p class="home">首页</p>
+        </div>
+        <div class="share_" @click="goPlaza">
+          <!--img class="icon_share" src="https://images.ufutx.com/201904/02/7b1981496eb2cd024c3830a018c4c89e.png" alt=""-->
+          <img class="icon_share" src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="">
+          <p class="share">动态</p>
+        </div>
+      </div>
+    </div>
     <div class="vessel" v-if="showModal">
       <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close" @click="hideModal">
       <div class="modal-vessel" @click="gotoShare"></div>
@@ -106,6 +119,16 @@
         window.location.href = `http://love.ufutx.com/wx/bind/v2`
         // this.$router.push({name: 'sharePage'})
       },
+      goHome () {
+        if (localStorage.getItem('paasName') !== 'FL' && localStorage.getItem('paasName') ) {
+          this.$router.push({name: 'home'})
+        } else {
+          this.$router.push({name: 'communityHome'})
+        }
+      },
+      goPlaza () {
+        this.$router.push({name: 'plaza'})
+      },
       goToDetail (item) {
         if (this.$isWeiXin() === true) {
           if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
@@ -153,6 +176,7 @@
         vm.$http.get(`/official/community/groups/${vm.id}?page=${page.num}`).then(({data}) => {
           vm.group = data.group
 
+          let group = data.group
           let userInfo = JSON.parse(localStorage.getItem('userInfo'))
           let title = userInfo ? `${userInfo.name}邀请你加入《${group.title}》` : `邀请你加入《${group.title}》`
           let intro = group.intro
@@ -303,6 +327,79 @@
     }
   }
 
+  .box_bottom {
+    overflow: hidden;
+    position: fixed;
+    bottom: 0;
+    background: #ffffff;
+    width: 100%;
+    border-top: 1px solid #b6b6b6;
+
+    .home_and_share {
+      width: 54%;
+      border: none;
+      overflow: hidden;
+      float: left;
+    }
+
+    .home_, .share_ {
+      margin-top: 12px;
+      float: left;
+    }
+
+    .home_ {
+      margin-left: 88px;
+    }
+
+    .share_ {
+      margin-left: 110px;
+    }
+
+    /*首页图片*/
+
+    .icon_home {
+      width: 42px;
+      height: 42px;
+      vertical-align: middle;
+    }
+
+    /*分享图片*/
+
+    .icon_share {
+      width: 42px;
+      height: 42px;
+      vertical-align: middle;
+    }
+
+    /*分享text*/
+
+    .home, .share {
+      font-size: 20px;
+      color: #8e8e8e;
+      letter-spacing: 2px;
+      margin-left: -2px;
+      margin-top: 6px;
+    }
+
+    /*立即报名*/
+
+    .applyNow {
+      width: 42%;
+      float: right;
+      height: 68px;
+      font-size: 32px;
+      line-height: 68px;
+      text-align: center;
+      letter-spacing: 3px;
+      color: #ffffff;
+      margin: 2%;
+      border-radius: 12px;
+    }
+
+    .height105 {
+      height: 105px;
+    }
+  }
   .vessel {
     position: fixed;
     width: 100vw;

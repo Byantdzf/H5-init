@@ -46,9 +46,9 @@
           <img class="icon_home" src="https://images.ufutx.com/201904/02/c2a2e6539c0aba992088b1b51a54a18b.png" alt="">
           <p class="home">首页</p>
         </div>
-        <div class="share_" @click="showShare = true">
+        <div class="share_" @click="goPlaza">
           <img class="icon_share" src="https://images.ufutx.com/201904/02/7b1981496eb2cd024c3830a018c4c89e.png" alt="">
-          <p class="share">分享</p>
+          <p class="share">广场</p>
         </div>
       </div>
       <div v-if="token">
@@ -266,11 +266,14 @@
         this.$router.push({name: name})
       },
       goHome () {
-        if (localStorage.getItem('paasName')) {
+        if (localStorage.getItem('paasName') !== 'FL' && localStorage.getItem('paasName') ) {
           this.$router.push({name: 'home'})
         } else {
           this.$router.push({name: 'communityHome'})
         }
+      },
+      goPlaza () {
+        this.$router.push({name: 'plaza'})
       },
       getUser () {
         this.$http.get(`/official/communities/${this.id}`).then(({data}) => {

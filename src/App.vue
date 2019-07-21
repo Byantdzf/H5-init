@@ -44,7 +44,7 @@
           </span>
           <span slot="label">首页</span>
         </tabbar-item>
-        <tabbar-item :link="{path:'/plaza'}" :selected="path === '/plaza'" v-if="paasName === ''">
+        <tabbar-item :link="{path:'/plaza'}" :selected="path === '/plaza'" v-if="paasName === '' || paasName === 'FL'">
           <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
             <img src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="home">
           </span>

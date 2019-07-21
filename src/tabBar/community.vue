@@ -14,7 +14,7 @@
         <span class="flo_l font28 address" >深圳</span>
         <img class="flo_r next" src="http://images.ufutx.com/201905/29/2eeab012d13d91f16f5a21ad6c578678.png">
         <img class="flo_r photo" src="http://images.ufutx.com/201907/01/1a6e685971a396376488e9183dbb8899.png">
-        <span class="flo_r color6 font26" >附近的群</span>
+        <span class="flo_r color6 font26" >相遇地图：附近的群</span>
       </div>
       <div class="groupicon" >
         <div class="item-icon" v-for="item,index in list" @click="goToDetail(item)"  >

@@ -282,7 +282,7 @@
           localStorage.setItem('nickname', data.nickname)
           this.information = data
           let officialOpenid = localStorage.getItem('official_openid')
-          let paas = localStorage.getItem('paas')
+          let paas = localStorage.getItem('paasName')
           let url = `https://love.ufutx.com/wx/bind?type=community&paas=${paas}&id=${this.id}&community_share=1&from_user_id=${this.userInfo ? this.userInfo.id : ''}&from_official_openid=${officialOpenid}`
           let pic = this.userInfo ? this.userInfo.photo : data.logo
           let title = this.userInfo ? `${this.userInfo.name}邀请你加入《${data.title}》` : `邀请你加入《${data.title}》`

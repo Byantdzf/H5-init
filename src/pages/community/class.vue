@@ -181,9 +181,9 @@
           let title = userInfo ? `${userInfo.name}邀请你加入《${group.title}》` : `邀请你加入《${group.title}》`
           let intro = group.intro
           let pic = group.logo
-          let paas = localStorage.getItem('paas')
+          let paas = localStorage.getItem('paasName')
           let officialOpenid = localStorage.getItem('official_openid')
-          let url = `https://love.ufutx.com/mobile/#/communityDetail/${group.id}?paas=${paas}&id=&community_share=1&from_user_id=${userInfo ? userInfo.id : ''}&from_official_openid=${officialOpenid}`
+          let url = `https://love.ufutx.com/mobile/#/communityClass/${group.id}?paas=${paas}&id=&community_share=1&from_user_id=${userInfo ? userInfo.id : ''}&from_official_openid=${officialOpenid}`
           console.log(pic, url, intro, title)
           this.$shareList(pic, url, intro, title)
 

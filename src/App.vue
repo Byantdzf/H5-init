@@ -26,7 +26,7 @@
       <!--</span>-->
       <!--</x-header>-->
       <tabbar class="vux-demo-tabbar" icon-class="vux-center tabbar-icon" v-show="!isTabbarDemo" slot="bottom">
-        <tabbar-item :link="{path:'/community'}" :selected="path === '/community'" v-if="paasName === ''">
+        <tabbar-item :link="{path:'/community'}" :selected="path === '/community'" v-if="paasName === '' || paasName === 'FL'">
           <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
             <img src="../src/assets/icon/home.png" alt="home">
           </span>

@@ -152,6 +152,17 @@
         let vm = this
         vm.$http.get(`/official/community/groups/${vm.id}?page=${page.num}`).then(({data}) => {
           vm.group = data.group
+
+          let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+          let title = userInfo ? `${userInfo.name}邀请你加入《${group.title}》` : `邀请你加入《${group.title}》`
+          let intro = group.intro
+          let pic = group.logo
+          let paas = localStorage.getItem('paas')
+          let officialOpenid = localStorage.getItem('official_openid')
+          let url = `https://love.ufutx.com/mobile/#/communityDetail/${group.id}?paas={paas}&id=&community_share=1&from_user_id=${userInfo ? userInfo.id : ''}&from_official_openid=${officialOpenid}`
+          console.log(pic, url, intro, title)
+          this.$shareList(pic, url, intro, title)
+
           vm.init = true
           let dataV = page.num === 1 ? [] : vm.list
           dataV.push(...data.communities.data)

@@ -16,7 +16,6 @@
       <div class="height160"></div>
     </mescroll-vue>
     <div class="main-float">
-      <!--<div class="home_and_share">-->
       <div class="share_ text-center" @click="goPlaza">
         <img class="icon_share" src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="">
         <p class="share color6 inline-block">广场</p>
@@ -25,8 +24,6 @@
         <img class="icon_home" src="https://images.ufutx.com/201907/22/31d8e0c40d69b277a83add3ecefe55f3.png" alt="">
         <span class="home color6">返回首页</span>
       </div>
-
-      <!--</div>-->
     </div>
     <div class="vessel" v-if="showModal">
       <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close" @click="hideModal">
@@ -332,21 +329,22 @@
     .home_,.share_{
       border: 1px solid #f0f0f0;
       width: 150px;
-      padding: 12px;
+      padding: 8px 12px;
       position: fixed;
-      bottom: 21%;
+      padding-bottom: 0;
+      bottom: 20%;
       right: 0;
       border-bottom-left-radius: 6px;
       border-top-left-radius: 6px;
       img{
         width: 48px;
         vertical-align: middle;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
       }
     }
     .share_{
       width: 18vw;
-      animation: shareMove 1200ms linear;
+      animation: shareMove 800ms linear;
       animation-fill-mode: forwards;
       @keyframes shareMove {
         from {
@@ -359,9 +357,9 @@
     }
     .home_{
       width: 28vw;
-      bottom: 14%;
+      bottom: 12%;
       overflow: hidden;
-      animation: homeMove 1200ms linear;
+      animation: homeMove 900ms linear;
       animation-fill-mode: forwards;
       @keyframes homeMove {
         from {

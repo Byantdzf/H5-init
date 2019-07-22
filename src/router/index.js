@@ -101,6 +101,11 @@ export default new Router({
       name: 'setting',
       component: (resolve) => require(['@/pages/user/setting'], resolve)
     },
+    { // 群主所有群
+      path: '/userCommunityClass/:id',
+      name: 'userCommunityClass',
+      component: (resolve) => require(['@/pages/community/userCommunity'], resolve)
+    },
     { // 社群分类
       path: '/communityClass/:id',
       name: 'communityClass',

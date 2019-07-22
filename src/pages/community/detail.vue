@@ -2,7 +2,7 @@
   <div class="main-box">
     <div class="main-info colorff">
       <div class="info-user text-center">
-        <div class="photo">
+        <div class="photo" @click="gotoDetail">
           <img :src="information.owner_photo">
         </div>
         <!--<div class="font26">{{information.owner_name}}</div>-->
@@ -202,7 +202,10 @@
         this.photo = val
       },
       gotoDetail (url) {
-        window.location.href = url
+        this.$router.push({
+          name: 'userCommunityClass',
+          params: {id: this.information.user_id}
+        })
       },
       getOpenid () {
         if (this.$isWeiXin() === true) {
@@ -267,7 +270,7 @@
         this.$router.push({name: name})
       },
       goHome () {
-        if (localStorage.getItem('paasName') !== 'FL' && localStorage.getItem('paasName') ) {
+        if (localStorage.getItem('paasName') !== 'FL' && localStorage.getItem('paasName')) {
           this.$router.push({name: 'home'})
         } else {
           this.$router.push({name: 'communityHome'})

@@ -2,11 +2,11 @@
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div class="main-creation" >
-        <img class="flo_l" :src="group.logo">
-        <p class="flo_l font28 bold color6">{{group.title}}</p>
-        <p class="flo_l font26 colorb0 infor">{{group.intro}}</p>
+        <img class="flo_l" :src="user.photo">
+        <p class="flo_l font28 bold color6">{{user.name}}</p>
+        <!--<p class="flo_l font26 colorb0 infor">所有群</p>-->
       </div>
-      <div class="color6 font26 bc_num">{{list.length}}个群</div>
+      <div class="color6 font26 bc_num" v-if="list.length>0">{{list.length}}个群</div>
       <div class="groupicon">
         <div class="item-icon" v-for="item,index in list" @click="goToDetail(item)"  >
           <div class="logo" v-bind:style="{backgroundImage:'url(' + item.logo + ')'}" ></div>
@@ -82,7 +82,7 @@
             id: 4
           }
         ],
-        group: {},
+        user: {},
         mescroll: null, //  mescroll实例对象
         mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
         mescrollUp: { // 上拉加载的配置.
@@ -170,20 +170,18 @@
       },
       getOrderList (page, mescroll) {
         let vm = this
-        vm.$http.get(`/official/community/groups/${vm.id}?page=${page.num}`).then(({data}) => {
-          vm.group = data.group
-
-          let group = data.group
+        vm.$http.get(`/official/users/${vm.id}/communities?page=${page.num}`).then(({data}) => {
+          vm.user = data.user
+          let user = data.user
           let userInfo = JSON.parse(localStorage.getItem('userInfo'))
-          let title = userInfo ? `${userInfo.name}邀请你加入《${group.title}》` : `邀请你加入《${group.title}》`
-          let intro = group.intro
-          let pic = group.logo
+          let title = userInfo ? `${userInfo.name}邀请你进入Ta的群组` : `邀请你加入《${user.name}》的群组`
+          let intro = `${user.name}的群组`
+          let pic = user.photo
           let paas = localStorage.getItem('paasName')
           let officialOpenid = localStorage.getItem('official_openid')
-          let url = `https://love.ufutx.com/mobile/#/communityClass/${group.id}?paas=${paas}&id=&community_share=1&from_user_id=${userInfo ? userInfo.id : ''}&from_official_openid=${officialOpenid}`
+          let url = `https://love.ufutx.com/mobile/#/communityClass/${user.id}?paas=${paas}&id=&community_share=1&from_user_id=${userInfo ? userInfo.id : ''}&from_official_openid=${officialOpenid}`
           console.log(pic, url, intro, title)
           this.$shareList(pic, url, intro, title)
-
           vm.init = true
           let dataV = page.num === 1 ? [] : vm.list
           dataV.push(...data.communities.data)
@@ -192,7 +190,6 @@
             mescroll.endSuccess(data.communities.data.length)
           })
           console.log(vm.list)
-          console.log(vm.group)
         }).catch((error) => {
           console.log(error)
         })

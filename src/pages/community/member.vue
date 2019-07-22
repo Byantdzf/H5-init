@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="color6 font26 bc_num"></div>
-      <div class="main-member" v-for="item,index in list">
+      <div class="main-member" v-for="item,index in list" @click="routeToDetail(item.user.type, item.user.id)">
         <img class="flo_l" :src="item.user.photo">
         <p class="flo_l font26 bold color6">{{item.user.name}}</p>
         <p class="flo_r font26 colorb0">{{item.created_at}}</p><br/>
@@ -228,6 +228,7 @@
       width: 90px;
       height: 90px;
       margin-right: 22px;
+      border-radius: 50%;
     }
     p{
       margin-top: 8px;

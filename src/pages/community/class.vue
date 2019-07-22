@@ -15,19 +15,18 @@
       </div>
       <div class="height160"></div>
     </mescroll-vue>
-    <div class="box_bottom">
-      <div class="home_and_share">
-        <div class="home_" @click="goHome">
-          <img class="icon_home" src="https://images.ufutx.com/201904/02/c2a2e6539c0aba992088b1b51a54a18b.png" alt="">
-          <p class="home">首页</p>
-        </div>
-        <div class="share_" @click="goPlaza">
-          <!--img class="icon_share" src="https://images.ufutx.com/201904/02/7b1981496eb2cd024c3830a018c4c89e.png" alt=""-->
-          <img class="icon_share" src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="">
-          <p class="share">动态</p>
-        </div>
-      </div>
-    </div>
+    <!--<div class="box_bottom">-->
+      <!--<div class="home_and_share">-->
+        <!--<div class="home_ text-center" @click="goHome">-->
+          <!--<img class="icon_home" src="https://images.ufutx.com/201907/22/31d8e0c40d69b277a83add3ecefe55f3.png" alt="">-->
+          <!--<p class="home">首页</p>-->
+        <!--</div>-->
+        <!--<div class="share_ text-center" @click="goPlaza">-->
+          <!--<img class="icon_share" src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="">-->
+          <!--<p class="share">广场</p>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
     <div class="vessel" v-if="showModal">
       <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close" @click="hideModal">
       <div class="modal-vessel" @click="gotoShare"></div>

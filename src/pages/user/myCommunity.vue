@@ -208,6 +208,7 @@
       width: 90px;
       height: 90px;
       margin-right: 22px;
+      border-radius: 50%;
     }
     p{
       margin-top: 8px;

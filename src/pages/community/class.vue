@@ -15,18 +15,19 @@
       </div>
       <div class="height160"></div>
     </mescroll-vue>
-    <!--<div class="box_bottom">-->
+    <div class="main-float">
       <!--<div class="home_and_share">-->
-        <!--<div class="home_ text-center" @click="goHome">-->
-          <!--<img class="icon_home" src="https://images.ufutx.com/201907/22/31d8e0c40d69b277a83add3ecefe55f3.png" alt="">-->
-          <!--<p class="home">首页</p>-->
-        <!--</div>-->
-        <!--<div class="share_ text-center" @click="goPlaza">-->
-          <!--<img class="icon_share" src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="">-->
-          <!--<p class="share">广场</p>-->
-        <!--</div>-->
+      <div class="share_ text-center" @click="goPlaza">
+        <img class="icon_share" src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="">
+        <p class="share color6 inline-block">广场</p>
+      </div>
+      <div class="home_ text-center" @click="goHome">
+        <img class="icon_home" src="https://images.ufutx.com/201907/22/31d8e0c40d69b277a83add3ecefe55f3.png" alt="">
+        <span class="home color6">返回首页</span>
+      </div>
+
       <!--</div>-->
-    <!--</div>-->
+    </div>
     <div class="vessel" v-if="showModal">
       <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close" @click="hideModal">
       <div class="modal-vessel" @click="gotoShare"></div>
@@ -326,77 +327,50 @@
     }
   }
 
-  .box_bottom {
-    overflow: hidden;
-    position: fixed;
-    bottom: 0;
+  .main-float {
     background: #ffffff;
-    width: 100%;
-    border-top: 1px solid #b6b6b6;
-
-    .home_and_share {
-      width: 54%;
-      border: none;
+    .home_,.share_{
+      border: 1px solid #f0f0f0;
+      width: 150px;
+      padding: 12px;
+      position: fixed;
+      bottom: 21%;
+      right: 0;
+      border-bottom-left-radius: 6px;
+      border-top-left-radius: 6px;
+      img{
+        width: 48px;
+        vertical-align: middle;
+        margin-bottom: 8px;
+      }
+    }
+    .share_{
+      width: 18vw;
+      animation: shareMove 1200ms linear;
+      animation-fill-mode: forwards;
+      @keyframes shareMove {
+        from {
+          right: -18vw;
+        }
+        to {
+          right: 0;
+        }
+      }
+    }
+    .home_{
+      width: 28vw;
+      bottom: 14%;
       overflow: hidden;
-      float: left;
-    }
-
-    .home_, .share_ {
-      margin-top: 12px;
-      float: left;
-    }
-
-    .home_ {
-      margin-left: 88px;
-    }
-
-    .share_ {
-      margin-left: 110px;
-    }
-
-    /*首页图片*/
-
-    .icon_home {
-      width: 42px;
-      height: 42px;
-      vertical-align: middle;
-    }
-
-    /*分享图片*/
-
-    .icon_share {
-      width: 42px;
-      height: 42px;
-      vertical-align: middle;
-    }
-
-    /*分享text*/
-
-    .home, .share {
-      font-size: 20px;
-      color: #8e8e8e;
-      letter-spacing: 2px;
-      margin-left: -2px;
-      margin-top: 6px;
-    }
-
-    /*立即报名*/
-
-    .applyNow {
-      width: 42%;
-      float: right;
-      height: 68px;
-      font-size: 32px;
-      line-height: 68px;
-      text-align: center;
-      letter-spacing: 3px;
-      color: #ffffff;
-      margin: 2%;
-      border-radius: 12px;
-    }
-
-    .height105 {
-      height: 105px;
+      animation: homeMove 1200ms linear;
+      animation-fill-mode: forwards;
+      @keyframes homeMove {
+        from {
+          right: -28vw;
+        }
+        to {
+          right: 0;
+        }
+      }
     }
   }
   .vessel {

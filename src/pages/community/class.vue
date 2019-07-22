@@ -356,14 +356,14 @@
       }
     }
     .home_{
-      width: 28vw;
+      width: 26vw;
       bottom: 12%;
       overflow: hidden;
       animation: homeMove 900ms linear;
       animation-fill-mode: forwards;
       @keyframes homeMove {
         from {
-          right: -28vw;
+          right: -26vw;
         }
         to {
           right: 0;

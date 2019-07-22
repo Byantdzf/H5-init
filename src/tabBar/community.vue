@@ -7,7 +7,7 @@
       <div class="main-creation" @click="create">
         <img class="flo_l" src="https://images.ufutx.com/201907/20/6e0bb82048c9ab0b1833d28aa83c6d7f.png">
         <p class="flo_l font28 bold">新建社群</p>
-        <p class="flo_l font26 colorb0">新建一个自己的是社群，可以召集你的小伙伴</p>
+        <p class="flo_l font26 colorb0">新建一个自己的社群，可以召集你的小伙伴</p>
       </div>
       <div class="main-map" @click="gotoLink">
         <img class="flo_l city" src="http://images.ufutx.com/201905/29/116e3887dd6dcbcaad6a464f96bdcdcb.png">

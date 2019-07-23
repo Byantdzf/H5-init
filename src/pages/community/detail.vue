@@ -43,11 +43,11 @@
     <div class="box_bottom">
       <div class="home_and_share">
         <div class="home_ text-center" @click="goHome">
-          <img class="icon_home" src="https://images.ufutx.com/201907/22/31d8e0c40d69b277a83add3ecefe55f3.png" alt="">
+          <img class="icon_home" src="https://images.ufutx.com/201907/23/89fdc039b0f305190a806b0da4323919.png" alt="">
           <p class="home">首页</p>
         </div>
         <div class="share_ text-center" @click="goPlaza">
-          <img class="icon_share" src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="">
+          <img class="icon_share" src="https://images.ufutx.com/201907/23/5a90f579f9036ba28816dd461995cf85.png" alt="">
           <p class="share">广场</p>
         </div>
       </div>
@@ -451,6 +451,7 @@
       width: 42px;
       height: 42px;
       vertical-align: middle;
+      margin-left: -4px;
     }
 
     /*分享图片*/

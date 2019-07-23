@@ -79,6 +79,7 @@
     },
     mounted () {
       this.type = this.$route.params.type
+      console.log(this.type)
     }
   }
 </script>

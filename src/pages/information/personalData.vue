@@ -51,7 +51,7 @@
           <span class="font30" :class="{color6: belief.length!==0,colorbe:belief.length==0}"  >{{belief.length==0?'请选择':belief}}</span>
           <img src="../../assets/icon/go.png" alt="icon" class="icon">
         </div>
-      </li>
+      </li> 
     </ul>
     <div class="bc_box font32">
       <ul>

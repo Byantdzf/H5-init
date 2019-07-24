@@ -127,9 +127,11 @@
         this.showModal = false
       },
       gotoLink () {
-        this.$router.push({
-          name: `communityMember`
-        })
+        if (this.type === 'create') {
+          this.$router.push({
+            name: `communityMember`
+          })
+        }
       },
       gotoShare () {
         this.showModal = false
@@ -163,7 +165,7 @@
       },
       getOrderList (page, mescroll) {
         let vm = this
-        let url = `/official/users/${vm.id}/communities?page=${page.num}`
+        let url = `/official/users/communities?page=${page.num}`
         if (vm.type === 'join') {
           url = `/official/users/${vm.id}/joined/communities?page=${page.num}`
         }

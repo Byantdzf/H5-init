@@ -21,7 +21,7 @@
       </div>
       <div class="color6 font26 bc_num"></div>
       <div class="main-member" v-for="item,index in list" @click="routeToDetail(item.user.type, item.user.id)">
-        <img class="flo_l" :src="item.user.photo">
+        <div class="img flo_l" v-bind:style="{backgroundImage:'url(' + item.user.photo + ')'}" ></div>
         <p class="flo_l font26 bold color6">{{item.user.name}}</p>
         <p class="flo_r font26 colorb0">{{item.created_at}}</p><br/>
         <p class="flo_l font26 colorb0">{{item.user.mobile}}</p>
@@ -147,6 +147,11 @@
               mescroll.endSuccess(data.members.data.length)
             })
           }
+          vm.list.map((item, index) => {
+            if (!item.user) {
+              vm.list.splice(index, 1)
+            }
+          })
           console.log(vm.user)
         }).catch((error) => {
           console.log(error)
@@ -175,11 +180,13 @@
     padding: 28px 22px 28px 44px ;
     border-bottom: 1px solid #b0b0b0;
     overflow: hidden;
-    img{
+    .img{
       width: 90px;
       height: 90px;
       border-radius: 50%;
       margin-right: 12px;
+      background-size: cover;
+      background-repeat: no-repeat;
     }
     p{
       margin-top: 8px;

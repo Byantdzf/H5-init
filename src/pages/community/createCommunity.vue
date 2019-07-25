@@ -205,6 +205,8 @@
       border-radius: 50%;
       background-repeat: no-repeat;
       background-size: cover;
+      background-position-y: center;
+      background-position-x: center;
       margin: auto;
       overflow: hidden;
       position: relative;

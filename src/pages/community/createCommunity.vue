@@ -131,7 +131,6 @@
           this.$http.put(`/official/user/communities/${this.id}`, data).then(({data}) => {
             $toastSuccess('保存成功')
             this.$router.push({name: 'communityClass', params: {id: this.information.info[1].value}})
-
           }).catch((error) => {
             console.log(error)
           })

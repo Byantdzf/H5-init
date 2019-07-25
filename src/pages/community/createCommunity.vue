@@ -204,7 +204,7 @@
       height: 190px;
       border-radius: 50%;
       background-repeat: no-repeat;
-      background-size: contain;
+      background-size: cover;
       margin: auto;
       overflow: hidden;
       position: relative;

@@ -135,7 +135,7 @@
         if (this.$isWeiXin() === true) {
           if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
             this.$router.push({
-              path: `wxGroup/${item.id}`,
+              path: `communityDetail/${item.id}`,
               query: {title: item.title, logo: item.icon}
             })
           } else {

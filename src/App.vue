@@ -1,6 +1,6 @@
 <template>
   <div id="app" style="height:100%;">
-    <view-box ref="viewBox" body-padding-bottom="50">
+    <view-box ref="viewBox" :body-padding-bottom="!isTabbarDemo?50:0">
       <div v-transfer-dom>
         <loading v-model="isLoading"></loading>
         <!--<loadingPage :init="!isLoading"></loadingPage>-->

@@ -43,7 +43,7 @@
   import {Group, Cell, XHeader, Swiper, XInput, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import swiperComponent from '../components/swiper'
-  import {$toastText} from '../config/util'
+  // import {$toastText} from '../config/util'
 
   export default {
     components: {
@@ -111,7 +111,10 @@
         this.getOrderList({num: 1})
       },
       create () {
-        $toastText('该功能正在开发中...')
+        this.$router.push({
+          name: 'createCommunity',
+          params: {id: 0}
+        })
       },
       hideModal () {
         this.showModal = false

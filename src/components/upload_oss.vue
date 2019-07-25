@@ -35,7 +35,6 @@
     name: 'UploadOss',
     components: {
       Flexbox,
-
       FlexboxItem,
       Previewer,
       InlineLoading

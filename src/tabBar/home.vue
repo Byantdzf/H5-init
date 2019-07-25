@@ -124,7 +124,7 @@
         this.showModal = false
       },
       gotoLink () {
-        window.location.href = 'https://mp.weixin.qq.com/s/JOOAf693lS3cWpSngompLA'
+        window.location.href = 'https://mp.weixin.qq.com/s/Ukz4VwbvFbdL0Wr57iCKSg'
       },
       gotoShare () {
         this.showModal = false
@@ -147,7 +147,7 @@
           }
         } else {
           this.$router.push({
-            path: `wxGroup/${item.id}`,
+            path: `communityDetail/${item.id}`,
             query: {title: item.title, logo: item.icon}
           })
         }

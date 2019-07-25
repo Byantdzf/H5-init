@@ -53,7 +53,7 @@
           <!--</span>-->
           <!--<span slot="label">广场</span>-->
         <!--</tabbar-item>-->
-        <tabbar-item :link="{path:'/activity'}" :selected="path === '/activity'" v-if="paasName != '' || paasName != 'FL'">
+        <tabbar-item :link="{path:'/activity'}" :selected="path === '/activity'" v-if="paasName != '' && paasName != 'FL'">
           <span class="demo-icon-22" slot="icon" style="position:relative;bottom: -3px">
             <img src="../src/assets/icon/attention.png" alt="home">
           </span>

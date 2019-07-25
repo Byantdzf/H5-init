@@ -157,6 +157,7 @@
           }
         }).catch((error) => {
           console.log(error)
+          vm.init = true
         })
       },
       getOrderList () {

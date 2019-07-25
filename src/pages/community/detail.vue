@@ -3,7 +3,7 @@
     <div class="main-info colorff">
       <div class="info-user text-center">
         <div class="photo" @click="gotoDetail">
-          <img :src="information.owner_photo">
+          <img :src="information.logo">
         </div>
         <!--<div class="font26">{{information.owner_name}}</div>-->
       </div>
@@ -30,8 +30,8 @@
         <img src="https://images.ufutx.com/201907/20/1c4416925c394e67b2a81696d3b34af7.png" alt="">
       </div>
     </div>
-    <div class="main-share" @click="showShare = true">
-      <img src="https://images.ufutx.com/201907/20/8e47e7087d1ecd592028786df6dbc60f.png" alt="">
+    <div class="main-share" @click="gotoLink(information.poster_path)">
+      <img :src="information.poster" alt="">
     </div>
     <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
     <LoadMore tip="群成员" :show-loading="false"></LoadMore>
@@ -40,6 +40,7 @@
         <div class="img" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
       </div>
     </div>
+    <div class="height160"></div>
     <div class="box_bottom">
       <div class="home_and_share">
         <div class="home_ text-center" @click="goHome">
@@ -109,10 +110,10 @@
         <!--<div class="getOpenid Complaint text-center" @click="getOpenid">投诉</div>-->
       </div>
     </moadlDown>
+    <group>
+      <popup-picker :show.sync="showComplaint" :show-cell="false" :data="pickerList" @on-change="onChange" ></popup-picker>
+    </group>
     <div v-transfer-dom>
-      <group>
-        <popup-picker :show.sync="showComplaint" :data="pickerList"  @on-change="onChange" ></popup-picker>
-      </group>
       <previewer :list="list" ref="previewer" @on-index-change="logIndexChange"></previewer>
     </div>
   </div>
@@ -206,6 +207,9 @@
           name: 'userCommunityClass',
           params: {id: this.information.user_id}
         })
+      },
+      gotoLink (link) {
+        window.location.href = link
       },
       getOpenid () {
         if (this.$isWeiXin() === true) {

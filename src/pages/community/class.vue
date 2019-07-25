@@ -16,13 +16,13 @@
       <div class="height160"></div>
     </mescroll-vue>
     <div class="main-float">
-      <div class="share_ text-center" @click="goCreate">
-        <img class="icon_share" src="https://images.ufutx.com/201907/25/a18656b27b60619b9bc5d3cb67824806.png" alt="">
-        <p class="share color6 inline-block">新建社群</p>
-      </div>
+      <!--<div class="share_ text-center" @click="goCreate">-->
+        <!--<img class="icon_share" src="https://images.ufutx.com/201907/25/a18656b27b60619b9bc5d3cb67824806.png" alt="">-->
+        <!--<p class="share color6 inline-block">新建社群</p>-->
+      <!--</div>-->
       <div class="home_ text-center" @click="goHome">
         <img class="icon_home" src="https://images.ufutx.com/201907/22/31d8e0c40d69b277a83add3ecefe55f3.png" alt="">
-        <span class="home color6">返回首页</span>
+        <span class="home color6">首页</span>
       </div>
     </div>
     <div class="vessel" v-if="showModal">
@@ -362,14 +362,14 @@
       }
     }
     .home_{
-      width: 26vw;
-      bottom: 12%;
+      width: 22vw;
+      bottom: 14%;
       overflow: hidden;
       animation: homeMove 900ms linear;
       animation-fill-mode: forwards;
       @keyframes homeMove {
         from {
-          right: -26vw;
+          right: -22vw;
         }
         to {
           right: 0;

@@ -44,7 +44,7 @@
         <div style="height: 180px;background: #f6f6f6;"></div>
       </div>
     </div>
-    <div class="main-buttom">
+    <div class="main-buttom ff">
       <div class="main-cancel flo_l" @click="$router.go(-1)">取消</div>
       <div class="main-save flo_r" @click="save">确定</div>
     </div>
@@ -257,7 +257,7 @@
   }
   .main-buttom{
     position: fixed;
-    bottom: 1%;
+    bottom: 0%;
     left: 0;
     width: 100%;
     background: none;

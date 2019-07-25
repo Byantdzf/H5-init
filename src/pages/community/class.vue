@@ -16,9 +16,9 @@
       <div class="height160"></div>
     </mescroll-vue>
     <div class="main-float">
-      <div class="share_ text-center" @click="goPlaza">
-        <img class="icon_share" src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="">
-        <p class="share color6 inline-block">广场</p>
+      <div class="share_ text-center" @click="goCreate">
+        <img class="icon_share" src="https://images.ufutx.com/201907/25/a18656b27b60619b9bc5d3cb67824806.png" alt="">
+        <p class="share color6 inline-block">新建社群</p>
       </div>
       <div class="home_ text-center" @click="goHome">
         <img class="icon_home" src="https://images.ufutx.com/201907/22/31d8e0c40d69b277a83add3ecefe55f3.png" alt="">
@@ -107,6 +107,12 @@
       },
       hideModal () {
         this.showModal = false
+      },
+      goCreate () {
+        this.$router.push({
+          name: 'createCommunity',
+          params: {id: 0}
+        })
       },
       gotoLink () {
         window.location.href = 'https://mp.weixin.qq.com/s/JOOAf693lS3cWpSngompLA'
@@ -343,12 +349,12 @@
       }
     }
     .share_{
-      width: 18vw;
+      width: 26vw;
       animation: shareMove 800ms linear;
       animation-fill-mode: forwards;
       @keyframes shareMove {
         from {
-          right: -18vw;
+          right: -26vw;
         }
         to {
           right: 0;

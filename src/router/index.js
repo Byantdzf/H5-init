@@ -87,9 +87,14 @@ export default new Router({
       component: (resolve) => require(['@/pages/user/authentication'], resolve)
     },
     {
-      path: '/myCommunity', // 我的群组
+      path: '/myCommunity', // 群组
       name: 'myCommunity',
       component: (resolve) => require(['@/pages/user/myCommunity'], resolve)
+    },
+    {
+      path: '/myCommunityV2', // 我的群组
+      name: 'myCommunityV2',
+      component: (resolve) => require(['@/pages/user/myCommunityV2'], resolve)
     },
     {
       path: '/communityMember', // 群组成员

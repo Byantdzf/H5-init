@@ -9,7 +9,7 @@
             <span class="theme_clo  font36">{{user.community_count}}</span>
             <p class="color6">总群数</p>
           </div>
-          <div class="text-center infor-item flo_l" @click="gotoLink">
+          <div class="text-center infor-item flo_l">
             <span class="theme_clo font36">{{user.community_member_num}}</span>
             <p class="color6">总成员</p>
           </div>
@@ -20,14 +20,22 @@
         </div>
       </div>
       <div class="color6 font26 bc_num"></div>
-      <tab style="background-color: #D82653;font-size: 14px" bar-active-color="#D82653" active-color="#D82653" custom-bar-width='100px'>
-        <tab-item :selected="type === 'create'" @on-item-click="tabClick('create')">我创建的群</tab-item>
-        <tab-item :selected="type === 'join'" @on-item-click="tabClick('join')">我加入的群</tab-item>
-      </tab>
+      <!--<tab style="background-color: #D82653;font-size: 14px" bar-active-color="#D82653" active-color="#D82653" custom-bar-width='100px'>-->
+        <!--<tab-item :selected="type === 'create'" @on-item-click="tabClick('create')">我创建的群</tab-item>-->
+        <!--<tab-item :selected="type === 'join'" @on-item-click="tabClick('join')">我加入的群</tab-item>-->
+      <!--</tab>-->
       <div class="groupicon">
-        <div class="item-icon" v-for="item,index in list" @click="goToDetail(item)"  >
-          <div class="logo" v-bind:style="{backgroundImage:'url(' + item.logo + ')'}" ></div>
-          <div class="font22 color6 title">{{item.title}}</div>
+        <div class="item-icon" v-for="item,index in list" >
+          <div class="logo flo_l" v-bind:style="{backgroundImage:'url(' + item.logo + ')'}"   @click="goToDetail(item)" ></div>
+          <div class="font26 color6 title flo_l ellipsis_1">{{item.title}}</div>
+          <div class="font26 colorb0 title flo_l">
+            <img src="https://images.ufutx.com/201907/25/f8b7d5da439d74b54f56121eabf93246.png" alt="">
+            {{item.member_num}}
+          </div>
+          <div class="main-btn">
+            <div class="flo_l _put font26" @click="gotoLink(item.id)">修改</div>
+            <div class="flo_r _del font26" @click="showDelete(item.title,item.id,index)">删除</div>
+          </div>
         </div>
       </div>
       <div class="height160"></div>
@@ -43,7 +51,7 @@
   import {Group, Cell, XHeader, Swiper, XInput, SwiperItem, Tab, TabItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import swiperComponent from '../../components/swiper'
-  import {$toastText} from '../../config/util'
+  import {$toastText, $loadingShow, $loadingHide} from '../../config/util'
 
   export default {
     components: {
@@ -126,14 +134,29 @@
       hideModal () {
         this.showModal = false
       },
-      gotoLink () {
-        if (this.type === 'create') {
-          this.$router.push({
-            name: `communityMember`
-          })
-        } else {
-          $toastText('暂时不能查看我加入的社群 群成员！')
-        }
+      gotoLink (id) {
+        this.$router.push({
+          name: `createCommunity`,
+          params: {id: id}
+        })
+      },
+      showDelete (title, id, index) {
+        this.$vux.confirm.show({
+          title: '提示',
+          content: `是否删除${title}这个社群？`,
+          dialogTransition: 'vux-fade',
+          onCancel: () => {
+          },
+          onConfirm: () => {
+            $loadingShow('处理中...')
+            this.$http.delete(`/official/user/communities/${id}`).then(({data}) => {
+              setTimeout(() => {
+                $loadingHide()
+                this.list.splice(index, 1)
+              }, 800)
+            })
+          }
+        })
       },
       gotoShare () {
         this.showModal = false
@@ -169,7 +192,7 @@
         let vm = this
         let url = `/official/users/communities?page=${page.num}`
         if (vm.type === 'join') {
-          url = `/official/users/joined/communities?page=${page.num}`
+          url = `/official/users/${vm.id}/joined/communities?page=${page.num}`
         }
         vm.$http.get(url).then(({data}) => {
           vm.user = data.user
@@ -272,27 +295,30 @@
   }
 
   .groupicon {
-    padding: 26px;
     overflow: hidden;
     .item-icon {
-      width: 25%;
-      float: left;
-      text-align: center;
+      width: 100%;
+      overflow: hidden;
+      padding: 22px 0;
+      border-bottom: 1px solid #b0b0b0;
       .logo{
         width: 90px;
         height: 90px;
         border-radius: 50%;
-        margin: auto;
-        margin-top: 12px;
         background-size: cover;
         background-repeat: no-repeat;
-      }
-      img {
-        width: 88px;
-        margin-top: 12px;
+        margin-left: 45px;
+        margin-right: 20px;
       }
       .title {
-        margin-top: 4px;
+        width: 46vw;
+        margin-top: 6px;
+        img{
+          width: 36px;
+          vertical-align: middle;
+          margin-bottom: 12px;
+          margin-right: -6px;
+        }
       }
     }
   }
@@ -326,6 +352,26 @@
           margin: 30% auto;
         }
       }
+    }
+  }
+  .main-btn{
+    overflow: hidden;
+    margin-top: 38px;
+    margin-right: 22px;
+    ._put,._del{
+      width: 75px;
+      height: 35px;
+      line-height: 35px;
+      border-radius: 8px;
+      background: #D92553;
+      text-align: center;
+      color: white;
+      padding: 4px;
+    }
+    ._del{
+      background: white;
+      color: #D92553;
+      border: 1px solid #D92553;
     }
   }
 </style>

@@ -45,7 +45,7 @@
         </cell>
       </group>
     </div>
-    <div @click="routeToDetail('myCommunity', user.id)">
+    <div @click="routeToDetail('myCommunityV2', user.id)">
       <group title=" ">
         <cell title="我的群组" is-link>
           <!--<badge text="1"></badge>-->

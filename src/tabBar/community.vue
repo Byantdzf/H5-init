@@ -1,21 +1,24 @@
 <template>
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
-      <div class="main-input">
-        <input type="text" placeholder="搜索感兴趣的群" v-model="search" @change="searchUser"/>
-      </div>
+      <!--<div class="main-input">-->
+        <!--<input type="text" placeholder="搜索感兴趣的群" v-model="search" @change="searchUser"/>-->
+      <!--</div>-->
       <div class="main-creation" @click="create">
         <img class="flo_l" src="https://images.ufutx.com/201907/20/6e0bb82048c9ab0b1833d28aa83c6d7f.png">
         <p class="flo_l font28 bold">新建社群</p>
         <p class="flo_l font26 colorb0">新建一个自己的社群，可以召集你的小伙伴</p>
       </div>
-      <div class="main-map" @click="gotoLink">
-        <img class="flo_l city" src="http://images.ufutx.com/201905/29/116e3887dd6dcbcaad6a464f96bdcdcb.png">
-        <span class="flo_l font28 address" >相遇地图</span>
-        <img class="flo_r next" src="http://images.ufutx.com/201905/29/2eeab012d13d91f16f5a21ad6c578678.png">
-        <img class="flo_r photo" src="http://images.ufutx.com/201907/01/1a6e685971a396376488e9183dbb8899.png">
-        <span class="flo_r color6 font26" >附近的群</span>
+      <div class="main-share" @click="showShare = true">
+        <img src="https://images.ufutx.com/201907/20/8e47e7087d1ecd592028786df6dbc60f.png" alt="">
       </div>
+      <!--<div class="main-map" @click="gotoLink">-->
+        <!--<img class="flo_l city" src="http://images.ufutx.com/201905/29/116e3887dd6dcbcaad6a464f96bdcdcb.png">-->
+        <!--<span class="flo_l font28 address" >相遇地图</span>-->
+        <!--<img class="flo_r next" src="http://images.ufutx.com/201905/29/2eeab012d13d91f16f5a21ad6c578678.png">-->
+        <!--<img class="flo_r photo" src="http://images.ufutx.com/201907/01/1a6e685971a396376488e9183dbb8899.png">-->
+        <!--<span class="flo_r color6 font26" >附近的群</span>-->
+      <!--</div>-->
       <div class="groupicon" >
         <div class="item-icon" v-for="item,index in list" @click="goToDetail(item)"  >
           <div class="logo" v-bind:style="{backgroundImage:'url(' + item.logo + ')'}" ></div>
@@ -32,6 +35,7 @@
       </div>
       <div class="height160"></div>
     </mescroll-vue>
+    <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
     <div class="vessel" v-if="showModal">
       <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close" @click="hideModal">
       <div class="modal-vessel" @click="gotoShare"></div>
@@ -44,6 +48,7 @@
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import swiperComponent from '../components/swiper'
   // import {$toastText} from '../config/util'
+  import shareModal from '../components/shareMoadl'
 
   export default {
     components: {
@@ -54,7 +59,8 @@
       SwiperItem,
       XInput,
       swiperComponent,
-      MescrollVue
+      MescrollVue,
+      shareModal
     },
     data () {
       return {
@@ -63,6 +69,7 @@
         search: '',
         showModal: false,
         init: false,
+        showShare: false,
         recommend: [],
         noData: false,
         page: 1,
@@ -105,6 +112,9 @@
       }
     },
     methods: {
+      hideShare (value) {
+        this.showShare = value
+      },
       searchUser () { // 输入框搜索
         this.list = []
         console.log(this.search)
@@ -231,7 +241,7 @@
   }
   .main-creation{
     overflow: hidden;
-    padding: 10px  28px 36px 28px;
+    padding: 28px  28px 36px 28px;
     border-bottom: 14px solid #F6F6F6;
     img{
       width: 90px;
@@ -348,6 +358,11 @@
           margin: 30% auto;
         }
       }
+    }
+  }
+  .main-share {
+    img {
+      width: 100%;
     }
   }
 </style>

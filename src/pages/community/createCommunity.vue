@@ -131,6 +131,7 @@
           this.$http.put(`/official/user/communities/${this.id}`, data).then(({data}) => {
             $toastSuccess('保存成功')
             this.$router.push({name: 'communityClass', params: {id: this.information.info[1].value}})
+
           }).catch((error) => {
             console.log(error)
           })
@@ -152,6 +153,9 @@
             return item.title
           })
           vm.list = [[...list]]
+          if (vm.id > 0) {
+            vm.getOrderList()
+          }
         }).catch((error) => {
           console.log(error)
         })
@@ -182,9 +186,6 @@
       this.id = this.$route.params.id
       console.log(this.id)
       this.getClassList()
-      if (this.id > 0) {
-        this.getOrderList()
-      }
     }
   }
 </script>
@@ -215,6 +216,9 @@
       .main-title{
         float: left;
         width: 40vw;
+      }
+      input{
+        width: 36vw;
       }
       .main-input{
         border: none;

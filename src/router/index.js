@@ -45,6 +45,11 @@ export default new Router({
       component: (resolve) => require(['@/pages/register'], resolve)
     },
     {
+      path: '/login',
+      name: 'login',
+      component: (resolve) => require(['@/pages/login'], resolve)
+    },
+    {
       path: '/personalData',
       meta: {
         keepAlive: true // 需要被缓存

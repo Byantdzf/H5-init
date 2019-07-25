@@ -2,17 +2,9 @@
   <div id="register" class="wrapper text-center">
     <div class="center"></div>
     <div class="main-center">
-      <!--<div class="main-photo">-->
-        <!--<div class="img"-->
-             <!--v-bind:style="{backgroundImage:'url(' + 'https://images.ufutx.com/201907/25/d5e0ff01b3d0c613c0e3ba0b9fbb6b7e.gif' + ')'}" ></div>-->
-      <!--</div>-->
-      <!--<div style="position: relative;">-->
-        <!--<input type="text" v-model="name" class="font30 colorff mobile" placeholder="请填写您的真实姓名">-->
-        <!--<img src="https://images.ufutx.com/201907/20/cbfe1071a8b4aad7ba98540b52d864b8.png" alt="icon" class="iphone_icon">-->
-      <!--</div>-->
       <div style="position: relative;">
         <input type="number" v-model="mobile" class="font30 colorff mobile" placeholder="请输入您的手机号">
-        <img src="https://images.ufutx.com/201907/25/26f6ecef7f69d5d43186a02c464769dd.png" alt="icon" class="iphone_icon">
+        <img src="https://images.ufutx.com/201907/20/cbfe1071a8b4aad7ba98540b52d864b8.png" alt="icon" class="iphone_icon">
         <img src="https://images.ufutx.com/201903/28/f04cd2fd382dbd6da45260e825ff61ef.png" alt="icon" class="del_icon"
              v-show="mobile" @click="mobile = ''">
         <!--<img src="https://images.ufutx.com/201903/28/458109eca8206129719b768be914382f.png" alt="icon" class="del_icon"-->
@@ -25,7 +17,7 @@
         <p class="getCode font28" @click="getCode" v-if="time == 60">{{text}}</p>
         <p class="getCode font28" v-else>{{time}} 秒后重试</p>
       </div>
-      <button class="colorff button text-center font28" @click="register">立即注册</button>
+      <button class="colorff button text-center font28" @click="register">立即登录</button>
       <p class="font26 protocol">
       <span class="color6">
         点击立即登录默认您同意
@@ -46,7 +38,6 @@
     components: {},
     data () {
       return {
-        name: '',
         mobile: '',
         code: '',
         value: '',
@@ -178,7 +169,7 @@
       }
 
       .center {
-        padding-top: 56vw;
+        padding-top: 340px;
       }
       .main-center{
         background: white;
@@ -187,22 +178,6 @@
         padding: 68px 0 96px 0;
         border-radius: 12px;
         box-shadow: 1px 1px 16px #cfcfcf;
-        .main-photo{
-          width: 160px;
-          height: 160px;
-          border: 6px solid white;
-          border-radius: 50%;
-          overflow: hidden;
-          margin:  auto;
-          margin-top: -22vw;
-          .img{
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-          }
-        }
       }
 
       .mobile {

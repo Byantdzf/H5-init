@@ -1,16 +1,21 @@
 <template>
   <div id="personalData">
-    <div class="wrapper ff">
-      <div class="bc_avatar text-center" >
-        <div class="avatar backCover" v-bind:style="{backgroundImage:'url(' + avatar + ')'}" >
+    <div class="setting ff">
+      <div class="bc_background text-center">
+        <img class="bc_img_back" src="https://images.ufutx.com/201907/24/2f03aa6c5960592f7f28aa1c6cdb35c4.png" alt="">
+        <div class="uploading backCover" :style="{backgroundImage:'url(' + avatar + ')'}">
           <uploadOss @onSuccess="onSuccess"></uploadOss>
         </div>
-        <!--<router-link to="upload">-->
-          <p class="font26">添加个人形象照</p>
-        <!--</router-link>-->
       </div>
-      <!--<input @change="uploadPhoto" type="file" class="kyc-passin">-->
     </div>
+    <!--<div class="wrapper ff">-->
+      <!--<div class="bc_avatar text-center" >-->
+        <!--<img class="bc_back" src="https://images.ufutx.com/201907/24/2f03aa6c5960592f7f28aa1c6cdb35c4.png" alt="">-->
+        <!--<div class="avatar backCover" v-bind:style="{backgroundImage:'url(' + avatar + ')'}" >-->
+          <!--<uploadOss @onSuccess="onSuccess"></uploadOss>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
     <ul>
       <li class="list-item">
         <span class="title font32">姓名</span>
@@ -20,11 +25,11 @@
         </div>
       </li>
       <!--<li class="list-item">-->
-        <!--<span class="title font36">手机号码</span>-->
-        <!--<div class="flo_r">-->
-          <!--<span class="colorbe font30">点击获取</span>-->
-          <!--&lt;!&ndash;<img src="../../src/assets/icon/go.png" alt="icon" class="icon">&ndash;&gt;-->
-        <!--</div>-->
+      <!--<span class="title font36">手机号码</span>-->
+      <!--<div class="flo_r">-->
+      <!--<span class="colorbe font30">点击获取</span>-->
+      <!--&lt;!&ndash;<img src="../../src/assets/icon/go.png" alt="icon" class="icon">&ndash;&gt;-->
+      <!--</div>-->
       <!--</li>-->
       <li class="list-item">
         <span class="title font32">性别 <span class="font26">（性别选择后无法修改）</span></span>
@@ -46,20 +51,87 @@
           <span class="font30" :class="{color6: belief.length!==0,colorbe:belief.length==0}"  >{{belief.length==0?'请选择':belief}}</span>
           <img src="../../assets/icon/go.png" alt="icon" class="icon">
         </div>
-      </li>
+      </li> 
     </ul>
-    <div class="fixed_bot subjectColor colorff bc_box font32">
+    <div class="bc_box font32">
       <ul>
-        <li class="inline-block after" @click="onClick('single')">我是单身</li>
-        <li class="inline-block" @click="onClick('marriage')">我是介绍人</li>
+        <li class="bachelordom" @click="onClick('single')">我是单身</li>
+        <li class="married" @click="onClick('marriage')">我是已婚</li>
       </ul>
     </div>
+    <!--<div class="fixed_bot subjectColor colorff bc_box font32">-->
+      <!--<ul>-->
+        <!--<li class="inline-block after" @click="onClick('single')">我是单身</li>-->
+        <!--<li class="inline-block" @click="onClick('marriage')">我是介绍人</li>-->
+      <!--</ul>-->
+    <!--</div>-->
     <group>
       <popup-picker style="display:none;" title="title1" :data="sexList"   @on-shadow-change="onChange('sex', $event)"  @on-change="onChange('sex', $event)" :show.sync="showSex"></popup-picker>
       <popup-picker style="display:none;" title="" :data="beliefList"   @on-shadow-change="onChange('belief', $event)"  @on-change="onChange('belief', $event)" :show.sync="showBelief"></popup-picker>
       <!--<x-address style="display:none;" title="title" :hide-district="true" :list="addressData" placeholder="请选择地址" :show.sync="showAddress" @on-shadow-change="onShowChange"  @on-change="onShowChange"></x-address>-->
     </group>
   </div>
+  <!--<div id="personalData">-->
+    <!--<div class="wrapper ff">-->
+      <!--<div class="bc_avatar text-center" >-->
+        <!--<div class="avatar backCover" v-bind:style="{backgroundImage:'url(' + avatar + ')'}" >-->
+          <!--<uploadOss @onSuccess="onSuccess"></uploadOss>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;<router-link to="upload">&ndash;&gt;-->
+          <!--<p class="font26">添加个人形象照</p>-->
+        <!--&lt;!&ndash;</router-link>&ndash;&gt;-->
+      <!--</div>-->
+      <!--&lt;!&ndash;<input @change="uploadPhoto" type="file" class="kyc-passin">&ndash;&gt;-->
+    <!--</div>-->
+    <!--<ul>-->
+      <!--<li class="list-item">-->
+        <!--<span class="title font32">姓名</span>-->
+        <!--<div class="flo_r">-->
+          <!--<input type="text" class="middle text-right font30 color6" v-model="name" placeholder="点击填写">-->
+          <!--&lt;!&ndash;<img src="../../src/assets/icon/go.png" alt="icon" class="icon">&ndash;&gt;-->
+        <!--</div>-->
+      <!--</li>-->
+      <!--&lt;!&ndash;<li class="list-item">&ndash;&gt;-->
+        <!--&lt;!&ndash;<span class="title font36">手机号码</span>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="flo_r">&ndash;&gt;-->
+          <!--&lt;!&ndash;<span class="colorbe font30">点击获取</span>&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;<img src="../../src/assets/icon/go.png" alt="icon" class="icon">&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;</li>&ndash;&gt;-->
+      <!--<li class="list-item">-->
+        <!--<span class="title font32">性别 <span class="font26">（性别选择后无法修改）</span></span>-->
+        <!--<div class="flo_r" @click="showSex = !showSex">-->
+          <!--<span class="font30 " :class="{color6: sex.length!==0,colorbe:sex.length==0}" >{{sex.length==0?'请选择':sex}}</span>-->
+          <!--<img src="../../assets/icon/go.png" alt="icon" class="icon">-->
+        <!--</div>-->
+      <!--</li>-->
+      <!--<li class="list-item">-->
+        <!--<span class="title font32">出生日期</span>-->
+        <!--<div class="flo_r" @click="showDate">-->
+          <!--<span class="font30" :class="{color6: birthday.length!==0,colorbe:birthday.length==0}"  >{{birthday.length==0?'请选择':birthday}}</span>-->
+          <!--<img src="../../assets/icon/go.png" alt="icon" class="icon">-->
+        <!--</div>-->
+      <!--</li>-->
+      <!--<li class="list-item">-->
+        <!--<span class="title font32">信仰</span>-->
+        <!--<div class="flo_r" @click="showBelief = !showBelief">-->
+          <!--<span class="font30" :class="{color6: belief.length!==0,colorbe:belief.length==0}"  >{{belief.length==0?'请选择':belief}}</span>-->
+          <!--<img src="../../assets/icon/go.png" alt="icon" class="icon">-->
+        <!--</div>-->
+      <!--</li>-->
+    <!--</ul>-->
+    <!--<div class="fixed_bot subjectColor colorff bc_box font32">-->
+      <!--<ul>-->
+        <!--<li class="inline-block after" @click="onClick('single')">我是单身</li>-->
+        <!--<li class="inline-block" @click="onClick('marriage')">我是介绍人</li>-->
+      <!--</ul>-->
+    <!--</div>-->
+    <!--<group>-->
+      <!--<popup-picker style="display:none;" title="title1" :data="sexList"   @on-shadow-change="onChange('sex', $event)"  @on-change="onChange('sex', $event)" :show.sync="showSex"></popup-picker>-->
+      <!--<popup-picker style="display:none;" title="" :data="beliefList"   @on-shadow-change="onChange('belief', $event)"  @on-change="onChange('belief', $event)" :show.sync="showBelief"></popup-picker>-->
+      <!--&lt;!&ndash;<x-address style="display:none;" title="title" :hide-district="true" :list="addressData" placeholder="请选择地址" :show.sync="showAddress" @on-shadow-change="onShowChange"  @on-change="onShowChange"></x-address>&ndash;&gt;-->
+    <!--</group>-->
+  <!--</div>-->
 </template>
 
 <script>
@@ -80,7 +152,7 @@
       return {
         birthday: '',
         sex: '',
-        avatar: 'https://images.ufutx.com/201903/26/000319417f22842bd8c7989d608b3871.png',
+        avatar: 'https://images.ufutx.com/201907/24/071405ca109d301a75067f85948d0ce7.png',
         sexList: [['男', '女']],
         belief: '',
         beliefList: [['基督教', '佛教', '伊斯兰教', '其他']],
@@ -218,35 +290,52 @@
   #personalData{
     background-color: #F0F3F5 !important;
     height: 100vh;
-    .wrapper{
-      .bc_avatar{
-        width: 100%;
-        height: 332px;
-        background: black;
-        position: relative;
-        padding-top: 118px;
-        .avatar{
-          width: 225px;
-          height: 225px;
+    .setting{
+      .bc_background{
+        padding-bottom: 10px;
+        .bc_img_back{
+          width: 100%;
+          height: 356px;
+        }
+        .uploading{
+          width: 224px;
+          height: 224px;
           border-radius: 50%;
-          margin: auto;
+          position: relative;
+          margin: -130px auto 0 auto;
           background-repeat: no-repeat;
           background-size: cover;
-          background-position-x: center;
-        }
-        p{
-          color: #787878;
-          margin-top: 35px;
         }
       }
     }
+    /*.wrapper{*/
+      /*.bc_avatar{*/
+        /*.bc_back{*/
+          /*width: 100%;*/
+          /*height: 356px;*/
+        /*}*/
+        /*.avatar{*/
+          /*width: 225px;*/
+          /*height: 225px;*/
+          /*border-radius: 50%;*/
+          /*margin: auto;*/
+          /*background-repeat: no-repeat;*/
+          /*background-size: cover;*/
+          /*background-position-x: center;*/
+        /*}*/
+        /*p{*/
+          /*color: #787878;*/
+          /*margin-top: 35px;*/
+        /*}*/
+      /*}*/
+    /*}*/
     .list-item{
       padding: 36px 20px;
       margin-bottom: 1px;
       background: white;
       .icon{
-        width: 20px;
-        height: 20px;
+        width: 27px;
+        height: 27px;
       }
       input{
         border: none;
@@ -258,25 +347,50 @@
       }
     }
     .bc_box{
-      width: 100%;
-      padding: 38px 0;
-      .after{
-        position: relative;
-        &:after{
-          content: '';
-          width: 2px;
-          height: 64px;
-          background: #b6b6b6;
-          position: absolute;
-          right: 0;
-          top: -10px;
-        }
-      }
-      li{
-        width: 49%;
+      overflow: hidden;
+      margin-top: 208px;
+      .bachelordom, .married{
+        width: 254px;
+        height: 60px;
+        font-weight: bold;
+        display: inline-block;
         text-align: center;
+        line-height: 60px;
+        border: 1px solid #d92553;
+        border-radius: 6px;
+        letter-spacing: 1px;
+      }
+      .bachelordom{
+        color: #ffffff;
+        background: #D92553;
+        margin-left: 20px;
+      }
+      .married{
+        float: right;
+        margin-right: 20px;
+        color: #D92553;
       }
     }
+    /*.bc_box{*/
+      /*width: 100%;*/
+      /*padding: 38px 0;*/
+      /*.after{*/
+        /*position: relative;*/
+        /*&:after{*/
+          /*content: '';*/
+          /*width: 2px;*/
+          /*height: 64px;*/
+          /*background: #b6b6b6;*/
+          /*position: absolute;*/
+          /*right: 0;*/
+          /*top: -10px;*/
+        /*}*/
+      /*}*/
+      /*li{*/
+        /*width: 49%;*/
+        /*text-align: center;*/
+      /*}*/
+    /*}*/
   }
   .dp-header{
     height: 50px !important;

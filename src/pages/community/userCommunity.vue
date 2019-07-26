@@ -2,7 +2,7 @@
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div class="main-creation" >
-        <img class="flo_l" :src="user.photo">
+        <div class="img flo_l" v-bind:style="{backgroundImage:'url(' + user.photo + ')'}"></div>
         <p class="flo_l font28 bold color6">{{user.name}}</p>
         <!--<p class="flo_l font26 colorb0 infor">所有群</p>-->
       </div>
@@ -16,13 +16,13 @@
       <div class="height160"></div>
     </mescroll-vue>
     <div class="main-float">
-      <div class="share_ text-center" @click="goPlaza">
-        <img class="icon_share" src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="">
-        <p class="share color6 inline-block">广场</p>
-      </div>
+      <!--<div class="share_ text-center" @click="goPlaza">-->
+        <!--<img class="icon_share" src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="">-->
+        <!--<p class="share color6 inline-block">广场</p>-->
+      <!--</div>-->
       <div class="home_ text-center" @click="goHome">
         <img class="icon_home" src="https://images.ufutx.com/201907/22/31d8e0c40d69b277a83add3ecefe55f3.png" alt="">
-        <span class="home color6">返回首页</span>
+        <span class="home color6">首页</span>
       </div>
     </div>
     <div class="vessel" v-if="showModal">
@@ -248,11 +248,14 @@
   .main-creation{
     overflow: hidden;
     padding: 36px  28px;
-    img{
+    .img{
       width: 90px;
       height: 90px;
       margin-right: 22px;
       border-radius: 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
     p{
       margin-top: 8px;
@@ -353,14 +356,14 @@
       }
     }
     .home_{
-      width: 26vw;
-      bottom: 12%;
+      width: 22vw;
+      bottom: 14%;
       overflow: hidden;
       animation: homeMove 900ms linear;
       animation-fill-mode: forwards;
       @keyframes homeMove {
         from {
-          right: -26vw;
+          right: -22vw;
         }
         to {
           right: 0;

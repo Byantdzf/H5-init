@@ -168,7 +168,7 @@
               $loadingShow('已清除！跳转中...')
               setTimeout(() => {
                 $loadingHide()
-                this.$router.push({name: 'register'})
+                this.$router.push({name: 'login'})
               }, 1000)
 
               // this.$href(url)
@@ -192,7 +192,7 @@
           onConfirm () {
             localStorage.clear()
             vm.$router.push({
-              name: 'register'
+              name: 'login'
             })
           }
         })

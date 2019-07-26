@@ -2,7 +2,7 @@
   <div class="main-box">
     <div class="main-info colorff">
       <div class="info-user text-center">
-        <div class="photo" @click="gotoDetail">
+        <div class="photo" @click="gotoDetail(information.id)">
           <img :src="information.logo">
         </div>
         <!--<div class="font26">{{information.owner_name}}</div>-->
@@ -36,7 +36,7 @@
     <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
     <LoadMore tip="群成员" :show-loading="false"></LoadMore>
     <div class="main-otherUser">
-      <div class="item-photo" v-for="item,index in information.members" v-if="item.photo" @click="routeToDetail(item.type, item.user_id)">
+      <div class="item-photo" v-for="item,index in information.members" v-if="item.photo" @click="gotoDetail(item.user_id)">
         <div class="img" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
       </div>
     </div>
@@ -202,10 +202,10 @@
       onSuccess (val) {
         this.photo = val
       },
-      gotoDetail (url) {
+      gotoDetail (id) {
         this.$router.push({
           name: 'userCommunityClass',
-          params: {id: this.information.user_id}
+          params: {id: id}
         })
       },
       gotoLink (link) {
@@ -318,7 +318,7 @@
       apply () {
         if (!this.token) {
           localStorage.setItem('jump', window.location.href)
-          this.$router.push({name: 'register'})
+          this.$router.push({name: 'login'})
           return
         }
         $loadingShow('加载中...')

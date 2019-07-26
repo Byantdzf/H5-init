@@ -1,7 +1,11 @@
 <template>
-  <div id="register" class="wrapper text-center">
+  <div id="login" class="wrapper text-center">
     <div class="center"></div>
     <div class="main-center">
+      <div class="main-paas">
+        <div class="logo inline-block" v-bind:style="{backgroundImage:'url(' + logo + ')'}" ></div>
+        <span class="title">{{paasTitle}}</span>
+      </div>
       <div style="position: relative;">
         <input type="number" v-model="mobile" class="font30 colorff mobile" placeholder="请输入您的手机号">
         <img src="https://images.ufutx.com/201907/20/cbfe1071a8b4aad7ba98540b52d864b8.png" alt="icon" class="iphone_icon">
@@ -11,13 +15,14 @@
              <!--v-show="warn && mobile" style="right: 28px;">-->
       </div>
       <div style="position: relative;">
-        <input type="number" v-model="code" class="font30 colorff code" placeholder="验证码" @keyup.enter="register">
+        <input type="number" v-model="code" class="font30 colorff code" placeholder="验证码" @keyup.enter="login">
         <img src="https://images.ufutx.com/201907/20/eb6285a118416b8b4cf7125d5348e46f.png" alt="icon" class="iphone_icon"
              style="top: 5.2vw;">
         <p class="getCode font28" @click="getCode" v-if="time == 60">{{text}}</p>
         <p class="getCode font28" v-else>{{time}} 秒后重试</p>
       </div>
-      <button class="colorff button text-center font28" @click="register">立即登录</button>
+      <div class="colorTheme font26 text-right register" @click="$router.push({name: 'register'})">还没有账号？</div>
+      <button class="colorff button text-center font28" @click="login">立即登录</button>
       <p class="font26 protocol">
       <span class="color6">
         点击立即登录默认您同意
@@ -34,11 +39,13 @@
   import {$toastSuccess, $toastWarn} from '../../src/config/util'
 
   export default {
-    name: 'register',
+    name: 'login',
     components: {},
     data () {
       return {
         mobile: '',
+        paasTitle: '福恋平台',
+        logo: 'https://images.ufutx.com/201907/26/cc3ffebefa449d3555bc8746dcc6123f.png',
         code: '',
         value: '',
         time: 60,
@@ -77,7 +84,7 @@
           console.log(error)
         })
       },
-      register () {
+      login () {
         let data = {}
         console.log(localStorage.getItem('community_share'), 'asssssssss')
         // if (localStorage.getItem('community_share') == '1') {
@@ -140,8 +147,10 @@
       }
     },
     mounted () {
-      console.log(this.$store.state.route)
-      console.log(this.$wechat)
+      if (localStorage.getItem('paasName') !== null && localStorage.getItem('paasName') !== 'FL') {
+        this.paasTitle = localStorage.getItem('paasTitle')
+        this.logo = localStorage.getItem('logo')
+      }
     }
   }
 </script>
@@ -154,9 +163,38 @@
       background: #1a1a1a;
       background-size: cover;
       background-repeat: no-repeat;
+      position: relative;
       background-position-x: center;
-      background-image: url('https://images.ufutx.com/201907/20/65e11a061e85c4b9367a6477bb08a6ba.png');
-
+      background-image: url('https://images.ufutx.com/201907/26/ee1ba88327a47ae94c9d34f8755d0a63.png');
+      .register{
+        padding-right: 46px;
+        margin-top: 12px;
+      }
+      .main-paas{
+        /*position: absolute;*/
+        /*top: 0;*/
+        overflow: hidden;
+        margin: auto;
+        margin-top: -260px;
+        text-align: center;
+        margin-bottom: 40px;
+        .title{
+          color: white;
+          font-size: 72px;
+          font-weight: bold;
+          font-family: "Adobe 楷体 Std R";
+        }
+        .logo{
+          width: 160px;
+          height: 160px;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: cover;
+          display: inline-block;
+          vertical-align: middle;
+          margin-bottom: 62px;
+        }
+      }
       input {
         width: 68%;
         height: 90px;
@@ -219,7 +257,7 @@
         background: #D92553;
         border: none;
         border-radius: 12px;
-        margin-top: 58px;
+        margin-top: 32px;
       }
     }
 

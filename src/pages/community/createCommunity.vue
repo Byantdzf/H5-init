@@ -53,7 +53,7 @@
 
 <script>
   import {Group, Cell, XHeader, Swiper, XInput, SwiperItem, PopupPicker} from 'vux'
-  import {$toastText, $toastSuccess} from '../../config/util'
+  import {$toastText, $toastSuccess, $loadingShow, $loadingHide} from '../../config/util'
   import uploadOss from '../../components/upload_oss'
 
   export default {
@@ -80,10 +80,10 @@
         information: {
           logo: 'https://images.ufutx.com/201907/25/5fa19a0b8b779e140a79f4936dc93bc9.png',
           info: [
-            {title: '社群信息', type: 'input', value: ''},
-            {title: '分类', type: 'picker', value: ''},
+            {title: '社群名称', type: 'input', value: ''},
+            {title: '社群分类', type: 'picker', value: ''},
             {title: '群二维码', type: 'image', value: ''},
-            {title: '群主微信码', type: 'image', value: ''},
+            {title: '个人微信码', type: 'image', value: ''},
             {title: '社群海报', type: 'image', value: ''},
             {title: '海报链接', type: 'input', value: ''}
           ],
@@ -98,7 +98,6 @@
             this.information.info[1].value = item.id
           }
         }
-        console.log(this.information.info[1].value)
       }
     },
     methods: {
@@ -144,6 +143,7 @@
         })
       },
       getClassList () {
+        $loadingShow('加载中')
         let vm = this
         vm.$http.get(`/official/community/groups?nopage=1`).then(({data}) => {
           vm.init = true
@@ -152,6 +152,7 @@
             return item.title
           })
           vm.list = [[...list]]
+          $loadingHide()
           if (vm.id > 0) {
             vm.getOrderList()
           }
@@ -184,7 +185,6 @@
     },
     mounted () {
       this.id = this.$route.params.id
-      console.log(this.id)
       this.getClassList()
     }
   }

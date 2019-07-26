@@ -148,7 +148,7 @@
       apply () {
         if (!this.token) {
           localStorage.setItem('jump', window.location.href)
-          this.$router.push({name: 'register'})
+          this.$router.push({name: 'login'})
           return
         }
         $loadingShow('加载中...')

@@ -2,14 +2,22 @@
   <div id="register" class="wrapper text-center">
     <div class="center"></div>
     <div class="main-center">
-      <!--<div class="main-photo">-->
-        <!--<div class="img"-->
-             <!--v-bind:style="{backgroundImage:'url(' + 'https://images.ufutx.com/201907/25/d5e0ff01b3d0c613c0e3ba0b9fbb6b7e.gif' + ')'}" ></div>-->
-      <!--</div>-->
-      <!--<div style="position: relative;">-->
-        <!--<input type="text" v-model="name" class="font30 colorff mobile" placeholder="请填写您的真实姓名">-->
-        <!--<img src="https://images.ufutx.com/201907/20/cbfe1071a8b4aad7ba98540b52d864b8.png" alt="icon" class="iphone_icon">-->
-      <!--</div>-->
+      <div class="main-paas">
+        <div class="logo inline-block" v-bind:style="{backgroundImage:'url(' + logo + ')'}" >
+        </div>
+        <span class="title">{{paasTitle}}</span>
+      </div>
+      <!--<img src="https://images.ufutx.com/201907/26/cc3ffebefa449d3555bc8746dcc6123f.png" alt="">-->
+      <div class="main-photo">
+        <div class="img"
+             v-bind:style="{backgroundImage:'url(' + photo + ')'}" >
+          <uploadOss @onSuccess="onSuccess"></uploadOss>
+        </div>
+      </div>
+      <div style="position: relative;">
+        <input type="text" v-model="name" class="font30 colorff mobile" placeholder="请填写您的真实姓名">
+        <img src="https://images.ufutx.com/201907/20/cbfe1071a8b4aad7ba98540b52d864b8.png" alt="icon" class="iphone_icon">
+      </div>
       <div style="position: relative;">
         <input type="number" v-model="mobile" class="font30 colorff mobile" placeholder="请输入您的手机号">
         <img src="https://images.ufutx.com/201907/25/26f6ecef7f69d5d43186a02c464769dd.png" alt="icon" class="iphone_icon">
@@ -28,7 +36,7 @@
       <button class="colorff button text-center font28" @click="register">立即注册</button>
       <p class="font26 protocol">
       <span class="color6">
-        点击立即登录默认您同意
+        点击立即注册默认您同意
       </span>
         <span style="color: #cadefc;text-decoration:underline;">
         <router-link to="protocol" style="color: #D92553; text-decoration: none;">《福恋注册协议》</router-link>
@@ -39,17 +47,20 @@
 </template>
 
 <script>
-  import {$toastSuccess, $toastWarn} from '../../src/config/util'
-
+  import {$toastSuccess, $toastWarn, $loadingShow, $loadingHide} from '../../src/config/util'
+  import uploadOss from '../components/upload_oss'
   export default {
     name: 'register',
-    components: {},
+    components: {uploadOss},
     data () {
       return {
         name: '',
+        paasTitle: '福恋平台',
+        logo: 'https://images.ufutx.com/201907/26/cc3ffebefa449d3555bc8746dcc6123f.png',
         mobile: '',
         code: '',
         value: '',
+        photo: 'https://images.ufutx.com/201907/26/5fa19a0b8b779e140a79f4936dc93bc9.png',
         time: 60,
         warn: true,
         text: '获取验证码',
@@ -73,6 +84,9 @@
       }
     },
     methods: {
+      onSuccess (val) {
+        this.photo = val
+      },
       getCode () {
         let data = {
           mobile: this.mobile
@@ -91,10 +105,12 @@
         console.log(localStorage.getItem('community_share'), 'asssssssss')
         // if (localStorage.getItem('community_share') == '1') {
         data = {
+          avatar: this.photo,
+          name: this.name,
           mobile: this.mobile,
           code: this.code,
           community_share: localStorage.getItem('community_share'),
-          avatar: localStorage.getItem('avatar'),
+          // avatar: localStorage.getItem('avatar'),
           nickname: localStorage.getItem('nickname'),
           official_openid: localStorage.getItem('official_openid')
         }
@@ -104,6 +120,12 @@
         //     code: this.code
         //   }
         // }
+        if (!this.photo || this.photo === 'https://images.ufutx.com/201907/26/5fa19a0b8b779e140a79f4936dc93bc9.png') {
+          return $toastWarn('请上传图片')
+        }
+        if (!this.name) {
+          return $toastWarn('无名称')
+        }
         if (!this.mobile) {
           return $toastWarn('无手机号码')
         }
@@ -113,7 +135,9 @@
         if (this.warn === true) {
           return $toastWarn('手机号码错误')
         }
-        this.$http.post('/official/login/mobile', data).then(({data}) => {
+        $loadingShow('注册中')
+        this.$http.post('/official/register', data).then(({data}) => {
+          $loadingHide()
           if (data.wechat && data.wechat.official_openid) {
             localStorage.setItem('official_openid', data.wechat.official_openid)
           } else {
@@ -149,8 +173,10 @@
       }
     },
     mounted () {
-      console.log(this.$store.state.route)
-      console.log(this.$wechat)
+      if (localStorage.getItem('paasName') !== null && localStorage.getItem('paasName') !== 'FL') {
+        this.paasTitle = localStorage.getItem('paasTitle')
+        this.logo = localStorage.getItem('logo')
+      }
     }
   }
 </script>
@@ -164,8 +190,33 @@
       background-size: cover;
       background-repeat: no-repeat;
       background-position-x: center;
-      background-image: url('https://images.ufutx.com/201907/20/65e11a061e85c4b9367a6477bb08a6ba.png');
-
+      position: relative;
+      background-image: url('https://images.ufutx.com/201907/26/ee1ba88327a47ae94c9d34f8755d0a63.png');
+      .main-paas{
+        /*position: absolute;*/
+        /*top: 0;*/
+        overflow: hidden;
+        margin: auto;
+        margin-top: -320px;
+        text-align: center;
+        margin-bottom: 100px;
+        .title{
+          color: white;
+          font-size: 72px;
+          font-weight: bold;
+          font-family: "Adobe 楷体 Std R";
+        }
+        .logo{
+          width: 160px;
+          height: 160px;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: cover;
+          display: inline-block;
+          vertical-align: middle;
+          margin-bottom: 62px;
+        }
+      }
       input {
         width: 68%;
         height: 90px;
@@ -178,7 +229,8 @@
       }
 
       .center {
-        padding-top: 56vw;
+        /*padding-top: 56vw;*/
+        padding-top: 44vw;
       }
       .main-center{
         background: white;
@@ -198,9 +250,11 @@
           .img{
             width: 100%;
             height: 100%;
+            background: white;
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
+            position: relative;
           }
         }
       }

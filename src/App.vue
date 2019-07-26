@@ -64,10 +64,10 @@
         </tabbar-item>
         <tabbar-item :link="{path:'/myCommunity'}" :selected="path === '/myCommunity'" v-if="paasName === '' || paasName === 'FL'">
         <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
-        <img src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="home">
+        <img src="https://images.ufutx.com/201907/26/fdfc54ac12950cd6eaf5674773c32558.png" alt="home">
         </span>
           <span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">
-        <img src="https://images.ufutx.com/201907/20/e0e896fda78195fbaa95f23e3af5c516.png" alt="home">
+        <img src="https://images.ufutx.com/201907/26/5a6a483301a36d77299120f055ef39b8.png" alt="home">
         </span>
           <span slot="label">社群</span>
         </tabbar-item>
@@ -300,12 +300,15 @@
   }
 
   .weui-tabbar {
-    padding: 6px 0 !important;
+    /*padding: 6px 0 !important;*/
 
     .weui-tabbar__icon {
       width: 30px !important;
       height: 30px !important;
     }
+  }
+  .weui-tabbar__item{
+    padding: 0 !important;
   }
 
   .dp-header .dp-item {

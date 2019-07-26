@@ -1,15 +1,15 @@
 <template>
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
-      <!--<div class="main-input">-->
-        <!--<input type="text" placeholder="搜索感兴趣的群" v-model="search" @change="searchUser"/>-->
-      <!--</div>-->
+      <div class="main-input">
+        <input type="text" placeholder="搜索感兴趣的群" v-model="search" @change="searchUser"/>
+      </div>
       <div class="main-creation" @click="create">
         <img class="flo_l" src="https://images.ufutx.com/201907/20/6e0bb82048c9ab0b1833d28aa83c6d7f.png">
         <p class="flo_l font28 bold">新建社群</p>
         <p class="flo_l font26 colorb0">新建一个自己的社群，可以召集你的小伙伴</p>
       </div>
-      <div class="main-share" @click="showShare = true">
+      <div class="main-share" @click="showSharefn">
         <img src="https://images.ufutx.com/201907/20/8e47e7087d1ecd592028786df6dbc60f.png" alt="">
       </div>
       <!--<div class="main-map" @click="gotoLink">-->
@@ -47,7 +47,7 @@
   import {Group, Cell, XHeader, Swiper, XInput, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import swiperComponent from '../components/swiper'
-  // import {$toastText} from '../config/util'
+  import {$toastText} from '../config/util'
   import shareModal from '../components/shareMoadl'
 
   export default {
@@ -121,10 +121,29 @@
         this.getOrderList({num: 1})
       },
       create () {
-        this.$router.push({
-          name: 'createCommunity',
-          params: {id: 0}
-        })
+        let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
+        if (ACCESS_TOKEN) {
+          this.$router.push({
+            name: 'createCommunity',
+            params: {id: 0}
+          })
+        } else {
+          $toastText('请先登录！')
+          setTimeout(() => {
+            this.$router.push({name: 'login'})
+          }, 800)
+        }
+      },
+      showSharefn () {
+        let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
+        if (ACCESS_TOKEN) {
+          this.showShare = true
+        } else {
+          $toastText('请先登录！')
+          setTimeout(() => {
+            this.$router.push({name: 'login'})
+          }, 800)
+        }
       },
       hideModal () {
         this.showModal = false
@@ -241,7 +260,7 @@
   }
   .main-creation{
     overflow: hidden;
-    padding: 28px  28px 36px 28px;
+    padding: 8px  28px 36px 28px;
     border-bottom: 14px solid #F6F6F6;
     img{
       width: 90px;

@@ -70,7 +70,8 @@
     </div>
     <moadlUp :show.sync="showQr" @hideModal="hideQr">
       <div class="main-qr">
-        <img :src="information.qrcode" alt="" @click="showImage">
+        <!--@click="showImage" //预览-->
+        <img :src="information.qrcode" alt="" />
         <div class="text text-left">群主微信：
           <input type="text" id="success_form_input" readonly="readonly" v-model="information.owner_wechat"/>
           <button  id="copy" ref="copy" @click="copyLink" data-clipboard-action="copy" data-clipboard-target="#success_form_input">

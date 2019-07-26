@@ -2,7 +2,7 @@
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div class="main-creation">
-        <img class="flo_l" :src="user.photo">
+        <div class="img flo_l" v-bind:style="{backgroundImage:'url(' + user.photo + ')'}" ></div>
         <p class="flo_l font28 bold color6">{{user.name}}</p>
         <div class="flo_l font26 colorb0 infor">
           <div class="text-center infor-item flo_l">
@@ -208,11 +208,14 @@
   .main-creation{
     overflow: hidden;
     padding: 36px  28px 28px 28px;
-    img{
+    .img{
       width: 90px;
       height: 90px;
       margin-right: 22px;
       border-radius: 50%;
+      /*background-position: center;*/
+      background-repeat: no-repeat;
+      background-size: cover;
     }
     p{
       margin-top: 8px;

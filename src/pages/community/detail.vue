@@ -63,8 +63,8 @@
         </div>
       </div>
       <div v-else>
-        <div class="applyNow theme_bc" @click="apply" v-if="information.is_applied == '0'">免费入群</div>
-        <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
+        <!--<div class="applyNow theme_bc" @click="apply" v-if="information.is_applied == '0'">免费入群</div>-->
+        <div class="applyNow theme_bc" @click="showQr = true" >查看群码</div>
       </div>
 
     </div>

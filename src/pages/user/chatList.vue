@@ -93,6 +93,7 @@
   .particulars_and_parameter{
     padding: 16px;
     float: left;
+    width: 76%;
   }
   .time{
     font-size: 26px;
@@ -107,5 +108,8 @@
     float: left;
     background-size: cover;
     background-repeat: no-repeat;
+  }
+  .data_parameter{
+
   }
 </style>

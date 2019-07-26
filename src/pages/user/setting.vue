@@ -138,7 +138,7 @@
           onConfirm () {
             localStorage.clear()
             vm.$router.push({
-              name: 'register'
+              name: 'login'
             })
           }
         })

@@ -1,7 +1,7 @@
 <template>
   <div class="upgrade">
     <div>
-      <img class="diamondPicture" src="https://images.ufutx.com/201907/19/06e64f099dab71189ce1298c776c537f.png" alt="">
+      <img class="diamondPicture" src="https://images.ufutx.com/201907/24/2f03aa6c5960592f7f28aa1c6cdb35c4.png" alt="">
       <div class="head_card">
         <!--<div class="box_card">-->
           <!--<img class="card" src="https://images.ufutx.com/201907/19/e911f5e26b22aef5d95bdd9a91bb6555.png" alt="">-->

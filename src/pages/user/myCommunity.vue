@@ -2,15 +2,14 @@
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div class="main-creation">
-        <img class="flo_l" :src="user.photo">
+        <div class="img flo_l" v-bind:style="{backgroundImage:'url(' + user.photo + ')'}" ></div>
         <p class="flo_l font28 bold color6">{{user.name}}</p>
         <div class="flo_l font26 colorb0 infor">
           <div class="text-center infor-item flo_l">
             <span class="theme_clo  font36">{{user.community_count}}</span>
             <p class="color6">总群数</p>
           </div>
-          <div class="text-center infor-item flo_l" >
-            <!--@click="gotoLink"-->
+          <div class="text-center infor-item flo_l" @click="gotoLink">
             <span class="theme_clo font36">{{user.community_member_num}}</span>
             <p class="color6">总成员</p>
           </div>
@@ -128,9 +127,13 @@
         this.showModal = false
       },
       gotoLink () {
-        this.$router.push({
-          name: `communityMember`
-        })
+        if (this.type === 'create') {
+          this.$router.push({
+            name: `communityMember`
+          })
+        } else {
+          $toastText('暂时不能查看我加入的社群 群成员！')
+        }
       },
       gotoShare () {
         this.showModal = false
@@ -164,9 +167,9 @@
       },
       getOrderList (page, mescroll) {
         let vm = this
-        let url = `/official/users/${vm.id}/communities?page=${page.num}`
+        let url = `/official/users/communities?page=${page.num}`
         if (vm.type === 'join') {
-          url = `/official/users/${vm.id}/joined/communities?page=${page.num}`
+          url = `/official/users/joined/communities?page=${page.num}`
         }
         vm.$http.get(url).then(({data}) => {
           vm.user = data.user
@@ -200,15 +203,19 @@
 
 <style lang="less" scoped="scoped">
   .scrollView{
-    background: white;
+    background: white !important;
   }
   .main-creation{
     overflow: hidden;
     padding: 36px  28px 28px 28px;
-    img{
+    .img{
       width: 90px;
       height: 90px;
       margin-right: 22px;
+      border-radius: 50%;
+      /*background-position: center;*/
+      background-repeat: no-repeat;
+      background-size: cover;
     }
     p{
       margin-top: 8px;

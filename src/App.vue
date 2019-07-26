@@ -1,6 +1,6 @@
 <template>
   <div id="app" style="height:100%;">
-    <view-box ref="viewBox" body-padding-bottom="50">
+    <view-box ref="viewBox" :body-padding-bottom="!isTabbarDemo?50:0">
       <div v-transfer-dom>
         <loading v-model="isLoading"></loading>
         <!--<loadingPage :init="!isLoading"></loadingPage>-->
@@ -26,7 +26,7 @@
       <!--</span>-->
       <!--</x-header>-->
       <tabbar class="vux-demo-tabbar" icon-class="vux-center tabbar-icon" v-show="!isTabbarDemo" slot="bottom">
-        <tabbar-item :link="{path:'/community'}" :selected="path === '/community'" v-if="paasName === ''">
+        <tabbar-item :link="{path:'/community'}" :selected="path === '/community'" v-if="paasName === '' || paasName === 'FL'">
           <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
             <img src="../src/assets/icon/home.png" alt="home">
           </span>
@@ -44,16 +44,16 @@
           </span>
           <span slot="label">首页</span>
         </tabbar-item>
-        <tabbar-item :link="{path:'/plaza'}" :selected="path === '/plaza'" v-if="paasName === ''">
-          <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
-            <img src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="home">
-          </span>
-          <span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">
-            <img src="https://images.ufutx.com/201907/20/e0e896fda78195fbaa95f23e3af5c516.png" alt="home">
-          </span>
-          <span slot="label">广场</span>
-        </tabbar-item>
-        <tabbar-item :link="{path:'/activity'}" :selected="path === '/activity'" v-else>
+        <!--<tabbar-item :link="{path:'/plaza'}" :selected="path === '/plaza'" v-if="paasName === '' || paasName === 'FL'">-->
+          <!--<span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">-->
+            <!--<img src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="home">-->
+          <!--</span>-->
+          <!--<span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">-->
+            <!--<img src="https://images.ufutx.com/201907/20/e0e896fda78195fbaa95f23e3af5c516.png" alt="home">-->
+          <!--</span>-->
+          <!--<span slot="label">广场</span>-->
+        <!--</tabbar-item>-->
+        <tabbar-item :link="{path:'/activity'}" :selected="path === '/activity'" v-if="paasName != '' && paasName != 'FL'">
           <span class="demo-icon-22" slot="icon" style="position:relative;bottom: -3px">
             <img src="../src/assets/icon/attention.png" alt="home">
           </span>
@@ -62,7 +62,16 @@
           </span>
           <span slot="label">活动</span>
         </tabbar-item>
-        <tabbar-item :link="{path:'/chitchat'}" :badge="chat_num == 0?'':chat_num" :selected="path === '/chitchat'">
+        <tabbar-item :link="{path:'/myCommunity'}" :selected="path === '/myCommunity'" v-if="paasName === '' || paasName === 'FL'">
+        <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
+        <img src="https://images.ufutx.com/201907/26/fdfc54ac12950cd6eaf5674773c32558.png" alt="home">
+        </span>
+          <span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">
+        <img src="https://images.ufutx.com/201907/26/5a6a483301a36d77299120f055ef39b8.png" alt="home">
+        </span>
+          <span slot="label">社群</span>
+        </tabbar-item>
+        <tabbar-item :link="{path:'/chitchat'}" :badge="chat_num == 0?'':chat_num" :selected="path === '/chitchat'" v-else>
           <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
             <img src="../src/assets/icon/message.png" alt="home">
           </span>
@@ -131,7 +140,7 @@
       isTabbarDemo () {
         if (this.route.path === '/') return false
         if (this.route.path === '/community') return false
-        if (this.route.path === '/plaza') return false
+        if (this.route.path === '/myCommunity') return false
         if (this.route.path === '/activity') return false
         if (this.route.path === '/chitchat') return false
         if (this.route.path === '/user') return false
@@ -291,12 +300,15 @@
   }
 
   .weui-tabbar {
-    padding: 6px 0 !important;
+    /*padding: 6px 0 !important;*/
 
     .weui-tabbar__icon {
       width: 30px !important;
       height: 30px !important;
     }
+  }
+  .weui-tabbar__item{
+    padding: 0 !important;
   }
 
   .dp-header .dp-item {

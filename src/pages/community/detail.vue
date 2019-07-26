@@ -2,8 +2,8 @@
   <div class="main-box">
     <div class="main-info colorff">
       <div class="info-user text-center">
-        <div class="photo">
-          <img :src="information.owner_photo">
+        <div class="photo" @click="gotoDetail(information.user_id)">
+          <img :src="information.logo">
         </div>
         <!--<div class="font26">{{information.owner_name}}</div>-->
       </div>
@@ -30,25 +30,26 @@
         <img src="https://images.ufutx.com/201907/20/1c4416925c394e67b2a81696d3b34af7.png" alt="">
       </div>
     </div>
-    <div class="main-share" @click="showShare = true">
-      <img src="https://images.ufutx.com/201907/20/8e47e7087d1ecd592028786df6dbc60f.png" alt="">
+    <div class="main-share" @click="gotoLink(information.poster_path)">
+      <img :src="information.poster" alt="">
     </div>
     <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
     <LoadMore tip="群成员" :show-loading="false"></LoadMore>
     <div class="main-otherUser">
-      <div class="item-photo" v-for="item,index in information.members" v-if="item.photo" @click="routeToDetail(item.type, item.id)">
+      <div class="item-photo" v-for="item,index in information.members" v-if="item.photo" @click="gotoDetail(item.user_id)">
         <div class="img" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
       </div>
     </div>
+    <div class="height160"></div>
     <div class="box_bottom">
       <div class="home_and_share">
-        <div class="home_" @click="goHome">
-          <img class="icon_home" src="https://images.ufutx.com/201904/02/c2a2e6539c0aba992088b1b51a54a18b.png" alt="">
+        <div class="home_ text-center" @click="goHome">
+          <img class="icon_home" src="https://images.ufutx.com/201907/23/89fdc039b0f305190a806b0da4323919.png" alt="">
           <p class="home">首页</p>
         </div>
-        <div class="share_" @click="showShare = true">
-          <img class="icon_share" src="https://images.ufutx.com/201904/02/7b1981496eb2cd024c3830a018c4c89e.png" alt="">
-          <p class="share">分享</p>
+        <div class="share_ text-center" @click="goCreate">
+          <img class="icon_share" src="https://images.ufutx.com/201907/25/a18656b27b60619b9bc5d3cb67824806.png" alt="">
+          <p class="share">新建社群</p>
         </div>
       </div>
       <div v-if="token">
@@ -62,14 +63,15 @@
         </div>
       </div>
       <div v-else>
-        <div class="applyNow theme_bc" @click="apply" v-if="information.is_applied == '0'">免费入群</div>
-        <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
+        <!--<div class="applyNow theme_bc" @click="apply" v-if="information.is_applied == '0'">免费入群</div>-->
+        <div class="applyNow theme_bc" @click="showQr = true" >查看群码</div>
       </div>
 
     </div>
     <moadlUp :show.sync="showQr" @hideModal="hideQr">
       <div class="main-qr">
-        <img :src="information.qrcode" alt="" @click="showImage">
+        <!--@click="showImage" //预览-->
+        <img :src="information.qrcode" alt="" />
         <div class="text text-left">群主微信：
           <input type="text" id="success_form_input" readonly="readonly" v-model="information.owner_wechat"/>
           <button  id="copy" ref="copy" @click="copyLink" data-clipboard-action="copy" data-clipboard-target="#success_form_input">
@@ -109,10 +111,10 @@
         <!--<div class="getOpenid Complaint text-center" @click="getOpenid">投诉</div>-->
       </div>
     </moadlDown>
+    <group>
+      <popup-picker :show.sync="showComplaint" :show-cell="false" :data="pickerList" @on-change="onChange" ></popup-picker>
+    </group>
     <div v-transfer-dom>
-      <group>
-        <popup-picker :show.sync="showComplaint" :data="pickerList"  @on-change="onChange" ></popup-picker>
-      </group>
       <previewer :list="list" ref="previewer" @on-index-change="logIndexChange"></previewer>
     </div>
   </div>
@@ -201,16 +203,24 @@
       onSuccess (val) {
         this.photo = val
       },
-      gotoDetail (url) {
-        window.location.href = url
+      gotoDetail (id) {
+        if (!id) return
+        this.$router.push({
+          name: 'userCommunityClass',
+          params: {id: id}
+        })
+      },
+      gotoLink (link) {
+        window.location.href = link
       },
       getOpenid () {
         if (this.$isWeiXin() === true) {
           this.showOpenid = false
+          let paas = localStorage.getItem('paasName')
           if (localStorage.getItem('mobile') && localStorage.getItem('mobile') !== null) {
-            window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&type=community&id=${this.id}&from_user_id=${this.userInfo ? this.userInfo.id : ''}`
+            window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&paas=${paas}&type=community&id=${this.id}&from_user_id=${this.userInfo ? this.userInfo.id : ''}`
           } else {
-            window.location.href = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}&from_user_id=${this.userInfo ? this.userInfo.id : ''}`
+            window.location.href = `https://love.ufutx.com/wx/bind?type=community&paas=${paas}&id=${this.id}&from_user_id=${this.userInfo ? this.userInfo.id : ''}`
           }
         }
       },
@@ -240,12 +250,11 @@
         this.showShare = value
       },
       routeToDetail (type, id) { // 跳转
-        return
         if (this.information.is_applied === 1) {
-          if (type === 'single') {
-            this.$router.push({name: 'information', params: {id: id}})
-          } else {
+          if (type === 'marriage') {
             this.$router.push({name: 'introducer', params: {id: id}})
+          } else {
+            this.$router.push({name: 'information', params: {id: id}})
           }
         } else {
           $toastWarn('请先加入群！')
@@ -267,17 +276,26 @@
         this.$router.push({name: name})
       },
       goHome () {
-        if (localStorage.getItem('paasName')) {
+        if (localStorage.getItem('paasName') !== 'FL' && localStorage.getItem('paasName')) {
           this.$router.push({name: 'home'})
         } else {
           this.$router.push({name: 'communityHome'})
         }
       },
+      goCreate () {
+        this.$router.push({
+          name: 'createCommunity',
+          params: {id: 0}
+        })
+      },
       getUser () {
         this.$http.get(`/official/communities/${this.id}`).then(({data}) => {
+          localStorage.setItem('avatar', data.avatar)
+          localStorage.setItem('nickname', data.nickname)
           this.information = data
           let officialOpenid = localStorage.getItem('official_openid')
-          let url = `https://love.ufutx.com/wx/bind?type=community&id=${this.id}&community_share=1&from_user_id=${this.userInfo ? this.userInfo.id : ''}&from_official_openid=${officialOpenid}`
+          let paas = localStorage.getItem('paasName')
+          let url = `https://love.ufutx.com/wx/bind?type=community&paas=${paas}&id=${this.id}&community_share=1&from_user_id=${this.userInfo ? this.userInfo.id : ''}&from_official_openid=${officialOpenid}`
           let pic = this.userInfo ? this.userInfo.photo : data.logo
           let title = this.userInfo ? `${this.userInfo.name}邀请你加入《${data.title}》` : `邀请你加入《${data.title}》`
           let intro = data.intro
@@ -290,8 +308,6 @@
             }
           }
           localStorage.setItem('official_openid', data.official_openid)
-          localStorage.setItem('avatar', data.avatar)
-          localStorage.setItem('nickname', data.nickname)
           if (data.is_photo === 0) {
             this.showUpload = true
           } else {
@@ -304,7 +320,7 @@
       apply () {
         if (!this.token) {
           localStorage.setItem('jump', window.location.href)
-          this.$router.push({name: 'register'})
+          this.$router.push({name: 'login'})
           return
         }
         $loadingShow('加载中...')
@@ -444,6 +460,7 @@
       width: 42px;
       height: 42px;
       vertical-align: middle;
+      margin-left: -4px;
     }
 
     /*分享图片*/

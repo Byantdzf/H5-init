@@ -45,6 +45,11 @@ export default new Router({
       component: (resolve) => require(['@/pages/register'], resolve)
     },
     {
+      path: '/login',
+      name: 'login',
+      component: (resolve) => require(['@/pages/login'], resolve)
+    },
+    {
       path: '/personalData',
       meta: {
         keepAlive: true // 需要被缓存
@@ -87,9 +92,14 @@ export default new Router({
       component: (resolve) => require(['@/pages/user/authentication'], resolve)
     },
     {
-      path: '/myCommunity', // 我的群组
+      path: '/myCommunity', // 群组
       name: 'myCommunity',
       component: (resolve) => require(['@/pages/user/myCommunity'], resolve)
+    },
+    {
+      path: '/myCommunityV2', // 我的群组
+      name: 'myCommunityV2',
+      component: (resolve) => require(['@/pages/user/myCommunityV2'], resolve)
     },
     {
       path: '/communityMember', // 群组成员
@@ -100,6 +110,16 @@ export default new Router({
       path: '/setting', // 设置
       name: 'setting',
       component: (resolve) => require(['@/pages/user/setting'], resolve)
+    },
+    {
+      path: '/createCommunity/:id', // 创建群and修改
+      name: 'createCommunity',
+      component: (resolve) => require(['@/pages/community/createCommunity'], resolve)
+    },
+    { // 群主所有群
+      path: '/userCommunityClass/:id',
+      name: 'userCommunityClass',
+      component: (resolve) => require(['@/pages/community/userCommunity'], resolve)
     },
     { // 社群分类
       path: '/communityClass/:id',

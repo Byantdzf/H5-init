@@ -1,41 +1,30 @@
 <template>
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
-      <div class="main-input">
-        <input type="text" placeholder="搜索感兴趣的群" v-model="search" @change="searchUser"/>
+      <div class="main-creation" >
+        <div class="img flo_l" v-bind:style="{backgroundImage:'url(' + user.photo + ')'}"></div>
+        <p class="flo_l font28 bold color6">{{user.name}}</p>
+        <!--<p class="flo_l font26 colorb0 infor">所有群</p>-->
       </div>
-      <div class="main-creation" @click="create">
-        <img class="flo_l" src="https://images.ufutx.com/201907/20/6e0bb82048c9ab0b1833d28aa83c6d7f.png">
-        <p class="flo_l font28 bold">新建社群</p>
-        <p class="flo_l font26 colorb0">新建一个自己的社群，可以召集你的小伙伴</p>
-      </div>
-      <div class="main-share" @click="showSharefn">
-        <img src="https://images.ufutx.com/201907/20/8e47e7087d1ecd592028786df6dbc60f.png" alt="">
-      </div>
-      <!--<div class="main-map" @click="gotoLink">-->
-        <!--<img class="flo_l city" src="http://images.ufutx.com/201905/29/116e3887dd6dcbcaad6a464f96bdcdcb.png">-->
-        <!--<span class="flo_l font28 address" >相遇地图</span>-->
-        <!--<img class="flo_r next" src="http://images.ufutx.com/201905/29/2eeab012d13d91f16f5a21ad6c578678.png">-->
-        <!--<img class="flo_r photo" src="http://images.ufutx.com/201907/01/1a6e685971a396376488e9183dbb8899.png">-->
-        <!--<span class="flo_r color6 font26" >附近的群</span>-->
-      <!--</div>-->
-      <div class="groupicon" >
+      <div class="color6 font26 bc_num" v-if="list.length>0">{{list.length}}个群</div>
+      <div class="groupicon">
         <div class="item-icon" v-for="item,index in list" @click="goToDetail(item)"  >
           <div class="logo" v-bind:style="{backgroundImage:'url(' + item.logo + ')'}" ></div>
           <div class="font22 color6 title">{{item.title}}</div>
         </div>
       </div>
-      <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
-        <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
-        <p style="margin-top: 8px;">
-          <span class="font32">{{item.name}}</span>
-          <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.stature? '· ' +item.stature +'cm': ''}} {{item.city? '· '+item.city: ''}}</span>
-        </p>
-        <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
-      </div>
       <div class="height160"></div>
     </mescroll-vue>
-    <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
+    <div class="main-float">
+      <!--<div class="share_ text-center" @click="goPlaza">-->
+        <!--<img class="icon_share" src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="">-->
+        <!--<p class="share color6 inline-block">广场</p>-->
+      <!--</div>-->
+      <div class="home_ text-center" @click="goHome">
+        <img class="icon_home" src="https://images.ufutx.com/201907/22/31d8e0c40d69b277a83add3ecefe55f3.png" alt="">
+        <span class="home color6">首页</span>
+      </div>
+    </div>
     <div class="vessel" v-if="showModal">
       <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close" @click="hideModal">
       <div class="modal-vessel" @click="gotoShare"></div>
@@ -46,9 +35,8 @@
 <script>
   import {Group, Cell, XHeader, Swiper, XInput, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
-  import swiperComponent from '../components/swiper'
-  import {$toastText} from '../config/util'
-  import shareModal from '../components/shareMoadl'
+  import swiperComponent from '../../components/swiper'
+  import {$toastText} from '../../config/util'
 
   export default {
     components: {
@@ -59,8 +47,7 @@
       SwiperItem,
       XInput,
       swiperComponent,
-      MescrollVue,
-      shareModal
+      MescrollVue
     },
     data () {
       return {
@@ -69,9 +56,9 @@
         search: '',
         showModal: false,
         init: false,
-        showShare: false,
         recommend: [],
         noData: false,
+        id: 0,
         page: 1,
         groupList: [
           {
@@ -95,7 +82,7 @@
             id: 4
           }
         ],
-        announcements: [],
+        user: {},
         mescroll: null, //  mescroll实例对象
         mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
         mescrollUp: { // 上拉加载的配置.
@@ -112,71 +99,55 @@
       }
     },
     methods: {
-      hideShare (value) {
-        this.showShare = value
-      },
       searchUser () { // 输入框搜索
-        this.list = []
-        console.log(this.search)
-        this.getOrderList({num: 1})
+        this.getOrderList(1)
       },
       create () {
-        let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
-        if (ACCESS_TOKEN) {
-          this.$router.push({
-            name: 'createCommunity',
-            params: {id: 0}
-          })
-        } else {
-          $toastText('请先登录！')
-          setTimeout(() => {
-            this.$router.push({name: 'login'})
-          }, 800)
-        }
-      },
-      showSharefn () {
-        let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
-        if (ACCESS_TOKEN) {
-          this.showShare = true
-        } else {
-          $toastText('请先登录！')
-          setTimeout(() => {
-            this.$router.push({name: 'login'})
-          }, 800)
-        }
+        $toastText('该功能正在开发中...')
       },
       hideModal () {
         this.showModal = false
       },
       gotoLink () {
-        this.$router.push({name: 'map'})
+        window.location.href = 'https://mp.weixin.qq.com/s/JOOAf693lS3cWpSngompLA'
       },
       gotoShare () {
         this.showModal = false
         window.location.href = `http://love.ufutx.com/wx/bind/v2`
+        // this.$router.push({name: 'sharePage'})
+      },
+      goHome () {
+        if (localStorage.getItem('paasName') !== 'FL' && localStorage.getItem('paasName')) {
+          this.$router.push({name: 'home'})
+        } else {
+          this.$router.push({name: 'communityHome'})
+        }
+      },
+      goPlaza () {
+        this.$router.push({name: 'plaza'})
       },
       goToDetail (item) {
-        this.$router.push({
-          path: `communityClass/${item.id}`
-        })
-        // if (this.$isWeiXin() === true) {
-        //   if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
-        //     this.$router.push({
-        //       path: `communityDetail/${item.id}`
-        //     })
-        //   } else {
-        //     if (localStorage.getItem('mobile') && localStorage.getItem('mobile') !== null) {
-        //       window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&type=community&id=${item.id}&from_official_openid=` + localStorage.getItem('from_official_openid')
-        //     } else {
-        //       window.location.href = `https://love.ufutx.com/wx/bind?type=community&id=${item.id}`
-        //     }
-        //   }
-        // } else {
-        //   this.$router.push({
-        //     path: `wxGroup/${item.id}`,
-        //     query: {title: item.title, logo: item.icon}
-        //   })
-        // }
+        if (this.$isWeiXin() === true) {
+          if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
+            this.$router.push({
+              name: `communityDetail`,
+              params: {id: item.id},
+              query: {title: item.title, logo: item.icon}
+            })
+          } else {
+            if (localStorage.getItem('mobile') && localStorage.getItem('mobile') !== null) {
+              window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&type=community&id=${item.id}&from_official_openid=` + localStorage.getItem('from_official_openid')
+            } else {
+              window.location.href = `https://love.ufutx.com/wx/bind?type=community&id=${item.id}`
+            }
+          }
+        } else {
+          this.$router.push({
+            name: `communityDetail`,
+            params: {id: item.id},
+            query: {title: item.title, logo: item.icon}
+          })
+        }
       },
       swiperItem (currentIndex) {
         this.currentIndex = currentIndex
@@ -191,18 +162,33 @@
       mescrollInit (mescroll) {
         this.mescroll = mescroll
       },
+      getMessageNum () {
+        this.$http.get(`/official/notice/num`).then(({data}) => {
+          localStorage.setItem('chat_num', data.chat_message_num.toString())
+          localStorage.setItem('notice_num', data.notice_num.toString())
+        })
+      },
       getOrderList (page, mescroll) {
         let vm = this
-        vm.$http.get(`/official/community/groups?page=${page.num}&keyword=${vm.search}`).then(({data}) => {
+        vm.$http.get(`/official/users/${vm.id}/communities?page=${page.num}`).then(({data}) => {
+          vm.user = data.user
+          let user = data.user
+          let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+          let title = userInfo ? `${userInfo.name}邀请你进入Ta的群组` : `邀请你加入《${user.name}》的群组`
+          let intro = `${user.name}的群组`
+          let pic = user.photo
+          let paas = localStorage.getItem('paasName')
+          let officialOpenid = localStorage.getItem('official_openid')
+          let url = `https://love.ufutx.com/mobile/#/userCommunityClass/${user.id}?paas=${paas}&id=&community_share=1&from_user_id=${userInfo ? userInfo.id : ''}&from_official_openid=${officialOpenid}`
+          console.log(pic, url, intro, title)
+          this.$shareList(pic, url, intro, title)
           vm.init = true
-          let dataV = page.num === 1 ? [] : this.list
-          dataV.push(...data.data)
+          let dataV = page.num === 1 ? [] : vm.list
+          dataV.push(...data.communities.data)
           vm.list = dataV
-          if (mescroll) {
-            vm.$nextTick(() => {
-              mescroll.endSuccess(data.data.length)
-            })
-          }
+          vm.$nextTick(() => {
+            mescroll.endSuccess(data.communities.data.length)
+          })
           console.log(vm.list)
         }).catch((error) => {
           console.log(error)
@@ -210,6 +196,7 @@
       }
     },
     mounted () {
+      this.id = this.$route.params.id
       // console.log(this.$store.state.intercept)
       // if (this.$store.state.intercept === 'true') {
       //   return false
@@ -228,7 +215,7 @@
     margin: 28px auto;
     padding: 0 12px;
     border-radius: 12px;
-    padding-left: 48px;
+    padding-left: 43px;
     position: relative;
     &:after{
       content: '';
@@ -237,7 +224,7 @@
       position: absolute;
       left: 6px;
       top: 10px;
-      background-image: url("https://images.ufutx.com/201907/20/de514ca726d16a399ab2a10f426929b2.png");
+      background-image: url("https://images.ufutx.com/201907/20/f8b7d5da439d74b54f56121eabf93246.png");
       background-size: contain;
       background-repeat: no-repeat;
     }
@@ -260,41 +247,26 @@
   }
   .main-creation{
     overflow: hidden;
-    padding: 8px  28px 36px 28px;
-    border-bottom: 14px solid #F6F6F6;
-    img{
+    padding: 36px  28px;
+    .img{
       width: 90px;
       height: 90px;
       margin-right: 22px;
+      border-radius: 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
     p{
-      margin-top: 10px;
+      margin-top: 8px;
+    }
+    .infor{
+      width: 82%;
     }
   }
-  .main-map{
-    border-bottom: 14px solid #F6F6F6;
-    overflow: hidden;
-    height: 62px;
-    padding: 22px 22px;
-    line-height: 62px;
-    .city{
-      width: 28px;
-      line-height: 62px;
-      margin-right: 22px;
-      vertical-align: middle;
-      margin-top: 12px;
-      margin-left: 46px;
-    }
-    .photo{
-      width: 60px;
-      height: 60px;
-      margin-left: 12px;
-    }
-    .next{
-      width: 22px;
-      margin-left: 64px;
-      margin-top: 12px;
-    }
+  .bc_num{
+    background: #f6f6f6;
+    padding: 4px 28px;
   }
   .animationData {
     animation: myMove2 800ms linear;
@@ -342,12 +314,63 @@
         background-size: cover;
         background-repeat: no-repeat;
       }
+      img {
+        width: 88px;
+        margin-top: 12px;
+      }
       .title {
         margin-top: 4px;
       }
     }
   }
 
+  .main-float {
+    background: #ffffff;
+    .home_,.share_{
+      border: 1px solid #f0f0f0;
+      width: 150px;
+      padding: 8px 12px;
+      position: fixed;
+      padding-bottom: 0;
+      bottom: 20%;
+      right: 0;
+      border-bottom-left-radius: 6px;
+      border-top-left-radius: 6px;
+      img{
+        width: 48px;
+        vertical-align: middle;
+        margin-bottom: 10px;
+      }
+    }
+    .share_{
+      width: 18vw;
+      animation: shareMove 800ms linear;
+      animation-fill-mode: forwards;
+      @keyframes shareMove {
+        from {
+          right: -18vw;
+        }
+        to {
+          right: 0;
+        }
+      }
+    }
+    .home_{
+      width: 22vw;
+      bottom: 14%;
+      overflow: hidden;
+      animation: homeMove 900ms linear;
+      animation-fill-mode: forwards;
+      @keyframes homeMove {
+        from {
+          right: -22vw;
+        }
+        to {
+          right: 0;
+        }
+      }
+    }
+  }
   .vessel {
     position: fixed;
     width: 100vw;
@@ -377,11 +400,6 @@
           margin: 30% auto;
         }
       }
-    }
-  }
-  .main-share {
-    img {
-      width: 100%;
     }
   }
 </style>

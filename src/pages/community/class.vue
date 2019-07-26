@@ -15,6 +15,16 @@
       </div>
       <div class="height160"></div>
     </mescroll-vue>
+    <div class="main-float">
+      <!--<div class="share_ text-center" @click="goCreate">-->
+        <!--<img class="icon_share" src="https://images.ufutx.com/201907/25/a18656b27b60619b9bc5d3cb67824806.png" alt="">-->
+        <!--<p class="share color6 inline-block">新建社群</p>-->
+      <!--</div>-->
+      <div class="home_ text-center" @click="goHome">
+        <img class="icon_home" src="https://images.ufutx.com/201907/22/31d8e0c40d69b277a83add3ecefe55f3.png" alt="">
+        <span class="home color6">首页</span>
+      </div>
+    </div>
     <div class="vessel" v-if="showModal">
       <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close" @click="hideModal">
       <div class="modal-vessel" @click="gotoShare"></div>
@@ -98,6 +108,12 @@
       hideModal () {
         this.showModal = false
       },
+      goCreate () {
+        this.$router.push({
+          name: 'createCommunity',
+          params: {id: 0}
+        })
+      },
       gotoLink () {
         window.location.href = 'https://mp.weixin.qq.com/s/JOOAf693lS3cWpSngompLA'
       },
@@ -105,6 +121,16 @@
         this.showModal = false
         window.location.href = `http://love.ufutx.com/wx/bind/v2`
         // this.$router.push({name: 'sharePage'})
+      },
+      goHome () {
+        if (localStorage.getItem('paasName') !== 'FL' && localStorage.getItem('paasName')) {
+          this.$router.push({name: 'home'})
+        } else {
+          this.$router.push({name: 'communityHome'})
+        }
+      },
+      goPlaza () {
+        this.$router.push({name: 'plaza'})
       },
       goToDetail (item) {
         if (this.$isWeiXin() === true) {
@@ -152,6 +178,18 @@
         let vm = this
         vm.$http.get(`/official/community/groups/${vm.id}?page=${page.num}`).then(({data}) => {
           vm.group = data.group
+
+          let group = data.group
+          let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+          let title = userInfo ? `${userInfo.name}邀请你加入《${group.title}》` : `邀请你加入《${group.title}》`
+          let intro = group.intro
+          let pic = group.logo
+          let paas = localStorage.getItem('paasName')
+          let officialOpenid = localStorage.getItem('official_openid')
+          let url = `https://love.ufutx.com/mobile/#/communityClass/${group.id}?paas=${paas}&id=&community_share=1&from_user_id=${userInfo ? userInfo.id : ''}&from_official_openid=${officialOpenid}`
+          console.log(pic, url, intro, title)
+          this.$shareList(pic, url, intro, title)
+
           vm.init = true
           let dataV = page.num === 1 ? [] : vm.list
           dataV.push(...data.communities.data)
@@ -292,6 +330,53 @@
     }
   }
 
+  .main-float {
+    background: #ffffff;
+    .home_,.share_{
+      border: 1px solid #f0f0f0;
+      width: 150px;
+      padding: 8px 12px;
+      position: fixed;
+      padding-bottom: 0;
+      bottom: 20%;
+      right: 0;
+      border-bottom-left-radius: 6px;
+      border-top-left-radius: 6px;
+      img{
+        width: 48px;
+        vertical-align: middle;
+        margin-bottom: 10px;
+      }
+    }
+    .share_{
+      width: 26vw;
+      animation: shareMove 800ms linear;
+      animation-fill-mode: forwards;
+      @keyframes shareMove {
+        from {
+          right: -26vw;
+        }
+        to {
+          right: 0;
+        }
+      }
+    }
+    .home_{
+      width: 22vw;
+      bottom: 14%;
+      overflow: hidden;
+      animation: homeMove 900ms linear;
+      animation-fill-mode: forwards;
+      @keyframes homeMove {
+        from {
+          right: -22vw;
+        }
+        to {
+          right: 0;
+        }
+      }
+    }
+  }
   .vessel {
     position: fixed;
     width: 100vw;

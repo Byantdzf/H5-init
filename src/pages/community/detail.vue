@@ -204,6 +204,7 @@
         this.photo = val
       },
       gotoDetail (id) {
+        if (!id) return
         this.$router.push({
           name: 'userCommunityClass',
           params: {id: id}

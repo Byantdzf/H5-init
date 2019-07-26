@@ -175,7 +175,7 @@
           let user = data.user
           let userInfo = JSON.parse(localStorage.getItem('userInfo'))
           let title = userInfo ? `${userInfo.name}邀请你进入Ta的群组` : `邀请你加入《${user.name}》的群组`
-          let intro = `${user.name}的群组`
+          let intro = `福恋科技专注人工智能社交平台，以婚恋交友为入口，打造精数据可视化社交平台，用科技让交友变简单。`
           let pic = user.photo
           let paas = localStorage.getItem('paasName')
           let officialOpenid = localStorage.getItem('official_openid')

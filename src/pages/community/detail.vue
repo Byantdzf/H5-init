@@ -2,7 +2,7 @@
   <div class="main-box">
     <div class="main-info colorff">
       <div class="info-user text-center">
-        <div class="photo" @click="gotoDetail(information.id)">
+        <div class="photo" @click="gotoDetail(information.user_id)">
           <img :src="information.logo">
         </div>
         <!--<div class="font26">{{information.owner_name}}</div>-->

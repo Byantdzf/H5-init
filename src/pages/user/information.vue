@@ -89,7 +89,7 @@
         id: '',
         showQr: false,
         btnActive: false,
-        paas: localStorage.getItem('paasName'),
+        paas: '',
         information: {},
         life_photos: [],
         imgList: [{
@@ -133,7 +133,7 @@
       },
       addFriend () {
         if (!this.information) return
-        if (localStorage.getItem('paasName') === 'ZNSJ' && this.information.subscribe === 0) {
+        if (this.paas === 'ZNSJ' && this.information.subscribe === 0) {
           this.showQr = true
           return
         }
@@ -158,7 +158,10 @@
       }
     },
     mounted () {
-      console.log(this.$store.state.route)
+      if (this.$route.query.paas) {
+        this.paas = this.$route.query.paas
+        console.log(this.paas)
+      }
       this.id = this.$route.params.id
       this.getData()
     }

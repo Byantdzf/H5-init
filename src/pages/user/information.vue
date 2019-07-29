@@ -133,7 +133,7 @@
       },
       addFriend () {
         if (!this.information) return
-        if (this.paas === 'ZNSJ' && this.information.subscribe === 0) {
+        if (localStorage.getItem('paasName') === 'ZNSJ' && this.information.subscribe === 0) {
           this.showQr = true
           return
         }

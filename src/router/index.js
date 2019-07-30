@@ -131,6 +131,11 @@ export default new Router({
       name: 'communityDetail',
       component: (resolve) => require(['@/pages/community/detail'], resolve)
     },
+    { // 动态列表
+      path: '/friendCircleList/:id',
+      name: 'friendCircleList',
+      component: (resolve) => require(['@/pages/friendCircle/friendCircleList'], resolve)
+    },
     { // 单身详情
       path: '/information/:id',
       name: 'information',

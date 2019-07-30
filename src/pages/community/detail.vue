@@ -71,17 +71,28 @@
     <moadlUp :show.sync="showQr" @hideModal="hideQr">
       <div class="main-qr">
         <!--@click="showImage" //预览-->
-        <img :src="information.qrcode" alt="" />
-        <div class="text text-left">群主微信：
-          <input type="text" id="success_form_input" readonly="readonly" v-model="information.owner_wechat"/>
-          <button  id="copy" ref="copy" @click="copyLink" data-clipboard-action="copy" data-clipboard-target="#success_form_input">
-            <img src="http://images.ufutx.com/201907/03/b1f746f48da868f953fba244df8ff9be.png" alt="">
-          </button>
+        <div class="main-tabQr font28">
+          <span class="community flo_l" :class="qrType === 'community'?'active':''" @click="qrType = 'community'">群二维码</span>
+          <span class="userQr flo_r" :class="qrType === 'userQr'?'active':''" @click="qrType = 'userQr'">群主二维码</span>
         </div>
-        <div class="text-center font22 color6">
-          <img src="http://images.ufutx.com/201907/04/0eaf2cfa1d2dcb3ac25f20ad1117d52d.png" alt="" class="qrImage">
-          长按识别二维码
+        <div v-if="qrType === 'community'">
+          <img :src="information.qrcode" alt="" />
+          <div class="text-center font22 color6" style="margin-top: 12px;">
+            <img src="http://images.ufutx.com/201907/04/0eaf2cfa1d2dcb3ac25f20ad1117d52d.png" alt="" class="qrImage">
+            长按识别二维码
+          </div>
         </div>
+        <div v-else>
+          <img :src="information.wechat_qrcode" alt="" v-if="information.wechat_qrcode"/>
+          <div class="text text-center font28" v-else>群主微信：
+            <input type="text" id="success_form_input" readonly="readonly" v-model="information.owner_wechat"/>
+            <button  id="copy" ref="copy" @click="copyLink" data-clipboard-action="copy" data-clipboard-target="#success_form_input">
+              <img src="http://images.ufutx.com/201907/03/b1f746f48da868f953fba244df8ff9be.png" alt="">
+            </button>
+          </div>
+        </div>
+
+
       </div>
     </moadlUp>
     <moadlDown :show.sync="showUploadPhoto" @hideModal="hideUploadPhoto">
@@ -147,6 +158,7 @@
         name: '',
         complaintText: '',
         editComplaint: false,
+        qrType: 'community',
         showUpload: false,
         copyBtn: null, // 存储初始化复制按钮事件
         card_num: '',
@@ -341,7 +353,7 @@
     },
     mounted () {
       this.id = this.$route.params.id
-      this.copyBtn = new this.$clipboard(this.$refs.copy) // 复制文本
+      // this.copyBtn = new this.$clipboard(this.$refs.copy) // 复制文本
       this.getUser()
       let openidBind = this.$route.query.openid_bind
       this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
@@ -528,6 +540,24 @@
     margin-top: 32px;
     border-radius: 12px;
     padding: 22px;
+    .main-tabQr{
+      width: 390px;
+      /*background: red;*/
+      margin: auto;
+      overflow: hidden;
+      border-radius: 32px;
+      border: 1px solid #d6d6d6;
+      margin-bottom: 16px;
+      .community,.userQr{
+        width: 160px;
+        padding: 10px 16px;
+        text-align: center;
+      }
+      .userQr{}
+      .active{
+        background: #d6d6d6;
+      }
+    }
 
     img {
       width: 100%;
@@ -594,7 +624,7 @@
       border-radius: 12px;
     }
     .getOpenid{
-      width: 220px;
+      width: 260px;
     }
     .Complaint{
       width: 80%;

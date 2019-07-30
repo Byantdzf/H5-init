@@ -56,12 +56,24 @@
     <div class="height160"></div>
     <div class="submit theme_bc" v-if="information.is_friend === 1" @click="routeToDetail(information.type, information.id)">聊天</div>
     <div class="submit theme_bc" v-else @click="addFriend">加为好友</div>
+    <moadlUp :show.sync="showQr" @hideModal="hideQr">
+      <div class="main-qr">
+        <p class="font28">请长按识别二维码，关注公众号</p>
+        <img :src="information.qrcode_url" alt=""/>
+        <div class="text-center font22 color6" style="margin-top: 12px;">
+          <img src="http://images.ufutx.com/201907/04/0eaf2cfa1d2dcb3ac25f20ad1117d52d.png" alt="" class="qrImage">
+          长按识别二维码
+        </div>
+      </div>
+    </moadlUp>
   </div>
 </template>
 
 <script>
   import {Group, Cell, XHeader, XInput, Swiper} from 'vux'
   import {$toastSuccess} from '../../config/util'
+  import moadlUp from '../../components/moadlUp'
+
   export default {
     name: 'information',
     components: {
@@ -69,12 +81,15 @@
       Cell,
       XHeader,
       XInput,
-      Swiper
+      Swiper,
+      moadlUp
     },
     data () {
       return {
         id: '',
+        showQr: false,
         btnActive: false,
+        paas: '',
         information: {},
         life_photos: [],
         imgList: [{
@@ -97,6 +112,9 @@
       }
     },
     methods: {
+      hideQr (value) {
+        this.showQr = value
+      },
       routeToDetail (type, id) {
         this.$router.push({name: 'chitchatDetail', params: {id: id}})
       },
@@ -114,6 +132,11 @@
         })
       },
       addFriend () {
+        if (!this.information) return
+        if (this.paas === 'ZNSJ' && this.information.subscribe === 0) {
+          this.showQr = true
+          return
+        }
         this.$http.post(`/official/add/friend/${this.id}`).then(({data}) => {
           $toastSuccess('请求已发送')
         }).catch((error) => {
@@ -135,7 +158,10 @@
       }
     },
     mounted () {
-      console.log(this.$store.state.route)
+      if (this.$route.query.paas) {
+        this.paas = this.$route.query.paas
+        console.log(this.paas)
+      }
       this.id = this.$route.params.id
       this.getData()
     }
@@ -234,6 +260,46 @@
     .bc_dist {
       background: #F5F5F5;
       height: 20px;
+    }
+    .main-qr {
+      width: 86%;
+      margin: auto;
+      background: white;
+      margin-top: 32px;
+      border-radius: 12px;
+      padding: 22px;
+      .main-tabQr{
+        width: 390px;
+        /*background: red;*/
+        margin: auto;
+        overflow: hidden;
+        border-radius: 32px;
+        border: 1px solid #d6d6d6;
+        margin-bottom: 16px;
+        .community,.userQr{
+          width: 160px;
+          padding: 10px 16px;
+          text-align: center;
+        }
+        .userQr{}
+        .active{
+          background: #d6d6d6;
+        }
+      }
+
+      img {
+        width: 100%;
+        border-radius: 6px;
+      }
+
+      .text {
+        padding: 22px;
+      }
+      .qrImage{
+        width: 26px !important;
+        vertical-align: middle;
+        margin-bottom: 4px;
+      }
     }
   }
 </style>

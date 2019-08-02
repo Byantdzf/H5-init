@@ -28,7 +28,8 @@
           <div class="font22 color6 title">{{item.title}}</div>
         </div>
       </div>
-      <p class="bc_title font34 bold" @click="showModal = !showModal">推荐</p>
+      <!--<p class="bc_title font34 bold" @click="showModal = !showModal">推荐</p>-->
+      <p class="bc_title font34 bold">推荐</p>
       <swiperComponent :list.sync="recommend"></swiperComponent>
       <!--<swiper  :min-moving-distance="120" :show-desc-mask="true"  :auto="true" :interval="2000" @on-index-change="swiperItem">-->
       <!--<swiper-item v-for="item,index in recommend" :key="item.id" >-->

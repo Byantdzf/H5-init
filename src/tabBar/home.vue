@@ -22,7 +22,7 @@
       </div>
       <img src="http://images.ufutx.com/201907/01/419369bfc0834908da80d03d383c79dd.png" alt="" @click="gotoLink"
            style="width: 100%">
-      <div class="groupicon"  v-if="id === '616'||id==='7776'">
+      <div class="groupicon">
         <div class="item-icon" v-for="item,index in groupList" @click="goToDetail(item)">
           <img :src="item.icon" alt="">
           <div class="font22 color6 title">{{item.title}}</div>

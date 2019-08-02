@@ -14,7 +14,7 @@
           <div class="main-info colorff">
             <div class="info-user text-center">
               <div class="photo" @click.stop="routeToDetail(item.user.type, item.user_id)">
-                <div class="img" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
+                <div class="img" v-bind:style="{backgroundImage:'url(' + item.user.photo + ')'}"></div>
               </div>
             </div>
             <div class="info-user info-text" @click="$router.push({path: `/friendCircleDetail/${item.id}`})">
@@ -390,6 +390,9 @@
         border: 1px solid #f0f0f0;
         .img {
           width: 100%;
+          height: 100%;
+          background-repeat: no-repeat;
+          background-size: cover;
         }
       }
     }

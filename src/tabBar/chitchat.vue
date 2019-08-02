@@ -1,201 +1,117 @@
 <template>
-  <div id="chitchat">
-    <div class="wrapper ff" @click="routeToDetail('single_man')">
-      <div class="avatar flo_l" style="background-image: url('https://images.ufutx.com/201904/02/bea66210c44f26ca21fe743758c69dfb.png')" ></div>
-      <div class="name inline-block">
-        <span class="font30 bold">良人</span><br/>
-        <p class="font26 colorb" style="margin-top: 6px;"  v-if="single_men.length < 1">暂无新消息</p>
-        <div class="user flo_l" v-else>
-          <img :src="item.circle_avatar" class="avatar" alt="" v-for="item of single_men">
+  <div class="homepage">
+    <!--介绍人-->
+    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
+      <div class="introducer" v-for="item of list">
+        <div class="data"  @click="routeToDetail(item.type, item.other_user_id)">
+          <div class="picture" v-bind:style="{backgroundImage:'url(' + item.other_user.photo + ')'}" ></div>
+          <div class="particulars_and_parameter">
+            <div class="data_particulars">
+              <span class="data_name bold color6">{{item.other_user.name}}</span>
+              <span class="time">{{item.created_at}}</span>
+              <!--<span class="data_title">介绍人</span>-->
+              <!--<img class="icon_crown" src="https://images.ufutx.com/201904/02/6e9d7b41f9ff9ec9588d0a7f910deb02.png" alt="">-->
+              <!--<span class="crown_region">市级VIP</span>-->
+              <div class="data_parameter colorbe ellipsis_1">{{item.last_message.content}}</div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="flo_r count">
-        <p class="inline-block num colorff" v-if="single_man_count>0">{{single_man_count}}</p>
-        <img src="https://images.ufutx.com/201812/05/879fe80db665c553d4cd57afa4d4273c.png" alt="">
-      </div>
-      <div class="clearfloat"></div>
-    </div>
-    <div class="wrapper ff" @click="routeToDetail('single_woman')">
-      <div class="avatar flo_l" style="background-image: url('https://images.ufutx.com/201904/02/834674d9695ac661388004eda367c937.png')" ></div>
-      <div class="name inline-block">
-        <span class="font30 bold">佳偶</span><br/>
-        <p class="font26 colorb" style="margin-top: 6px;"  v-if="single_men.length < 1">暂无新消息</p>
-        <div class="user flo_l" v-else>
-          <img :src="item.circle_avatar" class="avatar" alt="" v-for="item of single_women">
-        </div>
-      </div>
-      <div class="flo_r count">
-        <p class="inline-block num colorff" v-if="single_woman_count>0">{{single_woman_count}}</p>
-        <img src="https://images.ufutx.com/201812/05/879fe80db665c553d4cd57afa4d4273c.png" alt="">
-      </div>
-      <div class="clearfloat"></div>
-    </div>
-    <div class="wrapper ff" @click="routeToDetail('maker')">
-      <div class="avatar flo_l" style="background-image: url('https://images.ufutx.com/201904/02/ea2dd5450ff81994dcd1ef70fed720b1.png')" ></div>
-      <div class="name inline-block">
-        <span class="font30 bold">红娘</span><br/>
-        <p class="font26 colorb" style="margin-top: 6px;"  v-if="single_men.length < 1">暂无新消息</p>
-        <div class="user flo_l" v-else>
-          <img :src="item.circle_avatar" class="avatar" alt="" v-for="item of makers">
-        </div>
-      </div>
-      <div class="flo_r count">
-        <p class="inline-block num colorff" v-if="maker_count>0">{{maker_count}}</p>
-        <img src="https://images.ufutx.com/201812/05/879fe80db665c553d4cd57afa4d4273c.png" alt="">
-      </div>
-      <div class="clearfloat"></div>
-    </div>
-    <div class="wrapper ff" @click="routeToDetail('marriage')">
-      <div class="avatar flo_l" style="background-image: url('https://images.ufutx.com/201904/02/8699058f061683e3085ba2a2aaaa3464.png')" ></div>
-      <div class="name inline-block">
-        <span class="font30 bold">介绍人</span><br/>
-        <p class="font26 colorb" style="margin-top: 6px;"  v-if="single_men.length < 1">暂无新消息</p>
-        <div class="user flo_l" v-else>
-          <img :src="item.circle_avatar" class="avatar" alt="" v-for="item of marriages">
-        </div>
-      </div>
-      <div class="flo_r count">
-        <p class="inline-block num colorff" v-if="marriage_count>0">{{marriage_count}}</p>
-        <img src="https://images.ufutx.com/201812/05/879fe80db665c553d4cd57afa4d4273c.png" alt="">
-      </div>
-      <div class="clearfloat"></div>
-    </div>
+    </mescroll-vue>
   </div>
 </template>
 
 <script>
-  import { Group, Cell, XHeader, XInput, Badge } from 'vux'
-
+  import MescrollVue from 'mescroll.js/mescroll.vue'
   export default {
-    name: 'chitchat',
+    name: 'chatList',
     components: {
-      Group,
-      Cell,
-      XHeader,
-      XInput,
-      Badge
+      MescrollVue
     },
     data () {
       return {
-        single_men: [],
-        single_women: [],
-        makers: [],
-        marriages: [],
-        single_man_count: '',
-        single_woman_count: '',
-        maker_count: '',
-        marriage_count: '',
-        list: [
-          {img: 'https://images.ufutx.com/201904/02/bea66210c44f26ca21fe743758c69dfb.png', title: '良人'},
-          {img: 'https://images.ufutx.com/201904/02/834674d9695ac661388004eda367c937.png', title: '佳偶'},
-          {img: 'https://images.ufutx.com/201904/02/ea2dd5450ff81994dcd1ef70fed720b1.png', title: '红娘'},
-          {img: 'https://images.ufutx.com/201904/02/8699058f061683e3085ba2a2aaaa3464.png', title: '介绍人'}
-        ]
+        type: '',
+        mescroll: null, //  mescroll实例对象
+        mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
+        mescrollUp: { // 上拉加载的配置.
+          callback: this.getList, // 上拉回调,此处简写; 相当于 callback: function(page, mescroll) { }
+          page: {
+            num: 0, // 当前页 默认0,回调之前会加1; 即callback(page)会从1开始
+            size: 15 // 每页数据条数,默认10
+          },
+          htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>', // 上拉加载中的布局
+          htmlNodata: '<p class="upwarp-nodata">-- 加载完毕 --</p>' // 无数据的布局
+        },
+        list: []
       }
     },
     methods: {
-      routeToDetail (type) {
-        this.$router.push({name: 'chatList', params: {type: type}})
+      routeToDetail (type, id) {
+        // if (type === 'single') {
+        //   this.$router.push({name: 'information', params: {id: id}})
+        // } else {
+        //   this.$router.push({name: 'introducer', params: {id: id}})
+        // }
+        this.$router.push({name: 'chitchatDetail', params: {id: id}})
       },
-      getMessageNum () {
-        this.$http.get(`/official/notice/num`).then(({data}) => {
-          localStorage.setItem('chat_num', data.chat_message_num.toString())
-          localStorage.setItem('notice_num', data.notice_num.toString())
-        })
+      mescrollInit (mescroll) {
+        this.mescroll = mescroll
       },
-      getOrderList (page, mescroll) {
-        this.$http.get(`/official/message/linkman/list`).then(({data}) => {
-          this.single_men = data.single_men
-          this.single_women = data.single_women
-          this.makers = data.makers
-          this.marriages = data.marriages
-          this.single_man_count = data.single_man_count
-          this.single_woman_count = data.single_woman_count
-          this.maker_count = data.maker_count
-          this.marriage_count = data.marriage_count
-          this.getMessageNum()
+      getList (page, mescroll) {
+        let url = `/message/linkmen/v2?page=${page.num}`
+        this.$http.get(url).then(({data}) => {
+          let dataV = page.num === 1 ? [] : this.list
+          dataV.push(...data.linkmen.data)
+          this.list = dataV
+          this.$nextTick(() => {
+            mescroll.endSuccess(data.linkmen.data.length)
+          })
         }).catch((error) => {
           console.log(error)
         })
       }
     },
     mounted () {
-      console.log(this.$store.state.route)
-      this.getOrderList()
+      this.type = this.$route.params.type
     }
   }
 </script>
 
-<style  lang="less" scoped>
-  body{
-    background: #f7f7f7 !important;
+<style scoped lang="less">
+  .introducer{
+    width: 690px;
+    padding: 26px 30px 0px 30px;
   }
-  .count{
-    padding-top: 36px;
-    img{
-      width: 32px;
-      vertical-align: middle;
-      margin-bottom: 4px;
-    }
+  .data{
+    overflow: hidden;
+    border-bottom: 4px solid #f0f0f0;
+    padding-bottom: 22px;
   }
-  .num{
-    width: 36px;
-    height: 36px;
-    background: red;
-    line-height: 36px;
-    text-align: center;
+  .data_particulars{
+  }
+  .data_name{
+    font-size: 30px;
+  }
+  .particulars_and_parameter{
+    padding: 16px;
+    float: left;
+    width: 76%;
+  }
+  .time{
+    font-size: 26px;
+    color: #c0c0c0;
+    float: right;
+    margin-top: 6px;
+  }
+  .picture{
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    font-size: 22px;
+    float: left;
+    background-size: cover;
+    background-repeat: no-repeat;
   }
-  .wrapper{
-    padding: 20px;
-    border-bottom: 4px solid #f9f9f9;
-    .avatar{
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background-size: cover;
-      margin-right: 25px;
-    }
-    .name{
-      margin-top: 12px;
-      .avatar{
-        width: 60px;height: 60px;
-        margin: 8px 12px 0 0;
-      }
-    }
-    .mutual{
-      margin-top: 55px;
-      color: #848484;
-      .after{
-        position: relative;
-        &:after{
-          content: '';
-          width: 2px;
-          height: 32px;
-          background: #848484;
-          position: absolute;
-          right: 0;
-        }
-      }
-      li{
-        padding: 0 80px;
-        display: inline-block;
-        font-size: 26px;
-        text-align: center;
-        p{
-          font-size: 28px;
-          margin-bottom: 12px;
-        }
-      }
-    }
-  }
-  .maTop16{margin-top: 16px}
-  .editData{
-    padding: 8px 20px;
-    border-radius: 32px;
-    color: #35495e;
-    border: 1px solid #35495e;
+  .data_parameter{
+    margin-top: 12px;
   }
 </style>
-

@@ -22,7 +22,7 @@
       </div>
       <img src="http://images.ufutx.com/201907/01/419369bfc0834908da80d03d383c79dd.png" alt="" @click="gotoLink"
            style="width: 100%">
-      <div class="groupicon">
+      <div class="groupicon"  v-if="id === '616'||id==='7776'">
         <div class="item-icon" v-for="item,index in groupList" @click="goToDetail(item)">
           <img :src="item.icon" alt="">
           <div class="font22 color6 title">{{item.title}}</div>
@@ -58,6 +58,7 @@
   import {Group, Cell, XHeader, Swiper, XInput, Search, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import swiperComponent from '../components/swiper'
+  import {$toastSuccess} from '../config/util'
 
   export default {
     components: {
@@ -78,28 +79,32 @@
         search: '',
         showModal: false,
         init: false,
+        id: localStorage.getItem('id'),
         recommend: [],
         noData: false,
         page: 1,
         groupList: [
           {
-            icon: 'http://images.ufutx.com/201907/01/9e0ee9cfa69b46e37576ce393a874ec3.png',
-            title: '单身群',
+            icon: 'http://images.ufutx.com/201905/29/fd66e63bb476a29958044c1dfc46c506.png',
+            title: '动态',
+            link: '/friendCircleList/0',
             id: 1
           },
           {
-            icon: 'http://images.ufutx.com/201907/01/a3722ff97f8e49079c55c3ba1eb2e7a5.png',
-            title: '红娘群',
+            icon: 'http://images.ufutx.com/201905/29/9e74b6471f13b711a8a7cdeea2b7ae50.png',
+            title: '申请推荐',
             id: 2
           },
           {
-            icon: 'http://images.ufutx.com/201907/01/064d6bd1672193af0d116f1b23164480.png',
-            title: '介绍人群',
+            icon: 'http://images.ufutx.com/201905/29/8886eb950aaf96c43455deced5b531f1.png',
+            title: '红娘',
+            link: '/loveMate',
             id: 3
           },
           {
-            icon: 'http://images.ufutx.com/201907/01/1a6e685971a396376488e9183dbb8899.png',
-            title: '城市群',
+            icon: 'http://images.ufutx.com/201905/29/ad82d47bcae7a1b615a5f62a99faf482.png',
+            title: '打赏支持',
+            link: '/givingMoney',
             id: 4
           }
         ],
@@ -132,24 +137,41 @@
         // this.$router.push({name: 'sharePage'})
       },
       goToDetail (item) {
-        if (this.$isWeiXin() === true) {
-          if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
-            this.$router.push({
-              path: `communityDetail/${item.id}`,
-              query: {title: item.title, logo: item.icon}
-            })
-          } else {
-            if (localStorage.getItem('mobile') && localStorage.getItem('mobile') !== null) {
-              window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&type=community&id=${item.id}&from_official_openid=` + localStorage.getItem('from_official_openid')
-            } else {
-              window.location.href = `https://love.ufutx.com/wx/bind?type=community&id=${item.id}`
+        if (item.id === 2) {
+          this.$vux.confirm.show({
+            title: '提示：',
+            content: '你将申请成为首页推荐？',
+            dialogTransition: 'vux-fade',
+            onCancel: () => {
+            },
+            onConfirm: () => {
+              this.$http.post(`/apply/home/recommends`).then(({data}) => {
+                $toastSuccess('申请成功，等待管理员审核')
+              })
             }
-          }
-        } else {
-          this.$router.push({
-            path: `communityDetail/${item.id}`,
-            query: {title: item.title, logo: item.icon}
           })
+        } else {
+          if (item.id === 3 || item.id === 4) {
+            if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
+              this.$router.push({
+                path: `${item.link}`
+              })
+            } else if (this.$isWeiXin() === false) {
+              this.$router.push({
+                path: `${item.link}`
+              })
+            } else {
+              if (item.id === 3) {
+                window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + '&type=appointments'
+              } else {
+                window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + '&type=donation'
+              }
+            }
+          } else {
+            this.$router.push({
+              path: `${item.link}`
+            })
+          }
         }
       },
       swiperItem (currentIndex) {

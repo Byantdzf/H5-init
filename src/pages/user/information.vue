@@ -56,6 +56,12 @@
     <div class="height160"></div>
     <div class="submit theme_bc" v-if="information.is_friend === 1" @click="routeToDetail(information.type, information.id)">聊天</div>
     <div class="submit theme_bc" v-else @click="addFriend">加为好友</div>
+    <div class="main-float">
+      <div class="home_ text-center" @click="goHome">
+        <img class="icon_home" src="https://images.ufutx.com/201907/22/31d8e0c40d69b277a83add3ecefe55f3.png" alt="">
+        <span class="home color6">首页</span>
+      </div>
+    </div>
     <moadlUp :show.sync="showQr" @hideModal="hideQr">
       <div class="main-qr">
         <p class="font28">请长按识别二维码，关注公众号</p>
@@ -112,8 +118,16 @@
       }
     },
     methods: {
+      goHome () {
+        if (localStorage.getItem('paasName') !== 'FL' && localStorage.getItem('paasName')) {
+          this.$router.push({name: 'home'})
+        } else {
+          this.$router.push({name: 'communityHome'})
+        }
+      },
       hideQr (value) {
         this.showQr = value
+        this.getData()
       },
       routeToDetail (type, id) {
         this.$router.push({name: 'chitchatDetail', params: {id: id}})
@@ -171,7 +185,54 @@
 <style lang="less" scoped>
   body {
     background: #f5f5f5 !important;
-
+    .main-float {
+      background: #ffffff;
+      .home_,.share_{
+        background: white;
+        border: 1px solid #f0f0f0;
+        width: 150px;
+        padding: 8px 12px;
+        position: fixed;
+        padding-bottom: 0;
+        bottom: 20%;
+        right: 0;
+        border-bottom-left-radius: 6px;
+        border-top-left-radius: 6px;
+        img{
+          width: 48px;
+          vertical-align: middle;
+          margin-bottom: 10px;
+        }
+      }
+      .share_{
+        width: 26vw;
+        animation: shareMove 800ms linear;
+        animation-fill-mode: forwards;
+        @keyframes shareMove {
+          from {
+            right: -26vw;
+          }
+          to {
+            right: 0;
+          }
+        }
+      }
+      .home_{
+        width: 18vw;
+        bottom: 14%;
+        overflow: hidden;
+        animation: homeMove 900ms linear;
+        animation-fill-mode: forwards;
+        @keyframes homeMove {
+          from {
+            right: -22vw;
+          }
+          to {
+            right: 0;
+          }
+        }
+      }
+    }
     .like {
       padding: 6px 22px;
       background: rgba(0, 0, 0, 0.5);

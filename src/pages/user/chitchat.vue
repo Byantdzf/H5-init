@@ -182,9 +182,10 @@
       background: rgba(251, 251, 251, 0.99);
       display: inline-block;
       padding: 6px 12px;
-      border-radius: 6px;
+      border-radius: 10px;
       margin: 18px 48px 0px 48px;
       line-height: 1.6;
+      border: 1px solid #d3d3d3;
     }
     .wa-row{
       width: 100vw;

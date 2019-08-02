@@ -5,15 +5,15 @@
       <div class="introducer" v-for="item of list">
         <div class="data"  @click="routeToDetail(item.type, item.other_user_id)">
           <div class="picture" v-bind:style="{backgroundImage:'url(' + item.user.avatar + ')'}" ></div>
-          <span class="time">{{item.created_at}}</span>
           <div class="particulars_and_parameter">
             <div class="data_particulars">
-              <span class="data_name">{{item.user.name}}</span>
+              <span class="data_name bold color6">{{item.user.name}}</span>
+              <span class="time">{{item.created_at}}</span>
               <!--<span class="data_title">介绍人</span>-->
               <!--<img class="icon_crown" src="https://images.ufutx.com/201904/02/6e9d7b41f9ff9ec9588d0a7f910deb02.png" alt="">-->
               <!--<span class="crown_region">市级VIP</span>-->
+              <div class="data_parameter colorbe ellipsis_1">{{item.last_message.content}}</div>
             </div>
-            <div class="data_parameter colorbe ellipsis_1">{{item.last_message.content}}</div>
           </div>
         </div>
       </div>
@@ -87,6 +87,8 @@
     border-bottom: 4px solid #f0f0f0;
     padding-bottom: 22px;
   }
+  .data_particulars{
+  }
   .data_name{
     font-size: 30px;
   }
@@ -110,6 +112,6 @@
     background-repeat: no-repeat;
   }
   .data_parameter{
-
+    margin-top: 12px;
   }
 </style>

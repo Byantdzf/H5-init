@@ -1,17 +1,21 @@
 <template>
   <div class="main-box">
+    <div class="ff main-type" @click="showComplaint = true">
+      <span class="flo_l bold font28 color6">举报类型</span>
+      <img src="https://images.ufutx.com/201907/31/730a43c929bcc4521dbabb8c76b353ca.png" alt="" class="icon flo_r">
+      <input type="text" class="flo_r text-right colorTheme" :value="typeText" readonly placeholder="请选择举报类型">
+    </div>
     <div class="complaintText ff">
-      <textarea v-model="complaintText" maxlength="120" placeholder="请填写内容"></textarea>
-      <p class="ff text-right colorb0">{{complaintText.length}}/120</p>
+      <textarea v-model="complaintText" maxlength="120" placeholder="请输入举报内容"></textarea>
+      <p class="ff text-right">{{complaintText.length}}/120</p>
       <div class="upload inline-block">
         <uploadOss @onSuccess="onSuccess"></uploadOss>
       </div>
       <div class="images inline-block" v-for="item,index in photoList">
         <div class="img"  v-bind:style="{backgroundImage:'url(' + item + ')'}"  @click="showImage(index)"></div>
-        <p class="del font22 text-center"  @click.stop="delImage(index)">删除</p>
       </div>
       <br/>
-      <div class="ComplaintBtn theme_bc text-center colorff font28 flo_r" @click="submitComplaint">发表</div>
+      <div class="ComplaintBtn theme_bc text-center colorff font28 flo_r" @click="submitComplaint">提交</div>
     </div>
     <group>
       <popup-picker confirm-text="确定" :show.sync="showComplaint" :show-cell="false" :data="pickerList" @on-change="onChange" ></popup-picker>
@@ -69,24 +73,21 @@
       },
       submitComplaint () {
         let data = {
+          type: this.typeText,
           content: this.complaintText,
           photos: this.photoList
         }
         for (let item in data) {
           if (!data[item]) {
-            return $toastWarn('请填写相关信息！')
+            return $toastWarn('请填写相关举报信息！')
           }
         }
-        this.$http.post(`/official/moments`, data).then(({data}) => {
-          $toastSuccess('发布成功')
+        this.$http.post(`/official/complaint/users/${this.id}`, data).then(({data}) => {
+          $toastSuccess('举报成功')
           this.$router.go('-1')
         }).catch((error) => {
           console.log(error)
         })
-      },
-      delImage (index) {
-        this.photoList.splice(index, 1)
-        this.list.splice(index, 1)
       },
       copyLink () {  // 复制
         let _this = this
@@ -237,12 +238,11 @@
       width: 100%;
       padding-bottom: 42px;
       overflow: hidden;
-      padding-top: 12px;
       textarea{
-        width: 94% !important;
+        width: 96% !important;
         height: 300px !important;
         resize:none;
-        padding: 4% 3%;
+        padding: 2%;
         border: none;
         color: #666666;
       }
@@ -264,19 +264,6 @@
         height: 160px;
         margin-left: 32px;
         margin-top: 32px;
-        border: 1px solid #b0b0b0;
-        position: relative;
-        .del{
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          width: 162px;
-          height: 42px;
-          line-height: 42px;
-          background: rgba(0, 0, 0, .6);
-          margin: 0;
-          color: white;
-        }
         .img{
           width: 160px;
           height: 160px;
@@ -286,10 +273,10 @@
         }
       }
       .ComplaintBtn{
-        width: 90%;
-        height: 80px;
+        width: 140px;
+        height: 60px;
         border-radius: 6px;
-        line-height: 80px;
+        line-height: 60px;
         margin-right: 32px;
         margin-top: 42px;
       }

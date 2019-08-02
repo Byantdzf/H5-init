@@ -1,129 +1,48 @@
 <template>
   <div class="main-box">
-    <div class="main-info colorff">
-      <div class="info-user text-center">
-        <div class="photo" @click="gotoDetail(information.user_id)">
-          <img :src="information.logo">
+    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
+      <div class="text-center main-search" @click="showSearchType = true">
+        <div class="font32 color6">
+          全部
+          <img src="http://images.ufutx.com/201906/27/16c7dfb515bf50f00bc931d11d7f04a9.png" class="icon-down" alt="">
         </div>
-        <!--<div class="font26">{{information.owner_name}}</div>-->
+        <img src="http://images.ufutx.com/201906/27/1380d8f68a7f81f3a08a92a84cab4c0e.png" class="flo_r friendEdit" alt="">
       </div>
-      <div class="info-user info-text">
-        <div class="font28 title bold color6">
-          {{information.title}}
-          <!--<span class="class">交友</span>-->
-        </div>
-        <div class="font22 intro colorb0">{{information.intro}}
-          <!--<span @click="gotoDetail(information.intro_path)" v-if="information.intro_path" style="color: orange">更多详情</span>-->
-        </div>
-      </div>
-    </div>
-    <div class="main-tab font28 color6 flo_r">
-      <div class="main-num flo_l ">
-        <img src="https://images.ufutx.com/201907/20/f8b7d5da439d74b54f56121eabf93246.png" alt="">
-        <span class="color6">{{information.member_num}}</span>
-      </div>
-      <div class="main-liveness flo_l">
-        <img src="https://images.ufutx.com/201907/20/47650b3808dbb44ea8cb77ac976b4ac2.png" alt="">
-        <span>{{information.click_num}}</span>
-      </div>
-      <div class="main-liveness flo_r" @click="showComplaint = true">
-        <img src="https://images.ufutx.com/201907/20/1c4416925c394e67b2a81696d3b34af7.png" alt="">
-      </div>
-    </div>
-    <div class="main-share" @click="gotoLink(information.poster_path)">
-      <img :src="information.poster" alt="">
-    </div>
-    <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
-    <LoadMore tip="群成员" :show-loading="false"></LoadMore>
-    <div class="main-otherUser">
-      <div class="item-photo" v-for="item,index in information.members" v-if="item.photo" @click="gotoDetail(item.user_id)">
-        <div class="img" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
-      </div>
-    </div>
-    <div class="height160"></div>
-    <div class="box_bottom">
-      <div class="home_and_share">
-        <div class="home_ text-center" @click="goHome">
-          <img class="icon_home" src="https://images.ufutx.com/201907/23/89fdc039b0f305190a806b0da4323919.png" alt="">
-          <p class="home">首页</p>
-        </div>
-        <div class="share_ text-center" @click="goCreate">
-          <img class="icon_share" src="https://images.ufutx.com/201907/25/a18656b27b60619b9bc5d3cb67824806.png" alt="">
-          <p class="share">新建社群</p>
-        </div>
-      </div>
-      <div v-if="token">
-        <div v-if="showUpload">
-          <div class="applyNow theme_bc" @click="showUploadPhoto = true" v-if="information.is_applied == '0'">免费入群</div>
-          <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
-        </div>
-        <div v-else>
-          <div class="applyNow theme_bc" @click="apply" v-if="information.is_applied == '0'">免费入群</div>
-          <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
-        </div>
-      </div>
-      <div v-else>
-        <!--<div class="applyNow theme_bc" @click="apply" v-if="information.is_applied == '0'">免费入群</div>-->
-        <div class="applyNow theme_bc" @click="showQr = true" >查看群码</div>
-      </div>
-
-    </div>
-    <moadlUp :show.sync="showQr" @hideModal="hideQr">
-      <div class="main-qr">
-        <!--@click="showImage" //预览-->
-        <div class="main-tabQr font28">
-          <span class="community flo_l" :class="qrType === 'community'?'active':''" @click="qrType = 'community'">群二维码</span>
-          <span class="userQr flo_r" :class="qrType === 'userQr'?'active':''" @click="qrType = 'userQr'">群主二维码</span>
-        </div>
-        <div v-if="qrType === 'community'">
-          <img :src="information.qrcode" alt="" />
-          <div class="text-center font22 color6" style="margin-top: 12px;">
-            <img src="http://images.ufutx.com/201907/04/0eaf2cfa1d2dcb3ac25f20ad1117d52d.png" alt="" class="qrImage">
-            长按识别二维码
+      <div v-for="item,index in list" :key="index">
+        <div class="main-info colorff">
+          <div class="info-user text-center">
+            <div class="photo" @click="gotoDetail(information.user_id)">
+              <img :src="information.logo">
+            </div>
+          </div>
+          <div class="info-user info-text">
+            <div class="font28 title bold color6">
+              {{information.title}}
+              <span class="class">交友</span>
+            </div>
+            <div class="font22 intro colorb0">{{information.intro}}</div>
           </div>
         </div>
-        <div v-else>
-          <img :src="information.wechat_qrcode" alt="" v-if="information.wechat_qrcode"/>
-          <div class="text text-center font28" v-else>群主微信：
-            <input type="text" id="success_form_input" readonly="readonly" v-model="information.owner_wechat"/>
-            <button  id="copy" ref="copy" @click="copyLink" data-clipboard-action="copy" data-clipboard-target="#success_form_input">
-              <img src="http://images.ufutx.com/201907/03/b1f746f48da868f953fba244df8ff9be.png" alt="">
-            </button>
+        <div class="main-tab font28 color6 flo_r">
+          <div class="main-num flo_l ">
+            <img src="http://images.ufutx.com/201906/27/f0a175c90a1b14211980298c615a36bc.png" alt="">
+            <span class="color6">{{information.member_num}}21</span>
+          </div>
+          <div class="main-liveness flo_l">
+            <img src="http://images.ufutx.com/201906/27/936c4a5f817035d69b1e2380894204cd.png" alt="">
+            <span>{{information.click_num}}12</span>
+          </div>
+          <div class="main-liveness flo_r" @click="showComplaint = true">
+            <img src="https://images.ufutx.com/201907/20/1c4416925c394e67b2a81696d3b34af7.png" alt="">
           </div>
         </div>
-
-
       </div>
-    </moadlUp>
-    <moadlDown :show.sync="showUploadPhoto" @hideModal="hideUploadPhoto">
-      <div class="main-upload color6">
-        <div class="bold">温馨提示：</div>
-        <div class="text">系统检测到你尚未上传头像,请先上传头像！</div>
-        <div class="text-center upload">
-          <uploadOss @onSuccess="onSuccess"></uploadOss>
-          <img :src="photo" alt="" @click="showImage">
-        </div>
-        <div class="save text-center" @click="save">确定</div>
-      </div>
-    </moadlDown>
-    <moadlDown :show.sync="showOpenId" @hideModal="hideOppenId">
-      <div class="main-upload color6">
-        <div class="bold font30">温馨提示：</div>
-        <div class="text font28">系统未获取到您的信息,将无法给你红包！</div>
-        <div class="getOpenid text-center" @click="getOpenid">获取红包资格</div>
-      </div>
-    </moadlDown>
-    <moadlDown :show.sync="editComplaint" @hideModal="hideComplaint">
-      <div class="main-upload color6">
-        <div class="complaintText">
-          <textarea v-model="complaintText" placeholder="请输入举报内容"></textarea>
-        </div>
-        <div class="ComplaintBtn theme_bc" @click="submitComplaint">提交</div>
-        <!--<div class="getOpenid Complaint text-center" @click="getOpenid">投诉</div>-->
-      </div>
-    </moadlDown>
+    </mescroll-vue>
+    <!--<shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>-->
+    <!--<LoadMore tip="群成员" :show-loading="false"></LoadMore>-->
     <group>
       <popup-picker :show.sync="showComplaint" :show-cell="false" :data="pickerList" @on-change="onChange" ></popup-picker>
+      <popup-picker :show.sync="showSearchType" :show-cell="false" :data="SearchType" @on-change="onChange" ></popup-picker>
     </group>
     <div v-transfer-dom>
       <previewer :list="list" ref="previewer" @on-index-change="logIndexChange"></previewer>
@@ -131,12 +50,13 @@
   </div>
 </template>
 <script>
-  import {$toastSuccess, $toastWarn, $loadingShow, $loadingHide} from '../../config/util'
+  import {$toastSuccess, $toastWarn, $loadingShow} from '../../config/util'
   import {LoadMore, Previewer, TransferDom, PopupPicker, Group} from 'vux'
   import shareModal from '../../components/shareMoadl'
   import moadlUp from '../../components/moadlUp'
   import moadlDown from '../../components/moadlDown'
   import uploadOss from '../../components/upload_oss'
+  import MescrollVue from 'mescroll.js/mescroll.vue'
 
   export default {
     name: 'authentication',
@@ -151,7 +71,8 @@
       moadlUp,
       Previewer,
       uploadOss,
-      moadlDown
+      moadlDown,
+      MescrollVue
     },
     data () {
       return {
@@ -164,16 +85,29 @@
         card_num: '',
         information: {},
         pickerList: [['举报', '取消']],
-        showShare: false,
-        showQr: false,
-        show: false,
-        showUploadPhoto: false,
-        showOpenId: false,
         showComplaint: false,
+        showSearchType: false,
+        SearchType: [['查看全部', '只看单身男', '只看单身女', '只看介绍人']],
         userInfo: {},
-        photo: 'http://images.ufutx.com/201907/03/0c90095f21650cacf992e1a9d4b4e982.png',
-        token: localStorage.getItem('ACCESS_TOKEN'),
-        official_openid: localStorage.getItem('official_openid'),
+        photoList: [
+          'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2865672302,4153895132&fm=200&gp=0.jpg',
+          'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2712105594,1652249053&fm=200&gp=0.jpg',
+          'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1511461500,2536850263&fm=200&gp=0.jpg',
+          'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=697729144,1502048920&fm=200&gp=0.jpg',
+          'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2112797303,2959648216&fm=26&gp=0.jpg'
+        ],
+        mescroll: null, //  mescroll实例对象
+        mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
+        mescrollUp: { // 上拉加载的配置.
+          callback: this.initPageData, // 上拉回调,此处简写; 相当于 callback: function(page, mescroll) { }
+          // 以下是一些常用的配置,当然不写也可以的.
+          page: {
+            num: 0, // 当前页 默认0,回调之前会加1; 即callback(page)会从1开始
+            size: 15 // 每页数据条数,默认10
+          },
+          htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>', // 上拉加载中的布局
+          htmlNodata: '<p class="upwarp-nodata">-- 加载完毕 --</p>' // 无数据的布局
+        },
         list: []
       }
     },
@@ -196,25 +130,6 @@
           this.editComplaint = false
         })
       },
-      copyLink () {  // 复制
-        let _this = this
-        let clipboard = _this.copyBtn
-        clipboard.on('success', function () {
-          _this.showQr = false
-          setTimeout(() => {
-            $toastSuccess('复制成功')
-          }, 500)
-        })
-        clipboard.on('error', function () {
-          _this.showQr = false
-          setTimeout(() => {
-            $toastWarn('复制失败，请手动选择复制！')
-          }, 500)
-        })
-      },
-      onSuccess (val) {
-        this.photo = val
-      },
       gotoDetail (id) {
         if (!id) return
         this.$router.push({
@@ -225,32 +140,6 @@
       gotoLink (link) {
         window.location.href = link
       },
-      getOpenid () {
-        if (this.$isWeiXin() === true) {
-          this.showOpenid = false
-          let paas = localStorage.getItem('paasName')
-          if (localStorage.getItem('mobile') && localStorage.getItem('mobile') !== null) {
-            window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&paas=${paas}&type=community&id=${this.id}&from_user_id=${this.userInfo ? this.userInfo.id : ''}`
-          } else {
-            window.location.href = `https://love.ufutx.com/wx/bind?type=community&paas=${paas}&id=${this.id}&from_user_id=${this.userInfo ? this.userInfo.id : ''}`
-          }
-        }
-      },
-      save () {
-        $loadingShow('识别中...')
-        this.showUploadPhoto = false
-        let data = {
-          photo: this.photo
-        }
-        this.$http.put('/official/users/photo', data).then(({data}) => {
-          let userInfo = JSON.parse(localStorage.getItem('userInfo'))
-          userInfo.photo = this.photo
-          localStorage.setItem('userInfo', JSON.stringify(userInfo))
-          this.apply()
-        }).catch((error) => {
-          console.log(error)
-        })
-      },
       showImage () {
         this.showQr = false
         this.$refs.previewer.show(0)
@@ -260,6 +149,9 @@
       },
       hideShare (value) {
         this.showShare = value
+      },
+      mescrollInit (mescroll) {
+        this.mescroll = mescroll
       },
       routeToDetail (type, id) { // 跳转
         if (this.information.is_applied === 1) {
@@ -300,72 +192,29 @@
           params: {id: 0}
         })
       },
-      getUser () {
-        this.$http.get(`/official/communities/${this.id}`).then(({data}) => {
-          localStorage.setItem('avatar', data.avatar)
-          localStorage.setItem('nickname', data.nickname)
-          this.information = data
-          let officialOpenid = localStorage.getItem('official_openid')
-          let paas = localStorage.getItem('paasName')
-          let url = `https://love.ufutx.com/wx/bind?type=community&paas=${paas}&id=${this.id}&community_share=1&from_user_id=${this.userInfo ? this.userInfo.id : ''}&from_official_openid=${officialOpenid}`
-          let pic = this.userInfo ? this.userInfo.photo : data.logo
-          let title = this.userInfo ? `${this.userInfo.name}邀请你加入《${data.title}》` : `邀请你加入《${data.title}》`
-          let intro = data.intro
-          console.log(pic, url, intro, title)
-          this.$shareList(pic, url, intro, title)
-          this.list.push({src: data.qrcode})
-          if (this.$isWeiXin()) {
-            if (!data.user.official_openid || data.user.official_openid === null) {
-              this.$router.push({name: 'user'})
-            }
-          }
-          localStorage.setItem('official_openid', data.official_openid)
-          if (data.is_photo === 0) {
-            this.showUpload = true
-          } else {
-            this.showUpload = false
-          }
-        }).catch((error) => {
-          console.log(error)
-        })
-      },
-      apply () {
-        if (!this.token) {
-          localStorage.setItem('jump', window.location.href)
-          this.$router.push({name: 'login'})
-          return
+      initPageData (page, mescroll) {
+        let pageV = 1
+        pageV = page.num
+        if (!page.num) {
+          pageV = 1
         }
-        $loadingShow('加载中...')
-        // if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
-        this.$http.post(`/official/apply/communities/${this.id}`).then(({data}) => {
-          $loadingHide()
-          this.getUser()
-          this.showQr = true
+        let vm = this
+        vm.$http.get(`/moments?page=${pageV}`).then(({data}) => {
+          let dataV = page.num === 1 ? [] : vm.list
+          dataV.push(...data.data)
+          vm.list = dataV
+          if (mescroll) {
+            vm.$nextTick(() => {
+              mescroll.endSuccess(data.data.length)
+            })
+          }
         }).catch((error) => {
           console.log(error)
-          this.getUser()
         })
-        // } else {
-        //   $loadingHide()
-        //   window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + '&type=communities'
-        // }
       }
     },
     mounted () {
       this.id = this.$route.params.id
-      // this.copyBtn = new this.$clipboard(this.$refs.copy) // 复制文本
-      this.getUser()
-      let openidBind = this.$route.query.openid_bind
-      this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
-      if (this.$isWeiXin() === true) {
-        if (!this.official_openid || this.official_openid === 'undefined' || this.official_openid === 'null') {
-          if (openidBind) {
-            this.showOpenId = false
-          } else {
-            this.showOpenId = true
-          }
-        }
-      }
     }
   }
 </script>
@@ -373,10 +222,25 @@
   .scrollView{
     background: white !important;
   }
-
   .main-box {
     min-height: 100vh;
     background: white !important;
+    position: relative;
+    .main-search{
+      padding: 32px 12px;
+      border-bottom: 12px solid #F7F7F7;
+      .friendEdit{
+        width: 52px;
+        position: absolute;
+        right: 30px;
+        top: 30px;
+      }
+      .icon-down{
+        width: 28px;
+        vertical-align: middle;
+        margin-bottom: 4px;
+      }
+    }
     .main-info {
       padding-top: 26px;
       overflow: hidden;
@@ -417,7 +281,8 @@
     .main-tab {
       overflow: hidden;
       padding: 22px 30px;
-      width: 78%;
+      width: 92%;
+      border-bottom: 12px solid #F7F7F7;
       img {
         width: 42px;
         vertical-align: middle;

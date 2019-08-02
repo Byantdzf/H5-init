@@ -131,10 +131,47 @@ export default new Router({
       name: 'communityDetail',
       component: (resolve) => require(['@/pages/community/detail'], resolve)
     },
+    { // 红娘
+      path: '/loveMate',
+      name: 'loveMate',
+      meta: {
+        keepAlive: false // 需要被缓存
+      },
+      component: (resolve) => require(['@/pages/user/loveMate'], resolve)
+    },
+    { // 打赏
+      path: '/givingMoney',
+      name: 'givingMoney',
+      meta: {
+        keepAlive: false // 需要被缓存
+      },
+      component: (resolve) => require(['@/pages/user/givingMoney'], resolve)
+    },
     { // 动态列表
       path: '/friendCircleList/:id',
       name: 'friendCircleList',
+      meta: {
+        keepAlive: false // 需要被缓存
+      },
       component: (resolve) => require(['@/pages/friendCircle/friendCircleList'], resolve)
+    },
+    { // 动态详情
+      path: '/friendCircleDetail/:id',
+      name: 'friendCircleDetail',
+      meta: {
+        keepAlive: false // 需要被缓存
+      },
+      component: (resolve) => require(['@/pages/friendCircle/friendCircleDetail'], resolve)
+    },
+    { // 新建动态
+      path: '/friendCircleEdit',
+      name: 'friendCircleEdit',
+      component: (resolve) => require(['@/pages/friendCircle/friendCircleEdit'], resolve)
+    },
+    { // 举报动态
+      path: '/CircleComplaint/:id',
+      name: 'CircleComplaint',
+      component: (resolve) => require(['@/pages/friendCircle/CircleComplaint'], resolve)
     },
     { // 单身详情
       path: '/information/:id',

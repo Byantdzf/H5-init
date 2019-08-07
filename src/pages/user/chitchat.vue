@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="height160"></div>
-      <div class="wa-row">
+      <div class="wa-row" v-if="other_userId != 1">
         <div class="padding_half flo_l">
           <input type="text" v-model="content"/>
         </div>

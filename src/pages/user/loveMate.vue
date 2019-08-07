@@ -41,12 +41,13 @@
             <input type="checkbox" style="margin-bottom: -12px;" v-model="checkbox"/>
             <p class="font26 inline-block" >同意遵守协议各项内容</p>
           </label>
+          <!--<div style="height: 1px; width: 100%;border-top: 1px solid #d0d0d0;margin-top: 12px;"></div>-->
+          <div class="Deal-box text-center">
+            <div class="deal-btn deal-btn-no font28" v-if="!checkbox">确定购买</div>
+            <div class="deal-btn font28" @click="buy" v-else>确定购买</div>
+          </div>
         </div>
-        <div style="height: 1px; width: 100%;border-top: 1px solid #d0d0d0;"></div>
-        <div class="Deal-box text-center">
-          <div class="deal-btn deal-btn-no font28" v-if="!checkbox">确定购买</div>
-          <div class="deal-btn font28" @click="buy" v-else>确定购买</div>
-        </div>
+
       </div>
     </moadlDown>
   </div>
@@ -197,7 +198,7 @@
         height: 38px;
         background: white;
         float: left;
-        margin-top: 6px;
+        margin-top: 10px;
         margin-right: 12px;
       }
     }
@@ -211,8 +212,6 @@
     }
     .Deal-box{
       width: 92%;
-      position: absolute;
-      bottom: 22px;
       padding-top: 22px;
       .deal-btn{
         margin-top: 22px;

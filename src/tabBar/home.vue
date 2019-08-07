@@ -22,13 +22,14 @@
       </div>
       <img src="http://images.ufutx.com/201907/01/419369bfc0834908da80d03d383c79dd.png" alt="" @click="gotoLink"
            style="width: 100%">
-      <div class="groupicon"  v-if="id === '616'||id==='7776'">
+      <div class="groupicon">
         <div class="item-icon" v-for="item,index in groupList" @click="goToDetail(item)">
           <img :src="item.icon" alt="">
           <div class="font22 color6 title">{{item.title}}</div>
         </div>
       </div>
-      <p class="bc_title font34 bold" @click="showModal = !showModal">推荐</p>
+      <!--<p class="bc_title font34 bold" @click="showModal = !showModal">推荐</p>-->
+      <p class="bc_title font34 bold">推荐</p>
       <swiperComponent :list.sync="recommend"></swiperComponent>
       <!--<swiper  :min-moving-distance="120" :show-desc-mask="true"  :auto="true" :interval="2000" @on-index-change="swiperItem">-->
       <!--<swiper-item v-for="item,index in recommend" :key="item.id" >-->

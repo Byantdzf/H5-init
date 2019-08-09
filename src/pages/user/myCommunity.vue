@@ -29,8 +29,25 @@
           <div class="logo" v-bind:style="{backgroundImage:'url(' + item.logo + ')'}" ></div>
           <div class="font22 color6 title">{{item.title}}</div>
         </div>
+        <div v-if="list.length < 1 && init" class="text-center">
+          <span v-if="type === 'create'">
+            <img src="https://images.ufutx.com/201908/07/fc1405570e0c351c9137d4b75e2c7b88.png" width="80%" alt=""
+                 style="margin-top: 22px;">
+            <div class="main-btn font26" @click="create">新建群组</div>
+          </span>
+          <span v-else>
+            <img src="https://images.ufutx.com/201908/07/71ca90e933106b1ead1e604052bab65c.png" width="80%" alt=""
+                 style="margin-top: 22px;">
+            <div class="main-btn font26">加入群组</div>
+          </span>
+        </div>
       </div>
-      <div class="height160"></div>
+      <!--<div class="height160"></div>-->
+      <div class="main-Circle" v-if="circleList.length > 0">
+        <div class="main-title text-center font28">群动态</div>
+        <communityCircle :list.sync="circleList"></communityCircle>
+        <div class="height160"></div>
+      </div>
     </mescroll-vue>
     <div class="vessel" v-if="showModal">
       <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close" @click="hideModal">
@@ -43,7 +60,8 @@
   import {Group, Cell, XHeader, Swiper, XInput, SwiperItem, Tab, TabItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import swiperComponent from '../../components/swiper'
-  import {$toastText} from '../../config/util'
+  import {$toastText, $loadingHide, $loadingShow} from '../../config/util'
+  import communityCircle from '../../components/communityCircle'
 
   export default {
     components: {
@@ -56,7 +74,8 @@
       Tab,
       TabItem,
       swiperComponent,
-      MescrollVue
+      MescrollVue,
+      communityCircle
     },
     data () {
       return {
@@ -70,6 +89,7 @@
         noData: false,
         page: 1,
         user: {},
+        circleList: [],
         groupList: [
           {
             icon: 'http://images.ufutx.com/201907/01/9e0ee9cfa69b46e37576ce393a874ec3.png',
@@ -112,6 +132,8 @@
       tabClick (type) {
         this.list = []
         this.type = type
+        this.init = false
+        this.circleList = []
         this.getOrderList({num: 1})
       },
       handler (val) {
@@ -119,9 +141,6 @@
       },
       searchUser () { // 输入框搜索
         this.getOrderList()
-      },
-      create () {
-        $toastText('该功能正在开发中...')
       },
       hideModal () {
         this.showModal = false
@@ -133,6 +152,20 @@
           })
         } else {
           $toastText('暂时不能查看我加入的社群 群成员！')
+        }
+      },
+      create () {
+        let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
+        if (ACCESS_TOKEN) {
+          this.$router.push({
+            name: 'createCommunity',
+            params: {id: 0}
+          })
+        } else {
+          $toastText('请先登录！')
+          setTimeout(() => {
+            this.$router.push({name: 'login'})
+          }, 800)
         }
       },
       gotoShare () {
@@ -166,10 +199,11 @@
         })
       },
       getOrderList (page, mescroll) {
+        $loadingShow('加载中')
         let vm = this
-        let url = `/official/users/communities?page=${page.num}`
+        let url = `/official/user/create/community/moments?page=${page.num}`
         if (vm.type === 'join') {
-          url = `/official/users/joined/communities?page=${page.num}`
+          url = `/official/user/join/community/moments?page=${page.num}`
         }
         vm.$http.get(url).then(({data}) => {
           vm.user = data.user
@@ -177,16 +211,20 @@
           vm.user.community_count = data.community_count
           vm.user.community_member_num = data.community_member_num
           vm.init = true
-          let dataV = page.num === 1 ? [] : vm.list
-          dataV.push(...data.communities.data)
-          vm.list = dataV
+          vm.list = data.communities
+          let dataV = page.num === 1 ? [] : vm.circleList
+          dataV.push(...data.community_moments.data)
+          vm.circleList = dataV
           if (mescroll) {
             vm.$nextTick(() => {
-              mescroll.endSuccess(data.communities.data.length)
+              mescroll.endSuccess(dataV.length)
             })
           }
+          console.log(vm.list)
           console.log(vm.user)
+          $loadingHide()
         }).catch((error) => {
+          $loadingHide()
           console.log(error)
         })
       }
@@ -240,6 +278,13 @@
       }
     }
   }
+  .main-Circle{
+    .main-title{
+      border-top: 14px solid #f6f6f6;
+      border-bottom: 14px solid #f6f6f6;
+      padding: 22px;
+    }
+  }
   .bc_num{
     background: #f6f6f6;
     height: 14px;
@@ -277,6 +322,15 @@
   .groupicon {
     padding: 26px;
     overflow: hidden;
+    .main-btn{
+      width: 180px;
+      height: 60px;
+      background: #D92553;
+      border-radius: 6px;
+      line-height: 60px;
+      color: white;
+      margin: 32px auto;
+    }
     .item-icon {
       width: 25%;
       float: left;

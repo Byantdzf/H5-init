@@ -1,37 +1,28 @@
 <template>
   <div>
-    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
-      <div>
-        <div class="text-center main-search" @click="showSearchType = true">
-          <div class="font32 color6">
-            {{searchText}}
-            <img src="http://images.ufutx.com/201906/27/16c7dfb515bf50f00bc931d11d7f04a9.png" class="icon-down" alt="">
+    <div v-for="item,index in list" class="main-box">
+      <div class="main-info colorff">
+        <div class="info-user text-center">
+          <div class="photo" @click.stop="routeToDetail(item.user.type, item.user_id)">
+            <div class="img" v-bind:style="{backgroundImage:'url(' + item.user.photo + ')'}"></div>
           </div>
-          <img src="http://images.ufutx.com/201906/27/1380d8f68a7f81f3a08a92a84cab4c0e.png" class="flo_r friendEdit"
-               alt="" @click.stop="$router.push({name: 'friendCircleEdit'})">
         </div>
-        <div v-for="item,index in list" class="main-box">
-          <div class="main-info colorff">
-            <div class="info-user text-center">
-              <div class="photo" @click.stop="routeToDetail(item.user.type, item.user_id)">
-                <div class="img" v-bind:style="{backgroundImage:'url(' + item.user.photo + ')'}"></div>
-              </div>
-            </div>
-            <div class="info-user info-text" @click="$router.push({path: `/friendCircleDetail/${item.id}`})">
-              <div class="font28 title color6">
-                {{item.user.name}}
-                <img src="http://images.ufutx.com/201902/21/7b3892dcf60fabda05add35abfa9aec3.png" v-if="item.user.sex === 2" alt="" class="sex-icon">
-                <img src="http://images.ufutx.com/201902/21/a309744e67082c4bd46db0df504c32c5.png" v-else alt="" class="sex-icon">
-              </div>
-              <div class="font22 intro colorb0">{{item.user.age}} · {{item.user.city}}
-                <span  v-if="item.user.type === 'single'"> · 单身</span>
-                <span  v-else> · 介绍人</span>
-              </div>
-            </div>
-            <div class="clearfloat"></div>
-            <div class="font28 content color6"  @click="$router.push({path: `/friendCircleDetail/${item.id}`})">{{item.content}}</div>
-            <div class="photoList text-center">
-              <div class="text-left inline-block" style="width: 92vw;">
+        <div class="info-user info-text" @click="$router.push({path: `/communityCircleDetail/${item.id}`})">
+          <div class="font28 title color6">
+            {{item.user.name}}
+            <!--<img src="http://images.ufutx.com/201902/21/7b3892dcf60fabda05add35abfa9aec3.png" v-if="item.user.sex === 2" alt="" class="sex-icon">-->
+            <!--<img src="http://images.ufutx.com/201902/21/a309744e67082c4bd46db0df504c32c5.png" v-else alt="" class="sex-icon">-->
+          </div>
+          <div class="font22 intro colorb0">
+            <!--<router-link :to="{name: 'communityDetail', params: {id: item.id}}">-->
+              <p  v-for="item,index in item.communities" class="communities"  @click.stop="$router.push({path: `/communityDetail/${item.id}`})">{{item.title}}</p>
+            <!--</router-link>-->
+          </div>
+        </div>
+        <div class="clearfloat"></div>
+        <div class="font28 content color6"  @click="$router.push({path: `/communityCircleDetail/${item.id}`})">{{item.content}}</div>
+        <div class="photoList text-center">
+          <div class="text-left inline-block" style="width: 92vw;">
                 <span v-for="itemv2,indexv2 in item.photoList" v-if="item.photoList.length>0">
                   <span v-if="item.photoList.length == 1">
                     <div class="oneSheet inline-block" v-bind:style="{backgroundImage:'url(' + itemv2.pic + ')'}" @click="showImage(item.photoList, indexv2)"></div>
@@ -43,40 +34,42 @@
                     <div class="moveSheet inline-block" v-bind:style="{backgroundImage:'url(' + itemv2.pic + ')'}" @click="showImage(item.photoList, indexv2)"></div>
                   </span>
                 </span>
-              </div>
-            </div>
-          </div>
-          <div class="main-tab font28 color6">
-            <div class="main-num flo_l " @click="like(item.id,index)">
-              <img src="http://images.ufutx.com/201906/27/bcb1164e097c61df1e991f7e783ebb13.png" v-if="item.isLkerMoment" alt="" />
-              <img src="http://images.ufutx.com/201906/27/f0a175c90a1b14211980298c615a36bc.png" v-else alt="" />
-              <span class="color6">{{item.momentLikerCount}}</span>
-            </div>
-            <div class="main-liveness flo_l">
-              <img src="http://images.ufutx.com/201906/27/936c4a5f817035d69b1e2380894204cd.png" alt="">
-              <span>{{item.momentCommentCount}}</span>
-            </div>
-            <div v-if="item.is_self" class="main-liveness flo_r"
-                 @click="showSelfComplaint=true,delId=item.id,delIndex=index">
-              <img src="https://images.ufutx.com/201907/20/1c4416925c394e67b2a81696d3b34af7.png" alt="">
-            </div>
-            <div v-else class="main-liveness flo_r" @click="showComplaint=true,complaintId=item.id">
-              <img src="https://images.ufutx.com/201907/20/1c4416925c394e67b2a81696d3b34af7.png" alt="">
-            </div>
-            <div class="clearfloat"></div>
-          </div>
-          <div class="comment" v-if="item.momentComments.length > 0">
-            <div class="" v-for="itemComments in item.momentComments">
-              <span class="bold color6">{{itemComments.user? itemComments.user.name: '未获取到用户信息'}}：</span>
-              <span class="color6">{{itemComments.comment}}</span>
-            </div>
-            <div class="allComment" @click="$router.push({path: `/friendCircleDetail/${item.id}`})">
-              查看全部评论
-            </div>
           </div>
         </div>
       </div>
-    </mescroll-vue>
+      <div class="main-tab font28 color6">
+        <div class="main-num flo_l " @click="like(item.id,index)">
+          <img src="http://images.ufutx.com/201906/27/bcb1164e097c61df1e991f7e783ebb13.png" v-if="item.isLkerMoment" alt="" />
+          <img src="http://images.ufutx.com/201906/27/f0a175c90a1b14211980298c615a36bc.png" v-else alt="" />
+          <span class="color6">{{item.momentLikerCount}}</span>
+        </div>
+        <div class="main-liveness flo_l">
+          <img src="http://images.ufutx.com/201906/27/936c4a5f817035d69b1e2380894204cd.png" alt="">
+          <span>{{item.momentCommentCount}}</span>
+        </div>
+        <div v-if="item.is_self" class="main-liveness flo_r"
+             @click="showSelfComplaint=true,delId=item.id,delIndex=index">
+          <img src="https://images.ufutx.com/201907/20/1c4416925c394e67b2a81696d3b34af7.png" alt="">
+        </div>
+        <div v-else class="main-liveness flo_r" @click="showComplaint=true,complaintId=item.id">
+          <img src="https://images.ufutx.com/201907/20/1c4416925c394e67b2a81696d3b34af7.png" alt="">
+        </div>
+        <div class="main-livenessV flo_r" @click="collect(item.id,index)">
+          <img src="https://images.ufutx.com/201908/09/d97b2c98a661de5d6d7730953e36c33d.png" v-if="item.favoriteCount" alt="" />
+          <img src="https://images.ufutx.com/201908/09/a5a9d6eeb378cf96214207e33738570b.png" v-else alt="" />
+        </div>
+        <div class="clearfloat"></div>
+      </div>
+      <!--<div class="comment" v-if="item.momentComments.length > 0">-->
+        <!--<div class="" v-for="itemComments in item.momentComments">-->
+          <!--<span class="bold color6">{{itemComments.user? itemComments.user.name: '未获取到用户信息'}}：</span>-->
+          <!--<span class="color6">{{itemComments.comment}}</span>-->
+        <!--</div>-->
+        <!--<div class="allComment" @click="$router.push({path: `/friendCircleDetail/${item.id}`})">-->
+          <!--查看全部评论-->
+        <!--</div>-->
+      <!--</div>-->
+    </div>
     <group>
       <popup-picker confirm-text="确定" :show.sync="showSelfComplaint" :show-cell="false" :data="SelfpickerList"
                     @on-change="onChangeSelf"></popup-picker>
@@ -89,18 +82,18 @@
       <previewer :list="Imagelist" ref="previewer"></previewer>
     </div>
   </div>
+
 </template>
 
 <script>
   import {TransferDom, Popup, XInput, Search, PopupPicker, Group, Previewer} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
-  import {$loadingHide, $toastText, $loadingShow, $toastSuccess} from '../../config/util'
-
+  import {$toastSuccess} from '../config/util'
   export default {
-    name: 'friendcircleList',
     directives: {
       TransferDom
     },
+    props: ['list'],
     components: {
       XInput,
       Search,
@@ -133,41 +126,17 @@
         complaintId: '',
         showSearchType: false,
         announcements: [],
-        Imagelist: [],
-        mescroll: null, //  mescroll实例对象
-        mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
-        mescrollUp: { // 上拉加载的配置.
-          callback: this.getOrderList, // 上拉回调,此处简写; 相当于 callback: function(page, mescroll) { }
-          // 以下是一些常用的配置,当然不写也可以的.
-          page: {
-            num: 0, // 当前页 默认0,回调之前会加1; 即callback(page)会从1开始
-            size: 15 // 每页数据条数,默认10
-          },
-          lazyLoad: {
-            use: true, // 是否开启懒加载,默认false
-            attr: 'imgurl' // 标签中网络图的属性名 : <img imgurl='网络图  src='占位图''/>
-          },
-          // toTop: {
-          //   // 回到顶部按钮
-          //   src: "http://images.ufutx.com/201906/27/1380d8f68a7f81f3a08a92a84cab4c0e.png", // 图片路径,默认null,支持网络图
-          //   offset: 1000 // 列表滚动1000px才显示回到顶部按钮
-          // },
-          htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>', // 上拉加载中的布局
-          htmlNodata: '<p class="upwarp-nodata">-- 加载完毕 --</p>' // 无数据的布局
-        },
-        arr: [],
-        list: []
+        Imagelist: []
       }
     },
     watch: {
+      list (val) {
+        console.log(val)
+      }
     },
     methods: {
       routeToDetail (type, id) {
-        if (type === 'single') {
-          this.$router.push({name: 'information', params: {id: id}})
-        } else {
-          this.$router.push({name: 'introducer', params: {id: id}})
-        }
+        this.$router.push({name: 'userCommunityClass', params: {id: id}})
       },
       showImage (list, index) {
         let Imagelist = []
@@ -183,7 +152,7 @@
         })
       },
       like (id, index) {
-        this.$http.post(`/official/like/moments/${id}`).then(({data}) => {
+        this.$http.post(`/official/like/community/moments/${id}`).then(({data}) => {
           this.page = 1
           this.list[index].isLkerMoment = !this.list[index].isLkerMoment
           if (this.list[index].isLkerMoment) {
@@ -191,7 +160,17 @@
           } else {
             this.list[index].momentLikerCount--
           }
-          this.$apply()
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
+      collect (id, index) {
+        this.$http.post(`/official/favorite/community/moments/${id}`).then(({data}) => {
+          this.page = 1
+          this.list[index].favoriteCount = !this.list[index].favoriteCount
+          if (this.list[index].favoriteCount) {
+            $toastSuccess('收藏成功')
+          }
         }).catch((error) => {
           console.log(error)
         })
@@ -240,55 +219,11 @@
       onChange (val) {
         console.log(val)
         if (val[0] === '举报') {
-          this.$router.push({path: `/CircleComplaint/${this.complaintId}`})
+          this.$router.push({path: `/CommunityCircleComplaint/${this.complaintId}`})
         }
       },
       mescrollInit (mescroll) {
         this.mescroll = mescroll
-      },
-      getOrderList (page, mescroll) { // 获取数据
-        $loadingShow('加载中...')
-        let pageV = 1
-        pageV = page.num
-        if (!page.num) {
-          pageV = 1
-        }
-        let vm = this
-        vm.$http.get(`/official/moments?page=${pageV}&type=${vm.searchType}`).then(({data}) => {
-          let dataV = pageV === 1 ? [] : vm.list
-          dataV.push(...data.data)
-          vm.list = dataV
-          if (mescroll) {
-            vm.$nextTick(() => {
-              mescroll.endSuccess(data.data.length)
-            })
-          }
-          if (vm.list.length > 0) {
-            vm.list.forEach((item, index) => {
-              let photoList = []
-              for (let rect of item.photos) {
-                if (index < 3) {
-                  photoList.push({
-                    pic: rect,
-                    show: true
-                  })
-                } else {
-                  photoList.push({
-                    pic: rect,
-                    show: false
-                  })
-                }
-              }
-              item.photoList = photoList
-            })
-          }
-          console.log(vm.list)
-          if (vm.list.length < 1) $toastText('很抱歉！暂时没有搜索到对象')
-          $loadingHide()
-        }).catch((error) => {
-          console.log(error)
-          $loadingHide()
-        })
       }
     },
     mounted () {
@@ -296,7 +231,15 @@
   }
 </script>
 
-<style lang="less" scoped>
+<style  lang="less" scoped>
+  .communities{
+    color: #D92553;
+    border: 1px solid #D92553;
+    display: inline-block;
+    padding: 0 8px;
+    border-radius: 4px;
+    margin-right: 4px;
+  }
   .main-search{
     padding: 32px 12px;
     border-bottom: 12px solid #F7F7F7;
@@ -393,6 +336,7 @@
           height: 100%;
           background-repeat: no-repeat;
           background-size: cover;
+          background-position: center;
         }
       }
     }
@@ -421,6 +365,13 @@
 
     .main-liveness {
     }
+    .main-livenessV {
+      margin-right: 32px;
+      img {
+        width: 42px;
+        vertical-align: middle;
+        margin-top: -10px;
+      }
+    }
   }
-
 </style>

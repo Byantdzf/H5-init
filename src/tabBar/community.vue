@@ -2,7 +2,9 @@
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div class="main-input">
-        <input type="text" placeholder="搜索感兴趣的群" v-model="search" @change="searchUser"/>
+        <router-link to="searchCommunity">
+          <input type="text" placeholder="搜索感兴趣的群" v-model="search" @change="searchUser"/>
+        </router-link>
       </div>
       <div class="main-creation" @click="create">
         <img class="flo_l" src="https://images.ufutx.com/201907/20/6e0bb82048c9ab0b1833d28aa83c6d7f.png">
@@ -12,27 +14,19 @@
       <div class="main-share" @click="showSharefn">
         <img src="https://images.ufutx.com/201907/20/8e47e7087d1ecd592028786df6dbc60f.png" alt="">
       </div>
-      <!--<div class="main-map" @click="gotoLink">-->
-        <!--<img class="flo_l city" src="http://images.ufutx.com/201905/29/116e3887dd6dcbcaad6a464f96bdcdcb.png">-->
-        <!--<span class="flo_l font28 address" >相遇地图</span>-->
-        <!--<img class="flo_r next" src="http://images.ufutx.com/201905/29/2eeab012d13d91f16f5a21ad6c578678.png">-->
-        <!--<img class="flo_r photo" src="http://images.ufutx.com/201907/01/1a6e685971a396376488e9183dbb8899.png">-->
-        <!--<span class="flo_r color6 font26" >附近的群</span>-->
-      <!--</div>-->
       <div class="groupicon" >
         <div class="item-icon" v-for="item,index in list" @click="goToDetail(item)"  >
           <div class="logo" v-bind:style="{backgroundImage:'url(' + item.logo + ')'}" ></div>
           <div class="font22 color6 title">{{item.title}}</div>
         </div>
+        <router-link to="communityClass">
+          <div class="item-icon" >
+            <div class="logo" v-bind:style="{backgroundImage:'url(https://images.ufutx.com/201908/06/fb163dbe1c327a424ab0bc689dc441b7.png)'}" ></div>
+            <div class="font22 color6 title">更多</div>
+          </div>
+        </router-link>
       </div>
-      <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
-        <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
-        <p style="margin-top: 8px;">
-          <span class="font32">{{item.name}}</span>
-          <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.stature? '· ' +item.stature +'cm': ''}} {{item.city? '· '+item.city: ''}}</span>
-        </p>
-        <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
-      </div>
+      <communityCircle :list.sync="circleList"></communityCircle>
       <div class="height160"></div>
     </mescroll-vue>
     <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
@@ -47,8 +41,9 @@
   import {Group, Cell, XHeader, Swiper, XInput, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import swiperComponent from '../components/swiper'
-  import {$toastText} from '../config/util'
+  import {$toastText, $loadingHide} from '../config/util'
   import shareModal from '../components/shareMoadl'
+  import communityCircle from '../components/communityCircle'
 
   export default {
     components: {
@@ -60,7 +55,8 @@
       XInput,
       swiperComponent,
       MescrollVue,
-      shareModal
+      shareModal,
+      communityCircle
     },
     data () {
       return {
@@ -73,28 +69,6 @@
         recommend: [],
         noData: false,
         page: 1,
-        groupList: [
-          {
-            icon: 'http://images.ufutx.com/201907/01/9e0ee9cfa69b46e37576ce393a874ec3.png',
-            title: '单身群',
-            id: 1
-          },
-          {
-            icon: 'http://images.ufutx.com/201907/01/a3722ff97f8e49079c55c3ba1eb2e7a5.png',
-            title: '红娘群',
-            id: 2
-          },
-          {
-            icon: 'http://images.ufutx.com/201907/01/064d6bd1672193af0d116f1b23164480.png',
-            title: '介绍人群',
-            id: 3
-          },
-          {
-            icon: 'http://images.ufutx.com/201907/01/1a6e685971a396376488e9183dbb8899.png',
-            title: '城市群',
-            id: 4
-          }
-        ],
         announcements: [],
         mescroll: null, //  mescroll实例对象
         mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
@@ -108,7 +82,8 @@
           htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>', // 上拉加载中的布局
           htmlNodata: '<p class="upwarp-nodata">-- 加载完毕 --</p>' // 无数据的布局
         },
-        list: []
+        list: [],
+        circleList: []
       }
     },
     methods: {
@@ -159,24 +134,6 @@
         this.$router.push({
           path: `communityClass/${item.id}`
         })
-        // if (this.$isWeiXin() === true) {
-        //   if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
-        //     this.$router.push({
-        //       path: `communityDetail/${item.id}`
-        //     })
-        //   } else {
-        //     if (localStorage.getItem('mobile') && localStorage.getItem('mobile') !== null) {
-        //       window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&type=community&id=${item.id}&from_official_openid=` + localStorage.getItem('from_official_openid')
-        //     } else {
-        //       window.location.href = `https://love.ufutx.com/wx/bind?type=community&id=${item.id}`
-        //     }
-        //   }
-        // } else {
-        //   this.$router.push({
-        //     path: `wxGroup/${item.id}`,
-        //     query: {title: item.title, logo: item.icon}
-        //   })
-        // }
       },
       swiperItem (currentIndex) {
         this.currentIndex = currentIndex
@@ -193,17 +150,43 @@
       },
       getOrderList (page, mescroll) {
         let vm = this
-        vm.$http.get(`/official/community/groups?page=${page.num}&keyword=${vm.search}`).then(({data}) => {
+        vm.$http.get(`/official/community/home?page=${page.num}&keyword=${vm.search}`).then(({data}) => {
           vm.init = true
-          let dataV = page.num === 1 ? [] : this.list
-          dataV.push(...data.data)
-          vm.list = dataV
-          if (mescroll) {
-            vm.$nextTick(() => {
-              mescroll.endSuccess(data.data.length)
+          vm.list = data.community_groups
+          let dataV = page.num === 1 ? [] : vm.circleList
+          dataV.push(...data.community_moments.data)
+          vm.circleList = dataV
+          if (vm.circleList.length > 0) {
+            vm.circleList.forEach((item, index) => {
+              let photoList = []
+              if (item.photos.length > 0) {
+                for (let rect of item.photos) {
+                  if (index < 3) {
+                    photoList.push({
+                      pic: rect,
+                      show: true
+                    })
+                  } else {
+                    photoList.push({
+                      pic: rect,
+                      show: false
+                    })
+                  }
+                }
+              }
+              item.photoList = photoList
             })
           }
+          console.log(dataV.length)
+          console.log(vm.circleList)
           console.log(vm.list)
+          if (mescroll) {
+            vm.$nextTick(() => {
+              mescroll.endSuccess(dataV.length)
+            })
+          }
+          if (vm.circleList.length < 1) $toastText('很抱歉！暂时没有搜索到对象')
+          $loadingHide()
         }).catch((error) => {
           console.log(error)
         })
@@ -327,8 +310,9 @@
   }
 
   .groupicon {
-    padding: 26px;
+    padding: 26px 12px;
     overflow: hidden;
+    border-bottom: 14px solid #F6F6F6;
     .item-icon {
       width: 25%;
       float: left;

@@ -54,6 +54,15 @@
         </cell>
       </group>
     </div>
+    <div @click="routeToDetail('communityCircleCollect', user.id)">
+      <group title=" ">
+        <cell title="我的收藏" is-link>
+          <!--<badge text="1"></badge>-->
+          <img slot="icon" width="28" class="item_icon"
+               src="https://images.ufutx.com/201908/07/4d74ee908702373f0dfae5b5755649f3.png">
+        </cell>
+      </group>
+    </div>
     <div @click="routeToDetail('feedback')">
       <group title=" ">
         <cell title="意见反馈" is-link>

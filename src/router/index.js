@@ -116,20 +116,50 @@ export default new Router({
       name: 'createCommunity',
       component: (resolve) => require(['@/pages/community/createCommunity'], resolve)
     },
+    { // 所有社群分类
+      path: '/communityClass',
+      name: 'communityClassMore',
+      component: (resolve) => require(['@/pages/community/communityClass'], resolve)
+    },
+    { // 搜索社群
+      path: '/searchCommunity',
+      name: 'searchCommunity',
+      component: (resolve) => require(['@/pages/community/searchCommunity'], resolve)
+    },
     { // 群主所有群
       path: '/userCommunityClass/:id',
       name: 'userCommunityClass',
       component: (resolve) => require(['@/pages/community/userCommunity'], resolve)
     },
-    { // 社群分类
+    { // 举报群动态
+      path: '/CommunityCircleComplaint/:id',
+      name: 'CommunityCircleComplaint',
+      component: (resolve) => require(['@/pages/community/CircleComplaint'], resolve)
+    },
+    { // 群群动态详情
+      path: '/communityCircleDetail/:id',
+      name: 'communityCircleDetail',
+      component: (resolve) => require(['@/pages/community/communityCircleDetail'], resolve)
+    },
+    { // 个人// 社群分类
       path: '/communityClass/:id',
       name: 'communityClass',
       component: (resolve) => require(['@/pages/community/class'], resolve)
+    },
+    { // 添加动态（社群）
+      path: '/communityCircleEdit/:id',
+      name: 'communityCircleEdit',
+      component: (resolve) => require(['@/pages/community/communityCircleEdit'], resolve)
     },
     { // 社群详情
       path: '/communityDetail/:id',
       name: 'communityDetail',
       component: (resolve) => require(['@/pages/community/detail'], resolve)
+    },
+    { // 我的社群动态收藏
+      path: '/communityCircleCollect',
+      name: 'communityCircleCollect',
+      component: (resolve) => require(['@/pages/user/communityCircleCollect'], resolve)
     },
     { // 红娘
       path: '/loveMate',

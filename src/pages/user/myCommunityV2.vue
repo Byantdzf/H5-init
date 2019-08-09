@@ -2,7 +2,7 @@
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div class="main-creation">
-        <img class="flo_l" :src="user.photo">
+        <div class="img flo_l" v-bind:style="{backgroundImage:'url(' + user.photo + ')'}" ></div>
         <p class="flo_l font28 bold color6">{{user.name}}</p>
         <div class="flo_l font26 colorb0 infor">
           <div class="text-center infor-item flo_l">
@@ -36,6 +36,15 @@
             <div class="flo_l _put font26" @click="gotoLink(item.id)">修改</div>
             <div class="flo_r _del font26" @click="showDelete(item.title,item.id,index)">删除</div>
           </div>
+        </div>
+        <div v-if="list.length < 1 && init" class="text-center">
+          <span>
+            <img src="https://images.ufutx.com/201908/07/fc1405570e0c351c9137d4b75e2c7b88.png" width="80%" alt=""
+                 style="margin-top: 22px;">
+            <!--<router-link :to="{name: 'createCommunity',params:{id: 0}}">-->
+              <div class="main-btn font26" @click="create">新建群组</div>
+            <!--</router-link>-->
+          </span>
         </div>
       </div>
       <div class="height160"></div>
@@ -122,14 +131,25 @@
         this.type = type
         this.getOrderList({num: 1})
       },
+      create () {
+        let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
+        if (ACCESS_TOKEN) {
+          this.$router.push({
+            name: 'createCommunity',
+            params: {id: 0}
+          })
+        } else {
+          $toastText('请先登录！')
+          setTimeout(() => {
+            this.$router.push({name: 'login'})
+          }, 800)
+        }
+      },
       handler (val) {
         console.log(val)
       },
       searchUser () { // 输入框搜索
         this.getOrderList()
-      },
-      create () {
-        $toastText('该功能正在开发中...')
       },
       hideModal () {
         this.showModal = false
@@ -231,11 +251,14 @@
   .main-creation{
     overflow: hidden;
     padding: 36px  28px 28px 28px;
-    img{
+    .img{
       width: 90px;
       height: 90px;
       margin-right: 22px;
       border-radius: 50%;
+      /*background-position: center;*/
+      background-repeat: no-repeat;
+      background-size: cover;
     }
     p{
       margin-top: 8px;
@@ -296,6 +319,15 @@
 
   .groupicon {
     overflow: hidden;
+    .main-btn{
+      width: 180px;
+      height: 60px;
+      /*background: #D92553;*/
+      border-radius: 6px;
+      line-height: 60px;
+      color: white;
+      margin: 32px auto;
+    }
     .item-icon {
       width: 100%;
       overflow: hidden;

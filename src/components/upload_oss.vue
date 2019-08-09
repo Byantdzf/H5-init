@@ -20,7 +20,7 @@
   <!--<previewer :list="images" ref="previewer"></previewer>-->
   <!--</div>-->
 <div>
-  <input type="file" @change="onChange" class="weui-uploader__input" mutiple="mutiple" accept='image/*' capture="camera" />
+  <input type="file" @change="onChange" class="weui-uploader__input" mutiple="mutiple" accept='image/png,image/jpeg,image/jpg,image/gif'/>
   <slot name="text"></slot>
 </div>
 

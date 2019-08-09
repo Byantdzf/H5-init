@@ -220,6 +220,27 @@
               mescroll.endSuccess(dataV.length)
             })
           }
+          if (vm.circleList.length > 0) {
+            vm.circleList.forEach((item, index) => {
+              let photoList = []
+              if (item.photos.length > 0) {
+                for (let rect of item.photos) {
+                  if (index < 3) {
+                    photoList.push({
+                      pic: rect,
+                      show: true
+                    })
+                  } else {
+                    photoList.push({
+                      pic: rect,
+                      show: false
+                    })
+                  }
+                }
+              }
+              item.photoList = photoList
+            })
+          }
           console.log(vm.list)
           console.log(vm.user)
           $loadingHide()

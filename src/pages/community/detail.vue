@@ -1,133 +1,145 @@
 <template>
   <div class="main-box">
-    <div class="main-info colorff">
-      <div class="info-user text-center">
-        <div class="photo" @click="gotoDetail(information.user_id)">
-          <img :src="information.logo">
+    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
+      <div class="main-input">
+        <input type="text" placeholder="搜索感兴趣的话题" v-model="search" @change="searchUser" @keyup.enter="searchUser"/>
+      </div>
+      <div class="main-info colorff">
+        <div class="info-user text-center">
+          <div class="photo" @click="gotoDetail(information.user_id)">
+            <img :src="information.logo">
+          </div>
+          <!--<div class="font26">{{information.owner_name}}</div>-->
         </div>
-        <!--<div class="font26">{{information.owner_name}}</div>-->
-      </div>
-      <div class="info-user info-text">
-        <div class="font28 title bold color6">
-          {{information.title}}
-          <!--<span class="class">交友</span>-->
-        </div>
-        <div class="font22 intro colorb0">{{information.intro}}
-          <!--<span @click="gotoDetail(information.intro_path)" v-if="information.intro_path" style="color: orange">更多详情</span>-->
-        </div>
-      </div>
-    </div>
-    <div class="main-tab font28 color6 flo_r">
-      <div class="main-num flo_l ">
-        <img src="https://images.ufutx.com/201907/20/f8b7d5da439d74b54f56121eabf93246.png" alt="">
-        <span class="color6">{{information.member_num}}</span>
-      </div>
-      <div class="main-liveness flo_l">
-        <img src="https://images.ufutx.com/201907/20/47650b3808dbb44ea8cb77ac976b4ac2.png" alt="">
-        <span>{{information.click_num}}</span>
-      </div>
-      <div class="main-liveness flo_r" @click="showComplaint = true">
-        <img src="https://images.ufutx.com/201907/20/1c4416925c394e67b2a81696d3b34af7.png" alt="">
-      </div>
-    </div>
-    <div class="main-share" @click="gotoLink(information.poster_path)">
-      <img :src="information.poster" alt="">
-    </div>
-    <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
-    <LoadMore tip="群成员" :show-loading="false"></LoadMore>
-    <div class="main-otherUser">
-      <div class="item-photo" v-for="item,index in information.members" v-if="item.photo" @click="gotoDetail(item.user_id)">
-        <div class="img" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
-      </div>
-    </div>
-    <div class="height160"></div>
-    <div class="box_bottom">
-      <div class="home_and_share">
-        <div class="home_ text-center" @click="goHome">
-          <img class="icon_home" src="https://images.ufutx.com/201907/23/89fdc039b0f305190a806b0da4323919.png" alt="">
-          <p class="home">首页</p>
-        </div>
-        <div class="share_ text-center" @click="goCreate">
-          <img class="icon_share" src="https://images.ufutx.com/201907/25/a18656b27b60619b9bc5d3cb67824806.png" alt="">
-          <p class="share">新建社群</p>
+        <div class="info-user info-text">
+          <div class="font28 title bold color6">
+            {{information.title}}
+            <!--<span class="class">交友</span>-->
+          </div>
+          <div class="font22 intro colorb0">{{information.intro}}
+            <!--<span @click="gotoDetail(information.intro_path)" v-if="information.intro_path" style="color: orange">更多详情</span>-->
+          </div>
         </div>
       </div>
-      <div v-if="token">
-        <div v-if="showUpload">
-          <div class="applyNow theme_bc" @click="showUploadPhoto = true" v-if="information.is_applied == '0'">免费入群</div>
-          <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
+      <div class="main-tab font28 color6 flo_r">
+        <div class="main-num flo_l ">
+          <img src="https://images.ufutx.com/201907/20/f8b7d5da439d74b54f56121eabf93246.png" alt="">
+          <span class="color6">{{information.member_num}}</span>
         </div>
-        <div v-else>
-          <div class="applyNow theme_bc" @click="apply" v-if="information.is_applied == '0'">免费入群</div>
-          <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
+        <div class="main-liveness flo_l">
+          <img src="https://images.ufutx.com/201907/20/47650b3808dbb44ea8cb77ac976b4ac2.png" alt="">
+          <span>{{information.click_num}}</span>
+        </div>
+        <div class="main-liveness flo_r" @click="showComplaint = true">
+          <img src="https://images.ufutx.com/201907/20/1c4416925c394e67b2a81696d3b34af7.png" alt="">
         </div>
       </div>
-      <div v-else>
-        <!--<div class="applyNow theme_bc" @click="apply" v-if="information.is_applied == '0'">免费入群</div>-->
-        <div class="applyNow theme_bc" @click="showQr = true" >查看群码</div>
+      <div class="main-share" @click="gotoLink(information.poster_path)">
+        <img :src="information.poster" alt="">
       </div>
-
-    </div>
-    <moadlUp :show.sync="showQr" @hideModal="hideQr">
-      <div class="main-qr">
-        <!--@click="showImage" //预览-->
-        <div class="main-tabQr font28">
-          <span class="community flo_l" :class="qrType === 'community'?'active':''" @click="qrType = 'community'">群二维码</span>
-          <span class="userQr flo_r" :class="qrType === 'userQr'?'active':''" @click="qrType = 'userQr'">群主二维码</span>
+      <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
+      <!--<div v-if="information.members.length > 0">-->
+        <LoadMore tip="群成员" :show-loading="false"></LoadMore>
+        <div class="main-otherUser">
+          <div class="item-photo" v-for="item,index in information.members" v-if="item.photo" @click="gotoDetail(item.user_id)">
+            <div class="img" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
+          </div>
+          <div class="main-listV" v-if="information.members&& information.members.length < 1">
+            <div class="item font26 colorb0">暂无成员加入</div>
+          </div>
+        <!--</div>-->
         </div>
-        <div v-if="qrType === 'community'">
-          <img :src="information.qrcode" alt="" />
-          <div class="text-center font22 color6" style="margin-top: 12px;">
-            <img src="http://images.ufutx.com/201907/04/0eaf2cfa1d2dcb3ac25f20ad1117d52d.png" alt="" class="qrImage">
-            长按识别二维码
+      <div class="communityTitle text-center color6" v-if="list.length > 0">群动态</div>
+      <communityCircle :list.sync="list"></communityCircle>
+      <div class="height160"></div>
+      <div class="box_bottom ff">
+        <div class="home_and_share ff">
+          <div class="home_ text-center" @click="goHome">
+            <img class="icon_home" src="https://images.ufutx.com/201907/23/89fdc039b0f305190a806b0da4323919.png" alt="">
+            <p class="home">首页</p>
+          </div>
+          <div class="share_ text-center" @click="goCreate">
+            <img class="icon_share" src="https://images.ufutx.com/201907/25/a18656b27b60619b9bc5d3cb67824806.png" alt="">
+            <p class="share">新建社群</p>
+          </div>
+        </div>
+        <div v-if="token">
+          <div v-if="showUpload">
+            <div class="applyNow theme_bc" @click="showUploadPhoto = true" v-if="information.is_applied == '0'">免费入群</div>
+            <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
+          </div>
+          <div v-else>
+            <div class="applyNow theme_bc" @click="apply" v-if="information.is_applied == '0'">免费入群</div>
+            <div class="applyNow theme_bc" @click="showQr = true" v-else>查看群码</div>
           </div>
         </div>
         <div v-else>
-          <img :src="information.wechat_qrcode" alt="" v-if="information.wechat_qrcode"/>
-          <div class="text text-center font28" v-else>群主微信：
-            <input type="text" id="success_form_input" readonly="readonly" v-model="information.owner_wechat"/>
-            <button  id="copy" ref="copy" @click="copyLink" data-clipboard-action="copy" data-clipboard-target="#success_form_input">
-              <img src="http://images.ufutx.com/201907/03/b1f746f48da868f953fba244df8ff9be.png" alt="">
-            </button>
+          <!--<div class="applyNow theme_bc" @click="apply" v-if="information.is_applied == '0'">免费入群</div>-->
+          <div class="applyNow theme_bc" @click="showQr = true" >查看群码</div>
+        </div>
+      </div>
+      <moadlUp :show.sync="showQr" @hideModal="hideQr">
+        <div class="main-qr">
+          <!--@click="showImage" //预览-->
+          <div class="main-tabQr font28">
+            <span class="community flo_l" :class="qrType === 'community'?'active':''" @click="qrType = 'community'">群二维码</span>
+            <span class="userQr flo_r" :class="qrType === 'userQr'?'active':''" @click="qrType = 'userQr'">群主二维码</span>
+          </div>
+          <div v-if="qrType === 'community'">
+            <img :src="information.qrcode" alt="" />
+            <div class="text-center font22 color6" style="margin-top: 12px;">
+              <img src="http://images.ufutx.com/201907/04/0eaf2cfa1d2dcb3ac25f20ad1117d52d.png" alt="" class="qrImage">
+              长按识别二维码
+            </div>
+          </div>
+          <div v-else>
+            <img :src="information.wechat_qrcode" alt="" v-if="information.wechat_qrcode"/>
+            <div class="text text-center font28" v-else>群主微信：
+              <input type="text" id="success_form_input" readonly="readonly" v-model="information.owner_wechat"/>
+              <button  id="copy" ref="copy" @click="copyLink" data-clipboard-action="copy" data-clipboard-target="#success_form_input">
+                <img src="http://images.ufutx.com/201907/03/b1f746f48da868f953fba244df8ff9be.png" alt="">
+              </button>
+            </div>
           </div>
         </div>
-
-
-      </div>
-    </moadlUp>
-    <moadlDown :show.sync="showUploadPhoto" @hideModal="hideUploadPhoto">
-      <div class="main-upload color6">
-        <div class="bold">温馨提示：</div>
-        <div class="text">系统检测到你尚未上传头像,请先上传头像！</div>
-        <div class="text-center upload">
-          <uploadOss @onSuccess="onSuccess"></uploadOss>
-          <img :src="photo" alt="" @click="showImage">
+      </moadlUp>
+      <moadlDown :show.sync="showUploadPhoto" @hideModal="hideUploadPhoto">
+        <div class="main-upload color6">
+          <div class="bold">温馨提示：</div>
+          <div class="text">系统检测到你尚未上传头像,请先上传头像！</div>
+          <div class="text-center upload">
+            <uploadOss @onSuccess="onSuccess"></uploadOss>
+            <img :src="photo" alt="" @click="showImage">
+          </div>
+          <div class="save text-center" @click="save">确定</div>
         </div>
-        <div class="save text-center" @click="save">确定</div>
-      </div>
-    </moadlDown>
-    <moadlDown :show.sync="showOpenId" @hideModal="hideOppenId">
-      <div class="main-upload color6">
-        <div class="bold font30">温馨提示：</div>
-        <div class="text font28">系统未获取到您的信息,将无法给你红包！</div>
-        <div class="getOpenid text-center" @click="getOpenid">获取红包资格</div>
-      </div>
-    </moadlDown>
-    <moadlDown :show.sync="editComplaint" @hideModal="hideComplaint">
-      <div class="main-upload color6">
-        <div class="complaintText">
-          <textarea v-model="complaintText" placeholder="请输入举报内容"></textarea>
+      </moadlDown>
+      <moadlDown :show.sync="showOpenId" @hideModal="hideOppenId">
+        <div class="main-upload color6">
+          <div class="bold font30">温馨提示：</div>
+          <div class="text font28">系统未获取到您的信息,将无法给你红包！</div>
+          <div class="getOpenid text-center" @click="getOpenid">获取红包资格</div>
         </div>
-        <div class="ComplaintBtn theme_bc" @click="submitComplaint">提交</div>
-        <!--<div class="getOpenid Complaint text-center" @click="getOpenid">投诉</div>-->
+      </moadlDown>
+      <moadlDown :show.sync="editComplaint" @hideModal="hideComplaint">
+        <div class="main-upload color6">
+          <div class="complaintText">
+            <textarea v-model="complaintText" placeholder="请输入举报内容"></textarea>
+          </div>
+          <div class="ComplaintBtn theme_bc" @click="submitComplaint">提交</div>
+          <!--<div class="getOpenid Complaint text-center" @click="getOpenid">投诉</div>-->
+        </div>
+      </moadlDown>
+      <group>
+        <popup-picker :show.sync="showComplaint" :show-cell="false" :data="pickerList" @on-change="onChange" ></popup-picker>
+      </group>
+      <div v-transfer-dom>
+        <previewer :list="imagelist" ref="previewer" @on-index-change="logIndexChange"></previewer>
       </div>
-    </moadlDown>
-    <group>
-      <popup-picker :show.sync="showComplaint" :show-cell="false" :data="pickerList" @on-change="onChange" ></popup-picker>
-    </group>
-    <div v-transfer-dom>
-      <previewer :list="list" ref="previewer" @on-index-change="logIndexChange"></previewer>
-    </div>
+      <div class="addition" @click="$router.push({name: 'communityCircleEdit',params: {id: id}})" v-if="information.is_applied !== '0'">
+        <img src="https://images.ufutx.com/201907/20/6e0bb82048c9ab0b1833d28aa83c6d7f.png" alt="">
+      </div>
+    </mescroll-vue>
   </div>
 </template>
 <script>
@@ -137,6 +149,8 @@
   import moadlUp from '../../components/moadlUp'
   import moadlDown from '../../components/moadlDown'
   import uploadOss from '../../components/upload_oss'
+  import MescrollVue from 'mescroll.js/mescroll.vue'
+  import communityCircle from '../../components/communityCircle'
 
   export default {
     name: 'authentication',
@@ -150,12 +164,15 @@
       LoadMore,
       moadlUp,
       Previewer,
+      MescrollVue,
       uploadOss,
-      moadlDown
+      moadlDown,
+      communityCircle
     },
     data () {
       return {
         name: '',
+        search: '',
         complaintText: '',
         editComplaint: false,
         qrType: 'community',
@@ -174,10 +191,36 @@
         photo: 'http://images.ufutx.com/201907/03/0c90095f21650cacf992e1a9d4b4e982.png',
         token: localStorage.getItem('ACCESS_TOKEN'),
         official_openid: localStorage.getItem('official_openid'),
-        list: []
+        list: [],
+        imagelist: [],
+        mescroll: null, //  mescroll实例对象
+        mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
+        mescrollUp: { // 上拉加载的配置.
+          callback: this.getOrderList, // 上拉回调,此处简写; 相当于 callback: function(page, mescroll) { }
+          // 以下是一些常用的配置,当然不写也可以的.
+          page: {
+            num: 0, // 当前页 默认0,回调之前会加1; 即callback(page)会从1开始
+            size: 15 // 每页数据条数,默认10
+          },
+          // toTop: {
+          //   // 回到顶部按钮
+          //   src: "http://images.ufutx.com/201906/27/1380d8f68a7f81f3a08a92a84cab4c0e.png", // 图片路径,默认null,支持网络图
+          //   offset: 1000 // 列表滚动1000px才显示回到顶部按钮
+          // },
+          htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>', // 上拉加载中的布局
+          htmlNodata: '<p class="upwarp-nodata" style="margin-bottom: 16vw;">-- 加载完毕 --</p>' // 无数据的布局
+        }
       }
     },
     methods: {
+      searchUser () { // 输入框搜索
+        this.list = []
+        console.log(this.search)
+        this.getOrderList({num: 1})
+      },
+      mescrollInit (mescroll) {
+        this.mescroll = mescroll
+      },
       onChange (val) {
         console.log(val)
         if (val[0] === '举报') {
@@ -300,6 +343,50 @@
           params: {id: 0}
         })
       },
+      getOrderList (page, mescroll) { // 获取数据
+        $loadingShow('加载中...')
+        let pageV = 1
+        pageV = page.num
+        if (!page.num) {
+          pageV = 1
+        }
+        let vm = this
+        vm.$http.get(`/official/communities/${this.id}/moments?page=${pageV}&keyword=${vm.search}`).then(({data}) => {
+          let dataV = pageV === 1 ? [] : vm.list
+          dataV.push(...data.community_moments.data)
+          vm.list = dataV
+          if (mescroll) {
+            vm.$nextTick(() => {
+              mescroll.endSuccess(data.community_moments.data.length)
+            })
+          }
+          if (vm.list.length > 0) {
+            vm.list.forEach((item, index) => {
+              let photoList = []
+              for (let rect of item.photos) {
+                if (index < 3) {
+                  photoList.push({
+                    pic: rect,
+                    show: true
+                  })
+                } else {
+                  photoList.push({
+                    pic: rect,
+                    show: false
+                  })
+                }
+              }
+              item.photoList = photoList
+            })
+          }
+          console.log(vm.list)
+          // if (vm.list.length < 1) $toastText('很抱歉！暂时没有搜索到对象')
+          $loadingHide()
+        }).catch((error) => {
+          console.log(error)
+          $loadingHide()
+        })
+      },
       getUser () {
         this.$http.get(`/official/communities/${this.id}`).then(({data}) => {
           localStorage.setItem('avatar', data.avatar)
@@ -313,7 +400,7 @@
           let intro = data.intro
           console.log(pic, url, intro, title)
           this.$shareList(pic, url, intro, title)
-          this.list.push({src: data.qrcode})
+          this.imagelist.push({src: data.qrcode})
           if (this.$isWeiXin()) {
             if (!data.user.official_openid || data.user.official_openid === null) {
               this.$router.push({name: 'user'})
@@ -373,7 +460,73 @@
   .scrollView{
     background: white !important;
   }
-
+  .main-listV {
+    text-align: center;
+    width: 96%;
+    .item {
+      padding: 10px 18px;
+      background: #f1f1f1;
+      display: inline-block;
+      margin-right: 16px;
+      margin-top: 12px;
+      border-radius: 6px;
+    }
+  }
+  .communityTitle{
+    padding: 22px 0;
+    border-bottom: 14px solid #f6f6f6;
+    border-top: 14px solid #f6f6f6;
+    margin-top: 22px;
+  }
+  .addition{
+    position: fixed;
+    right: 68px;
+    bottom: 14%;
+    width: 100px;
+    height: 100px;
+    img{
+      width: 100%;
+      height: 100%;
+      box-shadow: 0 0 18px #D92553;
+      border-radius: 50%;
+    }
+  }
+  .main-input{
+    width: 86vw;
+    background: #EBEAEA;
+    margin: 28px auto;
+    padding: 0 12px;
+    border-radius: 12px;
+    padding-left: 48px;
+    position: relative;
+    &:after{
+      content: '';
+      width: 42px;
+      height: 42px;
+      position: absolute;
+      left: 6px;
+      top: 10px;
+      background-image: url("https://images.ufutx.com/201907/20/de514ca726d16a399ab2a10f426929b2.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    ::-webkit-input-placeholder {
+      color: #b0b0b0;
+    }
+    ::-moz-placeholder {
+      color: #b0b0b0;
+    }
+    :-ms-input-placeholder {
+      color: #b0b0b0;
+    }
+    input{
+      background: none;
+      border: none;
+      width: 100%;
+      height: 62px;
+      padding-top: 2px;
+    }
+  }
   .main-box {
     min-height: 100vh;
     background: white !important;

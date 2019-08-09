@@ -1,12 +1,12 @@
 <template>
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
-      <div class="main-creation" >
-        <div class="img flo_l" v-bind:style="{backgroundImage:'url(' + group.logo + ')'}"></div>
-        <p class="flo_l font28 bold color6">{{group.title}}</p>
-        <p class="flo_l font26 colorb0 infor">{{group.intro}}</p>
+      <div class="main-input">
+        <!--<router-link to="searchCommunity">-->
+          <input type="text" placeholder="搜索感兴趣的群" v-model="search" @change="searchUser"/>
+        <!--</router-link>-->
       </div>
-      <div class="color6 font26 bc_num">{{list.length}}个群</div>
+      <div class="color6 font26 bc_num">{{list.length}}个群分类</div>
       <div class="groupicon">
         <div class="item-icon" v-for="item,index in list" @click="goToDetail(item)"  >
           <div class="logo" v-bind:style="{backgroundImage:'url(' + item.logo + ')'}" ></div>
@@ -16,10 +16,6 @@
       <div class="height160"></div>
     </mescroll-vue>
     <div class="main-float">
-      <!--<div class="share_ text-center" @click="goCreate">-->
-        <!--<img class="icon_share" src="https://images.ufutx.com/201907/25/a18656b27b60619b9bc5d3cb67824806.png" alt="">-->
-        <!--<p class="share color6 inline-block">新建社群</p>-->
-      <!--</div>-->
       <div class="home_ text-center" @click="goHome">
         <img class="icon_home" src="https://images.ufutx.com/201907/22/31d8e0c40d69b277a83add3ecefe55f3.png" alt="">
         <span class="home color6">首页</span>
@@ -60,28 +56,6 @@
         noData: false,
         id: 0,
         page: 1,
-        groupList: [
-          {
-            icon: 'http://images.ufutx.com/201907/01/9e0ee9cfa69b46e37576ce393a874ec3.png',
-            title: '单身群',
-            id: 1
-          },
-          {
-            icon: 'http://images.ufutx.com/201907/01/a3722ff97f8e49079c55c3ba1eb2e7a5.png',
-            title: '红娘群',
-            id: 2
-          },
-          {
-            icon: 'http://images.ufutx.com/201907/01/064d6bd1672193af0d116f1b23164480.png',
-            title: '介绍人群',
-            id: 3
-          },
-          {
-            icon: 'http://images.ufutx.com/201907/01/1a6e685971a396376488e9183dbb8899.png',
-            title: '城市群',
-            id: 4
-          }
-        ],
         group: {},
         mescroll: null, //  mescroll实例对象
         mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
@@ -100,7 +74,7 @@
     },
     methods: {
       searchUser () { // 输入框搜索
-        this.getOrderList(1)
+        this.getOrderList({num: 1})
       },
       create () {
         $toastText('该功能正在开发中...')
@@ -133,27 +107,10 @@
         this.$router.push({name: 'plaza'})
       },
       goToDetail (item) {
-        if (this.$isWeiXin() === true) {
-          if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
-            this.$router.push({
-              name: `communityDetail`,
-              params: {id: item.id},
-              query: {title: item.title, logo: item.icon}
-            })
-          } else {
-            if (localStorage.getItem('mobile') && localStorage.getItem('mobile') !== null) {
-              window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&type=community&id=${item.id}&from_official_openid=` + localStorage.getItem('from_official_openid')
-            } else {
-              window.location.href = `https://love.ufutx.com/wx/bind?type=community&id=${item.id}`
-            }
-          }
-        } else {
-          this.$router.push({
-            name: `communityDetail`,
-            params: {id: item.id},
-            query: {title: item.title, logo: item.icon}
-          })
-        }
+        this.$router.push({
+          name: `communityClass`,
+          params: {id: item.id}
+        })
       },
       swiperItem (currentIndex) {
         this.currentIndex = currentIndex
@@ -176,40 +133,23 @@
       },
       getOrderList (page, mescroll) {
         let vm = this
-        vm.$http.get(`/official/community/groups/${vm.id}?page=${page.num}`).then(({data}) => {
-          vm.group = data.group
-
-          let group = data.group
-          let userInfo = JSON.parse(localStorage.getItem('userInfo'))
-          let title = userInfo ? `${userInfo.name}邀请你加入《${group.title}》` : `邀请你加入《${group.title}》`
-          let intro = group.intro
-          let pic = group.logo
-          let paas = localStorage.getItem('paasName')
-          let officialOpenid = localStorage.getItem('official_openid')
-          let url = `https://love.ufutx.com/mobile/#/communityClass/${group.id}?paas=${paas}&id=&community_share=1&from_user_id=${userInfo ? userInfo.id : ''}&from_official_openid=${officialOpenid}`
-          console.log(pic, url, intro, title)
-          this.$shareList(pic, url, intro, title)
-
+        vm.$http.get(`/official/community/groups?page=${page.num}&keyword=${this.search}`).then(({data}) => {
           vm.init = true
           let dataV = page.num === 1 ? [] : vm.list
-          dataV.push(...data.communities.data)
+          dataV.push(...data.data)
           vm.list = dataV
-          vm.$nextTick(() => {
-            mescroll.endSuccess(data.communities.data.length)
-          })
+          if (mescroll) {
+            vm.$nextTick(() => {
+              mescroll.endSuccess(data.data.length)
+            })
+          }
           console.log(vm.list)
-          console.log(vm.group)
         }).catch((error) => {
           console.log(error)
         })
       }
     },
     mounted () {
-      this.id = this.$route.params.id
-      // console.log(this.$store.state.intercept)
-      // if (this.$store.state.intercept === 'true') {
-      //   return false
-      // }
     }
   }
 </script>
@@ -224,7 +164,7 @@
     margin: 28px auto;
     padding: 0 12px;
     border-radius: 12px;
-    padding-left: 43px;
+    padding-left: 48px;
     position: relative;
     &:after{
       content: '';
@@ -233,7 +173,7 @@
       position: absolute;
       left: 6px;
       top: 10px;
-      background-image: url("https://images.ufutx.com/201907/20/f8b7d5da439d74b54f56121eabf93246.png");
+      background-image: url("https://images.ufutx.com/201907/20/de514ca726d16a399ab2a10f426929b2.png");
       background-size: contain;
       background-repeat: no-repeat;
     }
@@ -257,14 +197,11 @@
   .main-creation{
     overflow: hidden;
     padding: 36px  28px;
-    .img{
+    img{
       width: 90px;
       height: 90px;
       margin-right: 22px;
       border-radius: 50%;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
     }
     p{
       margin-top: 8px;

@@ -1,30 +1,55 @@
 <template>
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
-      <div class="main-creation" >
-        <div class="img flo_l" v-bind:style="{backgroundImage:'url(' + user.photo + ')'}"></div>
+
+      <div class="main-creation">
+        <div class="img flo_l" v-bind:style="{backgroundImage:'url(' + user.photo + ')'}" ></div>
         <p class="flo_l font28 bold color6">{{user.name}}</p>
-        <!--<p class="flo_l font26 colorb0 infor">所有群</p>-->
+        <div class="flo_l font26 colorb0 infor">
+          <div class="text-center infor-item flo_l">
+            <span class="theme_clo  font36">{{user.community_count}}</span>
+            <p class="color6">总群数</p>
+          </div>
+          <div class="text-center infor-item flo_l" @click="gotoLink">
+            <span class="theme_clo font36">{{user.community_member_num}}</span>
+            <p class="color6">总成员</p>
+          </div>
+          <div class="text-center infor-item flo_l">
+            <span class="theme_clo font36">{{user.community_click_num}}</span>
+            <p class="color6">总热度</p>
+          </div>
+        </div>
       </div>
-      <div class="color6 font26 bc_num" v-if="list.length>0">{{list.length}}个群</div>
+      <div class="color6 font26 bc_num"></div>
+      <tab style="background-color: #D82653;font-size: 14px" bar-active-color="#D82653" active-color="#D82653" custom-bar-width='100px'>
+        <tab-item :selected="type === 'create'" @on-item-click="tabClick('create')">我创建的群</tab-item>
+        <tab-item :selected="type === 'join'" @on-item-click="tabClick('join')">我加入的群</tab-item>
+      </tab>
       <div class="groupicon">
         <div class="item-icon" v-for="item,index in list" @click="goToDetail(item)"  >
           <div class="logo" v-bind:style="{backgroundImage:'url(' + item.logo + ')'}" ></div>
           <div class="font22 color6 title">{{item.title}}</div>
         </div>
+        <div v-if="list.length < 1 && init" class="text-center">
+          <span v-if="type === 'create'">
+            <div class="main-listV">
+            <div class="item font26 colorb0">暂无群信息...</div>
+          </div>
+          </span>
+          <span v-else>
+           <div class="main-listV">
+            <div class="item font26 colorb0">暂无群信息...</div>
+          </div>
+          </span>
+        </div>
       </div>
-      <div class="height160"></div>
+      <!--<div class="height160"></div>-->
+      <div class="main-Circle" v-if="circleList.length > 0">
+        <div class="main-title text-center font28">群动态</div>
+        <communityCircle :list.sync="circleList"></communityCircle>
+        <div class="height160"></div>
+      </div>
     </mescroll-vue>
-    <div class="main-float">
-      <!--<div class="share_ text-center" @click="goPlaza">-->
-        <!--<img class="icon_share" src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="">-->
-        <!--<p class="share color6 inline-block">广场</p>-->
-      <!--</div>-->
-      <div class="home_ text-center" @click="goHome">
-        <img class="icon_home" src="https://images.ufutx.com/201907/22/31d8e0c40d69b277a83add3ecefe55f3.png" alt="">
-        <span class="home color6">首页</span>
-      </div>
-    </div>
     <div class="vessel" v-if="showModal">
       <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close" @click="hideModal">
       <div class="modal-vessel" @click="gotoShare"></div>
@@ -33,10 +58,11 @@
 </template>
 
 <script>
-  import {Group, Cell, XHeader, Swiper, XInput, SwiperItem} from 'vux'
+  import {Group, Cell, XHeader, Swiper, XInput, SwiperItem, Tab, TabItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import swiperComponent from '../../components/swiper'
-  import {$toastText} from '../../config/util'
+  import {$toastText, $loadingHide, $loadingShow} from '../../config/util'
+  import communityCircle from '../../components/communityCircle'
 
   export default {
     components: {
@@ -46,20 +72,25 @@
       Swiper,
       SwiperItem,
       XInput,
+      Tab,
+      TabItem,
       swiperComponent,
-      MescrollVue
+      MescrollVue,
+      communityCircle
     },
     data () {
       return {
         value: '',
         current: 0,
+        type: 'create',
         search: '',
         showModal: false,
         init: false,
         recommend: [],
         noData: false,
-        id: 0,
         page: 1,
+        user: {},
+        circleList: [],
         groupList: [
           {
             icon: 'http://images.ufutx.com/201907/01/9e0ee9cfa69b46e37576ce393a874ec3.png',
@@ -82,7 +113,7 @@
             id: 4
           }
         ],
-        user: {},
+        announcements: [],
         mescroll: null, //  mescroll实例对象
         mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
         mescrollUp: { // 上拉加载的配置.
@@ -99,55 +130,55 @@
       }
     },
     methods: {
-      searchUser () { // 输入框搜索
-        this.getOrderList(1)
+      tabClick (type) {
+        this.list = []
+        this.type = type
+        this.init = false
+        this.circleList = []
+        this.getOrderList({num: 1})
       },
-      create () {
-        $toastText('该功能正在开发中...')
+      handler (val) {
+        console.log(val)
+      },
+      searchUser () { // 输入框搜索
+        this.getOrderList()
       },
       hideModal () {
         this.showModal = false
       },
       gotoLink () {
-        window.location.href = 'https://mp.weixin.qq.com/s/JOOAf693lS3cWpSngompLA'
+        if (this.type === 'create') {
+          this.$router.push({
+            name: `communityMember`
+          })
+        } else {
+          $toastText('暂时不能查看我加入的社群 群成员！')
+        }
+      },
+      create () {
+        let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
+        if (ACCESS_TOKEN) {
+          this.$router.push({
+            name: 'createCommunity',
+            params: {id: 0}
+          })
+        } else {
+          $toastText('请先登录！')
+          setTimeout(() => {
+            this.$router.push({name: 'login'})
+          }, 800)
+        }
       },
       gotoShare () {
         this.showModal = false
         window.location.href = `http://love.ufutx.com/wx/bind/v2`
         // this.$router.push({name: 'sharePage'})
       },
-      goHome () {
-        if (localStorage.getItem('paasName') !== 'FL' && localStorage.getItem('paasName')) {
-          this.$router.push({name: 'home'})
-        } else {
-          this.$router.push({name: 'communityHome'})
-        }
-      },
-      goPlaza () {
-        this.$router.push({name: 'plaza'})
-      },
       goToDetail (item) {
-        if (this.$isWeiXin() === true) {
-          if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
-            this.$router.push({
-              name: `communityDetail`,
-              params: {id: item.id},
-              query: {title: item.title, logo: item.icon}
-            })
-          } else {
-            if (localStorage.getItem('mobile') && localStorage.getItem('mobile') !== null) {
-              window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + `&type=community&id=${item.id}&from_official_openid=` + localStorage.getItem('from_official_openid')
-            } else {
-              window.location.href = `https://love.ufutx.com/wx/bind?type=community&id=${item.id}`
-            }
-          }
-        } else {
-          this.$router.push({
-            name: `communityDetail`,
-            params: {id: item.id},
-            query: {title: item.title, logo: item.icon}
-          })
-        }
+        this.$router.push({
+          name: `communityDetail`,
+          params: {id: item.id}
+        })
       },
       swiperItem (currentIndex) {
         this.currentIndex = currentIndex
@@ -169,28 +200,53 @@
         })
       },
       getOrderList (page, mescroll) {
+        $loadingShow('加载中')
         let vm = this
-        vm.$http.get(`/official/users/${vm.id}/communities?page=${page.num}`).then(({data}) => {
+        let url = `/official/users/${vm.id}/create/community/moments?page=${page.num}`
+        if (vm.type === 'join') {
+          url = `/official/users/${vm.id}/join/community/moments?page=${page.num}`
+        }
+        vm.$http.get(url).then(({data}) => {
           vm.user = data.user
-          let user = data.user
-          let userInfo = JSON.parse(localStorage.getItem('userInfo'))
-          let title = userInfo ? `${userInfo.name}邀请你进入Ta的群组` : `邀请你加入《${user.name}》的群组`
-          let intro = `福恋科技专注人工智能社交平台，以婚恋交友为入口，打造精数据可视化社交平台，用科技让交友变简单。`
-          let pic = user.photo
-          let paas = localStorage.getItem('paasName')
-          let officialOpenid = localStorage.getItem('official_openid')
-          let url = `https://love.ufutx.com/mobile/#/userCommunityClass/${user.id}?paas=${paas}&id=&community_share=1&from_user_id=${userInfo ? userInfo.id : ''}&from_official_openid=${officialOpenid}`
-          console.log(pic, url, intro, title)
-          this.$shareList(pic, url, intro, title)
+          vm.user.community_click_num = data.community_click_num
+          vm.user.community_count = data.community_count
+          vm.user.community_member_num = data.community_member_num
           vm.init = true
-          let dataV = page.num === 1 ? [] : vm.list
-          dataV.push(...data.communities.data)
-          vm.list = dataV
-          vm.$nextTick(() => {
-            mescroll.endSuccess(data.communities.data.length)
-          })
+          vm.list = data.communities
+          let dataV = page.num === 1 ? [] : vm.circleList
+          dataV.push(...data.community_moments.data)
+          vm.circleList = dataV
+          if (mescroll) {
+            vm.$nextTick(() => {
+              mescroll.endSuccess(dataV.length)
+            })
+          }
+          if (vm.circleList.length > 0) {
+            vm.circleList.forEach((item, index) => {
+              let photoList = []
+              if (item.photos.length > 0) {
+                for (let rect of item.photos) {
+                  if (index < 3) {
+                    photoList.push({
+                      pic: rect,
+                      show: true
+                    })
+                  } else {
+                    photoList.push({
+                      pic: rect,
+                      show: false
+                    })
+                  }
+                }
+              }
+              item.photoList = photoList
+            })
+          }
           console.log(vm.list)
+          console.log(vm.user)
+          $loadingHide()
         }).catch((error) => {
+          $loadingHide()
           console.log(error)
         })
       }
@@ -205,55 +261,19 @@
   }
 </script>
 
-<style lang="less" scoped>
+<style lang="less" scoped="scoped">
   .scrollView{
-    background: white;
-  }
-  .main-input{
-    width: 86vw;
-    background: #EBEAEA;
-    margin: 28px auto;
-    padding: 0 12px;
-    border-radius: 12px;
-    padding-left: 43px;
-    position: relative;
-    &:after{
-      content: '';
-      width: 42px;
-      height: 42px;
-      position: absolute;
-      left: 6px;
-      top: 10px;
-      background-image: url("https://images.ufutx.com/201907/20/f8b7d5da439d74b54f56121eabf93246.png");
-      background-size: contain;
-      background-repeat: no-repeat;
-    }
-    ::-webkit-input-placeholder {
-      color: #b0b0b0;
-    }
-    ::-moz-placeholder {
-      color: #b0b0b0;
-    }
-    :-ms-input-placeholder {
-      color: #b0b0b0;
-    }
-    input{
-      background: none;
-      border: none;
-      width: 100%;
-      height: 62px;
-      padding-top: 2px;
-    }
+    background: white !important;
   }
   .main-creation{
     overflow: hidden;
-    padding: 36px  28px;
+    padding: 36px  28px 28px 28px;
     .img{
       width: 90px;
       height: 90px;
       margin-right: 22px;
       border-radius: 50%;
-      background-position: center;
+      /*background-position: center;*/
       background-repeat: no-repeat;
       background-size: cover;
     }
@@ -261,12 +281,47 @@
       margin-top: 8px;
     }
     .infor{
-      width: 82%;
+      width: 80%;
+      margin-top: 28px;
+      .infor-item{
+        width: 33%;
+        position: relative;
+        &:nth-child(1),&:nth-child(2){
+          &:before{
+            content: ' ';
+            width: 1px;
+            height: 52px;
+            background: #e2e2e2;
+            position: absolute;
+            right: 0;
+            top: 12px;
+          }
+        }
+      }
+    }
+  }
+  .main-Circle{
+    .main-title{
+      border-top: 14px solid #f6f6f6;
+      border-bottom: 14px solid #f6f6f6;
+      padding: 22px;
+    }
+  }
+  .main-listV {
+    text-align: center;
+    width: 96%;
+    .item {
+      padding: 10px 18px;
+      background: #f1f1f1;
+      display: inline-block;
+      margin-right: 16px;
+      margin-top: 12px;
+      border-radius: 6px;
     }
   }
   .bc_num{
     background: #f6f6f6;
-    padding: 4px 28px;
+    height: 14px;
   }
   .animationData {
     animation: myMove2 800ms linear;
@@ -301,6 +356,15 @@
   .groupicon {
     padding: 26px;
     overflow: hidden;
+    .main-btn{
+      width: 180px;
+      height: 60px;
+      background: #D92553;
+      border-radius: 6px;
+      line-height: 60px;
+      color: white;
+      margin: 32px auto;
+    }
     .item-icon {
       width: 25%;
       float: left;
@@ -324,53 +388,6 @@
     }
   }
 
-  .main-float {
-    background: #ffffff;
-    .home_,.share_{
-      border: 1px solid #f0f0f0;
-      width: 150px;
-      padding: 8px 12px;
-      position: fixed;
-      padding-bottom: 0;
-      bottom: 20%;
-      right: 0;
-      border-bottom-left-radius: 6px;
-      border-top-left-radius: 6px;
-      img{
-        width: 48px;
-        vertical-align: middle;
-        margin-bottom: 10px;
-      }
-    }
-    .share_{
-      width: 18vw;
-      animation: shareMove 800ms linear;
-      animation-fill-mode: forwards;
-      @keyframes shareMove {
-        from {
-          right: -18vw;
-        }
-        to {
-          right: 0;
-        }
-      }
-    }
-    .home_{
-      width: 22vw;
-      bottom: 14%;
-      overflow: hidden;
-      animation: homeMove 900ms linear;
-      animation-fill-mode: forwards;
-      @keyframes homeMove {
-        from {
-          right: -22vw;
-        }
-        to {
-          right: 0;
-        }
-      }
-    }
-  }
   .vessel {
     position: fixed;
     width: 100vw;

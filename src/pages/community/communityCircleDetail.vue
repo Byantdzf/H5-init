@@ -2,34 +2,25 @@
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div>
-        <div class="text-center main-search" @click="showSearchType = true">
-          <div class="font32 color6">
-            {{searchText}}
-            <img src="http://images.ufutx.com/201906/27/16c7dfb515bf50f00bc931d11d7f04a9.png" class="icon-down" alt="">
-          </div>
-          <img src="http://images.ufutx.com/201906/27/1380d8f68a7f81f3a08a92a84cab4c0e.png" class="flo_r friendEdit"
-               alt="" @click.stop="$router.push({name: 'friendCircleEdit'})">
-        </div>
         <div v-for="item,index in list" class="main-box">
           <div class="main-info colorff">
             <div class="info-user text-center">
-              <div class="photo" @click.stop="routeToDetail(item.user.type, item.user_id)">
+              <div class="photo" @click="routeToDetail(item.user.type, item.user_id)">
                 <div class="img" v-bind:style="{backgroundImage:'url(' + item.user.photo + ')'}"></div>
               </div>
             </div>
-            <div class="info-user info-text" @click="$router.push({path: `/friendCircleDetail/${item.id}`})">
+            <div class="info-user info-text">
               <div class="font28 title color6">
                 {{item.user.name}}
-                <img src="http://images.ufutx.com/201902/21/7b3892dcf60fabda05add35abfa9aec3.png" v-if="item.user.sex === 2" alt="" class="sex-icon">
-                <img src="http://images.ufutx.com/201902/21/a309744e67082c4bd46db0df504c32c5.png" v-else alt="" class="sex-icon">
+                <!--<img src="http://images.ufutx.com/201902/21/7b3892dcf60fabda05add35abfa9aec3.png" v-if="item.user.sex === 2" alt="" class="sex-icon">-->
+                <!--<img src="http://images.ufutx.com/201902/21/a309744e67082c4bd46db0df504c32c5.png" v-else alt="" class="sex-icon">-->
               </div>
-              <div class="font22 intro colorb0">{{item.user.age}} · {{item.user.city}}
-                <span  v-if="item.user.type === 'single'"> · 单身</span>
-                <span  v-else> · 介绍人</span>
+              <div class="font22 intro colorb0">
+                <p  v-for="item,index in item.communities" class="communities"  @click.stop="$router.push({path: `/communityDetail/${item.id}`})">{{item.title}}</p>
               </div>
             </div>
             <div class="clearfloat"></div>
-            <div class="font28 content color6"  @click="$router.push({path: `/friendCircleDetail/${item.id}`})">{{item.content}}</div>
+            <div class="font28 content color6" @click="$router.push({path: `/communityCircleDetail/${item.id}`})">{{item.content}}</div>
             <div class="photoList text-center">
               <div class="text-left inline-block" style="width: 92vw;">
                 <span v-for="itemv2,indexv2 in item.photoList" v-if="item.photoList.length>0">
@@ -63,15 +54,33 @@
             <div v-else class="main-liveness flo_r" @click="showComplaint=true,complaintId=item.id">
               <img src="https://images.ufutx.com/201907/20/1c4416925c394e67b2a81696d3b34af7.png" alt="">
             </div>
+            <div class="main-livenessV flo_r" @click="collect(item.id,index)">
+              <img src="https://images.ufutx.com/201908/09/d97b2c98a661de5d6d7730953e36c33d.png" v-if="item.favoriteCount" alt="" />
+              <img src="https://images.ufutx.com/201908/09/a5a9d6eeb378cf96214207e33738570b.png" v-else alt="" />
+            </div>
             <div class="clearfloat"></div>
           </div>
-          <div class="comment" v-if="item.momentComments.length > 0">
-            <div class="" v-for="itemComments in item.momentComments">
-              <span class="bold color6">{{itemComments.user? itemComments.user.name: '未获取到用户信息'}}：</span>
-              <span class="color6">{{itemComments.comment}}</span>
+          <div class="momentLikers" v-if="momentLikers.length > 0">
+            <div class="inline-block" v-for="item,index in momentLikers" v-if="index < 7">
+              <div class="img" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
             </div>
-            <div class="allComment" @click="$router.push({path: `/friendCircleDetail/${item.id}`})">
-              查看全部评论
+          </div>
+          <div class="occupied"></div>
+          <div class="comment" v-if="comments.length > 0">
+            <div class="comment-box" v-for="itemComments in comments" @click="routeToDetail(itemComments.user.type, itemComments.user.id)">
+              <div class="photo flo_l" v-bind:style="{backgroundImage:'url(' + itemComments.user.photo + ')'}"></div>
+              <span class="bold color6 font28">{{itemComments.user? itemComments.user.name: '未获取到用户信息'}}：</span>
+              <span class="font26 colorb0 flo_r">{{itemComments.created_at}}</span>
+              <p class="color6" style="margin-top: 1vw;">{{itemComments.comment}}</p>
+              <div class="clearfloat"></div>
+            </div>
+          </div>
+          <div class="main-pos">
+            <div class="main-input flo_l">
+              <input type="text" placeholder="评论" v-model="comment"/>
+            </div>
+            <div class="main-btn text-center flo_r" @click="saveComment">
+              发送
             </div>
           </div>
         </div>
@@ -94,10 +103,9 @@
 <script>
   import {TransferDom, Popup, XInput, Search, PopupPicker, Group, Previewer} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
-  import {$loadingHide, $toastText, $loadingShow, $toastSuccess} from '../../config/util'
+  import {$loadingHide, $loadingShow, $toastSuccess, $toastWarn} from '../../config/util'
 
   export default {
-    name: 'friendcircleList',
     directives: {
       TransferDom
     },
@@ -119,6 +127,8 @@
         showSelfComplaint: false,
         showSearch: false,
         searchText: '全部',
+        comments: [],
+        momentLikers: [],
         loadImage: 'http://images.ufutx.com/201902/25/542cc218e40cbc8a8e3a9ce23d7f4789.gif',
         SearchType: [['查看全部', '只看单身男', '只看单身女', '只看介绍人']],
         pickerList: [['举报', '取消']],
@@ -133,6 +143,7 @@
         complaintId: '',
         showSearchType: false,
         announcements: [],
+        comment: '',
         Imagelist: [],
         mescroll: null, //  mescroll实例对象
         mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
@@ -163,11 +174,23 @@
     },
     methods: {
       routeToDetail (type, id) {
-        if (type === 'single') {
-          this.$router.push({name: 'information', params: {id: id}})
-        } else {
-          this.$router.push({name: 'introducer', params: {id: id}})
+        this.$router.push({name: 'userCommunityClass', params: {id: id}})
+      },
+      saveComment () { // 评论
+        let data = {
+          comment: this.comment
         }
+        if (!this.comment) {
+          return $toastWarn('请填写评论内容！')
+        }
+        this.$http.post(`/official/comment/community/moments/${this.id}`, data).then(({data}) => {
+          this.comment = ''
+          $toastSuccess('评论成功')
+          let page = {num: 1}
+          this.getOrderList(page)
+        }).catch((error) => {
+          console.log(error)
+        })
       },
       showImage (list, index) {
         let Imagelist = []
@@ -182,16 +205,21 @@
           this.$refs.previewer.show(index)
         })
       },
-      like (id, index) {
-        this.$http.post(`/official/like/moments/${id}`).then(({data}) => {
+      collect (id, index) {
+        this.$http.post(`/official/favorite/community/moments/${id}`).then(({data}) => {
           this.page = 1
-          this.list[index].isLkerMoment = !this.list[index].isLkerMoment
-          if (this.list[index].isLkerMoment) {
-            this.list[index].momentLikerCount++
-          } else {
-            this.list[index].momentLikerCount--
+          this.list[index].favoriteCount = !this.list[index].favoriteCount
+          if (this.list[index].favoriteCount) {
+            $toastSuccess('收藏成功')
           }
-          this.$apply()
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
+      like (id, index) {
+        this.$http.put(`/official/like/community/moments/${id}`).then(({data}) => {
+          let page = {num: 1}
+          this.getOrderList(page)
         }).catch((error) => {
           console.log(error)
         })
@@ -232,6 +260,7 @@
               this.$http.delete(`/moments/${this.delId}`).then(({data}) => {
                 this.list.splice(this.delIndex, 1)
                 $toastSuccess('已删除')
+                this.$router.go('-1')
               })
             }
           })
@@ -240,7 +269,7 @@
       onChange (val) {
         console.log(val)
         if (val[0] === '举报') {
-          this.$router.push({path: `/CircleComplaint/${this.complaintId}`})
+          this.$router.push({path: `/CommunityCircleComplaint/${this.complaintId}`})
         }
       },
       mescrollInit (mescroll) {
@@ -254,13 +283,17 @@
           pageV = 1
         }
         let vm = this
-        vm.$http.get(`/official/moments?page=${pageV}&type=${vm.searchType}`).then(({data}) => {
+        vm.$http.get(`/official/community/moments/${this.id}?page=${pageV}&type=${vm.searchType}`).then(({data}) => {
+          if (data.comments.data) {
+            vm.comments = [...data.comments.data]
+          }
+          vm.momentLikers = data.momentLikers
           let dataV = pageV === 1 ? [] : vm.list
-          dataV.push(...data.data)
+          dataV.push(data.moment)
           vm.list = dataV
           if (mescroll) {
             vm.$nextTick(() => {
-              mescroll.endSuccess(data.data.length)
+              mescroll.endSuccess('1')
             })
           }
           if (vm.list.length > 0) {
@@ -283,7 +316,7 @@
             })
           }
           console.log(vm.list)
-          if (vm.list.length < 1) $toastText('很抱歉！暂时没有搜索到对象')
+          // if (vm.list.length < 1) $toastText('很抱歉！暂时没有搜索到对象')
           $loadingHide()
         }).catch((error) => {
           console.log(error)
@@ -292,11 +325,20 @@
       }
     },
     mounted () {
+      this.id = this.$route.params.id
     }
   }
 </script>
 
 <style lang="less" scoped>
+  .communities{
+    color: #D92553;
+    border: 1px solid #D92553;
+    display: inline-block;
+    padding: 0 8px;
+    border-radius: 4px;
+    margin-right: 4px;
+  }
   .main-search{
     padding: 32px 12px;
     border-bottom: 12px solid #F7F7F7;
@@ -313,17 +355,90 @@
       margin-bottom: 4px;
     }
   }
+  .occupied{
+    width: 100%;
+    border-top: 14px solid #f8f8f8;
+    margin: 16px 0 12px 0;
+  }
+  .main-pos{
+    width: 90%;
+    position: fixed;
+    bottom: 26px;
+    left: 5%;
+    .main-input{
+      width: 70%;
+      height: 60px;
+      line-height: 60px;
+      input{
+        width: 100%;
+        height: 100%;
+        border: none;
+        padding: 0 22px;
+        border-bottom: 1px solid #b0b0b0;
+      }
+    }
+    .main-btn{
+      width: 20%;
+      height: 60px;
+      background: #D92553;
+      color: white;
+      line-height: 60px;
+      border-radius: 12px;
+    }
+  }
   .main-box{
-    border-bottom: 12px solid #F7F7F7;
+    /*border-bottom: 12px solid #F7F7F7;*/
   }
   .comment{
-    border-top: 4px solid #f8f8f8;
     margin: 26px;
-    padding-top: 12px;
     font-size: 24px;
     .allComment{
       margin-top: 8px;
       color: orange;
+    }
+    .comment-box{
+      margin-top: 22px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid #d0d0d0;
+    }
+    .photo{
+      width: 90px;
+      height: 90px;
+      border-radius: 12px;
+      margin-right: 12px;
+      background: white;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 1px 1px 12px #d3d3d3;
+    }
+  }
+  .momentLikers{
+    width: 88%;
+    background: #f6f6f6;
+    padding: 12px 22px;
+    position: relative;
+    border-radius: 6px;
+    margin: auto;
+    &:before {
+      display: block;
+      content: '';
+      border-width: 16px 16px 16px 16px;
+      border-style: solid;
+      border-color: transparent transparent #f3f3f5 transparent;
+      /* 定位 */
+      position: absolute;
+      left: 1%;
+      top: -28px;
+    }
+    .img{
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      margin-right: 12px;
     }
   }
   .main-info {
@@ -392,6 +507,7 @@
           width: 100%;
           height: 100%;
           background-repeat: no-repeat;
+          background-position: center;
           background-size: cover;
         }
       }
@@ -420,6 +536,14 @@
     }
 
     .main-liveness {
+    }
+    .main-livenessV {
+      margin-right: 32px;
+      img {
+        width: 42px;
+        vertical-align: middle;
+        margin-top: -10px;
+      }
     }
   }
 

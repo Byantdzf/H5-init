@@ -1,53 +1,26 @@
 <template>
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
-      <div class="main-creation">
-        <div class="img flo_l" v-bind:style="{backgroundImage:'url(' + user.photo + ')'}" ></div>
-        <p class="flo_l font28 bold color6">{{user.name}}</p>
-        <div class="flo_l font26 colorb0 infor">
-          <div class="text-center infor-item flo_l">
-            <span class="theme_clo  font36">{{user.community_count}}</span>
-            <p class="color6">总群数</p>
-          </div>
-          <div class="text-center infor-item flo_l" @click="gotoLink">
-            <span class="theme_clo font36">{{user.community_member_num}}</span>
-            <p class="color6">总成员</p>
-          </div>
-          <div class="text-center infor-item flo_l">
-            <span class="theme_clo font36">{{user.community_click_num}}</span>
-            <p class="color6">总热度</p>
-          </div>
-        </div>
-      </div>
-      <div class="color6 font26 bc_num"></div>
-      <tab style="background-color: #D82653;font-size: 14px" bar-active-color="#D82653" active-color="#D82653" custom-bar-width='100px'>
-        <tab-item :selected="type === 'create'" @on-item-click="tabClick('create')">我创建的群</tab-item>
-        <tab-item :selected="type === 'join'" @on-item-click="tabClick('join')">我加入的群</tab-item>
-      </tab>
+      <!--<div class="color6 font26 bc_num"></div>-->
       <div class="groupicon">
-        <div class="item-icon" v-for="item,index in list" @click="goToDetail(item)"  >
-          <div class="logo" v-bind:style="{backgroundImage:'url(' + item.logo + ')'}" ></div>
-          <div class="font22 color6 title">{{item.title}}</div>
-        </div>
-        <div v-if="list.length < 1 && init" class="text-center">
-          <span v-if="type === 'create'">
-            <img src="https://images.ufutx.com/201908/07/fc1405570e0c351c9137d4b75e2c7b88.png" width="80%" alt=""
-                 style="margin-top: 22px;">
-            <div class="main-btn font26" @click="create">新建群组</div>
-          </span>
-          <span v-else>
-            <img src="https://images.ufutx.com/201908/07/71ca90e933106b1ead1e604052bab65c.png" width="80%" alt=""
-                 style="margin-top: 22px;">
-            <div class="main-btn font26">加入群组</div>
+        <div class="item-icon" v-for="item,index in list" >
+          <div class="logo flo_l" v-bind:style="{backgroundImage:'url(' + item.user.photo + ')'}"   @click="$router.push({name: 'userCommunityClass', params: {id: item.user_id}})" ></div>
+          <span @click="goToDetail(item)">
+            <div class="font26 color6 title flo_l ellipsis_1">{{item.user.name}}</div>
+            <div class="font26 colorb0 title flo_l ellipsis_3">
+              <!--<img src="https://images.ufutx.com/201907/25/f8b7d5da439d74b54f56121eabf93246.png" alt="">-->
+              {{item.content}}
+            </div>
+            <div class="main-photo flo_r">
+              <img :src="item.photos[0]" alt="">
+            </div>
           </span>
         </div>
+        <div class="main-listV" v-if="list.length < 1 && init">
+          <div class="item font26 colorb0">暂无收藏信息</div>
+        </div>
       </div>
-      <!--<div class="height160"></div>-->
-      <div class="main-Circle" v-if="circleList.length > 0">
-        <div class="main-title text-center font28">群动态</div>
-        <communityCircle :list.sync="circleList"></communityCircle>
-        <div class="height160"></div>
-      </div>
+      <div class="height160"></div>
     </mescroll-vue>
     <div class="vessel" v-if="showModal">
       <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close" @click="hideModal">
@@ -60,8 +33,7 @@
   import {Group, Cell, XHeader, Swiper, XInput, SwiperItem, Tab, TabItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import swiperComponent from '../../components/swiper'
-  import {$toastText, $loadingHide, $loadingShow} from '../../config/util'
-  import communityCircle from '../../components/communityCircle'
+  import {$toastText, $loadingShow, $loadingHide} from '../../config/util'
 
   export default {
     components: {
@@ -74,8 +46,7 @@
       Tab,
       TabItem,
       swiperComponent,
-      MescrollVue,
-      communityCircle
+      MescrollVue
     },
     data () {
       return {
@@ -89,29 +60,7 @@
         noData: false,
         page: 1,
         user: {},
-        circleList: [],
-        groupList: [
-          {
-            icon: 'http://images.ufutx.com/201907/01/9e0ee9cfa69b46e37576ce393a874ec3.png',
-            title: '单身群',
-            id: 1
-          },
-          {
-            icon: 'http://images.ufutx.com/201907/01/a3722ff97f8e49079c55c3ba1eb2e7a5.png',
-            title: '红娘群',
-            id: 2
-          },
-          {
-            icon: 'http://images.ufutx.com/201907/01/064d6bd1672193af0d116f1b23164480.png',
-            title: '介绍人群',
-            id: 3
-          },
-          {
-            icon: 'http://images.ufutx.com/201907/01/1a6e685971a396376488e9183dbb8899.png',
-            title: '城市群',
-            id: 4
-          }
-        ],
+        groupList: [],
         announcements: [],
         mescroll: null, //  mescroll实例对象
         mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
@@ -132,27 +81,7 @@
       tabClick (type) {
         this.list = []
         this.type = type
-        this.init = false
-        this.circleList = []
         this.getOrderList({num: 1})
-      },
-      handler (val) {
-        console.log(val)
-      },
-      searchUser () { // 输入框搜索
-        this.getOrderList()
-      },
-      hideModal () {
-        this.showModal = false
-      },
-      gotoLink () {
-        if (this.type === 'create') {
-          this.$router.push({
-            name: `communityMember`
-          })
-        } else {
-          $toastText('暂时不能查看我加入的社群 群成员！')
-        }
       },
       create () {
         let ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN')
@@ -168,6 +97,39 @@
           }, 800)
         }
       },
+      handler (val) {
+        console.log(val)
+      },
+      searchUser () { // 输入框搜索
+        this.getOrderList()
+      },
+      hideModal () {
+        this.showModal = false
+      },
+      gotoLink (id) {
+        this.$router.push({
+          name: `createCommunity`,
+          params: {id: id}
+        })
+      },
+      showDelete (title, id, index) {
+        this.$vux.confirm.show({
+          title: '提示',
+          content: `是否删除${title}这个社群？`,
+          dialogTransition: 'vux-fade',
+          onCancel: () => {
+          },
+          onConfirm: () => {
+            $loadingShow('处理中...')
+            this.$http.delete(`/official/user/communities/${id}`).then(({data}) => {
+              setTimeout(() => {
+                $loadingHide()
+                this.list.splice(index, 1)
+              }, 800)
+            })
+          }
+        })
+      },
       gotoShare () {
         this.showModal = false
         window.location.href = `http://love.ufutx.com/wx/bind/v2`
@@ -175,7 +137,7 @@
       },
       goToDetail (item) {
         this.$router.push({
-          name: `communityDetail`,
+          name: `communityCircleDetail`,
           params: {id: item.id}
         })
       },
@@ -199,53 +161,20 @@
         })
       },
       getOrderList (page, mescroll) {
-        $loadingShow('加载中')
         let vm = this
-        let url = `/official/user/create/community/moments?page=${page.num}`
-        if (vm.type === 'join') {
-          url = `/official/user/join/community/moments?page=${page.num}`
-        }
+        let url = `/official/my/favorite/community/moments?page=${page.num}`
         vm.$http.get(url).then(({data}) => {
-          vm.user = data.user
-          vm.user.community_click_num = data.community_click_num
-          vm.user.community_count = data.community_count
-          vm.user.community_member_num = data.community_member_num
           vm.init = true
-          vm.list = data.communities
-          let dataV = page.num === 1 ? [] : vm.circleList
-          dataV.push(...data.community_moments.data)
-          vm.circleList = dataV
+          let dataV = page.num === 1 ? [] : vm.list
+          dataV.push(...data.data)
+          vm.list = dataV
           if (mescroll) {
             vm.$nextTick(() => {
-              mescroll.endSuccess(dataV.length)
+              mescroll.endSuccess(data.data.length)
             })
           }
-          if (vm.circleList.length > 0) {
-            vm.circleList.forEach((item, index) => {
-              let photoList = []
-              if (item.photos.length > 0) {
-                for (let rect of item.photos) {
-                  if (index < 3) {
-                    photoList.push({
-                      pic: rect,
-                      show: true
-                    })
-                  } else {
-                    photoList.push({
-                      pic: rect,
-                      show: false
-                    })
-                  }
-                }
-              }
-              item.photoList = photoList
-            })
-          }
-          console.log(vm.list)
           console.log(vm.user)
-          $loadingHide()
         }).catch((error) => {
-          $loadingHide()
           console.log(error)
         })
       }
@@ -299,13 +228,6 @@
       }
     }
   }
-  .main-Circle{
-    .main-title{
-      border-top: 14px solid #f6f6f6;
-      border-bottom: 14px solid #f6f6f6;
-      padding: 22px;
-    }
-  }
   .bc_num{
     background: #f6f6f6;
     height: 14px;
@@ -339,38 +261,62 @@
 
     }
   }
-
+  .main-photo{
+    width: 120px;
+    /*background: pink;*/
+    margin-right: 22px;
+    margin-top: -32px;
+    img{
+      width: 100%;
+    }
+  }
+  .main-listV {
+    text-align: center;
+    width: 96%;
+    .item {
+      padding: 10px 18px;
+      background: #f1f1f1;
+      display: inline-block;
+      margin-right: 16px;
+      margin-top: 12px;
+      border-radius: 6px;
+    }
+  }
   .groupicon {
-    padding: 26px;
     overflow: hidden;
     .main-btn{
       width: 180px;
       height: 60px;
-      background: #D92553;
+      /*background: #D92553;*/
       border-radius: 6px;
       line-height: 60px;
       color: white;
       margin: 32px auto;
     }
     .item-icon {
-      width: 25%;
-      float: left;
-      text-align: center;
+      width: 100%;
+      overflow: hidden;
+      padding: 22px 0;
+      border-bottom: 4px solid #F6F6F6;
       .logo{
         width: 90px;
         height: 90px;
         border-radius: 50%;
-        margin: auto;
-        margin-top: 12px;
         background-size: cover;
         background-repeat: no-repeat;
-      }
-      img {
-        width: 88px;
-        margin-top: 12px;
+        margin-left: 22px;
+        margin-right: 20px;
+        background-position: center;
       }
       .title {
-        margin-top: 4px;
+        width: 50vw;
+        margin-top: 6px;
+        img{
+          width: 36px;
+          vertical-align: middle;
+          margin-bottom: 12px;
+          margin-right: -6px;
+        }
       }
     }
   }
@@ -404,6 +350,26 @@
           margin: 30% auto;
         }
       }
+    }
+  }
+  .main-btn{
+    overflow: hidden;
+    margin-top: 38px;
+    margin-right: 22px;
+    ._put,._del{
+      width: 75px;
+      height: 35px;
+      line-height: 35px;
+      border-radius: 8px;
+      background: #D92553;
+      text-align: center;
+      color: white;
+      padding: 4px;
+    }
+    ._del{
+      background: white;
+      color: #D92553;
+      border: 1px solid #D92553;
     }
   }
 </style>

@@ -16,6 +16,9 @@
             </div>
           </span>
         </div>
+        <div class="main-listV" v-if="list.length < 1 && init">
+          <div class="item font26 colorb0">暂无收藏信息</div>
+        </div>
       </div>
       <div class="height160"></div>
     </mescroll-vue>
@@ -267,7 +270,18 @@
       width: 100%;
     }
   }
-
+  .main-listV {
+    text-align: center;
+    width: 96%;
+    .item {
+      padding: 10px 18px;
+      background: #f1f1f1;
+      display: inline-block;
+      margin-right: 16px;
+      margin-top: 12px;
+      border-radius: 6px;
+    }
+  }
   .groupicon {
     overflow: hidden;
     .main-btn{
@@ -283,7 +297,7 @@
       width: 100%;
       overflow: hidden;
       padding: 22px 0;
-      border-bottom: 1px solid #b0b0b0;
+      border-bottom: 4px solid #F6F6F6;
       .logo{
         width: 90px;
         height: 90px;

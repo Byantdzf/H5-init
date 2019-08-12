@@ -8,14 +8,15 @@
           </div>
         </div>
         <div class="info-user info-text" @click="$router.push({path: `/communityCircleDetail/${item.id}`})">
-          <div class="font28 title color6">
+          <div class="font28 title color6 ellipsis_1 inline-block" style="width: 40vw;">
             {{item.user.name}}
             <!--<img src="http://images.ufutx.com/201902/21/7b3892dcf60fabda05add35abfa9aec3.png" v-if="item.user.sex === 2" alt="" class="sex-icon">-->
             <!--<img src="http://images.ufutx.com/201902/21/a309744e67082c4bd46db0df504c32c5.png" v-else alt="" class="sex-icon">-->
           </div>
+          <span class="font26 colorb0 flo_r">{{item.created_at}}</span>
           <div class="font22 intro colorb0">
             <!--<router-link :to="{name: 'communityDetail', params: {id: item.id}}">-->
-              <p  v-for="item,index in item.communities" class="communities"  @click.stop="$router.push({path: `/communityDetail/${item.id}`})">{{item.title}}</p>
+              <p  v-for="item,index in item.communities" :class="['communities', index === 0? 'active': '']"  @click.stop="$router.push({path: `/communityDetail/${item.id}`})">{{item.title}}</p>
             <!--</router-link>-->
           </div>
         </div>
@@ -43,7 +44,7 @@
           <img src="http://images.ufutx.com/201906/27/f0a175c90a1b14211980298c615a36bc.png" v-else alt="" />
           <span class="color6">{{item.momentLikerCount}}</span>
         </div>
-        <div class="main-liveness flo_l">
+        <div class="main-liveness flo_l"  @click="$router.push({path: `/communityCircleDetail/${item.id}`})">
           <img src="http://images.ufutx.com/201906/27/936c4a5f817035d69b1e2380894204cd.png" alt="">
           <span>{{item.momentCommentCount}}</span>
         </div>
@@ -238,7 +239,11 @@
     display: inline-block;
     padding: 0 8px;
     border-radius: 4px;
-    margin-right: 4px;
+    margin-right: 8px;
+  }
+  .active{
+    background: #D92553;
+    color: white;
   }
   .main-search{
     padding: 32px 12px;

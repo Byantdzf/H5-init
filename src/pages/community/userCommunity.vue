@@ -273,7 +273,7 @@
       height: 90px;
       margin-right: 22px;
       border-radius: 50%;
-      /*background-position: center;*/
+      background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
     }

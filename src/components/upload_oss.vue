@@ -122,9 +122,9 @@
         this.uploadFile(this.file)
       },
       uploadFile (file) {
-        if (this.images.length >= this.max) {
-          return
-        }
+        // if (this.images.length >= this.max) {
+        //   return
+        // }
         if (this.beforeUpload && typeof this.beforeUpload === 'function') {
           const before = this.beforeUpload(file)
           if (before && before.then) {

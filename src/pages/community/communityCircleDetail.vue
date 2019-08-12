@@ -1,68 +1,69 @@
 <template>
-  <div>
+  <div class="ff">
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div>
-        <div v-for="item,index in list" class="main-box">
+        <div class="main-box">
           <div class="main-info colorff">
             <div class="info-user text-center">
-              <div class="photo" @click="routeToDetail(item.user.type, item.user_id)">
-                <div class="img" v-bind:style="{backgroundImage:'url(' + item.user.photo + ')'}"></div>
+              <div class="photo" @click="routeToDetail(user.type, list.user_id)">
+                <div class="img" v-bind:style="{backgroundImage:'url(' + user.photo + ')'}"></div>
               </div>
             </div>
             <div class="info-user info-text">
-              <div class="font28 title color6">
-                {{item.user.name}}
+              <div class="font28 title color6 ellipsis_1 inline-block" style="width: 40vw;">
+                {{user.name}}
                 <!--<img src="http://images.ufutx.com/201902/21/7b3892dcf60fabda05add35abfa9aec3.png" v-if="item.user.sex === 2" alt="" class="sex-icon">-->
                 <!--<img src="http://images.ufutx.com/201902/21/a309744e67082c4bd46db0df504c32c5.png" v-else alt="" class="sex-icon">-->
               </div>
+              <span class="font26 colorb0 flo_r">{{list.created_at}}</span>
               <div class="font22 intro colorb0">
-                <p  v-for="item,index in item.communities" class="communities"  @click.stop="$router.push({path: `/communityDetail/${item.id}`})">{{item.title}}</p>
+                <p  v-for="item,index in list.communities" :class="['communities', index === 0? 'active': '']"   @click.stop="$router.push({path: `/communityDetail/${item.id}`})">{{item.title}}</p>
               </div>
             </div>
             <div class="clearfloat"></div>
-            <div class="font28 content color6" @click="$router.push({path: `/communityCircleDetail/${item.id}`})">{{item.content}}</div>
+            <div class="font28 content color6" @click="$router.push({path: `/communityCircleDetail/${list.id}`})">{{list.content}}</div>
             <div class="photoList text-center">
               <div class="text-left inline-block" style="width: 92vw;">
-                <span v-for="itemv2,indexv2 in item.photoList" v-if="item.photoList.length>0">
-                  <span v-if="item.photoList.length == 1">
-                    <div class="oneSheet inline-block" v-bind:style="{backgroundImage:'url(' + itemv2.pic + ')'}" @click="showImage(item.photoList, indexv2)"></div>
+                <span v-for="itemv2,indexv2 in list.photoList" v-if="list.photoList.length>0">
+                  <span v-if="list.photoList.length == 1">
+                    <div class="oneSheet inline-block" v-bind:style="{backgroundImage:'url(' + itemv2.pic + ')'}" @click="showImage(list.photoList, indexv2)"></div>
                   </span>
-                  <span v-else-if="item.photoList.length == 2">
-                    <div class="twoSheet inline-block" v-bind:style="{backgroundImage:'url(' + itemv2.pic + ')'}" @click="showImage(item.photoList, indexv2)"></div>
+                  <span v-else-if="list.photoList.length == 2">
+                    <div class="twoSheet inline-block" v-bind:style="{backgroundImage:'url(' + itemv2.pic + ')'}" @click="showImage(list.photoList, indexv2)"></div>
                   </span>
                   <span v-else>
-                    <div class="moveSheet inline-block" v-bind:style="{backgroundImage:'url(' + itemv2.pic + ')'}" @click="showImage(item.photoList, indexv2)"></div>
+                    <div class="moveSheet inline-block" v-bind:style="{backgroundImage:'url(' + itemv2.pic + ')'}" @click="showImage(list.photoList, indexv2)"></div>
                   </span>
                 </span>
               </div>
             </div>
           </div>
           <div class="main-tab font28 color6">
-            <div class="main-num flo_l " @click="like(item.id,index)">
-              <img src="http://images.ufutx.com/201906/27/bcb1164e097c61df1e991f7e783ebb13.png" v-if="item.isLkerMoment" alt="" />
+            <div class="main-num flo_l " @click="like(list.id,index)">
+              <img src="http://images.ufutx.com/201906/27/bcb1164e097c61df1e991f7e783ebb13.png" v-if="list.isLkerMoment" alt="" />
               <img src="http://images.ufutx.com/201906/27/f0a175c90a1b14211980298c615a36bc.png" v-else alt="" />
-              <span class="color6">{{item.momentLikerCount}}</span>
+              <span class="color6">{{list.momentLikerCount}}</span>
             </div>
             <div class="main-liveness flo_l">
               <img src="http://images.ufutx.com/201906/27/936c4a5f817035d69b1e2380894204cd.png" alt="">
-              <span>{{item.momentCommentCount}}</span>
+              <span>{{list.momentCommentCount}}</span>
             </div>
-            <div v-if="item.is_self" class="main-liveness flo_r"
-                 @click="showSelfComplaint=true,delId=item.id,delIndex=index">
+            <div v-if="list.is_self" class="main-liveness flo_r"
+                 @click="showSelfComplaint=true,delId=list.id,delIndex=index">
               <img src="https://images.ufutx.com/201907/20/1c4416925c394e67b2a81696d3b34af7.png" alt="">
             </div>
-            <div v-else class="main-liveness flo_r" @click="showComplaint=true,complaintId=item.id">
+            <div v-else class="main-liveness flo_r" @click="showComplaint=true,complaintId=list.id">
               <img src="https://images.ufutx.com/201907/20/1c4416925c394e67b2a81696d3b34af7.png" alt="">
             </div>
-            <div class="main-livenessV flo_r" @click="collect(item.id,index)">
-              <img src="https://images.ufutx.com/201908/09/d97b2c98a661de5d6d7730953e36c33d.png" v-if="item.favoriteCount" alt="" />
+            <div class="main-livenessV flo_r" @click="collect(list.id,index)">
+              <img src="https://images.ufutx.com/201908/09/d97b2c98a661de5d6d7730953e36c33d.png" v-if="list.favoriteCount" alt="" />
               <img src="https://images.ufutx.com/201908/09/a5a9d6eeb378cf96214207e33738570b.png" v-else alt="" />
             </div>
             <div class="clearfloat"></div>
           </div>
           <div class="momentLikers" v-if="momentLikers.length > 0">
             <div class="inline-block" v-for="item,index in momentLikers" v-if="index < 7">
-              <div class="img" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
+              <div class="img" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}" @click="routeToDetail(item.type, item.id)"></div>
             </div>
           </div>
           <div class="occupied"></div>
@@ -75,7 +76,7 @@
               <div class="clearfloat"></div>
             </div>
           </div>
-          <div class="main-pos">
+          <div class="main-pos ff">
             <div class="main-input flo_l">
               <input type="text" placeholder="评论" v-model="comment"/>
             </div>
@@ -154,20 +155,17 @@
             num: 0, // 当前页 默认0,回调之前会加1; 即callback(page)会从1开始
             size: 15 // 每页数据条数,默认10
           },
-          lazyLoad: {
-            use: true, // 是否开启懒加载,默认false
-            attr: 'imgurl' // 标签中网络图的属性名 : <img imgurl='网络图  src='占位图''/>
-          },
           // toTop: {
           //   // 回到顶部按钮
           //   src: "http://images.ufutx.com/201906/27/1380d8f68a7f81f3a08a92a84cab4c0e.png", // 图片路径,默认null,支持网络图
           //   offset: 1000 // 列表滚动1000px才显示回到顶部按钮
           // },
           htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>', // 上拉加载中的布局
-          htmlNodata: '<p class="upwarp-nodata">-- 加载完毕 --</p>' // 无数据的布局
+          htmlNodata: '<p class="upwarp-nodata" style="margin-bottom: 22vw">-- 加载完毕 --</p>' // 无数据的布局
         },
         arr: [],
-        list: []
+        user: {},
+        list: {}
       }
     },
     watch: {
@@ -217,7 +215,7 @@
         })
       },
       like (id, index) {
-        this.$http.put(`/official/like/community/moments/${id}`).then(({data}) => {
+        this.$http.post(`/official/like/community/moments/${id}`).then(({data}) => {
           let page = {num: 1}
           this.getOrderList(page)
         }).catch((error) => {
@@ -285,36 +283,31 @@
         let vm = this
         vm.$http.get(`/official/community/moments/${this.id}?page=${pageV}&type=${vm.searchType}`).then(({data}) => {
           if (data.comments.data) {
-            vm.comments = [...data.comments.data]
+            vm.comments.push(...data.comments.data)
           }
           vm.momentLikers = data.momentLikers
-          let dataV = pageV === 1 ? [] : vm.list
-          dataV.push(data.moment)
-          vm.list = dataV
+          vm.list = data.moment
+          vm.user = data.moment.user
           if (mescroll) {
             vm.$nextTick(() => {
-              mescroll.endSuccess('1')
+              mescroll.endSuccess(data.comments.data.length)
             })
           }
-          if (vm.list.length > 0) {
-            vm.list.forEach((item, index) => {
-              let photoList = []
-              for (let rect of item.photos) {
-                if (index < 3) {
-                  photoList.push({
-                    pic: rect,
-                    show: true
-                  })
-                } else {
-                  photoList.push({
-                    pic: rect,
-                    show: false
-                  })
-                }
-              }
-              item.photoList = photoList
-            })
-          }
+          let photoList = []
+          vm.list.photos.map((item, index) => {
+            if (index < 3) {
+              photoList.push({
+                pic: item,
+                show: true
+              })
+            } else {
+              photoList.push({
+                pic: item,
+                show: false
+              })
+            }
+          })
+          vm.list.photoList = photoList
           console.log(vm.list)
           // if (vm.list.length < 1) $toastText('很抱歉！暂时没有搜索到对象')
           $loadingHide()
@@ -337,7 +330,11 @@
     display: inline-block;
     padding: 0 8px;
     border-radius: 4px;
-    margin-right: 4px;
+    margin-right: 8px;
+  }
+  .active{
+    background: #D92553;
+    color: white;
   }
   .main-search{
     padding: 32px 12px;
@@ -363,8 +360,12 @@
   .main-pos{
     width: 90%;
     position: fixed;
-    bottom: 26px;
-    left: 5%;
+    bottom: 0;
+    left: 0;
+    padding: 5%;
+    padding-top: 22px;
+    padding-bottom: 26px;
+    box-shadow: -1px -1px 12px #dfdfdf;
     .main-input{
       width: 70%;
       height: 60px;

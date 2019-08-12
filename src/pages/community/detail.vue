@@ -82,8 +82,8 @@
         <div class="main-qr">
           <!--@click="showImage" //预览-->
           <div class="main-tabQr font28">
-            <span class="community flo_l" :class="qrType === 'community'?'active':''" @click="qrType = 'community'">群二维码</span>
-            <span class="userQr flo_r" :class="qrType === 'userQr'?'active':''" @click="qrType = 'userQr'">群主二维码</span>
+            <span class="community flo_r" :class="qrType === 'community'?'active':''" @click="qrType = 'community'">群二维码</span>
+            <span class="userQr flo_l" :class="qrType === 'userQr'?'active':''" @click="qrType = 'userQr'">群主二维码</span>
           </div>
           <div v-if="qrType === 'community'">
             <img :src="information.qrcode" alt="" />
@@ -136,7 +136,7 @@
       <div v-transfer-dom>
         <previewer :list="imagelist" ref="previewer" @on-index-change="logIndexChange"></previewer>
       </div>
-      <div class="addition" @click="$router.push({name: 'communityCircleEdit',params: {id: id}})" v-if="information.is_applied !== '0'">
+      <div class="addition" @click="$router.push({name: 'communityCircleEdit',params: {id: id}})" v-if="information.is_applied != 0">
         <img src="https://images.ufutx.com/201907/20/6e0bb82048c9ab0b1833d28aa83c6d7f.png" alt="">
       </div>
     </mescroll-vue>
@@ -175,7 +175,7 @@
         search: '',
         complaintText: '',
         editComplaint: false,
-        qrType: 'community',
+        qrType: 'userQr',
         showUpload: false,
         copyBtn: null, // 存储初始化复制按钮事件
         card_num: '',

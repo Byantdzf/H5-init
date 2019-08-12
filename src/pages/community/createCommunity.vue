@@ -185,7 +185,7 @@
     },
     mounted () {
       this.id = this.$route.params.id
-      if (this.id === '0') {
+      if (Number(this.id) === 0) {
         this.information = {
           logo: 'https://images.ufutx.com/201907/25/5fa19a0b8b779e140a79f4936dc93bc9.png',
           info: [

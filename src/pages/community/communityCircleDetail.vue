@@ -76,6 +76,7 @@
               <div class="clearfloat"></div>
             </div>
           </div>
+          <div class="height160"></div>
           <div class="main-pos ff">
             <div class="main-input flo_l">
               <input type="text" placeholder="评论" v-model="comment"/>
@@ -161,7 +162,7 @@
           //   offset: 1000 // 列表滚动1000px才显示回到顶部按钮
           // },
           htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>', // 上拉加载中的布局
-          htmlNodata: '<p class="upwarp-nodata" style="margin-bottom: 22vw">-- 加载完毕 --</p>' // 无数据的布局
+          htmlNodata: '<p class="upwarp-nodata" > </p>' // 无数据的布局
         },
         arr: [],
         user: {},
@@ -183,6 +184,7 @@
         }
         this.$http.post(`/official/comment/community/moments/${this.id}`, data).then(({data}) => {
           this.comment = ''
+          this.comments = []
           $toastSuccess('评论成功')
           let page = {num: 1}
           this.getOrderList(page)

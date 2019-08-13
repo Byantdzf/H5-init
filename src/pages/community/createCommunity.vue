@@ -115,15 +115,25 @@
         if (this.information.logo === 'https://images.ufutx.com/201907/25/5fa19a0b8b779e140a79f4936dc93bc9.png') {
           return $toastText('请上传群logo图')
         }
-        let data = {
-          logo: this.information.logo,
-          title: this.information.info[0].value,
-          group_id: this.information.info[1].value,
-          qrcode: this.information.info[2].value,
-          wechat_qrcode: this.information.info[3].value,
-          poster: this.information.info[4].value,
-          poster_path: this.information.info[5].value,
-          intro: this.information.intro
+        let data = {}
+        if (this.id > 0) {
+          data = {
+            logo: this.information.logo,
+            title: this.information.info[0].value,
+            group_id: this.information.info[1].value,
+            qrcode: this.information.info[2].value,
+            wechat_qrcode: this.information.info[3].value,
+            poster: this.information.info[4].value,
+            poster_path: this.information.info[5].value,
+            intro: this.information.intro
+          }
+        } else {
+          data = {
+            logo: this.information.logo,
+            title: this.information.info[0].value,
+            group_id: this.information.info[1].value,
+            intro: this.information.intro
+          }
         }
         console.log(data)
         if (this.id > 0) {

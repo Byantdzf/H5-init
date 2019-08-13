@@ -1,5 +1,5 @@
 <template>
-  <div style="background: #F6F6F6;">
+  <div style="background: #F6F6F6;min-height: 100vh;">
     <div class="main-bc">
       <div class="logo"  v-bind:style="{backgroundImage:'url(' + information.logo + ')'}" @click="type = 'logo'">
         <uploadOss @onSuccess="onSuccess"></uploadOss>

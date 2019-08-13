@@ -103,24 +103,24 @@
           </div>
         </div>
       </moadlUp>
-      <moadlDown :show.sync="showUploadPhoto" @hideModal="hideUploadPhoto">
-        <div class="main-upload color6">
-          <div class="bold">温馨提示：</div>
-          <div class="text">系统检测到你尚未上传头像,请先上传头像！</div>
-          <div class="text-center upload">
-            <uploadOss @onSuccess="onSuccess"></uploadOss>
-            <img :src="photo" alt="" @click="showImage">
-          </div>
-          <div class="save text-center" @click="save">确定</div>
-        </div>
-      </moadlDown>
-      <moadlDown :show.sync="showOpenId" @hideModal="hideOppenId">
-        <div class="main-upload color6">
-          <div class="bold font30">温馨提示：</div>
-          <div class="text font28">系统未获取到您的信息,将无法给你红包！</div>
-          <div class="getOpenid text-center" @click="getOpenid">获取红包资格</div>
-        </div>
-      </moadlDown>
+      <!--<moadlDown :show.sync="showUploadPhoto" @hideModal="hideUploadPhoto">-->
+        <!--<div class="main-upload color6">-->
+          <!--<div class="bold">温馨提示：</div>-->
+          <!--<div class="text">系统检测到你尚未上传头像,请先上传头像！</div>-->
+          <!--<div class="text-center upload">-->
+            <!--<uploadOss @onSuccess="onSuccess"></uploadOss>-->
+            <!--<img :src="photo" alt="" @click="showImage">-->
+          <!--</div>-->
+          <!--<div class="save text-center" @click="save">确定</div>-->
+        <!--</div>-->
+      <!--</moadlDown>-->
+      <!--<moadlDown :show.sync="showOpenId" @hideModal="hideOppenId">-->
+        <!--<div class="main-upload color6">-->
+          <!--<div class="bold font30">温馨提示：</div>-->
+          <!--<div class="text font28">系统未获取到您的信息,将无法给你红包！</div>-->
+          <!--<div class="getOpenid text-center" @click="getOpenid">获取红包资格</div>-->
+        <!--</div>-->
+      <!--</moadlDown>-->
       <moadlDown :show.sync="editComplaint" @hideModal="hideComplaint">
         <div class="main-upload color6">
           <div class="complaintText">

@@ -209,7 +209,7 @@
             onCancel: () => {
             },
             onConfirm: () => {
-              this.$http.delete(`/moments/${this.delId}`).then(({data}) => {
+              this.$http.delete(`/official/community/moments/${this.delId}`).then(({data}) => {
                 this.list.splice(this.delIndex, 1)
                 $toastSuccess('已删除')
               })

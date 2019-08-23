@@ -28,10 +28,18 @@
         </div>
       </div>
       <div class="groupicon">
-        <div class="item-icon" v-for="item,index in groupList" @click="goToDetail(item)">
+        <span v-if="paas == 'SZDSQY'">
+          <div class="item-icon" v-for="item,index in groupList" @click="goToDetail(item)">
           <img :src="item.icon" alt="">
           <div class="font22 color6 title">{{item.title}}</div>
         </div>
+        </span>
+        <span v-else>
+          <div class="item-icon" v-for="item,index in groupListV2" @click="goToDetailV2(item)">
+          <img :src="item.icon" alt="">
+          <div class="font22 color6 title">{{item.title}}</div>
+        </div>
+        </span>
       </div>
       <!--<p class="bc_title font34 bold" @click="showModal = !showModal">推荐</p>-->
       <p class="bc_title font34 bold">推荐</p>
@@ -89,6 +97,32 @@
         recommend: [],
         noData: false,
         page: 1,
+        paas: '',
+        groupListV2: [
+          {
+            icon: 'http://images.ufutx.com/201905/29/fd66e63bb476a29958044c1dfc46c506.png',
+            title: '动态',
+            link: '/friendCircleList/0',
+            id: 1
+          },
+          {
+            icon: 'http://images.ufutx.com/201905/29/9e74b6471f13b711a8a7cdeea2b7ae50.png',
+            title: '申请推荐',
+            id: 2
+          },
+          {
+            icon: 'http://images.ufutx.com/201905/29/8886eb950aaf96c43455deced5b531f1.png',
+            title: '红娘',
+            link: '/loveMate',
+            id: 3
+          },
+          {
+            icon: 'http://images.ufutx.com/201905/29/ad82d47bcae7a1b615a5f62a99faf482.png',
+            title: '打赏支持',
+            link: '/givingMoney',
+            id: 4
+          }
+        ],
         groupList: [
           {
             icon: 'https://images.ufutx.com/201908/23/28984415aa18de5b4d6d81652baa8160.png',
@@ -96,11 +130,6 @@
             link: 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI4MDMzMzgzNg==&scene=124#wechat_redirect',
             id: 1
           },
-          // {
-          //   icon: 'http://images.ufutx.com/201905/29/9e74b6471f13b711a8a7cdeea2b7ae50.png',
-          //   title: '申请推荐',
-          //   id: 2
-          // },
           {
             icon: 'http://images.ufutx.com/201905/29/8886eb950aaf96c43455deced5b531f1.png',
             title: '红娘',
@@ -119,12 +148,6 @@
             link: '/friendCircleList/0',
             id: 4
           }
-          // {
-          //   icon: 'http://images.ufutx.com/201905/29/ad82d47bcae7a1b615a5f62a99faf482.png',
-          //   title: '打赏支持',
-          //   link: '/givingMoney',
-          //   id: 4
-          // }
         ],
         announcements: [],
         mescroll: null, //  mescroll实例对象
@@ -162,43 +185,44 @@
         this.$router.push({
           path: `${item.link}`
         })
-
-        // if (item.id === 2) {
-        //   this.$vux.confirm.show({
-        //     title: '提示：',
-        //     content: '你将申请成为首页推荐？',
-        //     dialogTransition: 'vux-fade',
-        //     onCancel: () => {
-        //     },
-        //     onConfirm: () => {
-        //       this.$http.post(`/apply/home/recommends`).then(({data}) => {
-        //         $toastSuccess('申请成功，等待管理员审核')
-        //       })
-        //     }
-        //   })
-        // } else {
-        //   if (item.id === 3 || item.id === 4) {
-        //     if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
-        //       this.$router.push({
-        //         path: `${item.link}`
-        //       })
-        //     } else if (this.$isWeiXin() === false) {
-        //       this.$router.push({
-        //         path: `${item.link}`
-        //       })
-        //     } else {
-        //       if (item.id === 3) {
-        //         window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + '&type=appointments'
-        //       } else {
-        //         window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + '&type=donation'
-        //       }
-        //     }
-        //   } else {
-        //     this.$router.push({
-        //       path: `${item.link}`
-        //     })
-        //   }
-        // }
+      },
+      goToDetailV2 (item) {
+        if (item.id === 2) {
+          this.$vux.confirm.show({
+            title: '提示：',
+            content: '你将申请成为首页推荐？',
+            dialogTransition: 'vux-fade',
+            onCancel: () => {
+            },
+            onConfirm: () => {
+              this.$http.post(`/apply/home/recommends`).then(({data}) => {
+                $toastSuccess('申请成功，等待管理员审核')
+              })
+            }
+          })
+        } else {
+          if (item.id === 3 || item.id === 4) {
+            if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
+              this.$router.push({
+                path: `${item.link}`
+              })
+            } else if (this.$isWeiXin() === false) {
+              this.$router.push({
+                path: `${item.link}`
+              })
+            } else {
+              if (item.id === 3) {
+                window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + '&type=appointments'
+              } else {
+                window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + '&type=donation'
+              }
+            }
+          } else {
+            this.$router.push({
+              path: `${item.link}`
+            })
+          }
+        }
       },
       swiperItem (currentIndex) {
         this.currentIndex = currentIndex
@@ -242,6 +266,7 @@
       }
     },
     mounted () {
+      this.paas = localStorage.getItem('paasName')
       // console.log(this.$store.state.intercept)
       // if (this.$store.state.intercept === 'true') {
       //   return false

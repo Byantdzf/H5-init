@@ -8,20 +8,25 @@
             <img src="https://images.ufutx.com/201904/27/49397b67f29633a4d200ed2b86ce3dbc.png" alt="" width="100%">
           </router-link>
         </div>
-        <div class="font30 announcements" v-if="announcements.length > 0">
-          <swiper auto height="30px" direction="vertical" :interval=2000 class="text-scroll" :show-dots="false">
-            <swiper-item v-for="item in announcements" :key="item.id">
-              <p class="ellipsis_1 color6" @click="$href(item.type == 'OF'?item.path:'#')">
-                <img src="https://images.ufutx.com/201904/27/3a6720333a2434da29453d42ede484cf.png" alt="" width="22px"
-                     class="announcementIcon">
-                {{item.title}}
-              </p>
-            </swiper-item>
-          </swiper>
-        </div>
+        <!--<div class="font30 announcements" v-if="announcements.length > 0">-->
+          <!--<swiper auto height="30px" direction="vertical" :interval=2000 class="text-scroll" :show-dots="false">-->
+            <!--<swiper-item v-for="item in announcements" :key="item.id">-->
+              <!--<p class="ellipsis_1 color6" @click="$href(item.type == 'OF'?item.path:'#')">-->
+                <!--<img src="https://images.ufutx.com/201904/27/3a6720333a2434da29453d42ede484cf.png" alt="" width="22px"-->
+                     <!--class="announcementIcon">-->
+                <!--{{item.title}}-->
+              <!--</p>-->
+            <!--</swiper-item>-->
+          <!--</swiper>-->
+        <!--</div>-->
+        <swiper auto height="120px" :interval=2000 class="text-scroll" :show-dots="false">
+          <swiper-item v-for="item in announcements" :key="item.id">
+            <div class="main-pic"  v-bind:style="{backgroundImage:'url(' + item.pic + ')'}" @click="$href(item.type == 'OF'?item.path:'#')"></div>
+          </swiper-item>
+        </swiper>
       </div>
-      <img src="http://images.ufutx.com/201907/01/419369bfc0834908da80d03d383c79dd.png" alt="" @click="gotoLink"
-           style="width: 100%">
+      <!--<img src="http://images.ufutx.com/201907/01/419369bfc0834908da80d03d383c79dd.png" alt="" @click="gotoLink"-->
+           <!--style="width: 100%">-->
       <div class="groupicon">
         <div class="item-icon" v-for="item,index in groupList" @click="goToDetail(item)">
           <img :src="item.icon" alt="">
@@ -86,28 +91,40 @@
         page: 1,
         groupList: [
           {
-            icon: 'http://images.ufutx.com/201905/29/fd66e63bb476a29958044c1dfc46c506.png',
-            title: '动态',
-            link: '/friendCircleList/0',
+            icon: 'https://images.ufutx.com/201908/23/28984415aa18de5b4d6d81652baa8160.png',
+            title: '都市情缘',
+            link: 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI4MDMzMzgzNg==&scene=124#wechat_redirect',
             id: 1
           },
-          {
-            icon: 'http://images.ufutx.com/201905/29/9e74b6471f13b711a8a7cdeea2b7ae50.png',
-            title: '申请推荐',
-            id: 2
-          },
+          // {
+          //   icon: 'http://images.ufutx.com/201905/29/9e74b6471f13b711a8a7cdeea2b7ae50.png',
+          //   title: '申请推荐',
+          //   id: 2
+          // },
           {
             icon: 'http://images.ufutx.com/201905/29/8886eb950aaf96c43455deced5b531f1.png',
             title: '红娘',
-            link: '/loveMate',
+            link: '/communityClass/68',
+            id: 2
+          },
+          {
+            icon: 'https://images.ufutx.com/201908/23/072e302fa49414f872b28daec6b4948f.png',
+            title: '活动',
+            link: '/activity',
             id: 3
           },
           {
-            icon: 'http://images.ufutx.com/201905/29/ad82d47bcae7a1b615a5f62a99faf482.png',
-            title: '打赏支持',
-            link: '/givingMoney',
+            icon: 'http://images.ufutx.com/201905/29/fd66e63bb476a29958044c1dfc46c506.png',
+            title: '动态',
+            link: '/friendCircleList/0',
             id: 4
           }
+          // {
+          //   icon: 'http://images.ufutx.com/201905/29/ad82d47bcae7a1b615a5f62a99faf482.png',
+          //   title: '打赏支持',
+          //   link: '/givingMoney',
+          //   id: 4
+          // }
         ],
         announcements: [],
         mescroll: null, //  mescroll实例对象
@@ -138,42 +155,50 @@
         // this.$router.push({name: 'sharePage'})
       },
       goToDetail (item) {
-        if (item.id === 2) {
-          this.$vux.confirm.show({
-            title: '提示：',
-            content: '你将申请成为首页推荐？',
-            dialogTransition: 'vux-fade',
-            onCancel: () => {
-            },
-            onConfirm: () => {
-              this.$http.post(`/apply/home/recommends`).then(({data}) => {
-                $toastSuccess('申请成功，等待管理员审核')
-              })
-            }
-          })
-        } else {
-          if (item.id === 3 || item.id === 4) {
-            if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
-              this.$router.push({
-                path: `${item.link}`
-              })
-            } else if (this.$isWeiXin() === false) {
-              this.$router.push({
-                path: `${item.link}`
-              })
-            } else {
-              if (item.id === 3) {
-                window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + '&type=appointments'
-              } else {
-                window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + '&type=donation'
-              }
-            }
-          } else {
-            this.$router.push({
-              path: `${item.link}`
-            })
-          }
+        if (item.id === 1) {
+          window.location.href = item.link
+          return
         }
+        this.$router.push({
+          path: `${item.link}`
+        })
+
+        // if (item.id === 2) {
+        //   this.$vux.confirm.show({
+        //     title: '提示：',
+        //     content: '你将申请成为首页推荐？',
+        //     dialogTransition: 'vux-fade',
+        //     onCancel: () => {
+        //     },
+        //     onConfirm: () => {
+        //       this.$http.post(`/apply/home/recommends`).then(({data}) => {
+        //         $toastSuccess('申请成功，等待管理员审核')
+        //       })
+        //     }
+        //   })
+        // } else {
+        //   if (item.id === 3 || item.id === 4) {
+        //     if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
+        //       this.$router.push({
+        //         path: `${item.link}`
+        //       })
+        //     } else if (this.$isWeiXin() === false) {
+        //       this.$router.push({
+        //         path: `${item.link}`
+        //       })
+        //     } else {
+        //       if (item.id === 3) {
+        //         window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + '&type=appointments'
+        //       } else {
+        //         window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + '&type=donation'
+        //       }
+        //     }
+        //   } else {
+        //     this.$router.push({
+        //       path: `${item.link}`
+        //     })
+        //   }
+        // }
       },
       swiperItem (currentIndex) {
         this.currentIndex = currentIndex
@@ -349,6 +374,13 @@
       height: 302px;
 
     }
+  }
+  .main-pic{
+    width: 100%;
+    height: 240px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
   .groupicon {

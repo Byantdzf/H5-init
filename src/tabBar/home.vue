@@ -19,14 +19,14 @@
             <!--</swiper-item>-->
           <!--</swiper>-->
         <!--</div>-->
-        <swiper auto height="120px" :interval=2000 class="text-scroll" :show-dots="false">
-          <swiper-item v-for="item in announcements" :key="item.id">
-            <div class="main-pic"  v-bind:style="{backgroundImage:'url(' + item.pic + ')'}" @click="$href(item.type == 'OF'?item.path:'#')"></div>
-          </swiper-item>
-        </swiper>
+        <div v-if="announcements.length>0">
+          <swiper auto height="120px" :interval=2000 class="text-scroll" :show-dots="false">
+            <swiper-item v-for="item in announcements" :key="item.id">
+              <div class="main-pic"  v-bind:style="{backgroundImage:'url(' + item.pic + ')'}" @click="$href(item.type == 'OF'?item.path:'#')"></div>
+            </swiper-item>
+          </swiper>
+        </div>
       </div>
-      <!--<img src="http://images.ufutx.com/201907/01/419369bfc0834908da80d03d383c79dd.png" alt="" @click="gotoLink"-->
-           <!--style="width: 100%">-->
       <div class="groupicon">
         <div class="item-icon" v-for="item,index in groupList" @click="goToDetail(item)">
           <img :src="item.icon" alt="">

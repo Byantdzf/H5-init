@@ -28,7 +28,7 @@
         点击立即登录默认您同意
       </span>
         <span style="color: #cadefc;text-decoration:underline;">
-        <router-link to="protocol" style="color: #D92553; text-decoration: none;">《福恋注册协议》</router-link>
+        <router-link to="protocol" style="color: #D92553; text-decoration: none;">《{{paasTitle}}注册协议》</router-link>
       </span>
       </p>
     </div>

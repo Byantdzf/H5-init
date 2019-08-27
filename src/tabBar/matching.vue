@@ -2,6 +2,10 @@
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div v-if="list.length !== 0">
+        <div class="z_text">
+          <input type="text" value="  请输入手机号码">
+          <button class="btn_matching" @click="matchingRates">搜索</button>
+        </div>
         <p class="bc_title font34 bold">推荐</p>
         <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
           <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
@@ -41,6 +45,7 @@
       return {
         value: '',
         current: 0,
+        valueMobile: '15112292112',
         search: '',
         showModal: false,
         init: false,
@@ -145,7 +150,7 @@
       },
       matchingRates (page) {
         let vm = this
-        this.$http.get(`/official/mobiles/15346981130/matching/rates?page=${page}`).then(({data}) => {
+        this.$http.get(`/official/mobiles/` + vm.valueMobile + `/matching/rates?page=${page}`).then(({data}) => {
           vm.init = true
           let result = data.data
           vm.list = result.map((item) => {
@@ -230,7 +235,7 @@
   }
 
   .bc_title {
-    margin-top: 12px;
+    margin-top: 30px;
     margin-left: 22px;
     margin-bottom: 12px;
   }
@@ -394,6 +399,26 @@
       font-size: 36px;
       font-family: '楷体';
       text-align: center;
+    }
+  }
+  .z_text{
+    margin-top: 20px;
+    text-align: center;
+    input {
+      width: 550px;
+      height: 54px;
+      outline-style: none ;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .btn_matching{
+      width: 110px;
+      height: 54px;
+      color: #ffffff;
+      margin-left: 10px;
+      border: none;
+      border-radius: 6px;
+      background-color: #4CAF50;
     }
   }
 </style>

@@ -1,14 +1,20 @@
 <template>
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
-      <p class="bc_title font34 bold">推荐</p>
-      <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
-        <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
-        <p style="margin-top: 8px;">
-          <span class="font32">{{item.name}}</span>
-          <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.stature? '· ' +item.stature +'cm': ''}} {{item.city? '· '+item.city: ''}}</span>
-        </p>
-        <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
+      <div v-if="list.length !== 0">
+        <p class="bc_title font34 bold">推荐</p>
+        <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
+          <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
+          <p style="margin-top: 8px;">
+            <span class="font32">{{item.name}}</span>
+            <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.city? '· '+item.city: ''}}</span>
+          </p>
+          <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
+        </div>
+      </div>
+      <div v-else class="pic">
+        <img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">
+        <p class="content">请长按识别二维码注册后查看</p>
       </div>
       <div class="height160"></div>
     </mescroll-vue>
@@ -137,30 +143,48 @@
           localStorage.setItem('notice_num', data.notice_num.toString())
         })
       },
-      getOrderList (page, mescroll) {
+      matchingRates (page) {
         let vm = this
-        vm.$http.get(`/official/home?page=${page.num}`).then(({data}) => {
-          vm.announcements = data.announcements
-          vm.recommend = data.recommend
-          vm.$http.get(`/official/home/likers?page=${page.num}`).then(({data}) => {
-            vm.init = true
-            let dataV = page.num === 1 ? [] : this.list
-            dataV.push(...data.data)
-            vm.list = dataV
-            vm.$nextTick(() => {
-              mescroll.endSuccess(data.data.length)
-            })
-            vm.getMessageNum()
-          }).catch((error) => {
-            console.log(error)
+        this.$http.get(`/official/mobiles/15346981130/matching/rates?page=${page}`).then(({data}) => {
+          vm.init = true
+          let result = data.data
+          vm.list = result.map((item) => {
+            return {
+              photo: item.rate_user.photo,
+              age: item.rate_user.age,
+              id: item.rate_user.id,
+              type: item.rate_user.type,
+              city: item.rate_user.city,
+              introduction: item.rate_user.introduction
+            }
           })
-        }).catch((error) => {
-          console.log(error)
         })
       }
+      // getOrderList (page, mescroll) {
+      //   let vm = this
+      //   vm.$http.get(`/official/home?page=${page.num}`).then(({data}) => {
+      //     vm.announcements = data.announcements
+      //     vm.recommend = data.recommend
+      //     vm.$http.get(`/official/home/likers?page=${page.num}`).then(({data}) => {
+      //       vm.init = true
+      //       let dataV = page.num === 1 ? [] : this.list
+      //       dataV.push(...data.data)
+      //       vm.list = dataV
+      //       vm.$nextTick(() => {
+      //         mescroll.endSuccess(data.data.length)
+      //       })
+      //       vm.getMessageNum()
+      //     }).catch((error) => {
+      //       console.log(error)
+      //     })
+      //   }).catch((error) => {
+      //     console.log(error)
+      //   })
+      // }
     },
     mounted () {
       this.paas = localStorage.getItem('paasName')
+      this.matchingRates()
       // console.log(this.$store.state.intercept)
       // if (this.$store.state.intercept === 'true') {
       //   return false
@@ -351,6 +375,25 @@
           margin: 30% auto;
         }
       }
+    }
+  }
+  .pic{
+    width: 100%;
+    text-align: center;
+    .two_dimension_code {
+      margin: auto;
+      width: 500px;
+      margin-top: 40%;
+      border: 1px solid rgba(169, 169, 169, 0.45);
+      -webkit-box-shadow: #666 0px 0px 10px;
+      -moz-box-shadow: #666 0px 0px 10px;
+      box-shadow: #666 0px 0px 10px;
+    }
+    .content{
+      margin-top: 45px;
+      font-size: 36px;
+      font-family: '楷体';
+      text-align: center;
     }
   }
 </style>

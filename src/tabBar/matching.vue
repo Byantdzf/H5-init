@@ -45,7 +45,7 @@
       return {
         value: '',
         current: 0,
-        valueMobile: '17788772809',
+        valueMobile: '15112292112',
         search: '',
         showModal: false,
         init: false,
@@ -58,7 +58,7 @@
         mescroll: null, //  mescroll实例对象
         mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
         mescrollUp: { // 上拉加载的配置.
-          callback: this.getOrderList, // 上拉回调,此处简写; 相当于 callback: function(page, mescroll) { }
+          callback: this.matchingRates, // 上拉回调,此处简写; 相当于 callback: function(page, mescroll) { }
           // 以下是一些常用的配置,当然不写也可以的.
           page: {
             num: 0, // 当前页 默认0,回调之前会加1; 即callback(page)会从1开始
@@ -148,12 +148,12 @@
           localStorage.setItem('notice_num', data.notice_num.toString())
         })
       },
-      matchingRates (page) {
+      matchingRates (page, mescroll) {
         let vm = this
-        this.$http.get(`/official/mobiles/` + vm.valueMobile + `/matching/rates?page=${page}`).then(({data}) => {
+        this.$http.get(`/official/mobiles/` + vm.valueMobile + `/matching/rates?page=${page.num}`).then(({data}) => {
           vm.init = true
           let result = data.data
-          vm.list = result.map((item) => {
+          let list = result.map((item) => {
             return {
               photo: item.rate_user.photo,
               age: item.rate_user.age,
@@ -162,6 +162,10 @@
               city: item.rate_user.city,
               introduction: item.rate_user.introduction
             }
+          })
+          this.list.push(...list)
+          vm.$nextTick(() => {
+            mescroll.endSuccess(data.data.length)
           })
         })
       }
@@ -189,7 +193,7 @@
     },
     mounted () {
       this.paas = localStorage.getItem('paasName')
-      this.matchingRates()
+      // this.matchingRates()
       // console.log(this.$store.state.intercept)
       // if (this.$store.state.intercept === 'true') {
       //   return false

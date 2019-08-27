@@ -3,7 +3,7 @@
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div v-if="list.length !== 0">
         <div class="z_text">
-          <input type="text" value="  请输入手机号码">
+          <input type="text" value="  请输入手机号码" v-model="valueMobile">
           <button class="btn_matching" @click="matchingRates">搜索</button>
         </div>
         <p class="bc_title font34 bold">推荐</p>

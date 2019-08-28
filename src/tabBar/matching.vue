@@ -3,7 +3,7 @@
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div v-show="show">
         <div>
-          <img src="https://images.ufutx.com/201908/28/71670b5f25b5724240c39c03fb86cf12.jpeg" style="width: 100%" alt="">
+          <img src="https://images.ufutx.com/201908/28/71670b5f25b5724240c39c03fb86cf12.jpeg" style="width: 100%;height: 100%" alt="">
         </div>
         <div class="matching">福恋智能匹配</div>
         <div class="z_text">
@@ -28,8 +28,8 @@
           <img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">
           <p class="content">请长按识别二维码注册后查看</p>
         </div>
+        <div class="height160"></div>
       </div>
-      <div class="height160"></div>
     </mescroll-vue>
   </div>
 </template>

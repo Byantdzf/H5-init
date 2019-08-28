@@ -1,24 +1,29 @@
 <template>
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
-      <div v-if="list.length !== 0">
-        <div class="z_text">
-          <input type="text" value="  请输入手机号码" v-model="valueMobile">
-          <button class="btn_matching" @click="matchingRates">搜索</button>
-        </div>
-        <p class="bc_title font34 bold">推荐</p>
-        <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
-          <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
-          <p style="margin-top: 8px;">
-            <span class="font32">{{item.name}}</span>
-            <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.city? '· '+item.city: ''}}</span>
-          </p>
-          <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
-        </div>
+      <div v-if="mobile == 0">
+
       </div>
-      <div v-else class="pic">
-        <img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">
-        <p class="content">请长按识别二维码注册后查看</p>
+      <div v-else>
+        <div v-if="list.length > 0">
+          <div class="z_text">
+            <input type="text" value="  请输入手机号码" v-model="mobileValue">
+            <button class="btn_matching" @click="searchFn">搜索</button>
+          </div>
+          <p class="bc_title font34 bold">推荐</p>
+          <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
+            <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
+            <p style="margin-top: 8px;">
+              <span class="font32">{{item.name}}</span>
+              <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.city? '· '+item.city: ''}}</span>
+            </p>
+            <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
+          </div>
+        </div>
+        <div v-else class="pic">
+          <img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">
+          <p class="content">请长按识别二维码注册后查看</p>
+        </div>
       </div>
       <div class="height160"></div>
     </mescroll-vue>
@@ -45,7 +50,9 @@
       return {
         value: '',
         current: 0,
-        valueMobile: '17788772809',
+        mobile: 0,
+        mobileValue: '17788772809',
+        // 17788772809
         search: '',
         showModal: false,
         init: false,
@@ -148,9 +155,15 @@
           localStorage.setItem('notice_num', data.notice_num.toString())
         })
       },
+      searchFn () {
+        this.list = []
+        this.matchingRates({num: 1})
+      },
       matchingRates (page, mescroll) {
         let vm = this
-        this.$http.get(`/official/mobiles/` + vm.valueMobile + `/matching/rates?page=${page.num}`).then(({data}) => {
+        console.log(mescroll, '000')
+        vm.mobile = vm.mobileValue === '' ? 0 : vm.mobileValue
+        this.$http.get(`/official/mobiles/` + vm.mobile + `/matching/rates?page=${page.num}`).then(({data}) => {
           vm.init = true
           let result = data.data
           let list = result.map((item) => {

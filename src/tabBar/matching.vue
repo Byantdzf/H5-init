@@ -2,8 +2,8 @@
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div v-show="show">
-        <div>
-          <img src="https://images.ufutx.com/201908/28/71670b5f25b5724240c39c03fb86cf12.jpeg" style="width: 100%;height: 100%" alt="">
+        <div class="z_height">
+          <img src="https://images.ufutx.com/201908/28/0dced76ee13f1df71e29292176df9e7b.jpeg" style="width: 100%;" alt="">
         </div>
         <div class="matching">福恋智能匹配</div>
         <div class="z_text">
@@ -38,7 +38,6 @@
   import {Group, Cell, XHeader, Swiper, XInput, Search, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import {$toastSuccess} from '../config/util'
-
   export default {
     components: {
       Group,
@@ -78,8 +77,8 @@
             num: 0, // 当前页 默认0,回调之前会加1; 即callback(page)会从1开始
             size: 15 // 每页数据条数,默认10
           },
-          htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>', // 上拉加载中的布局
-          htmlNodata: '<p class="upwarp-nodata">-- 加载完毕 --</p>' // 无数据的布局
+          htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>' // 上拉加载中的布局
+          // htmlNodata: '<p class="upwarp-nodata" v-if="list.length > 0">-- 加载完毕 --</p>' // 无数据的布局
         },
         list: []
       }
@@ -164,13 +163,12 @@
       },
       searchFn () {
         this.list = []
-        this.matchingRates({num: 1})
+        this.matchingRates({num: 1}, this.mescroll)
         this.show = false
         this.conceal = true
       },
       matchingRates (page, mescroll) {
         let vm = this
-        console.log(mescroll, '000')
         vm.mobile = vm.mobileValue === '' ? 0 : vm.mobileValue
         this.$http.get(`/official/mobiles/` + vm.mobile + `/matching/rates?page=${page.num}`).then(({data}) => {
           vm.init = true
@@ -427,6 +425,9 @@
       font-family: '楷体';
       text-align: center;
     }
+  }
+  .z_height{
+    height: 100vh;
   }
   .matching{
     width: 100%;

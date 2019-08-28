@@ -14,9 +14,9 @@
       </div>
       <div v-show="conceal">
         <div v-if="list.length > 0">
-          <p class="bc_title font34 bold" style="font-family: '楷体';text-align: center">福恋会员智能脱单匹配  ({{number}}人)</p>
+          <p class="bc_title font34 bold">小恋已为您推荐<span class="theme_clo">  {{number}}  </span>位单身</p>
           <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
-            <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
+            <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + '?x-oss-process=style/scale1' + ')'}"></div>
             <p style="margin-top: 8px;">
               <span class="font32">{{item.name}}</span>
               <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.city? '· '+item.city: ''}}</span>
@@ -262,7 +262,9 @@
   .bc_title {
     margin-top: 30px;
     margin-left: 22px;
-    margin-bottom: 12px;
+    margin-bottom: 22px;
+    font-family: '楷体';
+    text-align: center
   }
 
   .vux-img {

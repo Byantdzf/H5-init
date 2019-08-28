@@ -1,16 +1,19 @@
 <template>
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
-      <div v-if="mobile == 0">
-
+      <div v-show="show">
+        <div>
+          <img src="https://images.ufutx.com/201908/28/71670b5f25b5724240c39c03fb86cf12.jpeg" style="width: 100%" alt="">
+        </div>
+        <div class="matching">福恋智能匹配</div>
+        <div class="z_text">
+          <p class="hint" style="font-family: '楷体';font-size: 18px;margin-bottom: 10px">请输入在福恋注册的手机号</p>
+          <input type="text" value="  请输入手机号码" v-model="mobileValue">
+          <button class="btn_matching" @click="searchFn">开始匹配</button>
+        </div>
       </div>
-      <div v-else>
+      <div v-show="conceal">
         <div v-if="list.length > 0">
-          <div class="z_text">
-            <p style="font-family: '楷体';font-size: 18px;margin-bottom: 10px">请输入在福恋注册的手机号</p>
-            <input type="text" value="  请输入手机号码" v-model="mobileValue">
-            <button class="btn_matching" @click="searchFn">开始匹配</button>
-          </div>
           <p class="bc_title font34 bold" style="font-family: '楷体';text-align: center">福恋会员智能脱单匹配  ({{number}}人)</p>
           <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
             <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
@@ -53,7 +56,9 @@
         current: 0,
         mobile: 0,
         number: 0,
-        mobileValue: '17788772809',
+        show: true,
+        conceal: false,
+        mobileValue: '15112292112',
         // 17788772809
         search: '',
         showModal: false,
@@ -160,6 +165,8 @@
       searchFn () {
         this.list = []
         this.matchingRates({num: 1})
+        this.show = false
+        this.conceal = true
       },
       matchingRates (page, mescroll) {
         let vm = this
@@ -169,7 +176,6 @@
           vm.init = true
           let result = data.data
           vm.number = data.total
-          console.log(vm.number, '000011')
           let list = result.map((item) => {
             return {
               photo: item.rate_user.photo,
@@ -180,7 +186,6 @@
               introduction: item.rate_user.introduction
             }
           })
-          console.log(vm.list.number, '0202')
           this.list.push(...list)
           vm.$nextTick(() => {
             mescroll.endSuccess(data.data.length)
@@ -423,8 +428,19 @@
       text-align: center;
     }
   }
+  .matching{
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 60px;
+    color: #666666;
+    position: absolute;
+    top: 5%;
+  }
   .z_text{
-    margin-top: 20px;
+    width: 100%;
+    position: absolute;
+    top: 22%;
     text-align: center;
     input {
       width: 500px;
@@ -436,8 +452,10 @@
     .btn_matching{
       width: 130px;
       height: 54px;
+      display: block;
+      margin: auto;
       color: #ffffff;
-      margin-left: 10px;
+      margin-top: 20px;
       border: none;
       border-radius: 6px;
       background-color: #4CAF50;

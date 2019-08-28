@@ -7,10 +7,11 @@
       <div v-else>
         <div v-if="list.length > 0">
           <div class="z_text">
+            <p style="font-family: '楷体';font-size: 18px;margin-bottom: 10px">请输入在福恋注册的手机号</p>
             <input type="text" value="  请输入手机号码" v-model="mobileValue">
-            <button class="btn_matching" @click="searchFn">搜索</button>
+            <button class="btn_matching" @click="searchFn">开始匹配</button>
           </div>
-          <p class="bc_title font34 bold">推荐</p>
+          <p class="bc_title font34 bold" style="font-family: '楷体';text-align: center">福恋会员智能脱单匹配  ({{number}}人)</p>
           <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
             <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
             <p style="margin-top: 8px;">
@@ -51,7 +52,8 @@
         value: '',
         current: 0,
         mobile: 0,
-        mobileValue: '17788772809',
+        number: 0,
+        mobileValue: '15112292112',
         // 17788772809
         search: '',
         showModal: false,
@@ -166,6 +168,8 @@
         this.$http.get(`/official/mobiles/` + vm.mobile + `/matching/rates?page=${page.num}`).then(({data}) => {
           vm.init = true
           let result = data.data
+          vm.number = data.total
+          console.log(vm.number, '000011')
           let list = result.map((item) => {
             return {
               photo: item.rate_user.photo,
@@ -176,6 +180,7 @@
               introduction: item.rate_user.introduction
             }
           })
+          console.log(vm.list.number, '0202')
           this.list.push(...list)
           vm.$nextTick(() => {
             mescroll.endSuccess(data.data.length)
@@ -422,14 +427,14 @@
     margin-top: 20px;
     text-align: center;
     input {
-      width: 550px;
+      width: 500px;
       height: 54px;
       outline-style: none ;
       border: 1px solid #ccc;
       border-radius: 5px;
     }
     .btn_matching{
-      width: 110px;
+      width: 130px;
       height: 54px;
       color: #ffffff;
       margin-left: 10px;

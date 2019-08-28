@@ -21,14 +21,14 @@
         <p class="getCode font28" @click="getCode" v-if="time == 60">{{text}}</p>
         <p class="getCode font28" v-else>{{time}} 秒后重试</p>
       </div>
-      <div class="colorTheme font26 text-right register" @click="$router.push({name: 'register'})">还没有账号？</div>
+      <!--<div class="colorTheme font26 text-right register" @click="$router.push({name: 'register'})">还没有账号？</div>-->
       <button class="colorff button text-center font28" @click="login">立即登录</button>
       <p class="font26 protocol">
       <span class="color6">
         点击立即登录默认您同意
       </span>
         <span style="color: #cadefc;text-decoration:underline;">
-        <router-link to="protocol" style="color: #D92553; text-decoration: none;">《福恋注册协议》</router-link>
+        <router-link to="protocol" style="color: #D92553; text-decoration: none;">《{{paasTitle}}注册协议》</router-link>
       </span>
       </p>
     </div>

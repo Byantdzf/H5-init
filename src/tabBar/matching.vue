@@ -1,77 +1,33 @@
 <template>
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
-      <!--<div id="box"></div>-->
-      <div class="bc_top">
-        <div style="background: #EDEDED;">
-          <router-link to="userList">
-            <img src="https://images.ufutx.com/201904/27/49397b67f29633a4d200ed2b86ce3dbc.png" alt="" width="100%">
-          </router-link>
+      <div v-if="list.length !== 0">
+        <div class="z_text">
+          <input type="text" value="  请输入手机号码" v-model="valueMobile">
+          <button class="btn_matching" @click="matchingRates">搜索</button>
         </div>
-        <!--<div class="font30 announcements" v-if="announcements.length > 0">-->
-          <!--<swiper auto height="30px" direction="vertical" :interval=2000 class="text-scroll" :show-dots="false">-->
-            <!--<swiper-item v-for="item in announcements" :key="item.id">-->
-              <!--<p class="ellipsis_1 color6" @click="$href(item.type == 'OF'?item.path:'#')">-->
-                <!--<img src="https://images.ufutx.com/201904/27/3a6720333a2434da29453d42ede484cf.png" alt="" width="22px"-->
-                     <!--class="announcementIcon">-->
-                <!--{{item.title}}-->
-              <!--</p>-->
-            <!--</swiper-item>-->
-          <!--</swiper>-->
-        <!--</div>-->
-        <div v-if="announcements.length>0">
-          <swiper auto height="120px" :interval=2000 class="text-scroll" :show-dots="false">
-            <swiper-item v-for="item in announcements" :key="item.id">
-              <div class="main-pic"  v-bind:style="{backgroundImage:'url(' + item.pic + ')'}" @click="$href(item.type == 'OF'?item.path:'#')"></div>
-            </swiper-item>
-          </swiper>
+        <p class="bc_title font34 bold">推荐</p>
+        <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
+          <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
+          <p style="margin-top: 8px;">
+            <span class="font32">{{item.name}}</span>
+            <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.city? '· '+item.city: ''}}</span>
+          </p>
+          <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
         </div>
       </div>
-      <div class="groupicon">
-        <span v-if="paas == 'SZDSQY'">
-          <div class="item-icon" v-for="item,index in groupList" @click="goToDetail(item)">
-          <img :src="item.icon" alt="">
-          <div class="font22 color6 title">{{item.title}}</div>
-        </div>
-        </span>
-        <span v-else>
-          <div class="item-icon" v-for="item,index in groupListV2" @click="goToDetailV2(item)">
-          <img :src="item.icon" alt="">
-          <div class="font22 color6 title">{{item.title}}</div>
-        </div>
-        </span>
-      </div>
-      <!--<p class="bc_title font34 bold" @click="showModal = !showModal">推荐</p>-->
-      <p class="bc_title font34 bold">推荐</p>
-      <swiperComponent :list.sync="recommend"></swiperComponent>
-      <!--<swiper  :min-moving-distance="120" :show-desc-mask="true"  :auto="true" :interval="2000" @on-index-change="swiperItem">-->
-      <!--<swiper-item v-for="item,index in recommend" :key="item.id" >-->
-      <!--<div :class="[index == current?'animationData': 'animationData2']">-->
-      <!--<div class="recommend-image backCover"  v-bind:style="{backgroundImage:'url(' + item.photo + ')'}" @click="routeToDetail(item.user.type, item.user.id)"></div>-->
-      <!--</div>-->
-      <!--</swiper-item>-->
-      <!--</swiper>-->
-      <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
-        <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
-        <p style="margin-top: 8px;">
-          <span class="font32">{{item.name}}</span>
-          <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.stature? '· ' +item.stature +'cm': ''}} {{item.city? '· '+item.city: ''}}</span>
-        </p>
-        <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
+      <div v-else class="pic">
+        <img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">
+        <p class="content">请长按识别二维码注册后查看</p>
       </div>
       <div class="height160"></div>
     </mescroll-vue>
-    <div class="vessel" v-if="showModal">
-      <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close" @click="hideModal">
-      <div class="modal-vessel" @click="gotoShare"></div>
-    </div>
   </div>
 </template>
 
 <script>
   import {Group, Cell, XHeader, Swiper, XInput, Search, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
-  import swiperComponent from '../components/swiper'
   import {$toastSuccess} from '../config/util'
 
   export default {
@@ -83,13 +39,13 @@
       SwiperItem,
       XInput,
       Search,
-      swiperComponent,
       MescrollVue
     },
     data () {
       return {
         value: '',
         current: 0,
+        valueMobile: '17788772809',
         search: '',
         showModal: false,
         init: false,
@@ -98,62 +54,11 @@
         noData: false,
         page: 1,
         paas: '',
-        groupListV2: [
-          {
-            icon: 'http://images.ufutx.com/201905/29/fd66e63bb476a29958044c1dfc46c506.png',
-            title: '动态',
-            link: '/friendCircleList/0',
-            id: 1
-          },
-          {
-            icon: 'http://images.ufutx.com/201905/29/9e74b6471f13b711a8a7cdeea2b7ae50.png',
-            title: '申请推荐',
-            id: 2
-          },
-          {
-            icon: 'http://images.ufutx.com/201905/29/8886eb950aaf96c43455deced5b531f1.png',
-            title: '红娘',
-            link: '/loveMate',
-            id: 3
-          },
-          {
-            icon: 'http://images.ufutx.com/201905/29/ad82d47bcae7a1b615a5f62a99faf482.png',
-            title: '打赏支持',
-            link: '/givingMoney',
-            id: 4
-          }
-        ],
-        groupList: [
-          {
-            icon: 'https://images.ufutx.com/201908/23/28984415aa18de5b4d6d81652baa8160.png',
-            title: '都市情缘',
-            link: 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI4MDMzMzgzNg==&scene=124#wechat_redirect',
-            id: 1
-          },
-          {
-            icon: 'http://images.ufutx.com/201905/29/8886eb950aaf96c43455deced5b531f1.png',
-            title: '红娘',
-            link: '/communityClass/68',
-            id: 2
-          },
-          {
-            icon: 'https://images.ufutx.com/201908/23/072e302fa49414f872b28daec6b4948f.png',
-            title: '活动',
-            link: '/activity',
-            id: 3
-          },
-          {
-            icon: 'http://images.ufutx.com/201905/29/fd66e63bb476a29958044c1dfc46c506.png',
-            title: '动态',
-            link: '/friendCircleList/0',
-            id: 4
-          }
-        ],
         announcements: [],
         mescroll: null, //  mescroll实例对象
         mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
         mescrollUp: { // 上拉加载的配置.
-          callback: this.getOrderList, // 上拉回调,此处简写; 相当于 callback: function(page, mescroll) { }
+          callback: this.matchingRates, // 上拉回调,此处简写; 相当于 callback: function(page, mescroll) { }
           // 以下是一些常用的配置,当然不写也可以的.
           page: {
             num: 0, // 当前页 默认0,回调之前会加1; 即callback(page)会从1开始
@@ -174,7 +79,7 @@
       },
       gotoShare () {
         this.showModal = false
-        window.location.href = `http://love.hankin.ufutx.cn/wx/bind/v2`
+        window.location.href = `http://love.ufutx.com/wx/bind/v2`
         // this.$router.push({name: 'sharePage'})
       },
       goToDetail (item) {
@@ -243,30 +148,52 @@
           localStorage.setItem('notice_num', data.notice_num.toString())
         })
       },
-      getOrderList (page, mescroll) {
+      matchingRates (page, mescroll) {
         let vm = this
-        vm.$http.get(`/official/home?page=${page.num}`).then(({data}) => {
-          vm.announcements = data.announcements
-          vm.recommend = data.recommend
-          vm.$http.get(`/official/home/likers?page=${page.num}`).then(({data}) => {
-            vm.init = true
-            let dataV = page.num === 1 ? [] : this.list
-            dataV.push(...data.data)
-            vm.list = dataV
-            vm.$nextTick(() => {
-              mescroll.endSuccess(data.data.length)
-            })
-            vm.getMessageNum()
-          }).catch((error) => {
-            console.log(error)
+        this.$http.get(`/official/mobiles/` + vm.valueMobile + `/matching/rates?page=${page.num}`).then(({data}) => {
+          vm.init = true
+          let result = data.data
+          let list = result.map((item) => {
+            return {
+              photo: item.rate_user.photo,
+              age: item.rate_user.age,
+              id: item.rate_user.id,
+              type: item.rate_user.type,
+              city: item.rate_user.city,
+              introduction: item.rate_user.introduction
+            }
           })
-        }).catch((error) => {
-          console.log(error)
+          this.list.push(...list)
+          vm.$nextTick(() => {
+            mescroll.endSuccess(data.data.length)
+          })
         })
       }
+      // getOrderList (page, mescroll) {
+      //   let vm = this
+      //   vm.$http.get(`/official/home?page=${page.num}`).then(({data}) => {
+      //     vm.announcements = data.announcements
+      //     vm.recommend = data.recommend
+      //     vm.$http.get(`/official/home/likers?page=${page.num}`).then(({data}) => {
+      //       vm.init = true
+      //       let dataV = page.num === 1 ? [] : this.list
+      //       dataV.push(...data.data)
+      //       vm.list = dataV
+      //       vm.$nextTick(() => {
+      //         mescroll.endSuccess(data.data.length)
+      //       })
+      //       vm.getMessageNum()
+      //     }).catch((error) => {
+      //       console.log(error)
+      //     })
+      //   }).catch((error) => {
+      //     console.log(error)
+      //   })
+      // }
     },
     mounted () {
       this.paas = localStorage.getItem('paasName')
+      // this.matchingRates()
       // console.log(this.$store.state.intercept)
       // if (this.$store.state.intercept === 'true') {
       //   return false
@@ -312,7 +239,7 @@
   }
 
   .bc_title {
-    margin-top: 12px;
+    margin-top: 30px;
     margin-left: 22px;
     margin-bottom: 12px;
   }
@@ -457,6 +384,45 @@
           margin: 30% auto;
         }
       }
+    }
+  }
+  .pic{
+    width: 100%;
+    text-align: center;
+    .two_dimension_code {
+      margin: auto;
+      width: 500px;
+      margin-top: 40%;
+      border: 1px solid rgba(169, 169, 169, 0.45);
+      -webkit-box-shadow: #666 0px 0px 10px;
+      -moz-box-shadow: #666 0px 0px 10px;
+      box-shadow: #666 0px 0px 10px;
+    }
+    .content{
+      margin-top: 45px;
+      font-size: 36px;
+      font-family: '楷体';
+      text-align: center;
+    }
+  }
+  .z_text{
+    margin-top: 20px;
+    text-align: center;
+    input {
+      width: 550px;
+      height: 54px;
+      outline-style: none ;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .btn_matching{
+      width: 110px;
+      height: 54px;
+      color: #ffffff;
+      margin-left: 10px;
+      border: none;
+      border-radius: 6px;
+      background-color: #4CAF50;
     }
   }
 </style>

@@ -50,6 +50,11 @@ export default new Router({
       component: (resolve) => require(['@/pages/login'], resolve)
     },
     {
+      path: '/matching',
+      name: 'matching',
+      component: (resolve) => require(['@/tabBar/matching'], resolve)
+    },
+    {
       path: '/personalData',
       meta: {
         keepAlive: true // 需要被缓存

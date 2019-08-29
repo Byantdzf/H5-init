@@ -132,6 +132,7 @@
           if (this.list.length === 0) {
             this.listNum = 0
           }
+          console.log(this.list.length, '000')
           vm.$nextTick(() => {
             mescroll.endSuccess(data.data.length)
           })

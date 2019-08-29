@@ -3,7 +3,7 @@
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div v-show="show">
         <div class="z_height">
-          <img src="https://images.ufutx.com/201908/28/0dced76ee13f1df71e29292176df9e7b.jpeg" style="width: 100%;" alt="">
+          <img src="https://images.ufutx.com/201908/28/0dced76ee13f1df71e29292176df9e7b.jpeg" class="z_img" alt="">
         </div>
         <div class="matching">福恋智能匹配</div>
         <div class="z_text">
@@ -13,22 +13,26 @@
         </div>
       </div>
       <div v-show="conceal">
-        <div v-if="list.length > 0">
-          <p class="bc_title font34 bold">小恋已为您推荐<span class="theme_clo">  {{number}}  </span>位单身</p>
-          <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
-            <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + '?x-oss-process=style/scale1' + ')'}"></div>
-            <p style="margin-top: 8px;">
-              <span class="font32">{{item.name}}</span>
-              <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.city? '· '+item.city: ''}}</span>
-            </p>
-            <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
+        <!--<div v-if="accomplish">-->
+          <div v-if="list.length > 0">
+            <p class="bc_title font34 bold">小恋已为您推荐<span class="theme_clo">  {{number}}  </span>位单身</p>
+            <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
+              <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + '?x-oss-process=style/scale1' + ')'}"></div>
+              <p style="margin-top: 8px;">
+                <span class="font32">{{item.name}}</span>
+                <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.city? '· '+item.city: ''}}</span>
+              </p>
+              <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
+            </div>
           </div>
-        </div>
-        <div v-else class="pic">
-          <img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">
-          <p class="content">请长按识别二维码注册后查看</p>
-        </div>
-        <div class="height160"></div>
+          <div v-else class="pic">
+            <div v-if="accomplish">
+              <img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">
+              <p class="content">请长按识别二维码注册后查看</p>
+            </div>
+          </div>
+          <div class="height160"></div>
+        <!--</div>-->
       </div>
     </mescroll-vue>
   </div>
@@ -57,7 +61,8 @@
         number: 0,
         show: true,
         conceal: false,
-        mobileValue: '15112292112',
+        accomplish: false,
+        mobileValue: '',
         // 17788772809
         search: '',
         showModal: false,
@@ -162,10 +167,12 @@
         })
       },
       searchFn () {
-        this.list = []
         this.matchingRates({num: 1}, this.mescroll)
         this.show = false
         this.conceal = true
+        if (this.list.length < 0) {
+          this.accomplish = true
+        }
       },
       matchingRates (page, mescroll) {
         let vm = this
@@ -429,7 +436,12 @@
     }
   }
   .z_height{
-    height: 100vh;
+    .z_img{
+      width: 100vw;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
   }
   .matching{
     width: 100%;
@@ -448,7 +460,7 @@
     input {
       width: 500px;
       height: 54px;
-      outline-style: none ;
+      outline: none ;
       border: 1px solid #ccc;
       border-radius: 5px;
     }

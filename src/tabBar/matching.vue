@@ -1,7 +1,7 @@
 <template>
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
-      <div v-show="!show">
+      <div v-show="show">
         <div class="z_height">
           <img src="https://images.ufutx.com/201908/28/0dced76ee13f1df71e29292176df9e7b.jpeg" class="z_img" alt="">
         </div>
@@ -12,7 +12,7 @@
           <button class="btn_matching" @click="searchFn">开始匹配</button>
         </div>
       </div>
-      <div v-show="!conceal" id="apply">
+      <div v-show="conceal" id="apply">
         <div v-if="list.length > 0">
           <p class="bc_title font34 bold">小恋已为您推荐<span class="theme_clo">  {{number}}  </span>位单身</p>
           <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">

@@ -1,26 +1,37 @@
 <template>
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
-      <div v-if="list.length !== 0">
+      <div v-if="showList === 'false'">
+        <div class="z_height">
+          <img src="https://images.ufutx.com/201908/28/0dced76ee13f1df71e29292176df9e7b.jpeg" class="z_img" alt="">
+        </div>
+        <div class="matching">福恋智能匹配</div>
         <div class="z_text">
-          <input type="text" value="  请输入手机号码" v-model="valueMobile">
-          <button class="btn_matching" @click="matchingRates">搜索</button>
-        </div>
-        <p class="bc_title font34 bold">推荐</p>
-        <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
-          <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
-          <p style="margin-top: 8px;">
-            <span class="font32">{{item.name}}</span>
-            <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.city? '· '+item.city: ''}}</span>
-          </p>
-          <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
+          <p class="hint" style="font-size: 18px;margin-bottom: 10px">请输入在福恋注册的手机号</p>
+          <input type="text" placeholder="请输入手机号码" style="text-indent: 10px" v-model="mobileValue">
+          <button class="btn_matching" @click="searchFn">开始匹配</button>
         </div>
       </div>
-      <div v-else class="pic">
-        <img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">
-        <p class="content">请长按识别二维码注册后查看</p>
+      <div v-else>
+        <span v-if="listNum > 0">
+          <p class="bc_title font34 bold" v-if="list.length > 0">小恋已为您推荐<span class="theme_clo">  {{number}}  </span>位单身</p>
+          <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
+            <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + '?x-oss-process=style/scale1' + ')'}"></div>
+            <p style="margin-top: 8px;">
+              <span class="font32">{{item.name}}</span>
+              <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.city? '· '+item.city: ''}}</span>
+            </p>
+            <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
+          </div>
+        </span>
+        <span v-else>
+          <div class="pic">
+            <img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">
+            <p class="content">请长按识别二维码注册后查看</p>
+          </div>
+          <div class="height160"></div>
+        </span>
       </div>
-      <div class="height160"></div>
     </mescroll-vue>
   </div>
 </template>
@@ -28,8 +39,7 @@
 <script>
   import {Group, Cell, XHeader, Swiper, XInput, Search, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
-  import {$toastSuccess} from '../config/util'
-
+  import {$loadingShow, $loadingHide} from '../config/util'
   export default {
     components: {
       Group,
@@ -43,18 +53,16 @@
     },
     data () {
       return {
-        value: '',
-        current: 0,
-        valueMobile: '17788772809',
-        search: '',
-        showModal: false,
+        mobile: 0,
+        number: 0,
+        mobileValue: '15112292112',
         init: false,
         id: localStorage.getItem('id'),
-        recommend: [],
         noData: false,
+        showList: 'false',
+        listNum: 1,
         page: 1,
         paas: '',
-        announcements: [],
         mescroll: null, //  mescroll实例对象
         mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
         mescrollUp: { // 上拉加载的配置.
@@ -64,71 +72,15 @@
             num: 0, // 当前页 默认0,回调之前会加1; 即callback(page)会从1开始
             size: 15 // 每页数据条数,默认10
           },
-          htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>', // 上拉加载中的布局
-          htmlNodata: '<p class="upwarp-nodata">-- 加载完毕 --</p>' // 无数据的布局
+          htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>' // 上拉加载中的布局
+          // htmlNodata: '<p class="upwarp-nodata" v-if="list.length > 0">-- 加载完毕 --</p>' // 无数据的布局
         },
         list: []
       }
     },
+    watch: {
+    },
     methods: {
-      hideModal () {
-        this.showModal = false
-      },
-      gotoLink () {
-        window.location.href = 'https://mp.weixin.qq.com/s/Ukz4VwbvFbdL0Wr57iCKSg'
-      },
-      gotoShare () {
-        this.showModal = false
-        window.location.href = `http://love.ufutx.com/wx/bind/v2`
-        // this.$router.push({name: 'sharePage'})
-      },
-      goToDetail (item) {
-        if (item.id === 1) {
-          window.location.href = item.link
-          return
-        }
-        this.$router.push({
-          path: `${item.link}`
-        })
-      },
-      goToDetailV2 (item) {
-        if (item.id === 2) {
-          this.$vux.confirm.show({
-            title: '提示：',
-            content: '你将申请成为首页推荐？',
-            dialogTransition: 'vux-fade',
-            onCancel: () => {
-            },
-            onConfirm: () => {
-              this.$http.post(`/apply/home/recommends`).then(({data}) => {
-                $toastSuccess('申请成功，等待管理员审核')
-              })
-            }
-          })
-        } else {
-          if (item.id === 3 || item.id === 4) {
-            if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
-              this.$router.push({
-                path: `${item.link}`
-              })
-            } else if (this.$isWeiXin() === false) {
-              this.$router.push({
-                path: `${item.link}`
-              })
-            } else {
-              if (item.id === 3) {
-                window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + '&type=appointments'
-              } else {
-                window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + '&type=donation'
-              }
-            }
-          } else {
-            this.$router.push({
-              path: `${item.link}`
-            })
-          }
-        }
-      },
       swiperItem (currentIndex) {
         this.currentIndex = currentIndex
       },
@@ -148,11 +100,24 @@
           localStorage.setItem('notice_num', data.notice_num.toString())
         })
       },
+      searchFn () {
+        this.list = []
+        this.showList = 'true'
+        $loadingShow('智能匹配中...')
+        this.matchingRates({num: 1}, this.mescroll)
+      },
       matchingRates (page, mescroll) {
         let vm = this
-        this.$http.get(`/official/mobiles/` + vm.valueMobile + `/matching/rates?page=${page.num}`).then(({data}) => {
+        vm.mobile = vm.mobileValue === '' ? 0 : vm.mobileValue
+        this.$http.get(`/official/mobiles/` + vm.mobile + `/matching/rates?page=${page.num}`).then(({data}) => {
           vm.init = true
+          let {num} = page
+          if (num === 1) {
+            this.list = []
+          }
+          $loadingHide()
           let result = data.data
+          vm.number = data.total
           let list = result.map((item) => {
             return {
               photo: item.rate_user.photo,
@@ -164,40 +129,18 @@
             }
           })
           this.list.push(...list)
+          if (this.list.length === 0) {
+            this.listNum = 0
+          }
+          console.log(this.list.length, '000')
           vm.$nextTick(() => {
             mescroll.endSuccess(data.data.length)
           })
         })
       }
-      // getOrderList (page, mescroll) {
-      //   let vm = this
-      //   vm.$http.get(`/official/home?page=${page.num}`).then(({data}) => {
-      //     vm.announcements = data.announcements
-      //     vm.recommend = data.recommend
-      //     vm.$http.get(`/official/home/likers?page=${page.num}`).then(({data}) => {
-      //       vm.init = true
-      //       let dataV = page.num === 1 ? [] : this.list
-      //       dataV.push(...data.data)
-      //       vm.list = dataV
-      //       vm.$nextTick(() => {
-      //         mescroll.endSuccess(data.data.length)
-      //       })
-      //       vm.getMessageNum()
-      //     }).catch((error) => {
-      //       console.log(error)
-      //     })
-      //   }).catch((error) => {
-      //     console.log(error)
-      //   })
-      // }
     },
     mounted () {
       this.paas = localStorage.getItem('paasName')
-      // this.matchingRates()
-      // console.log(this.$store.state.intercept)
-      // if (this.$store.state.intercept === 'true') {
-      //   return false
-      // }
     }
   }
 </script>
@@ -241,7 +184,9 @@
   .bc_title {
     margin-top: 30px;
     margin-left: 22px;
-    margin-bottom: 12px;
+    margin-bottom: 22px;
+    font-family: '楷体';
+    text-align: center
   }
 
   .vux-img {
@@ -393,10 +338,9 @@
       margin: auto;
       width: 500px;
       margin-top: 40%;
-      border: 1px solid rgba(169, 169, 169, 0.45);
-      -webkit-box-shadow: #666 0px 0px 10px;
-      -moz-box-shadow: #666 0px 0px 10px;
-      box-shadow: #666 0px 0px 10px;
+      padding: 22px;
+      border-radius: 10px;
+      box-shadow: 1px 1px 12px #e4e4e4;
     }
     .content{
       margin-top: 45px;
@@ -405,21 +349,42 @@
       text-align: center;
     }
   }
+  .z_height{
+    .z_img{
+      width: 100vw;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+  .matching{
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 60px;
+    color: #666666;
+    position: absolute;
+    top: 5%;
+  }
   .z_text{
-    margin-top: 20px;
+    width: 100%;
+    position: absolute;
+    top: 22%;
     text-align: center;
     input {
-      width: 550px;
+      width: 500px;
       height: 54px;
-      outline-style: none ;
+      outline: none ;
       border: 1px solid #ccc;
       border-radius: 5px;
     }
     .btn_matching{
-      width: 110px;
+      width: 130px;
       height: 54px;
+      display: block;
+      margin: auto;
       color: #ffffff;
-      margin-left: 10px;
+      margin-top: 20px;
       border: none;
       border-radius: 6px;
       background-color: #4CAF50;

@@ -8,7 +8,7 @@
         <div class="matching">福恋智能匹配</div>
         <div class="z_text">
           <p class="hint" style="font-family: '楷体';font-size: 18px;margin-bottom: 10px">请输入在福恋注册的手机号</p>
-          <input type="text" value="  请输入手机号码" v-model="mobileValue">
+          <input type="text" placeholder="请输入手机号码" style="text-indent: 10px" v-model="mobileValue">
           <button class="btn_matching" @click="searchFn">开始匹配</button>
         </div>
       </div>

@@ -1,38 +1,36 @@
 <template>
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
-      <div v-show="show">
+      <div v-show="!show">
         <div class="z_height">
           <img src="https://images.ufutx.com/201908/28/0dced76ee13f1df71e29292176df9e7b.jpeg" class="z_img" alt="">
         </div>
         <div class="matching">福恋智能匹配</div>
         <div class="z_text">
-          <p class="hint" style="font-family: '楷体';font-size: 18px;margin-bottom: 10px">请输入在福恋注册的手机号</p>
+          <p class="hint" style="font-size: 18px;margin-bottom: 10px">请输入在福恋注册的手机号</p>
           <input type="text" placeholder="请输入手机号码" style="text-indent: 10px" v-model="mobileValue">
           <button class="btn_matching" @click="searchFn">开始匹配</button>
         </div>
       </div>
-      <div v-show="conceal">
-        <!--<div v-if="accomplish">-->
-          <div v-if="list.length > 0">
-            <p class="bc_title font34 bold">小恋已为您推荐<span class="theme_clo">  {{number}}  </span>位单身</p>
-            <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
-              <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + '?x-oss-process=style/scale1' + ')'}"></div>
-              <p style="margin-top: 8px;">
-                <span class="font32">{{item.name}}</span>
-                <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.city? '· '+item.city: ''}}</span>
-              </p>
-              <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
-            </div>
+      <div v-show="!conceal" id="apply">
+        <div v-if="list.length > 0">
+          <p class="bc_title font34 bold">小恋已为您推荐<span class="theme_clo">  {{number}}  </span>位单身</p>
+          <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
+            <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + '?x-oss-process=style/scale1' + ')'}"></div>
+            <p style="margin-top: 8px;">
+              <span class="font32">{{item.name}}</span>
+              <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.city? '· '+item.city: ''}}</span>
+            </p>
+            <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
           </div>
-          <div v-else class="pic">
-            <div v-if="accomplish">
-              <img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">
-              <p class="content">请长按识别二维码注册后查看</p>
-            </div>
+        </div>
+        <div v-else class="pic">
+          <div v-if="accomplish">
+            <img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">
+            <p class="content">请长按识别二维码注册后查看</p>
           </div>
-          <div class="height160"></div>
-        <!--</div>-->
+        </div>
+        <div class="height160"></div>
       </div>
     </mescroll-vue>
   </div>
@@ -41,7 +39,6 @@
 <script>
   import {Group, Cell, XHeader, Swiper, XInput, Search, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
-  import {$toastSuccess} from '../config/util'
   export default {
     components: {
       Group,
@@ -55,24 +52,17 @@
     },
     data () {
       return {
-        value: '',
-        current: 0,
         mobile: 0,
         number: 0,
         show: true,
         conceal: false,
         accomplish: false,
-        mobileValue: '',
-        // 17788772809
-        search: '',
-        showModal: false,
+        mobileValue: '15112292112',
         init: false,
         id: localStorage.getItem('id'),
-        recommend: [],
         noData: false,
         page: 1,
         paas: '',
-        announcements: [],
         mescroll: null, //  mescroll实例对象
         mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
         mescrollUp: { // 上拉加载的配置.
@@ -88,65 +78,9 @@
         list: []
       }
     },
+    watch: {
+    },
     methods: {
-      hideModal () {
-        this.showModal = false
-      },
-      gotoLink () {
-        window.location.href = 'https://mp.weixin.qq.com/s/Ukz4VwbvFbdL0Wr57iCKSg'
-      },
-      gotoShare () {
-        this.showModal = false
-        window.location.href = `http://love.ufutx.com/wx/bind/v2`
-        // this.$router.push({name: 'sharePage'})
-      },
-      goToDetail (item) {
-        if (item.id === 1) {
-          window.location.href = item.link
-          return
-        }
-        this.$router.push({
-          path: `${item.link}`
-        })
-      },
-      goToDetailV2 (item) {
-        if (item.id === 2) {
-          this.$vux.confirm.show({
-            title: '提示：',
-            content: '你将申请成为首页推荐？',
-            dialogTransition: 'vux-fade',
-            onCancel: () => {
-            },
-            onConfirm: () => {
-              this.$http.post(`/apply/home/recommends`).then(({data}) => {
-                $toastSuccess('申请成功，等待管理员审核')
-              })
-            }
-          })
-        } else {
-          if (item.id === 3 || item.id === 4) {
-            if (localStorage.getItem('official_openid') && localStorage.getItem('official_openid') !== null) {
-              this.$router.push({
-                path: `${item.link}`
-              })
-            } else if (this.$isWeiXin() === false) {
-              this.$router.push({
-                path: `${item.link}`
-              })
-            } else {
-              if (item.id === 3) {
-                window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + '&type=appointments'
-              } else {
-                window.location.href = 'https://love.ufutx.com/wx/bind?mobile=' + localStorage.getItem('mobile') + '&type=donation'
-              }
-            }
-          } else {
-            this.$router.push({
-              path: `${item.link}`
-            })
-          }
-        }
-      },
       swiperItem (currentIndex) {
         this.currentIndex = currentIndex
       },
@@ -192,40 +126,21 @@
             }
           })
           this.list.push(...list)
+          document.documentElement.scrollTo = 1000
           vm.$nextTick(() => {
             mescroll.endSuccess(data.data.length)
           })
         })
+      },
+      handleScroll (el) {
+        let _pos = document.getElementById('apply').getBoundingClientRect().top
+        console.log('top', _pos)
       }
-      // getOrderList (page, mescroll) {
-      //   let vm = this
-      //   vm.$http.get(`/official/home?page=${page.num}`).then(({data}) => {
-      //     vm.announcements = data.announcements
-      //     vm.recommend = data.recommend
-      //     vm.$http.get(`/official/home/likers?page=${page.num}`).then(({data}) => {
-      //       vm.init = true
-      //       let dataV = page.num === 1 ? [] : this.list
-      //       dataV.push(...data.data)
-      //       vm.list = dataV
-      //       vm.$nextTick(() => {
-      //         mescroll.endSuccess(data.data.length)
-      //       })
-      //       vm.getMessageNum()
-      //     }).catch((error) => {
-      //       console.log(error)
-      //     })
-      //   }).catch((error) => {
-      //     console.log(error)
-      //   })
-      // }
     },
     mounted () {
       this.paas = localStorage.getItem('paasName')
-      // this.matchingRates()
-      // console.log(this.$store.state.intercept)
-      // if (this.$store.state.intercept === 'true') {
-      //   return false
-      // }
+      document.documentElement.scrollTop = -3000
+      // window.addEventListener('scroll', this.handleScroll, true)
     }
   }
 </script>

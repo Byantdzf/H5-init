@@ -13,7 +13,7 @@
         </div>
       </div>
       <div v-else>
-        <span v-if="listNum > 0">
+        <span v-if="listNum == 0">
           <p class="bc_title font34 bold" v-if="list.length > 0">小恋已为您推荐<span class="theme_clo">  {{number}}  </span>位单身</p>
           <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
             <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + '?x-oss-process=style/scale1' + ')'}"></div>
@@ -60,7 +60,7 @@
         id: localStorage.getItem('id'),
         noData: false,
         showList: 'false',
-        listNum: 1,
+        listNum: 0,
         page: 1,
         paas: '',
         mescroll: null, //  mescroll实例对象
@@ -129,9 +129,6 @@
             }
           })
           this.list.push(...list)
-          if (this.list.length === 0) {
-            this.listNum = 0
-          }
           vm.$nextTick(() => {
             mescroll.endSuccess(data.data.length)
           })

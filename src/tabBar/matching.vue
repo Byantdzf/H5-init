@@ -1,7 +1,7 @@
 <template>
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
-      <div v-show="show">
+      <div v-if="showList === 'false'">
         <div class="z_height">
           <img src="https://images.ufutx.com/201908/28/0dced76ee13f1df71e29292176df9e7b.jpeg" class="z_img" alt="">
         </div>
@@ -12,9 +12,9 @@
           <button class="btn_matching" @click="searchFn">开始匹配</button>
         </div>
       </div>
-      <div v-show="conceal" id="apply">
-        <div v-if="list.length > 0">
-          <p class="bc_title font34 bold">小恋已为您推荐<span class="theme_clo">  {{number}}  </span>位单身</p>
+      <div v-else>
+        <span v-if="listNum > 0">
+          <p class="bc_title font34 bold" v-if="list.length > 0">小恋已为您推荐<span class="theme_clo">  {{number}}  </span>位单身</p>
           <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
             <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + '?x-oss-process=style/scale1' + ')'}"></div>
             <p style="margin-top: 8px;">
@@ -23,14 +23,14 @@
             </p>
             <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
           </div>
-        </div>
-        <div v-else class="pic">
-          <div v-if="accomplish">
+        </span>
+        <span v-else>
+          <div class="pic">
             <img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">
             <p class="content">请长按识别二维码注册后查看</p>
           </div>
-        </div>
-        <div class="height160"></div>
+          <div class="height160"></div>
+        </span>
       </div>
     </mescroll-vue>
   </div>
@@ -39,6 +39,7 @@
 <script>
   import {Group, Cell, XHeader, Swiper, XInput, Search, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
+  import {$loadingShow, $loadingHide} from '../config/util'
   export default {
     components: {
       Group,
@@ -54,13 +55,12 @@
       return {
         mobile: 0,
         number: 0,
-        show: true,
-        conceal: false,
-        accomplish: false,
         mobileValue: '15112292112',
         init: false,
         id: localStorage.getItem('id'),
         noData: false,
+        showList: 'false',
+        listNum: 1,
         page: 1,
         paas: '',
         mescroll: null, //  mescroll实例对象
@@ -101,18 +101,21 @@
         })
       },
       searchFn () {
+        this.list = []
+        this.showList = 'true'
+        $loadingShow('智能匹配中...')
         this.matchingRates({num: 1}, this.mescroll)
-        this.show = false
-        this.conceal = true
-        if (this.list.length < 0) {
-          this.accomplish = true
-        }
       },
       matchingRates (page, mescroll) {
         let vm = this
         vm.mobile = vm.mobileValue === '' ? 0 : vm.mobileValue
         this.$http.get(`/official/mobiles/` + vm.mobile + `/matching/rates?page=${page.num}`).then(({data}) => {
           vm.init = true
+          let {num} = page
+          if (num === 1) {
+            this.list = []
+          }
+          $loadingHide()
           let result = data.data
           vm.number = data.total
           let list = result.map((item) => {
@@ -126,21 +129,17 @@
             }
           })
           this.list.push(...list)
-          document.documentElement.scrollTo = 1000
+          if (this.list.length === 0) {
+            this.listNum = 0
+          }
           vm.$nextTick(() => {
             mescroll.endSuccess(data.data.length)
           })
         })
-      },
-      handleScroll (el) {
-        let _pos = document.getElementById('apply').getBoundingClientRect().top
-        console.log('top', _pos)
       }
     },
     mounted () {
       this.paas = localStorage.getItem('paasName')
-      document.documentElement.scrollTop = -3000
-      // window.addEventListener('scroll', this.handleScroll, true)
     }
   }
 </script>
@@ -338,10 +337,9 @@
       margin: auto;
       width: 500px;
       margin-top: 40%;
-      border: 1px solid rgba(169, 169, 169, 0.45);
-      -webkit-box-shadow: #666 0px 0px 10px;
-      -moz-box-shadow: #666 0px 0px 10px;
-      box-shadow: #666 0px 0px 10px;
+      padding: 22px;
+      border-radius: 10px;
+      box-shadow: 1px 1px 12px #e4e4e4;
     }
     .content{
       margin-top: 45px;

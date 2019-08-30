@@ -51,9 +51,7 @@ export default new Router({
     },
     {
       path: '/matching',
-      meta: {
-        keepAlive: true // 需要被缓存
-      },
+      name: 'matching',
       component: (resolve) => require(['@/tabBar/matching'], resolve)
     },
     {

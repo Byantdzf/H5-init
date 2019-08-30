@@ -29,6 +29,7 @@
   import {$loadingHide} from '../config/util'
 
   export default {
+    name: 'matchingV2',
     components: {
       Group,
       Cell,
@@ -119,18 +120,14 @@
       },
       gain () {
         var loc = location.href
-        console.log(loc, '00000001')
         var n1 = loc.length
         var n2 = loc.indexOf('=')
         this.mobile = decodeURI(loc.substr(n2 + 1, n1 - n2))
-        console.log(this.mobile, '00000')
       }
     },
     mounted () {
       this.paas = localStorage.getItem('paasName')
-      console.log(location.href, '222')
       this.gain()
-      // this.matchingRates()
     }
   }
 </script>

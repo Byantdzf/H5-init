@@ -55,6 +55,11 @@ export default new Router({
       component: (resolve) => require(['@/tabBar/matching'], resolve)
     },
     {
+      path: '/matchingV2',
+      name: 'matchingV2',
+      component: (resolve) => require(['@/tabBar/matchingV2'], resolve)
+    },
+    {
       path: '/personalData',
       meta: {
         keepAlive: true // 需要被缓存

@@ -99,6 +99,9 @@ export default new Router({
     {
       path: '/myCommunity', // 群组
       name: 'myCommunity',
+      meta: {
+        keepAlive: false // 需要被缓存
+      },
       component: (resolve) => require(['@/pages/user/myCommunity'], resolve)
     },
     {

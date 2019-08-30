@@ -1,45 +1,33 @@
 <template>
   <div>
-    <!--<mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">-->
-      <!--<div v-if="showList === 'false'">-->
-        <div class="z_height">
-          <img src="https://images.ufutx.com/201908/28/0dced76ee13f1df71e29292176df9e7b.jpeg" class="z_img" alt="">
+    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
+      <span v-if="listNum > 0">
+        <p class="bc_title font34 bold" v-if="list.length > 0">小恋已为您推荐<span class="theme_clo">  {{number}}  </span>位单身</p>
+        <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
+          <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + '?x-oss-process=style/scale1' + ')'}"></div>
+          <p style="margin-top: 8px;">
+            <span class="font32">{{item.name}}</span>
+            <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.city? '· '+item.city: ''}}</span>
+          </p>
+          <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
         </div>
-        <div class="matching">福恋智能匹配</div>
-        <div class="z_text">
-          <p class="hint" style="font-size: 18px;margin-bottom: 10px">请输入在福恋注册的手机号</p>
-          <input type="text" placeholder="请输入手机号码" style="text-indent: 10px" v-model="mobileValue">
-          <button class="btn_matching" @click="searchFn">开始匹配</button>
+      </span>
+      <span v-else>
+        <div class="pic">
+          <img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">
+          <p class="content">请长按识别二维码注册后查看</p>
         </div>
-      <!--</div>-->
-      <!--<div v-else>-->
-        <!--<span v-if="listNum > 0">-->
-          <!--<p class="bc_title font34 bold" v-if="list.length > 0">小恋已为您推荐<span class="theme_clo">  {{number}}  </span>位单身</p>-->
-          <!--<div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">-->
-            <!--<div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + '?x-oss-process=style/scale1' + ')'}"></div>-->
-            <!--<p style="margin-top: 8px;">-->
-              <!--<span class="font32">{{item.name}}</span>-->
-              <!--<span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.city? '· '+item.city: ''}}</span>-->
-            <!--</p>-->
-            <!--<p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>-->
-          <!--</div>-->
-        <!--</span>-->
-        <!--<span v-else>-->
-          <!--<div class="pic">-->
-            <!--<img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">-->
-            <!--<p class="content">请长按识别二维码注册后查看</p>-->
-          <!--</div>-->
-          <!--<div class="height160"></div>-->
-        <!--</span>-->
-      <!--</div>-->
-    <!--</mescroll-vue>-->
+        <div class="height160"></div>
+      </span>
+    </mescroll-vue>
   </div>
 </template>
 
 <script>
   import {Group, Cell, XHeader, Swiper, XInput, Search, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
-  import {$loadingShow} from '../config/util'
+  import {$loadingHide} from '../config/util'
+
   export default {
     components: {
       Group,
@@ -55,7 +43,6 @@
       return {
         mobile: 0,
         number: 0,
-        mobileValue: '',
         init: false,
         id: localStorage.getItem('id'),
         noData: false,
@@ -84,64 +71,66 @@
       swiperItem (currentIndex) {
         this.currentIndex = currentIndex
       },
-      // routeToDetail (type, id) {
-      //   if (type === 'single') {
-      //     this.$router.push({name: 'information', params: {id: id}})
-      //   } else {
-      //     this.$router.push({name: 'introducer', params: {id: id}})
-      //   }
-      // },
-      // mescrollInit (mescroll) {
-      //   this.mescroll = mescroll
-      // },
-      // getMessageNum () {
-      //   this.$http.get(`/official/notice/num`).then(({data}) => {
-      //     localStorage.setItem('chat_num', data.chat_message_num.toString())
-      //     localStorage.setItem('notice_num', data.notice_num.toString())
-      //   })
-      // },
-      searchFn () {
-        // this.list = []
-        // this.showList = 'true'
-        $loadingShow('智能匹配中...')
-        location.href = '#/' + 'matchingV2?' + 'txt=' + encodeURI(this.mobileValue)
-        console.log(location.href)
-        // this.matchingRates({num: 1}, this.mescroll)
+      routeToDetail (type, id) {
+        if (type === 'single') {
+          this.$router.push({name: 'information', params: {id: id}})
+        } else {
+          this.$router.push({name: 'introducer', params: {id: id}})
+        }
+      },
+      mescrollInit (mescroll) {
+        this.mescroll = mescroll
+      },
+      getMessageNum () {
+        this.$http.get(`/official/notice/num`).then(({data}) => {
+          localStorage.setItem('chat_num', data.chat_message_num.toString())
+          localStorage.setItem('notice_num', data.notice_num.toString())
+        })
+      },
+      matchingRates (page, mescroll) {
+        let vm = this
+        this.$http.get(`/official/mobiles/` + vm.mobile + `/matching/rates?page=${page.num}`).then(({data}) => {
+          vm.init = true
+          let {num} = page
+          if (num === 1) {
+            this.list = []
+          }
+          $loadingHide()
+          let result = data.data
+          vm.number = data.total
+          let list = result.map((item) => {
+            return {
+              photo: item.rate_user.photo,
+              age: item.rate_user.age,
+              id: item.rate_user.id,
+              type: item.rate_user.type,
+              city: item.rate_user.city,
+              introduction: item.rate_user.introduction
+            }
+          })
+          this.list.push(...list)
+          if (this.list.length === 0) {
+            this.listNum = 0
+          }
+          vm.$nextTick(() => {
+            mescroll.endSuccess(data.data.length)
+          })
+        })
+      },
+      gain () {
+        var loc = location.href
+        console.log(loc, '00000001')
+        var n1 = loc.length
+        var n2 = loc.indexOf('=')
+        this.mobile = decodeURI(loc.substr(n2 + 1, n1 - n2))
+        console.log(this.mobile, '00000')
       }
-      // matchingRates (page, mescroll) {
-      //   let vm = this
-      //   vm.mobile = vm.mobileValue === '' ? 0 : vm.mobileValue
-      //   this.$http.get(`/official/mobiles/` + vm.mobile + `/matching/rates?page=${page.num}`).then(({data}) => {
-      //     vm.init = true
-      //     let {num} = page
-      //     if (num === 1) {
-      //       this.list = []
-      //     }
-      //     $loadingHide()
-      //     let result = data.data
-      //     vm.number = data.total
-      //     let list = result.map((item) => {
-      //       return {
-      //         photo: item.rate_user.photo,
-      //         age: item.rate_user.age,
-      //         id: item.rate_user.id,
-      //         type: item.rate_user.type,
-      //         city: item.rate_user.city,
-      //         introduction: item.rate_user.introduction
-      //       }
-      //     })
-      //     if (this.list.length === 0) {
-      //       this.listNum = 0
-      //     }
-      //     this.list.push(...list)
-      //     vm.$nextTick(() => {
-      //       mescroll.endSuccess(data.data.length)
-      //     })
-      //   })
-      // }
     },
     mounted () {
       this.paas = localStorage.getItem('paasName')
+      console.log(location.href, '222')
+      this.gain()
+      // this.matchingRates()
     }
   }
 </script>

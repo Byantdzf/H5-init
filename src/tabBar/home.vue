@@ -11,7 +11,7 @@
         <!--<div class="font30 announcements" v-if="announcements.length > 0">-->
           <!--<swiper auto height="30px" direction="vertical" :interval=2000 class="text-scroll" :show-dots="false">-->
             <!--<swiper-item v-for="item in announcements" :key="item.id">-->
-              <!--<p class="ellipsis_1 color6" @click="$href(item.type == 'OF'?item.path:'#')">-->
+              <!--<p class="ellipsis_1 color6" @click="$h ref(item.type == 'OF'?item.path:'#')">-->
                 <!--<img src="https://images.ufutx.com/201904/27/3a6720333a2434da29453d42ede484cf.png" alt="" width="22px"-->
                      <!--class="announcementIcon">-->
                 <!--{{item.title}}-->
@@ -41,9 +41,18 @@
         </div>
         </span>
       </div>
-      <!--<p class="bc_title font34 bold" @click="showModal = !showModal">推荐</p>-->
-      <p class="bc_title font34 bold">推荐</p>
-      <swiperComponent :list.sync="recommend"></swiperComponent>
+      <span v-if="paas == 'SZDSQY'">
+        <p class="bc_title font34 bold">导师推荐</p>
+        <div class="main-box"  v-for="item in list"  @click="goTo(item)" >
+          <div class="main-photo" v-bind:style="{backgroundImage:'url(' + item.logo + ')'}"></div>
+          <div class="main-name color6 bold font30" >{{item.title}}</div>
+          <div class="main-intro ellipsis_1 font26" >{{item.intro}}</div>
+        </div>
+      </span>
+      <span v-else>
+        <p class="bc_title font34 bold">推荐</p>
+        <swiperComponent :list.sync="recommend"></swiperComponent>
+      </span>
       <!--<swiper  :min-moving-distance="120" :show-desc-mask="true"  :auto="true" :interval="2000" @on-index-change="swiperItem">-->
       <!--<swiper-item v-for="item,index in recommend" :key="item.id" >-->
       <!--<div :class="[index == current?'animationData': 'animationData2']">-->
@@ -131,15 +140,15 @@
             id: 1
           },
           {
-            icon: 'http://images.ufutx.com/201905/29/8886eb950aaf96c43455deced5b531f1.png',
-            title: '红娘',
-            link: '/communityClass/68',
+            icon: 'http://images.ufutx.com/201905/29/9e74b6471f13b711a8a7cdeea2b7ae50.png',
+            title: '公司介绍',
+            link: 'http://shop.ufutx.com/showme/dsqy',
             id: 2
           },
           {
-            icon: 'https://images.ufutx.com/201908/23/072e302fa49414f872b28daec6b4948f.png',
-            title: '活动',
-            link: '/activity',
+            icon: 'http://images.ufutx.com/201905/29/8886eb950aaf96c43455deced5b531f1.png',
+            title: '单身',
+            link: '/userList',
             id: 3
           },
           {
@@ -177,14 +186,21 @@
         window.location.href = `http://love.ufutx.com/wx/bind/v2`
         // this.$router.push({name: 'sharePage'})
       },
+      goTo (item) {
+        this.$router.push({
+          name: `communityDetail`,
+          params: {id: item.id},
+          query: {title: item.title, logo: item.icon}
+        })
+      },
       goToDetail (item) {
-        if (item.id === 1) {
-          window.location.href = item.link
+        if (item.id > 2) {
+          this.$router.push({
+            path: `${item.link}`
+          })
           return
         }
-        this.$router.push({
-          path: `${item.link}`
-        })
+        window.location.href = item.link
       },
       goToDetailV2 (item) {
         if (item.id === 2) {
@@ -245,17 +261,30 @@
       },
       getOrderList (page, mescroll) {
         let vm = this
+        let url = '/official/home/likers'
+        if (vm.paas === 'SZDSQY') {
+          url = '/official/community/groups/68'
+        }
         vm.$http.get(`/official/home?page=${page.num}`).then(({data}) => {
           vm.announcements = data.announcements
           vm.recommend = data.recommend
-          vm.$http.get(`/official/home/likers?page=${page.num}`).then(({data}) => {
+          vm.$http.get(`${url}?page=${page.num}`).then(({data}) => {
             vm.init = true
             let dataV = page.num === 1 ? [] : this.list
-            dataV.push(...data.data)
-            vm.list = dataV
-            vm.$nextTick(() => {
-              mescroll.endSuccess(data.data.length)
-            })
+            if (vm.paas === 'SZDSQY') {
+              dataV.push(...data.communities.data)
+              vm.list = dataV
+              vm.$nextTick(() => {
+                mescroll.endSuccess(data.communities.data.length)
+              })
+            } else {
+              dataV.push(...data.data)
+              vm.list = dataV
+              vm.$nextTick(() => {
+                mescroll.endSuccess(data.data.length)
+              })
+            }
+            console.log(vm.list)
             vm.getMessageNum()
           }).catch((error) => {
             console.log(error)
@@ -283,6 +312,27 @@
       margin-bottom: 8px;
       vertical-align: middle;
     }
+  }
+  .main-box{
+    padding: 22px;
+    border-bottom: 10px solid #f4f4f4;
+    margin-bottom: 12px;
+    .main-photo{
+      width: 100%;
+      height: 84vw;
+      background-repeat: no-repeat;
+      /*background-position: center;*/
+      background-size: cover;
+      margin-bottom: 6px;
+    }
+    .main-intro{
+      color: #707070;
+      margin: 0 12px;
+    }
+    .main-name{
+      margin: 10px 12px;
+    }
+
   }
 
   .vux-demo {
@@ -312,9 +362,9 @@
   }
 
   .bc_title {
-    margin-top: 12px;
+    margin-top: 22px;
     margin-left: 22px;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
   }
 
   .vux-img {

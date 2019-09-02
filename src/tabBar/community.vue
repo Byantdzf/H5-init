@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
+  <div id="mescroll">
+    <mescroll-vue  ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div class="main-input">
         <router-link to="searchCommunity">
           <input type="text" placeholder="搜索感兴趣的群" v-model="search" @change="searchUser"/>
@@ -197,6 +197,9 @@
       // if (this.$store.state.intercept === 'true') {
       //   return false
       // }
+      // setTimeout(() => {
+      //   document.documentElement.scrollTop = 100
+      // }, 200)
     }
   }
 </script>

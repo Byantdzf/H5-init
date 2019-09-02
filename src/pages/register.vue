@@ -76,7 +76,7 @@
         }
       },
       mobile () {
-        if (!(/^1(3|4|5|7|8)\d{9}$/.test(this.mobile))) {
+        if (!(/^1(3|4|5|7|8|9)\d{9}$/.test(this.mobile))) {
           this.warn = true
         } else {
           this.warn = false

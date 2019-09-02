@@ -63,7 +63,7 @@
       // },
       searchFn () {
         $loadingShow('智能匹配中...')
-        location.href = '#/' + 'matchingV2?' + 'txt=' + encodeURI(this.mobileValue)
+        location.href = '#/' + 'matchingV2?' + 'field_33=' + encodeURI(this.mobileValue)
       }
     },
     mounted () {

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
-      <span v-if="listNum > 0">
+    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView" >
+      <div v-if="listNum > 0" class="z_box">
         <p class="bc_title font34 bold" v-if="list.length > 0">小恋已为您推荐<span class="theme_clo">  {{number}}  </span>位单身</p>
         <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
           <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + '?x-oss-process=style/scale1' + ')'}"></div>
@@ -11,14 +11,14 @@
           </p>
           <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
         </div>
-      </span>
-      <span v-else>
+      </div>
+      <div v-else>
         <div class="pic">
           <img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">
           <p class="content">请长按识别二维码注册后查看</p>
         </div>
         <div class="height160"></div>
-      </span>
+      </div>
     </mescroll-vue>
   </div>
 </template>
@@ -29,7 +29,6 @@
   import {$loadingHide} from '../config/util'
 
   export default {
-    name: 'matchingV2',
     components: {
       Group,
       Cell,
@@ -135,22 +134,20 @@
 <style lang="less" scoped>
   body {
     background: #f7f7f7 !important;
-
     .announcementIcon {
       margin-bottom: 8px;
       vertical-align: middle;
     }
   }
-
+  .z_box{
+  }
   .vux-demo {
     text-align: center;
   }
-
   .logo {
     width: 100px;
     height: 100px
   }
-
   .search-box {
     width: 690px;
     height: 88px;

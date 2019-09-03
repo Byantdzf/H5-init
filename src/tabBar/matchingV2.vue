@@ -119,9 +119,9 @@
       },
       gain () {
         var loc = location.href
-        var n1 = loc.length
+        // var n1 = loc.length
         var n2 = loc.indexOf('=')
-        this.mobile = decodeURI(loc.substr(n2 + 1, n1 - n2))
+        this.mobile = decodeURI(loc.substr(n2 + 1, 11))
       }
     },
     mounted () {

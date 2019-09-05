@@ -60,6 +60,11 @@ export default new Router({
       component: (resolve) => require(['@/tabBar/matchingV2'], resolve)
     },
     {
+      path: '/matchingManpower',
+      name: 'matchingManpower',
+      component: (resolve) => require(['@/tabBar/matchingManpower'], resolve)
+    },
+    {
       path: '/personalData',
       meta: {
         keepAlive: true // 需要被缓存

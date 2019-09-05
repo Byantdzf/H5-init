@@ -1,13 +1,31 @@
 <template>
   <div>
-    <div class="z_height">
-      <img src="https://images.ufutx.com/201908/28/0dced76ee13f1df71e29292176df9e7b.jpeg" class="z_img" alt="">
-    </div>
-    <div class="matching">福恋智能匹配</div>
-    <div class="z_text">
-      <p class="hint" style="font-size: 18px;margin-bottom: 10px">请输入在福恋注册的手机号</p>
-      <input type="text" placeholder="请输入手机号码" style="text-indent: 10px" v-model="mobileValue">
-      <button class="btn_matching" @click="searchFn">开始匹配</button>
+    <div class="tab" v-cloak>
+      <div class="z_content" v-if="idx === 1">
+        <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView" >
+          <div v-if="listNum > 0" class="z_box">
+            <div v-if="show">
+              <div class="btn" :class="{active:index==idx}" v-for="(val,index) in btnText" @click="selTab(index)">{{val}}</div>
+            </div>
+            <p class="bc_title font34 bold" v-if="list.length > 0">小恋已为您推荐<span class="theme_clo">  {{number}}  </span>位单身</p>
+            <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
+              <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + '?x-oss-process=style/scale1' + ')'}"></div>
+              <p style="margin-top: 8px;">
+                <span class="font32">{{item.name}}</span>
+                <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.city? '· '+item.city: ''}}</span>
+              </p>
+              <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
+            </div>
+          </div>
+          <div v-else>
+            <div class="pic">
+              <img src="https://images.ufutx.com/201909/05/aea3b6e2d8c82a30df522b6e0656025a.png" class="two_dimension_code" alt="">
+              <!--<p class="content">暂无数据···</p>-->
+            </div>
+            <div class="height160"></div>
+          </div>
+        </mescroll-vue>
+      </div>
     </div>
   </div>
 </template>
@@ -15,8 +33,9 @@
 <script>
   import {Group, Cell, XHeader, Swiper, XInput, Search, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
+  import {$loadingHide, $loadingShow} from '../config/util'
+
   export default {
-    name: 'matching',
     components: {
       Group,
       Cell,
@@ -29,10 +48,15 @@
     },
     data () {
       return {
+        btnText: ['智能匹配', '人工匹配'],
+        idx: 1, // 先默认为第一个显示
+        option: 'manual',
+        skyblue: 'skyblue',
+        pink: 'pink',
         mobile: 0,
         number: 0,
-        mobileValue: '',
         init: false,
+        show: false,
         id: localStorage.getItem('id'),
         noData: false,
         showList: 'false',
@@ -48,7 +72,7 @@
             num: 0, // 当前页 默认0,回调之前会加1; 即callback(page)会从1开始
             size: 15 // 每页数据条数,默认10
           },
-          htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>' // 上拉加载中的布局
+          // htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>' // 上拉加载中的布局
           // htmlNodata: '<p class="upwarp-nodata" v-if="list.length > 0">-- 加载完毕 --</p>' // 无数据的布局
         },
         list: []
@@ -57,15 +81,75 @@
     watch: {
     },
     methods: {
-      // swiperItem (currentIndex) {
-      //   this.currentIndex = currentIndex
-      // },
-      searchFn () {
-        location.href = '#/' + 'matchingV2?' + 'field_33=' + encodeURI(this.mobileValue)
+      selTab (index) {
+        this.idx = index
+        if (this.idx === 1) {
+          this.option = 'manual'
+          this.matchingRates({num: 1}, this.mescroll)
+        } else {
+          $loadingShow('智能匹配中...')
+          location.href = '#/' + 'matchingV2?' + 'field_33=' + encodeURI(this.mobile)
+        }
+      },
+      swiperItem (currentIndex) {
+        this.currentIndex = currentIndex
+      },
+      routeToDetail (type, id) {
+        if (type === 'single') {
+          this.$router.push({name: 'information', params: {id: id}})
+        } else {
+          this.$router.push({name: 'introducer', params: {id: id}})
+        }
+      },
+      mescrollInit (mescroll) {
+        this.mescroll = mescroll
+      },
+      getMessageNum () {
+        this.$http.get(`/official/notice/num`).then(({data}) => {
+          localStorage.setItem('chat_num', data.chat_message_num.toString())
+          localStorage.setItem('notice_num', data.notice_num.toString())
+        })
+      },
+      matchingRates (page, mescroll) {
+        let vm = this
+        this.$http.get(`/official/mobiles/` + vm.mobile + `/matching/rates?page=${page.num}&type=${this.option}`).then(({data}) => {
+          vm.init = true
+          this.list = page.num === 1 ? [] : this.list
+          if (data.rates) {
+            let result = data.rates
+            vm.number = result.total
+            let list = result.data.map((item) => {
+              return {
+                photo: item.rate_user.photo,
+                age: item.rate_user.age,
+                id: item.rate_user.id,
+                type: item.rate_user.type,
+                city: item.rate_user.city,
+                introduction: item.rate_user.introduction
+              }
+            })
+            this.list.push(...list)
+          }
+          if (this.list.length === 0) {
+            this.listNum = 0
+            this.show = true
+          }
+          vm.$nextTick(() => {
+            mescroll.endSuccess(data.rates ? data.rates.data : 1)
+          })
+          $loadingHide()
+        })
+      },
+      gain () {
+        var loc = location.href
+        // var n1 = loc.length
+        var n2 = loc.indexOf('=')
+        this.mobile = decodeURI(loc.substr(n2 + 1, 11))
       }
     },
     mounted () {
       this.paas = localStorage.getItem('paasName')
+      this.gain()
     }
   }
 </script>
@@ -73,22 +157,21 @@
 <style lang="less" scoped>
   body {
     background: #f7f7f7 !important;
-
     .announcementIcon {
       margin-bottom: 8px;
       vertical-align: middle;
     }
   }
-
   .vux-demo {
     text-align: center;
   }
-
   .logo {
     width: 100px;
     height: 100px
   }
-
+  .scrollView{
+    height: 95%;
+  }
   .search-box {
     width: 690px;
     height: 88px;
@@ -109,7 +192,7 @@
   .bc_title {
     margin-top: 30px;
     margin-left: 22px;
-    margin-bottom: 22px;
+    margin-bottom: 30px;
     font-family: '楷体';
     text-align: center
   }
@@ -262,10 +345,9 @@
     .two_dimension_code {
       margin: auto;
       width: 500px;
-      margin-top: 40%;
+      margin-top: 60%;
       padding: 22px;
       border-radius: 10px;
-      box-shadow: 1px 1px 12px #e4e4e4;
     }
     .content{
       margin-top: 45px;
@@ -314,5 +396,31 @@
       border-radius: 6px;
       background-color: #4CAF50;
     }
+  }
+
+  .tab{
+    /*border-bottom: 1px solid #D92553;*/
+  }
+  .btn{
+    display: inline-block;
+    text-align: center;
+    line-height: 80px;
+    font-weight: bold;
+    width: 50%;
+    border-bottom: 1px solid #D92553;
+    height: 80px;
+  }
+  .tab button:nth-of-type(3)::after{
+    content: "";
+    clear: both;
+  }
+  .z_content{
+  }
+  [v-cloak]{
+    display: none;
+  }
+  .active{
+    color:#fff;
+    background: #D92553;
   }
 </style>

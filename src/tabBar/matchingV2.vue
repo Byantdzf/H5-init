@@ -24,6 +24,12 @@
             </div>
             <div class="height160"></div>
           </div>
+          <div class="pic" v-if="type === 'marriage' && dataArr !== []">
+            <img src="https://images.ufutx.com/201909/05/aea3b6e2d8c82a30df522b6e0656025a.png" class="z_not" alt="">
+          </div>
+          <div class="pic" v-if="display">
+            <img src="https://images.ufutx.com/201909/05/aea3b6e2d8c82a30df522b6e0656025a.png" class="z_not" alt="">
+          </div>
         </mescroll-vue>
       </div>
     </div>
@@ -33,8 +39,7 @@
 <script>
   import {Group, Cell, XHeader, Swiper, XInput, Search, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
-  import {$loadingShow, $loadingHide} from '../config/util'
-  import {$toastWarn} from '../config/util'
+  import {$loadingShow, $toastWarn} from '../config/util'
 
   export default {
     components: {
@@ -76,7 +81,8 @@
           htmlNodata: '<p class="upwarp-nodata" v-if="list.length > 0">-- 暂无更多 --</p>' // 无数据的布局
         },
         list: [],
-        type: ''
+        type: '',
+        display: false
       }
     },
     watch: {
@@ -86,7 +92,7 @@
         this.idx = index
         if (this.idx === 1) {
           $loadingShow('智能匹配中...')
-          location.href = '#/' + 'matchingManpower?' + 'field_33=' + encodeURI(this.mobile)
+          location.href = '#/' + 'matchingManpower?' + 'field_33=' + encodeURI(this.mobile) + '&field_34=value'
         } else {
           this.option = 'auto'
           this.matchingRates({num: 1}, this.mescroll)
@@ -115,7 +121,16 @@
       matchingRates (page, mescroll) {
         let vm = this
         this.$http.get(`/official/mobiles/` + vm.mobile + `/matching/rates?page=${page.num}&type=${this.option}`).then(({data}) => {
-          let stockpile = data.user
+          vm.dataArr = data
+          if (data.length === 0) {
+            $toastWarn('请输入正确的手机号')
+            vm.display = true
+            vm.$nextTick(() => {
+              mescroll.endSuccess(data.rates ? data.rates.data : 1)
+            })
+            return
+          }
+          var stockpile = data.user
           vm.type = stockpile.type
           if (vm.type !== 'single') {
             $toastWarn('只限单身匹配')
@@ -147,14 +162,22 @@
           vm.$nextTick(() => {
             mescroll.endSuccess(data.rates ? data.rates.data : 1)
           })
-          $loadingHide()
         })
       },
       gain () {
+        // var loc = location.href
+        // var n2 = loc.indexOf('=')
+        // this.mobile = decodeURI(loc.substr(n2 + 1, 11))
         var loc = location.href
-        // var n1 = loc.length
-        var n2 = loc.indexOf('=')
-        this.mobile = decodeURI(loc.substr(n2 + 1, 11))
+        var obj = {}
+        var n2 = loc.indexOf('?') + 1
+        var str = loc.substr(n2)
+        var arr = str.split('&')
+        for (let i = 0; i < arr.length; i++) {
+          var arr2 = arr[i].split('=')
+          obj[arr2[0]] = arr2[1]
+        }
+        this.mobile = obj.field_33
       }
     },
     mounted () {
@@ -359,6 +382,13 @@
       padding: 22px;
       border-radius: 10px;
       box-shadow: 1px 1px 12px #e4e4e4;
+    }
+    .z_not{
+      margin: auto;
+      width: 500px;
+      margin-top: 60%;
+      padding: 22px;
+      border-radius: 10px;
     }
     .content{
       margin-top: 45px;

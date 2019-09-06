@@ -20,7 +20,6 @@
           <div v-else>
             <div class="pic">
               <img src="https://images.ufutx.com/201909/05/aea3b6e2d8c82a30df522b6e0656025a.png" class="two_dimension_code" alt="">
-              <!--<p class="content">暂无数据···</p>-->
             </div>
             <div class="height160"></div>
           </div>
@@ -71,7 +70,7 @@
           page: {
             num: 0, // 当前页 默认0,回调之前会加1; 即callback(page)会从1开始
             size: 15 // 每页数据条数,默认10
-          },
+          }
           // htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>' // 上拉加载中的布局
           // htmlNodata: '<p class="upwarp-nodata" v-if="list.length > 0">-- 加载完毕 --</p>' // 无数据的布局
         },
@@ -141,10 +140,19 @@
         })
       },
       gain () {
+        // var loc = location.href
+        // var n2 = loc.indexOf('=')
+        // this.mobile = decodeURI(loc.substr(n2 + 1, 11))
         var loc = location.href
-        // var n1 = loc.length
-        var n2 = loc.indexOf('=')
-        this.mobile = decodeURI(loc.substr(n2 + 1, 11))
+        var obj = {}
+        var n2 = loc.indexOf('?') + 1
+        var str = loc.substr(n2)
+        var arr = str.split('&')
+        for (let i = 0; i < arr.length; i++) {
+          var arr2 = arr[i].split('=')
+          obj[arr2[0]] = arr2[1]
+        }
+        this.mobile = obj.field_33
       }
     },
     mounted () {

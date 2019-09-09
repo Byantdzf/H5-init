@@ -144,6 +144,7 @@
           vm.type = stockpile.type
           if (vm.type !== 'single') {
             $toastWarn('只限单身匹配')
+            $loadingHide(false)
             vm.$nextTick(() => {
               mescroll.endSuccess(data.rates ? data.rates.data : 1)
             })

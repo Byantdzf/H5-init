@@ -4,7 +4,7 @@
       <div class="z_content" v-if="idx === 1">
         <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView" >
           <div v-if="listNum > 0" class="z_box">
-            <div v-if="show">
+            <div>
               <div class="btn" :class="{active:index==idx}" v-for="(val,index) in btnText" @click="selTab(index)">{{val}}</div>
             </div>
             <p class="bc_title font34 bold" v-if="list.length > 0">小恋已为您推荐<span class="theme_clo">  {{number}}  </span>位单身</p>
@@ -87,7 +87,7 @@
           this.matchingRates({num: 1}, this.mescroll)
         } else {
           $loadingShow('智能匹配中...')
-          location.href = '#/' + 'matchingV2?' + 'field_33=' + encodeURI(this.mobile)
+          location.href = '#/' + 'matchingV2?' + 'field_33=' + encodeURI(this.mobile) + '&field_34=value'
         }
       },
       swiperItem (currentIndex) {
@@ -133,10 +133,10 @@
             this.listNum = 0
             this.show = true
           }
+          $loadingHide(false)
           vm.$nextTick(() => {
             mescroll.endSuccess(data.rates ? data.rates.data : 1)
           })
-          $loadingHide()
         })
       },
       gain () {

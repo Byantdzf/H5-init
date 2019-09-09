@@ -17,7 +17,7 @@
               <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
             </div>
           </div>
-          <div v-else>
+          <div v-if="showScan">
             <div class="pic">
               <img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">
               <p class="content">请长按识别二维码注册后查看</p>
@@ -27,7 +27,7 @@
           <div class="pic" v-if="type === 'marriage' && dataArr !== []">
             <img src="https://images.ufutx.com/201909/05/aea3b6e2d8c82a30df522b6e0656025a.png" class="z_not" alt="">
           </div>
-          <div class="pic" v-if="display">
+          <div class="pic" v-if="showmobile">
             <img src="https://images.ufutx.com/201909/05/aea3b6e2d8c82a30df522b6e0656025a.png" class="z_not" alt="">
           </div>
         </mescroll-vue>
@@ -39,7 +39,7 @@
 <script>
   import {Group, Cell, XHeader, Swiper, XInput, Search, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
-  import {$loadingShow, $toastWarn} from '../config/util'
+  import {$toastWarn, $loadingShow, $loadingHide} from '../config/util'
 
   export default {
     components: {
@@ -82,7 +82,8 @@
         },
         list: [],
         type: '',
-        display: false
+        showmobile: false,
+        showScan: false
       }
     },
     watch: {
@@ -96,7 +97,6 @@
         } else {
           this.option = 'auto'
           this.matchingRates({num: 1}, this.mescroll)
-          console.log(this.idx, '0101')
         }
       },
       swiperItem (currentIndex) {
@@ -122,9 +122,19 @@
         let vm = this
         this.$http.get(`/official/mobiles/` + vm.mobile + `/matching/rates?page=${page.num}&type=${this.option}`).then(({data}) => {
           vm.dataArr = data
-          if (data.length === 0) {
+          if (!(/^1[34578]\d{9}$/.test(vm.mobile))) {
             $toastWarn('请输入正确的手机号')
-            vm.display = true
+            vm.showmobile = true
+            $loadingHide(false)
+            vm.$nextTick(() => {
+              mescroll.endSuccess(data.rates ? data.rates.data : 1)
+            })
+            return
+          }
+          if (data.length === 0) {
+            $toastWarn('请注册后查看')
+            vm.showScan = true
+            $loadingHide(false)
             vm.$nextTick(() => {
               mescroll.endSuccess(data.rates ? data.rates.data : 1)
             })
@@ -159,6 +169,7 @@
           if (this.list.length === 0) {
             this.listNum = 0
           }
+          $loadingHide(false)
           vm.$nextTick(() => {
             mescroll.endSuccess(data.rates ? data.rates.data : 1)
           })

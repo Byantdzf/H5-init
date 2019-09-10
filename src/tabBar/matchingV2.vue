@@ -54,7 +54,7 @@
     },
     data () {
       return {
-        btnText: ['智能匹配', '人工匹配'],
+        btnText: ['平台匹配', '红娘匹配'],
         idx: 0, // 先默认为第一个显示
         option: 'auto',
         skyblue: 'skyblue',

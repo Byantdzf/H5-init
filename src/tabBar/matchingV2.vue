@@ -34,7 +34,6 @@
   import {Group, Cell, XHeader, Swiper, XInput, Search, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import {$loadingShow, $loadingHide} from '../config/util'
-  import {$toastWarn} from '../config/util'
 
   export default {
     components: {

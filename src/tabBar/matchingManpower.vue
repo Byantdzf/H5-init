@@ -71,7 +71,7 @@
           page: {
             num: 0, // 当前页 默认0,回调之前会加1; 即callback(page)会从1开始
             size: 15 // 每页数据条数,默认10
-          },
+          }
           // htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>' // 上拉加载中的布局
           // htmlNodata: '<p class="upwarp-nodata" v-if="list.length > 0">-- 加载完毕 --</p>' // 无数据的布局
         },

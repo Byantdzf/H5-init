@@ -125,6 +125,11 @@ export default new Router({
       component: (resolve) => require(['@/pages/community/member'], resolve)
     },
     {
+      path: '/test', // 群组成员
+      name: 'test',
+      component: (resolve) => require(['@/pages/community/test'], resolve)
+    },
+    {
       path: '/setting', // 设置
       name: 'setting',
       component: (resolve) => require(['@/pages/user/setting'], resolve)

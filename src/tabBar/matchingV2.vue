@@ -17,7 +17,6 @@
               <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
             </div>
           </div>
-          <div v-else>
           <div v-if="showScan">
             <div class="pic">
               <img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">
@@ -40,8 +39,6 @@
 <script>
   import {Group, Cell, XHeader, Swiper, XInput, Search, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
-  import {$loadingShow, $loadingHide} from '../config/util'
-  import {$toastWarn} from '../config/util'
   import {$toastWarn, $loadingShow, $loadingHide} from '../config/util'
 
   export default {
@@ -58,7 +55,6 @@
     data () {
       return {
         btnText: ['智能匹配', '人工匹配'],
-        btnText: ['平台匹配', '红娘匹配'],
         idx: 0, // 先默认为第一个显示
         option: 'auto',
         skyblue: 'skyblue',
@@ -85,7 +81,6 @@
           htmlNodata: '<p class="upwarp-nodata" v-if="list.length > 0">-- 暂无更多 --</p>' // 无数据的布局
         },
         list: [],
-        type: ''
         type: '',
         showmobile: false,
         showScan: false
@@ -98,12 +93,10 @@
         this.idx = index
         if (this.idx === 1) {
           $loadingShow('智能匹配中...')
-          location.href = '#/' + 'matchingManpower?' + 'field_33=' + encodeURI(this.mobile)
           location.href = '#/' + 'matchingManpower?' + 'field_33=' + encodeURI(this.mobile) + '&field_34=value'
         } else {
           this.option = 'auto'
           this.matchingRates({num: 1}, this.mescroll)
-          console.log(this.idx, '0101')
         }
       },
       swiperItem (currentIndex) {
@@ -128,7 +121,6 @@
       matchingRates (page, mescroll) {
         let vm = this
         this.$http.get(`/official/mobiles/` + vm.mobile + `/matching/rates?page=${page.num}&type=${this.option}`).then(({data}) => {
-          let stockpile = data.user
           vm.dataArr = data
           if (!(/^1[34578]\d{9}$/.test(vm.mobile))) {
             $toastWarn('请输入正确的手机号')
@@ -182,7 +174,6 @@
           vm.$nextTick(() => {
             mescroll.endSuccess(data.rates ? data.rates.data : 1)
           })
-          $loadingHide()
         })
       },
       gain () {
@@ -190,9 +181,6 @@
         // var n2 = loc.indexOf('=')
         // this.mobile = decodeURI(loc.substr(n2 + 1, 11))
         var loc = location.href
-        // var n1 = loc.length
-        var n2 = loc.indexOf('=')
-        this.mobile = decodeURI(loc.substr(n2 + 1, 11))
         var obj = {}
         var n2 = loc.indexOf('?') + 1
         var str = loc.substr(n2)

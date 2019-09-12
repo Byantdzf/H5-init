@@ -18,11 +18,18 @@
             </div>
           </div>
           <div v-else>
+          <div v-if="showScan">
             <div class="pic">
               <img src="https://images.ufutx.com/201908/27/1566890406qrcode.png" class="two_dimension_code" alt="">
               <p class="content">请长按识别二维码注册后查看</p>
             </div>
             <div class="height160"></div>
+          </div>
+          <div class="pic" v-if="type === 'marriage' && dataArr !== []">
+            <img src="https://images.ufutx.com/201909/05/aea3b6e2d8c82a30df522b6e0656025a.png" class="z_not" alt="">
+          </div>
+          <div class="pic" v-if="showmobile">
+            <img src="https://images.ufutx.com/201909/05/aea3b6e2d8c82a30df522b6e0656025a.png" class="z_not" alt="">
           </div>
         </mescroll-vue>
       </div>
@@ -34,6 +41,8 @@
   import {Group, Cell, XHeader, Swiper, XInput, Search, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import {$loadingShow, $loadingHide} from '../config/util'
+  import {$toastWarn} from '../config/util'
+  import {$toastWarn, $loadingShow, $loadingHide} from '../config/util'
 
   export default {
     components: {
@@ -49,6 +58,7 @@
     data () {
       return {
         btnText: ['智能匹配', '人工匹配'],
+        btnText: ['平台匹配', '红娘匹配'],
         idx: 0, // 先默认为第一个显示
         option: 'auto',
         skyblue: 'skyblue',
@@ -76,6 +86,9 @@
         },
         list: [],
         type: ''
+        type: '',
+        showmobile: false,
+        showScan: false
       }
     },
     watch: {
@@ -86,6 +99,7 @@
         if (this.idx === 1) {
           $loadingShow('智能匹配中...')
           location.href = '#/' + 'matchingManpower?' + 'field_33=' + encodeURI(this.mobile)
+          location.href = '#/' + 'matchingManpower?' + 'field_33=' + encodeURI(this.mobile) + '&field_34=value'
         } else {
           this.option = 'auto'
           this.matchingRates({num: 1}, this.mescroll)
@@ -115,9 +129,30 @@
         let vm = this
         this.$http.get(`/official/mobiles/` + vm.mobile + `/matching/rates?page=${page.num}&type=${this.option}`).then(({data}) => {
           let stockpile = data.user
+          vm.dataArr = data
+          if (!(/^1[34578]\d{9}$/.test(vm.mobile))) {
+            $toastWarn('请输入正确的手机号')
+            vm.showmobile = true
+            $loadingHide(false)
+            vm.$nextTick(() => {
+              mescroll.endSuccess(data.rates ? data.rates.data : 1)
+            })
+            return
+          }
+          if (data.length === 0) {
+            $toastWarn('请注册后查看')
+            vm.showScan = true
+            $loadingHide(false)
+            vm.$nextTick(() => {
+              mescroll.endSuccess(data.rates ? data.rates.data : 1)
+            })
+            return
+          }
+          var stockpile = data.user
           vm.type = stockpile.type
           if (vm.type !== 'single') {
             $toastWarn('只限单身匹配')
+            $loadingHide(false)
             vm.$nextTick(() => {
               mescroll.endSuccess(data.rates ? data.rates.data : 1)
             })
@@ -143,6 +178,7 @@
           if (this.list.length === 0) {
             this.listNum = 0
           }
+          $loadingHide(false)
           vm.$nextTick(() => {
             mescroll.endSuccess(data.rates ? data.rates.data : 1)
           })
@@ -150,10 +186,22 @@
         })
       },
       gain () {
+        // var loc = location.href
+        // var n2 = loc.indexOf('=')
+        // this.mobile = decodeURI(loc.substr(n2 + 1, 11))
         var loc = location.href
         // var n1 = loc.length
         var n2 = loc.indexOf('=')
         this.mobile = decodeURI(loc.substr(n2 + 1, 11))
+        var obj = {}
+        var n2 = loc.indexOf('?') + 1
+        var str = loc.substr(n2)
+        var arr = str.split('&')
+        for (let i = 0; i < arr.length; i++) {
+          var arr2 = arr[i].split('=')
+          obj[arr2[0]] = arr2[1]
+        }
+        this.mobile = obj.field_33
       }
     },
     mounted () {
@@ -358,6 +406,13 @@
       padding: 22px;
       border-radius: 10px;
       box-shadow: 1px 1px 12px #e4e4e4;
+    }
+    .z_not{
+      margin: auto;
+      width: 500px;
+      margin-top: 60%;
+      padding: 22px;
+      border-radius: 10px;
     }
     .content{
       margin-top: 45px;

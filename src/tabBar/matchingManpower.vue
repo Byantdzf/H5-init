@@ -4,7 +4,7 @@
       <div class="z_content" v-if="idx === 1">
         <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView" >
           <div v-if="listNum > 0" class="z_box">
-            <div v-if="show">
+            <div>
               <div class="btn" :class="{active:index==idx}" v-for="(val,index) in btnText" @click="selTab(index)">{{val}}</div>
             </div>
             <p class="bc_title font34 bold" v-if="list.length > 0">小恋已为您推荐<span class="theme_clo">  {{number}}  </span>位单身</p>
@@ -20,7 +20,6 @@
           <div v-else>
             <div class="pic">
               <img src="https://images.ufutx.com/201909/05/aea3b6e2d8c82a30df522b6e0656025a.png" class="two_dimension_code" alt="">
-              <!--<p class="content">暂无数据···</p>-->
             </div>
             <div class="height160"></div>
           </div>
@@ -88,7 +87,7 @@
           this.matchingRates({num: 1}, this.mescroll)
         } else {
           $loadingShow('智能匹配中...')
-          location.href = '#/' + 'matchingV2?' + 'field_33=' + encodeURI(this.mobile)
+          location.href = '#/' + 'matchingV2?' + 'field_33=' + encodeURI(this.mobile) + '&field_34=value'
         }
       },
       swiperItem (currentIndex) {
@@ -134,17 +133,26 @@
             this.listNum = 0
             this.show = true
           }
+          $loadingHide(false)
           vm.$nextTick(() => {
             mescroll.endSuccess(data.rates ? data.rates.data : 1)
           })
-          $loadingHide()
         })
       },
       gain () {
+        // var loc = location.href
+        // var n2 = loc.indexOf('=')
+        // this.mobile = decodeURI(loc.substr(n2 + 1, 11))
         var loc = location.href
-        // var n1 = loc.length
-        var n2 = loc.indexOf('=')
-        this.mobile = decodeURI(loc.substr(n2 + 1, 11))
+        var obj = {}
+        var n2 = loc.indexOf('?') + 1
+        var str = loc.substr(n2)
+        var arr = str.split('&')
+        for (let i = 0; i < arr.length; i++) {
+          var arr2 = arr[i].split('=')
+          obj[arr2[0]] = arr2[1]
+        }
+        this.mobile = obj.field_33
       }
     },
     mounted () {

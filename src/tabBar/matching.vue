@@ -15,6 +15,8 @@
 <script>
   import {Group, Cell, XHeader, Swiper, XInput, Search, SwiperItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
+  import {$loadingShow} from '../config/util'
+
   export default {
     name: 'matching',
     components: {
@@ -61,7 +63,8 @@
       //   this.currentIndex = currentIndex
       // },
       searchFn () {
-        location.href = '#/' + 'matchingV2?' + 'field_33=' + encodeURI(this.mobileValue)
+        $loadingShow('智能匹配中...')
+        location.href = '#/' + 'matchingV2?' + 'field_33=' + encodeURI(this.mobileValue) + '&field_34=value'
       }
     },
     mounted () {
@@ -299,7 +302,7 @@
     input {
       width: 500px;
       height: 54px;
-      outline: none ;
+      outline: none;
       border: 1px solid #ccc;
       border-radius: 5px;
     }

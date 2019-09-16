@@ -1,9 +1,11 @@
 <template>
   <div>
     <div class="tab-list">
-      <div :class="[item.active != 'false' ? '' : 'active', 'tab-li']"
+      <div class="tab-li"
+           :class="activeClass == index?'active':''"
            v-for="(item,index) in labels" @click.stop="cutTabClick(item, index)"
-           :key="index">{{item.title}}</div>
+           :key="index">{{item.title}}
+      </div>
     </div>
     <!--<div class="wire"></div>-->
     <!--<div class="tab-listV2">-->
@@ -11,9 +13,6 @@
            <!--:class="actioveV2 == index ?'ActiveV2' : '' "-->
            <!--v-for="(item,index) in groups" @click="cutTabV2Click(item, index)">{{item.title}}</div>-->
     <!--</div>-->
-    <div>
-      <div></div>
-    </div>
   </div>
 </template>
 
@@ -26,31 +25,20 @@
         groups: [],
         arr: [],
         labels: [],
+        activeClass: 0,
         groupsID: '',
         labelsID: []
       }
     },
     methods: {
       cutTabClick (item, index) {
-        for (let i of this.labels) {
-          console.log(i.active)
-          i.active = 'false'
-        }
-        item.active = 'true'
-        console.log(this.labels[index])
-        console.log(this.labels)
-      },
-      cutTabV2Click (item, index) {
+        this.activeClass = index
       },
       getclassify () {
         let vm = this
         this.$http.get(`/official/square`).then(({data}) => {
           vm.groups = data.groups
           vm.labels = data.labels
-          for (let item of vm.labels) {
-            item.active = 'false'
-          }
-          console.log(vm.labels)
         })
       },
       getathletics () {

@@ -125,7 +125,17 @@ export default new Router({
       component: (resolve) => require(['@/pages/community/member'], resolve)
     },
     {
-      path: '/test', // 群组成员
+      path: '/live', // 直播
+      name: 'live',
+      component: (resolve) => require(['@/pages/community/live'], resolve)
+    },
+    {
+      path: '/liveV2', // 直播视频
+      name: 'liveV2',
+      component: (resolve) => require(['@/pages/community/liveV2'], resolve)
+    },
+    {
+      path: '/test', // 直播测试
       name: 'test',
       component: (resolve) => require(['@/pages/community/test'], resolve)
     },

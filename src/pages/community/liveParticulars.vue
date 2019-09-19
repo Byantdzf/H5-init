@@ -155,7 +155,7 @@
           fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
           sources: [{
             type: 'application/x-mpegURL',
-            src: 'https://edu.ufutx.com/653481/132126762748928094/live.m3u8'
+            src: 'http://edu.ufutx.com/653481/132126762748928094/live.m3u8'
             // src: 'play_url'
           }],
           poster: 'https://images.ufutx.com/201909/12/ee972fdefd0d65c2a43fb2ea2bd7e56c.png', // 你的封面地址

@@ -37,37 +37,37 @@
               <div class="z_man_head">
                 <div class="z_man">
                   <span v-for="(items, index) in item.male_team" v-if="item.id == items.arena_id">
-                    <img :src="items.avatar" alt="" class="z_min_man1" v-if="item.male_team.length == 1">
-                    <span v-if="item.male_team.length == 2">
-                      <img :src="items.avatar" alt="" class="z_min_man2_1">
-                      <img :src="items.avatar" alt="" class="z_min_man2_2">
-                    </span>
-                    <span v-if="item.male_team.length == 3">
-                      <img :src="items.avatar" alt="" class="z_min_man3_1">
-                      <img :src="items.avatar" alt="" class="z_min_man3_2">
-                      <img :src="items.avatar" alt="" class="z_min_man3_3">
-                    </span>
-                    <span v-if="item.male_team.length == 4">
-                      <img :src="items.avatar" alt="" class="z_min_man4_1">
-                      <img :src="items.avatar" alt="" class="z_min_man4_2">
-                      <img :src="items.avatar" alt="" class="z_min_man4_3">
-                      <img :src="items.avatar" alt="" class="z_min_man4_4">
-                    </span>
-                    <span v-if="item.male_team.length == 5">
-                      <img :src="items.avatar" alt="" class="z_min_man5_1">
-                      <img :src="items.avatar" alt="" class="z_min_man5_2">
-                      <img :src="items.avatar" alt="" class="z_min_man5_3">
-                      <img :src="items.avatar" alt="" class="z_min_man5_4">
-                      <img :src="items.avatar" alt="" class="z_min_man5_5">
-                    </span>
-                    <span v-if="item.male_team.length == 6">
-                      <img :src="items.avatar" alt="" class="z_min_man6_1" v-if="index == 0">
-                      <img :src="items.avatar" alt="" class="z_min_man6_2" v-if="index == 1">
-                      <img :src="items.avatar" alt="" class="z_min_man6_3" v-if="index == 2">
-                      <img :src="items.avatar" alt="" class="z_min_man6_4" v-if="index == 3">
-                      <img :src="items.avatar" alt="" class="z_min_man6_5" v-if="index == 4">
-                      <img :src="items.avatar" alt="" class="z_min_man6_6" v-if="index == 5">
-                    </span>
+                    <img :src="items.avatar" alt="" class="z_min_man1" >
+                    <!--<span v-if="item.male_team.length == 2">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man2_1">-->
+                      <!--&lt;!&ndash;<img :src="items.avatar" alt="" class="z_min_man2_2">&ndash;&gt;-->
+                    <!--</span>-->
+                    <!--<span v-if="item.male_team.length == 3">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man3_1">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man3_2">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man3_3">-->
+                    <!--</span>-->
+                    <!--<span v-if="item.male_team.length == 4">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man4_1">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man4_2">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man4_3">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man4_4">-->
+                    <!--</span>-->
+                    <!--<span v-if="item.male_team.length == 5">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man5_1">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man5_2">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man5_3">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man5_4">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man5_5">-->
+                    <!--</span>-->
+                    <!--<span v-if="item.male_team.length == 6">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man6_1" v-if="index == 0">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man6_2" v-if="index == 1">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man6_3" v-if="index == 2">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man6_4" v-if="index == 3">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man6_5" v-if="index == 4">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_man6_6" v-if="index == 5">-->
+                    <!--</span>-->
                   </span>
                 </div>
                 <p class="z_man_name ellipsis_1">{{item.male_team_name}}</p>
@@ -81,37 +81,37 @@
               <div class="z_woman_head">
                 <div class="z_woman">
                   <span v-for="(items, index) in item.female_team" v-if="item.id == items.arena_id">
-                    <img :src="items.avatar" alt="" class="z_min_woman1" v-if="item.female_team.length == 1">
-                    <span v-if="item.female_team.length == 2">
-                      <img :src="items.avatar" alt="" class="z_min_woman2_1">
-                      <img :src="items.avatar" alt="" class="z_min_woman2_2">
-                    </span>
-                    <span v-if="item.female_team.length == 3">
-                      <img :src="items.avatar" alt="" class="z_min_woman3_1">
-                      <img :src="items.avatar" alt="" class="z_min_woman3_2">
-                      <img :src="items.avatar" alt="" class="z_min_woman3_3">
-                    </span>
-                    <span v-if="item.female_team.length == 4">
-                      <img :src="items.avatar" alt="" class="z_min_woman4_1">
-                      <img :src="items.avatar" alt="" class="z_min_woman4_2">
-                      <img :src="items.avatar" alt="" class="z_min_woman4_3">
-                      <img :src="items.avatar" alt="" class="z_min_woman4_4">
-                    </span>
-                    <span v-if="item.female_team.length == 5">
-                      <img :src="items.avatar" alt="" class="z_min_woman5_1">
-                      <img :src="items.avatar" alt="" class="z_min_woman5_2">
-                      <img :src="items.avatar" alt="" class="z_min_woman5_3">
-                      <img :src="items.avatar" alt="" class="z_min_woman5_4">
-                      <img :src="items.avatar" alt="" class="z_min_woman5_5">
-                    </span>
-                    <span v-if="item.female_team.length == 6">
-                      <img :src="items.avatar" alt="" class="z_min_woman6_1" v-if="index == 0">
-                      <img :src="items.avatar" alt="" class="z_min_woman6_2" v-if="index == 1">
-                      <img :src="items.avatar" alt="" class="z_min_woman6_3" v-if="index == 2">
-                      <img :src="items.avatar" alt="" class="z_min_woman6_4" v-if="index == 3">
-                      <img :src="items.avatar" alt="" class="z_min_woman6_5" v-if="index == 4">
-                      <img :src="items.avatar" alt="" class="z_min_woman6_6" v-if="index == 5">
-                    </span>
+                    <img :src="items.avatar" alt="" class="z_min_woman1">
+                    <!--<span v-if="item.female_team.length == 2">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman2_1">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman2_2">-->
+                    <!--</span>-->
+                    <!--<span v-if="item.female_team.length == 3">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman3_1">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman3_2">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman3_3">-->
+                    <!--</span>-->
+                    <!--<span v-if="item.female_team.length == 4">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman4_1">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman4_2">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman4_3">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman4_4">-->
+                    <!--</span>-->
+                    <!--<span v-if="item.female_team.length == 5">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman5_1">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman5_2">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman5_3">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman5_4">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman5_5">-->
+                    <!--</span>-->
+                    <!--<span v-if="item.female_team.length == 6">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman6_1" v-if="index == 0">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman6_2" v-if="index == 1">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman6_3" v-if="index == 2">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman6_4" v-if="index == 3">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman6_5" v-if="index == 4">-->
+                      <!--<img :src="items.avatar" alt="" class="z_min_woman6_6" v-if="index == 5">-->
+                    <!--</span>-->
                   </span>
                 </div>
                 <p class="z_woman_name">{{item.female_team_name}}</p>
@@ -382,14 +382,16 @@
         margin-left: 108px;
         .z_man{
           position: relative;
-          width: 115px;
-          height: 115px;
+          width: 99px;
+          height: 99px;
           background: #f6f6f6;
           border-radius: 50%;
+          overflow: hidden;
+          padding: 8px;
           .z_min_man1{
-            position: absolute;
-            left: 10px;
-            top: 18px;
+            /*position: absolute;*/
+            /*left: 10px;*/
+            /*top: 18px;*/
             width: 42px;
             height: 42px;
             border-radius: 50%;
@@ -589,14 +591,16 @@
         text-align: center;
         .z_woman{
           position: relative;
-          width: 115px;
-          height: 115px;
+          width: 99px;
+          height: 99px;
           background: #f6f6f6;
           border-radius: 50%;
+          overflow: hidden;
+          padding: 8px;
           .z_min_woman1{
-            position: absolute;
-            left: 10px;
-            top: 20px;
+            /*position: absolute;*/
+            /*left: 10px;*/
+            /*top: 20px;*/
             width: 42px;
             height: 42px;
             border-radius: 50%;

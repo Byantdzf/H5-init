@@ -4,7 +4,7 @@
       <div class="tab-list">
         <div class="tab-li"
              :class="item.isSelected !== false ? 'Active' : '' "
-             v-for="(item,index) in labels" @click.stop="cutTabClick(item, index)"
+             v-for="(item,index) in labels" @click="cutTabClick(item, index)"
              :key="index">{{item.title}}
         </div>
       </div>
@@ -74,9 +74,9 @@
               </div>
               <div class="z_score_head">
                 <div class="z_score">{{item.male_team_num}} : {{item.female_team_num}}</div>
-                <button class="z_btn" @click="onJoin(item.id)" v-if="item.status === 0">加入</button>
-                <button class="z_btn" @click="$router.push({path: `/liveParticulars/${item.id}`})" v-if="item.status === 1">进入直播</button>
-                <button class="z_btn" @click="$router.push({path: `/liveParticulars/${item.id}`})" v-if="item.status === 2">查看回放</button>
+                <button class="z_btn" @click="onJoin(item.id)" v-if="item.status == 0">加入</button>
+                <button class="z_btn" @click="$router.push({path: `/liveParticulars/${item.id}`})" v-if="item.status == 1">进入直播</button>
+                <button class="z_btn" @click="$router.push({path: `/liveParticulars/${item.id}`})" v-if="item.status == 2">查看回放</button>
               </div>
               <div class="z_woman_head">
                 <div class="z_woman">
@@ -175,13 +175,13 @@
       cutTabClick (item, index) {
         this.actiove = index
         item.isSelected = !item.isSelected
-        if (item.isSelected) {
-          this.labelsID.push(item.id)
-        } else {
-          this.labelsID.splice(index, 1)
+        let IDs = []
+        for (let itemV of this.labels) {
+          if (itemV.isSelected) {
+            IDs.push(itemV.id)
+          }
         }
-        console.log(this.labelsID)
-        console.log(item.isSelected, '11')
+        this.labelsID = IDs
         this.getathletics({num: 1}, this.mescroll)
       },
       cutTabV2Click (item, index) {

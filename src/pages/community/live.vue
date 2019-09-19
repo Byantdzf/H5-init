@@ -1,19 +1,5 @@
 <template>
   <div>
-    <div class="tab-list">
-      <div :class="[item.active != 'false' ? '' : 'active', 'tab-li']"
-           v-for="(item,index) in labels" @click.stop="cutTabClick(item, index)"
-           :key="index">{{item.title}}</div>
-    </div>
-    <!--<div class="wire"></div>-->
-    <!--<div class="tab-listV2">-->
-      <!--<div class="tab-liV2"-->
-           <!--:class="actioveV2 == index ?'ActiveV2' : '' "-->
-           <!--v-for="(item,index) in groups" @click="cutTabV2Click(item, index)">{{item.title}}</div>-->
-    <!--</div>-->
-    <div>
-      <div></div>
-    </div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div class="tab-list">
         <div class="tab-li"
@@ -157,15 +143,10 @@
     },
     data () {
       return {
-        actioveV2: 0,
         actiove: 0,
         actioveV2: 8888,
         groups: [],
-        arr: [],
         labels: [],
-        groupsID: '',
-        labelsID: []
-
         groupsID: 0,
         labelsID: [],
         arenaID: '',
@@ -192,13 +173,6 @@
     },
     methods: {
       cutTabClick (item, index) {
-        for (let i of this.labels) {
-          console.log(i.active)
-          i.active = 'false'
-        }
-        item.active = 'true'
-        console.log(this.labels[index])
-        console.log(this.labels)
         this.actiove = index
         item.isSelected = !item.isSelected
         if (item.isSelected) {
@@ -209,8 +183,6 @@
         console.log(this.labelsID)
         console.log(item.isSelected, '11')
         this.getathletics({num: 1}, this.mescroll)
-      },
-      cutTabV2Click (item, index) {
       },
       cutTabV2Click (item, index) {
         this.actioveV2 = index
@@ -226,21 +198,12 @@
           vm.groups = data.groups
           vm.labels = data.labels
           for (let item of vm.labels) {
-            item.active = 'false'
-          }
-          console.log(vm.labels)
-          for (let item of vm.labels) {
             item.isSelected = false
           }
         })
       },
-      getathletics () {
       getathletics (page, mescroll) {
         let vm = this
-        let data = {
-          label_ids: vm.labelsID
-        }
-        this.$http.get(`/official/arenas?group_id=` + vm.groupsID, data).then(({data}) => {
         this.$http.get(`/official/arenas?group_id=${vm.groupsID}&label_ids=${vm.labelsID}&page=${page.num}`).then(({data}) => {
           vm.arenas = data.arenas
           this.information = page.num === 1 ? [] : this.information

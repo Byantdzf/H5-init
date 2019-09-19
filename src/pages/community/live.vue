@@ -8,7 +8,7 @@
              :key="index">{{item.title}}
         </div>
       </div>
-      <div class="wire"></div>
+      <div class="wire" v-if="labels !== [] && groups !== []"></div>
       <div class="tab-listV2">
         <div class="tab-liV2"
              :class="actioveV2 == index ?'ActiveV2' : '' "

@@ -158,7 +158,7 @@
             src: 'http://edu.ufutx.com/653481/132126762748928094/live.m3u8'
             // src: 'play_url'
           }],
-          poster: 'https://images.ufutx.com/201909/12/ee972fdefd0d65c2a43fb2ea2bd7e56c.png', // 你的封面地址
+          poster: 'http://edu.ufutx.com/653481/132126762748928094/live.m3u8', // 你的封面地址
           width: document.documentElement.clientWidth,
           notSupportedMessage: '此视频暂无法播放，请稍后再试' // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
         }

@@ -70,7 +70,7 @@
                     </span>
                   </span>
                 </div>
-                <p class="z_man_name">男队</p>
+                <p class="z_man_name ellipsis_1">{{item.male_team_name}}</p>
               </div>
               <div class="z_score_head">
                 <div class="z_score">{{item.male_team_num}} : {{item.female_team_num}}</div>
@@ -114,7 +114,7 @@
                     </span>
                   </span>
                 </div>
-                <p class="z_woman_name">女队</p>
+                <p class="z_woman_name">{{item.female_team_name}}</p>
               </div>
             </div>
           </div>
@@ -556,6 +556,7 @@
           }
         }
         .z_man_name{
+          width: 120px;
           color: #000;
           margin-top: 10px;
           font-weight: bold;
@@ -565,7 +566,7 @@
       .z_score_head{
         text-align: center;
         float: left;
-        margin-left: 90px;
+        margin-left: 76px;
         .z_score{
           line-height: 115px;
           color: #000;
@@ -577,7 +578,7 @@
           height: 46px;
           border: 1px solid #D92553;
           border-radius: 23px;
-          margin-top: 10px;
+          margin-top: 8px;
           color: #D92553;
           background: white;
         }
@@ -762,6 +763,7 @@
           }
         }
         .z_woman_name{
+          width: 120px;
           color: #000;
           margin-top: 10px;
           font-weight: bold;

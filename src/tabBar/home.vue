@@ -183,7 +183,7 @@
       },
       gotoShare () {
         this.showModal = false
-        window.location.href = `http://love.ufutx.com/wx/bind/v2`
+        window.location.href = `http://love.hankin.ufutx.cn/wx/bind/v2`
         // this.$router.push({name: 'sharePage'})
       },
       goTo (item) {

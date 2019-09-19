@@ -13,6 +13,8 @@ import md5 from 'js-md5'
 import {$toastWarn, $alert} from './config/util'
 import share from './share'
 import clipboard from 'clipboard' // 复制
+import VideoPlayer from 'vue-video-player'
+Vue.use(VideoPlayer)
 Vue.prototype.$clipboard = clipboard
 Vue.use(share)
 Vue.prototype.$md5 = md5

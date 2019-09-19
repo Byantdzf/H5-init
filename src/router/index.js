@@ -51,10 +51,18 @@ export default new Router({
     },
     {
       path: '/matching',
-      meta: {
-        keepAlive: true // 需要被缓存
-      },
+      name: 'matching',
       component: (resolve) => require(['@/tabBar/matching'], resolve)
+    },
+    {
+      path: '/matchingV2',
+      name: 'matchingV2',
+      component: (resolve) => require(['@/tabBar/matchingV2'], resolve)
+    },
+    {
+      path: '/matchingManpower',
+      name: 'matchingManpower',
+      component: (resolve) => require(['@/tabBar/matchingManpower'], resolve)
     },
     {
       path: '/personalData',
@@ -101,6 +109,9 @@ export default new Router({
     {
       path: '/myCommunity', // 群组
       name: 'myCommunity',
+      meta: {
+        keepAlive: false // 需要被缓存
+      },
       component: (resolve) => require(['@/pages/user/myCommunity'], resolve)
     },
     {
@@ -112,6 +123,21 @@ export default new Router({
       path: '/communityMember', // 群组成员
       name: 'communityMember',
       component: (resolve) => require(['@/pages/community/member'], resolve)
+    },
+    {
+      path: '/live', // 直播
+      name: 'live',
+      component: (resolve) => require(['@/pages/community/live'], resolve)
+    },
+    {
+      path: '/liveParticulars/:id', // 直播视频
+      name: 'liveParticulars',
+      component: (resolve) => require(['@/pages/community/liveParticulars'], resolve)
+    },
+    {
+      path: '/test', // 直播测试
+      name: 'test',
+      component: (resolve) => require(['@/pages/community/test'], resolve)
     },
     {
       path: '/setting', // 设置

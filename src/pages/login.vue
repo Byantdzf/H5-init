@@ -63,7 +63,7 @@
         }
       },
       mobile () {
-        if (!(/^1(3|4|5|7|8)\d{9}$/.test(this.mobile))) {
+        if (!(/^1(3|4|5|7|8|9)\d{9}$/.test(this.mobile))) {
           this.warn = true
         } else {
           this.warn = false
@@ -144,6 +144,34 @@
         }).catch((error) => {
           console.log(error)
         })
+      },
+      loginFn () {
+        this.$http.get('/official/login').then(({data}) => {
+          if (!data.official_openid) {
+            const baseURL = process.env.NODE_ENV === 'development' ? 'http://love.hankin.ufutx.cn' : 'https://love.ufutx.com'
+            console.log(`${baseURL}/wechat/auth?type=login`)
+            window.location.href = `${baseURL}/wechat/auth?type=login`
+            return
+          }
+          if (!data.token) {
+            return
+          }
+          this.mobile = data.user.mobile
+          localStorage.setItem('ACCESS_TOKEN', data.token)
+          localStorage.setItem('official_openid', data.official_openid)
+          localStorage.setItem('mobile', data.user.mobile)
+          if (localStorage.getItem('jump')) {
+            window.location.href = localStorage.getItem('jump')
+          } else {
+            if (localStorage.getItem('paasName')) {
+              this.$router.push({name: 'home'})
+            } else {
+              this.$router.push({name: 'communityHome'})
+            }
+          }
+        }).catch((error) => {
+          console.log(error)
+        })
       }
     },
     mounted () {
@@ -151,6 +179,7 @@
         this.paasTitle = localStorage.getItem('paasTitle')
         this.logo = localStorage.getItem('logo')
       }
+      this.loginFn()
     }
   }
 </script>

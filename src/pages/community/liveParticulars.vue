@@ -28,26 +28,26 @@
           <div class="z_dialog_box">{{item.comment}}</div>
         </div>
       </div>
-      <div v-if="actiove === 1" class="z_introduce">
-        <div v-for="item in tabListv3" class="z_introduce_data">
-          <img :src="item.icon" alt="" class="z_introduce_head">
-          <p class="z_introduce_name">{{item.name}}</p>
-          <p class="z_type">{{item.title}}</p>
-        </div>
-        <img src="http://img1.imgtn.bdimg.com/it/u=2807759535,2554808012&fm=26&gp=0.jpg" alt="" class="z_poster">
-      </div>
-      <div v-if="actiove === 2" class="z_list">
-        <div v-for="items in medal">
-          <img :src="items.one" alt="" class="medal_one">
-          <img :src="items.two" alt="" class="medal_two">
-          <img :src="items.three" alt="" class="medal_three">
-        </div>
-        <div v-for="item in tabListv2" class="z_list_data">
-          <img :src="item.icon" alt="" class="z_list_head">
-          <span class="z_list_name">{{item.name}}</span>
-          <p class="z_invite">邀请<span style="color: #D92553">{{item.num}}</span>人</p>
-        </div>
-      </div>
+      <!--<div v-if="actiove === 1" class="z_introduce">-->
+        <!--<div v-for="item in tabListv3" class="z_introduce_data">-->
+          <!--<img :src="item.icon" alt="" class="z_introduce_head">-->
+          <!--<p class="z_introduce_name">{{item.name}}</p>-->
+          <!--<p class="z_type">{{item.title}}</p>-->
+        <!--</div>-->
+        <!--<img src="http://img1.imgtn.bdimg.com/it/u=2807759535,2554808012&fm=26&gp=0.jpg" alt="" class="z_poster">-->
+      <!--</div>-->
+      <!--<div v-if="actiove === 2" class="z_list">-->
+        <!--<div v-for="items in medal">-->
+          <!--<img :src="items.one" alt="" class="medal_one">-->
+          <!--<img :src="items.two" alt="" class="medal_two">-->
+          <!--<img :src="items.three" alt="" class="medal_three">-->
+        <!--</div>-->
+        <!--<div v-for="item in tabListv2" class="z_list_data">-->
+          <!--<img :src="item.icon" alt="" class="z_list_head">-->
+          <!--<span class="z_list_name">{{item.name}}</span>-->
+          <!--<p class="z_invite">邀请<span style="color: #D92553">{{item.num}}</span>人</p>-->
+        <!--</div>-->
+      <!--</div>-->
     </mescroll-vue>
     <div class="z_button" v-if="actiove === 0">
       <input type="text" class="wire" v-model="content">
@@ -156,7 +156,7 @@
           sources: [{
             type: 'application/x-mpegURL',
             // src: 'http://pili-live-hls.vod.gmall88.com/gcard/dx0115w2l_277ed9b4-ba03-404f-8748-3b266f00fc24.m3u8'
-            src: this.play_url
+            src: this.play_url + ''
           }],
           poster: 'https://images.ufutx.com/201909/12/ee972fdefd0d65c2a43fb2ea2bd7e56c.png', // 你的封面地址
           width: document.documentElement.clientWidth,

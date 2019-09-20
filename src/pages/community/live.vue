@@ -201,6 +201,8 @@
       getathletics (page, mescroll) {
         let vm = this
         this.$http.get(`/official/arenas?group_id=${vm.groupsID}&label_ids=${vm.labelsID}&page=${page.num}`).then(({data}) => {
+          this.page = page.num
+          console.log(this.page, '111')
           vm.arenas = data.arenas
           this.information = page.num === 1 ? [] : this.information
           let information = vm.arenas.data.map((item) => {
@@ -229,7 +231,7 @@
         this.$http.post(`/official/join/arenas/` + id).then(({data}) => {
           $toastSuccess('加入成功')
           this.join = '已加入'
-          this.getathletics({num: 1}, this.mescroll)
+          this.getathletics({num: this.page}, this.mescroll)
         }).catch((error) => {
           console.log(error)
         })

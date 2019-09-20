@@ -6,7 +6,7 @@
         <span class="parent_num">1232</span>
         <img src="https://images.ufutx.com/201909/18/b9db8ba4f8b6134a8df2748c14dbcdf8.png" alt="" class="icon_person">
       </div>
-      <div class="z_home">
+      <div class="z_home" @click="$router.push({path: `/live`})">
         <img src="https://images.ufutx.com/201909/18/982e873c34b48881d10519435e0c0188.png" alt="" class="icon_home">
       </div>
     </div>
@@ -53,11 +53,11 @@
         <p class="z_qrcode_title">{{qrcode_intro}}</p>
         <img :src="qrcode" alt="" class="z_qrcode">
       </div>
+      <div class="z_button" v-if="actiove === 0">
+        <input type="text" class="wire" v-model="content">
+        <div class="z_btn" @click="onSend">发送</div>
+      </div>
     </mescroll-vue>
-    <div class="z_button" v-if="actiove === 0">
-      <input type="text" class="wire" v-model="content">
-      <div class="z_btn" @click="onSend">发送</div>
-    </div>
   </div>
 </template>
 <script>
@@ -150,9 +150,6 @@
       cutTabClick (index) {
         this.actiove = index
       },
-      site (value) {
-        console.log(value, '123')
-      },
       onChange (event) { // 移动端仅支持单文件上传
         this.file = event.target.files[0]
         if (!this.file) return
@@ -173,6 +170,8 @@
       getParticulars (page, mescroll) {
         let vm = this
         this.$http.get(`/official/arenas/` + this.arena_id + `?page=${page.num}`).then(({data}) => {
+          this.page = page.num
+          console.log(this.page, '000')
           vm.playerOptions.sources[0].src = data.arena.play_url
           vm.arena = data.arena
           vm.guest_avatar = vm.arena.guest_avatar
@@ -216,7 +215,7 @@
         }
         this.$http.post(`official/comment/arenas/` + this.arena_id, data).then(({data}) => {
           this.content = ''
-          this.getParticulars({num: 1}, this.mescroll)
+          this.getParticulars({num: this.page}, this.mescroll)
         }).catch((error) => {
           console.log(error)
         })
@@ -392,6 +391,9 @@
     display: none;
     background-color: #fff;
   }
+  .mescroll-upwarp{
+    margin-top: 30px !important;
+  }
   .mescroll {
     height: 63%;
     position: relative;
@@ -466,7 +468,7 @@
     background: #f6f6f6;
     .z_data{
       position: relative;
-      padding: 24px 0 80px 30px;
+      padding: 24px 0 30px 30px;
       .z_head{
         width: 84px;
         height: 84px;
@@ -507,7 +509,7 @@
         padding: 20px;
         font-size: 20px;
         position: absolute;
-        color: #b0b0b0;
+        color: #D92553;
         border: 1px solid #b0b0b0;
         top: 70px;
         left: 150px;
@@ -606,6 +608,7 @@
   .z_button{
     height: 92px;
     width: 100vw;
+    z-index: 9999;
     overflow: hidden;
     background: white;
     position: relative;

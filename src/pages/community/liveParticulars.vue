@@ -138,7 +138,6 @@
           sources: [{
             type: 'application/x-mpegURL',
             src: ''
-            // src: this.play_url
           }],
           poster: 'https://images.ufutx.com/201909/12/ee972fdefd0d65c2a43fb2ea2bd7e56c.png', // 你的封面地址
           width: document.documentElement.clientWidth,
@@ -149,6 +148,9 @@
     methods: {
       cutTabClick (index) {
         this.actiove = index
+      },
+      site (value) {
+        console.log(value, '123')
       },
       onChange (event) { // 移动端仅支持单文件上传
         this.file = event.target.files[0]
@@ -170,6 +172,7 @@
       getParticulars (page, mescroll) {
         let vm = this
         this.$http.get(`/official/arenas/` + this.arena_id + `?page=${page.num}`).then(({data}) => {
+          vm.playerOptions.sources[0].src = data.arena.play_url
           vm.arena = data.arena
           vm.guest_avatar = vm.arena.guest_avatar
           vm.guest_name = vm.arena.guest_name
@@ -183,7 +186,6 @@
               name: item.user.name
             }
           })
-          console.log(vm.ranking, '000')
           vm.status = vm.arena.status
           this.comments = page.num === 1 ? [] : this.comments
           let comments = data.comments.data.map((item) => {
@@ -199,7 +201,7 @@
           } else {
             vm.play_url = vm.arena.playback_url
           }
-          console.log(vm.play_url, '000')
+          // console.log(vm.play_url, '000')
           this.comments.push(...comments)
           $loadingHide(false)
           vm.$nextTick(() => {
@@ -221,6 +223,7 @@
     },
     mounted () {
       this.arena_id = this.$route.params.id
+      // console.log(this.playerOptions)
       // console.log(this.$store.state.intercept)
       // if (this.$store.state.intercept === 'true') {
       //   return false
@@ -613,6 +616,7 @@
       left: 32px;
       bottom: 20px;
       width: 78%;
+      height: 44px;
       border-left-width: 0px;
       border-top-width: 0px;
       border-right-width: 0px;

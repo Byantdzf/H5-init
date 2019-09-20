@@ -229,7 +229,7 @@
         this.$http.post(`/official/join/arenas/` + id).then(({data}) => {
           $toastSuccess('加入成功')
           this.join = '已加入'
-          this.getathletics(page, mescroll)
+          this.getathletics({num: 1}, this.mescroll)
         }).catch((error) => {
           console.log(error)
         })

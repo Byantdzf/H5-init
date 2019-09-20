@@ -216,7 +216,7 @@
         }
         this.$http.post(`official/comment/arenas/` + this.arena_id, data).then(({data}) => {
           this.content = ''
-          this.getParticulars()
+          this.getParticulars({num: 1}, this.mescroll)
         }).catch((error) => {
           console.log(error)
         })

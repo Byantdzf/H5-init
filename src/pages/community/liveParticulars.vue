@@ -170,8 +170,6 @@
       getParticulars (page, mescroll) {
         let vm = this
         this.$http.get(`/official/arenas/` + this.arena_id + `?page=${page.num}`).then(({data}) => {
-          this.page = page.num
-          console.log(this.page, '000')
           vm.playerOptions.sources[0].src = data.arena.play_url
           vm.arena = data.arena
           vm.guest_avatar = vm.arena.guest_avatar
@@ -203,6 +201,7 @@
           }
           // console.log(vm.play_url, '000')
           this.comments.push(...comments)
+          console.log(this.comments)
           $loadingHide(false)
           vm.$nextTick(() => {
             mescroll.endSuccess(data.comments ? data.comments.data : 1)
@@ -214,8 +213,16 @@
           content: this.content
         }
         this.$http.post(`official/comment/arenas/` + this.arena_id, data).then(({data}) => {
+          // console.log(this.comments, '000')
+          // this.comments.push(
+          //   {
+          //     comment: this.content,
+          //     id: 7776,
+          //     name: 'Hankin',
+          //     photo: 'https://local-pictures.oss-cn-shenzhen.aliyuncs.com/201909/11/wxc41491431733671e.o6zAJs45uCvxsPLFAIsrDaPJGer0.BjFMpdBN0pd186f71a9c619169e73f650c65a69d1516.png'
+          //   }
+          // )
           this.content = ''
-          this.getParticulars({num: this.page}, this.mescroll)
         }).catch((error) => {
           console.log(error)
         })

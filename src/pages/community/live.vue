@@ -34,84 +34,74 @@
               <span class="z_title">{{item.title}}</span>
             </div>
             <div class="head_portrait">
-              <div class="z_man_head">
+              <div class="z_man_head" @click="$router.push({path: `/liveParticulars/${item.id}`})">
                 <div class="z_man">
-                  <span v-for="(items, index) in item.male_team" v-if="item.id == items.arena_id">
-                    <img :src="items.avatar" alt="" class="z_min_man1" >
-                    <!--<span v-if="item.male_team.length == 2">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man2_1">-->
-                      <!--&lt;!&ndash;<img :src="items.avatar" alt="" class="z_min_man2_2">&ndash;&gt;-->
-                    <!--</span>-->
-                    <!--<span v-if="item.male_team.length == 3">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man3_1">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man3_2">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man3_3">-->
-                    <!--</span>-->
-                    <!--<span v-if="item.male_team.length == 4">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man4_1">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man4_2">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man4_3">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man4_4">-->
-                    <!--</span>-->
-                    <!--<span v-if="item.male_team.length == 5">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man5_1">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man5_2">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man5_3">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man5_4">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man5_5">-->
-                    <!--</span>-->
-                    <!--<span v-if="item.male_team.length == 6">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man6_1" v-if="index == 0">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man6_2" v-if="index == 1">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man6_3" v-if="index == 2">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man6_4" v-if="index == 3">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man6_5" v-if="index == 4">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_man6_6" v-if="index == 5">-->
-                    <!--</span>-->
+                  <span v-for="(items, index) in item.male_team" :key="index" v-if="item.id == items.arena_id">
+                    <img :src="items.avatar" alt="" class="z_min_man1" v-if="item.male_team.length == 1">
+                    <span v-if="item.male_team.length == 2">
+                      <span :class="profile2[index]">
+                        <img :src="items.avatar" alt="" class="head_portrait">
+                      </span>
+                    </span>
+                    <span v-if="item.male_team.length == 3">
+                      <span :class="profile3[index]">
+                        <img :src="items.avatar" alt="" class="head_portrait">
+                      </span>
+                    </span>
+                    <span v-if="item.male_team.length == 4">
+                      <span :class="profile4[index]">
+                        <img :src="items.avatar" alt="" class="head_portrait">
+                      </span>
+                    </span>
+                    <span v-if="item.male_team.length == 5">
+                      <span :class="profile5[index]">
+                        <img :src="items.avatar" alt="" class="head_portrait">
+                      </span>
+                    </span>
+                    <span v-if="item.male_team.length == 6">
+                      <span :class="profile6[index]">
+                        <img :src="items.avatar" alt="" class="head_portrait">
+                      </span>
+                    </span>
                   </span>
                 </div>
                 <p class="z_man_name ellipsis_1">{{item.male_team_name}}</p>
               </div>
               <div class="z_score_head">
                 <div class="z_score">{{item.male_team_num}} : {{item.female_team_num}}</div>
-                <button class="z_btn" @click="onJoin(item.id)" v-if="item.status == 0">加入</button>
+                <button class="z_btn" @click="onJoin(item.id)" v-if="item.status == 0">{{join}}</button>
                 <button class="z_btn" @click="$router.push({path: `/liveParticulars/${item.id}`})" v-if="item.status == 1">进入直播</button>
                 <button class="z_btn" @click="$router.push({path: `/liveParticulars/${item.id}`})" v-if="item.status == 2">查看回放</button>
               </div>
               <div class="z_woman_head">
-                <div class="z_woman">
+                <div class="z_woman" @click="$router.push({path: `/liveParticulars/${item.id}`})">
                   <span v-for="(items, index) in item.female_team" v-if="item.id == items.arena_id">
                     <img :src="items.avatar" alt="" class="z_min_woman1">
-                    <!--<span v-if="item.female_team.length == 2">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman2_1">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman2_2">-->
-                    <!--</span>-->
-                    <!--<span v-if="item.female_team.length == 3">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman3_1">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman3_2">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman3_3">-->
-                    <!--</span>-->
-                    <!--<span v-if="item.female_team.length == 4">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman4_1">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman4_2">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman4_3">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman4_4">-->
-                    <!--</span>-->
-                    <!--<span v-if="item.female_team.length == 5">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman5_1">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman5_2">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman5_3">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman5_4">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman5_5">-->
-                    <!--</span>-->
-                    <!--<span v-if="item.female_team.length == 6">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman6_1" v-if="index == 0">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman6_2" v-if="index == 1">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman6_3" v-if="index == 2">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman6_4" v-if="index == 3">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman6_5" v-if="index == 4">-->
-                      <!--<img :src="items.avatar" alt="" class="z_min_woman6_6" v-if="index == 5">-->
-                    <!--</span>-->
+                    <span v-if="item.female_team.length == 2">
+                      <span :class="profile2[index]">
+                        <img :src="items.avatar" alt="" class="head_portrait">
+                      </span>
+                    </span>
+                    <span v-if="item.female_team.length == 3">
+                      <span :class="profile3[index]">
+                        <img :src="items.avatar" alt="" class="head_portrait">
+                      </span>
+                    </span>
+                    <span v-if="item.female_team.length == 4">
+                     <span :class="profile4[index]">
+                        <img :src="items.avatar" alt="" class="head_portrait">
+                      </span>
+                    </span>
+                    <span v-if="item.female_team.length == 5">
+                      <span :class="profile5[index]">
+                        <img :src="items.avatar" alt="" class="head_portrait">
+                      </span>
+                    </span>
+                    <span v-if="item.female_team.length == 6">
+                      <span :class="profile6[index]">
+                        <img :src="items.avatar" alt="" class="head_portrait">
+                      </span>
+                    </span>
                   </span>
                 </div>
                 <p class="z_woman_name">{{item.female_team_name}}</p>
@@ -146,6 +136,12 @@
         actiove: 0,
         actioveV2: 8888,
         groups: [],
+        join: '加入',
+        profile2: ['z_min2_1', 'z_min2_2'],
+        profile3: ['z_min3_1', 'z_min3_2', 'z_min3_3'],
+        profile4: ['z_min4_1', 'z_min4_2', 'z_min4_3', 'z_min4_4'],
+        profile5: ['z_min5_1', 'z_min5_2', 'z_min5_3', 'z_min5_4', 'z_min5_5'],
+        profile6: ['z_min6_1', 'z_min6_2', 'z_min6_3', 'z_min6_4', 'z_min6_5', 'z_min6_6'],
         labels: [],
         groupsID: 0,
         labelsID: [],
@@ -232,6 +228,7 @@
       onJoin (id) {
         this.$http.post(`/official/join/arenas/` + id).then(({data}) => {
           $toastSuccess('加入成功')
+          this.join = '已加入'
           this.getathletics(page, mescroll)
         }).catch((error) => {
           console.log(error)
@@ -382,21 +379,13 @@
         margin-left: 108px;
         .z_man{
           position: relative;
-          width: 99px;
-          height: 99px;
+          width: 115px;
+          height: 115px;
           background: #f6f6f6;
           border-radius: 50%;
           overflow: hidden;
-          padding: 8px;
+          /*padding: 8px;*/
           .z_min_man1{
-            /*position: absolute;*/
-            /*left: 10px;*/
-            /*top: 18px;*/
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-          }
-          .z_min_man2_1{
             position: absolute;
             left: 10px;
             top: 18px;
@@ -404,157 +393,110 @@
             height: 42px;
             border-radius: 50%;
           }
-          .z_min_man2_2{
-            position: absolute;
-            left: 62px;
-            top: 18px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-          }
-          .z_min_man3_1{
+          .z_min2_1{
             position: absolute;
             left: 10px;
             top: 18px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_man3_2{
+          .z_min2_2{
             position: absolute;
             left: 62px;
             top: 18px;
+          }
+          .head_portrait{
             width: 42px;
             height: 42px;
             border-radius: 50%;
           }
-          .z_min_man3_3{
+          .z_min3_1{
+            position: absolute;
+            left: 10px;
+            top: 18px;
+          }
+          .z_min3_2{
+            position: absolute;
+            left: 62px;
+            top: 18px;
+          }
+          .z_min3_3{
             position: absolute;
             left: 36px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_man4_1{
+          .z_min4_1{
             position: absolute;
             top: 18px;
             left: 10px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_man4_2{
+          .z_min4_2{
             position: absolute;
             left: 62px;
             top: 18px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_man4_3{
+          .z_min4_3{
             position: absolute;
             left: 10px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_man4_4{
+          .z_min4_4{
             position: absolute;
             left: 62px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_man5_1{
+          .z_min5_1{
             position: absolute;
             top: 18px;
             left: 10px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_man5_2{
+          .z_min5_2{
             position: absolute;
             left: 62px;
             top: 18px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_man5_3{
+          .z_min5_3{
             position: absolute;
             left: 10px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_man5_4{
+          .z_min5_4{
             position: absolute;
             left: 36px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_man5_5{
+          .z_min5_5{
             position: absolute;
             left: 62px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_man6_1{
+          .z_min6_1{
             position: absolute;
             left: 10px;
             top: 18px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_man6_2{
+          .z_min6_2{
             position: absolute;
             left: 36px;
             top: 18px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_man6_3{
+          .z_min6_3{
             position: absolute;
             left: 62px;
             top: 18px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_man6_4{
+          .z_min6_4{
             position: absolute;
             left: 10px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_man6_5{
+          .z_min6_5{
             position: absolute;
             left: 36px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_man6_6{
+          .z_min6_6{
             position: absolute;
             left: 62px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
         }
         .z_man_name{
@@ -566,6 +508,7 @@
         }
       }
       .z_score_head{
+        z-index: 999;
         text-align: center;
         float: left;
         margin-left: 76px;
@@ -591,179 +534,124 @@
         text-align: center;
         .z_woman{
           position: relative;
-          width: 99px;
-          height: 99px;
+          width: 115px;
+          height: 115px;
           background: #f6f6f6;
           border-radius: 50%;
           overflow: hidden;
-          padding: 8px;
+          /*padding: 8px;*/
+          .head_portrait{
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+          }
           .z_min_woman1{
-            /*position: absolute;*/
-            /*left: 10px;*/
-            /*top: 20px;*/
+            position: absolute;
+            left: 10px;
+            top: 20px;
             width: 42px;
             height: 42px;
             border-radius: 50%;
           }
-          .z_min_woman2_1{
+          .z_min2_1{
             position: absolute;
             left: 10px;
             top: 18px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman2_2{
+          .z_min2_2{
             position: absolute;
             left: 62px;
             top: 18px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman3_1{
+          .z_min3_1{
             position: absolute;
             left: 10px;
             top: 18px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman3_2{
+          .z_min3_2{
             position: absolute;
             left: 62px;
             top: 18px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman3_3{
+          .z_min3_3{
             position: absolute;
             left: 36px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman4_1{
+          .z_min4_1{
             position: absolute;
             top: 18px;
             left: 10px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman4_2{
+          .z_min4_2{
             position: absolute;
             left: 62px;
             top: 18px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman4_3{
+          .z_min4_3{
             position: absolute;
             left: 10px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman4_4{
+          .z_min4_4{
             position: absolute;
             left: 62px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman5_1{
+          .z_min5_1{
             position: absolute;
             top: 18px;
             left: 10px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman5_2{
+          .z_min5_2{
             position: absolute;
             left: 62px;
             top: 18px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman5_3{
+          .z_min5_3{
             position: absolute;
             left: 10px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman5_4{
+          .z_min5_4{
             position: absolute;
             left: 36px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman5_5{
+          .z_min5_5{
             position: absolute;
             left: 62px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman6_1{
+          .z_min6_1{
             position: absolute;
             left: 10px;
             top: 18px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman6_2{
+          .z_min6_2{
             position: absolute;
             left: 36px;
             top: 18px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman6_3{
+          .z_min6_3{
             position: absolute;
             left: 62px;
             top: 18px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman6_4{
+          .z_min6_4{
             position: absolute;
             left: 10px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman6_5{
+          .z_min6_5{
             position: absolute;
             left: 36px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
-          .z_min_woman6_6{
+          .z_min6_6{
             position: absolute;
             left: 62px;
             top: 56px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
           }
         }
         .z_woman_name{

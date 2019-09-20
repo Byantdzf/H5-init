@@ -16,7 +16,6 @@
            v-for="(item,index) in tabList" @click="cutTabClick(index)"
            :key="index">{{item}}
       </div>
-      <div class="attention">关注</div>
     </div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div v-if="actiove === 0" class="z_interaction">
@@ -28,26 +27,32 @@
           <div class="z_dialog_box">{{item.comment}}</div>
         </div>
       </div>
-      <!--<div v-if="actiove === 1" class="z_introduce">-->
-        <!--<div v-for="item in tabListv3" class="z_introduce_data">-->
-          <!--<img :src="item.icon" alt="" class="z_introduce_head">-->
-          <!--<p class="z_introduce_name">{{item.name}}</p>-->
-          <!--<p class="z_type">{{item.title}}</p>-->
-        <!--</div>-->
-        <!--<img src="http://img1.imgtn.bdimg.com/it/u=2807759535,2554808012&fm=26&gp=0.jpg" alt="" class="z_poster">-->
-      <!--</div>-->
-      <!--<div v-if="actiove === 2" class="z_list">-->
-        <!--<div v-for="items in medal">-->
-          <!--<img :src="items.one" alt="" class="medal_one">-->
-          <!--<img :src="items.two" alt="" class="medal_two">-->
-          <!--<img :src="items.three" alt="" class="medal_three">-->
-        <!--</div>-->
-        <!--<div v-for="item in tabListv2" class="z_list_data">-->
-          <!--<img :src="item.icon" alt="" class="z_list_head">-->
-          <!--<span class="z_list_name">{{item.name}}</span>-->
-          <!--<p class="z_invite">邀请<span style="color: #D92553">{{item.num}}</span>人</p>-->
-        <!--</div>-->
-      <!--</div>-->
+      <div v-if="actiove === 1" class="z_introduce">
+        <div class="z_introduce_data">
+          <img :src="guest_avatar" alt="" class="z_introduce_head">
+          <p class="z_introduce_name">{{guest_name}}</p>
+          <p class="z_type">主播</p>
+        </div>
+        <div v-for="item in intro">
+          <img :src="item" alt="" class="z_poster">
+        </div>
+      </div>
+      <div v-if="actiove === 2" class="z_list">
+        <div v-for="items in medal">
+          <img :src="items.one" alt="" class="medal_one" v-if="ranking.length >= 1">
+          <img :src="items.two" alt="" class="medal_two" v-if="ranking.length >= 2">
+          <img :src="items.three" alt="" class="medal_three" v-if="ranking.length > 3">
+        </div>
+        <div v-for="item in ranking" class="z_list_data">
+          <img :src="item.circle_avatar" alt="" class="z_list_head">
+          <span class="z_list_name">{{item.name}}</span>
+          <p class="z_invite">邀请<span style="color: #D92553">{{item.share_num}}</span>人</p>
+        </div>
+      </div>
+      <div v-if="actiove === 3" class="z_attention">
+        <p class="z_qrcode_title">{{qrcode_intro}}</p>
+        <img :src="qrcode" alt="" class="z_qrcode">
+      </div>
     </mescroll-vue>
     <div class="z_button" v-if="actiove === 0">
       <input type="text" class="wire" v-model="content">
@@ -84,8 +89,14 @@
         loading: false,
         ossConfig: {},
         arena_id: '',
-        tabList: ['互动', '介绍', '榜单'],
+        tabList: ['互动', '介绍', '榜单', '关注'],
         arena: [],
+        guest_avatar: '',
+        guest_name: '',
+        intro: [],
+        qrcode: '',
+        qrcode_intro: '',
+        ranking: [],
         comments: [],
         content: '',
         status: '',
@@ -95,35 +106,6 @@
             one: 'https://images.ufutx.com/201909/18/b9691d848e448093cad649450ca710da.png',
             two: 'https://images.ufutx.com/201909/18/26c5e78bb28316e3b46f5beda4cd06ad.png',
             three: 'https://images.ufutx.com/201909/18/0d8fc057c1169eb336ff01a789e8471a.png'
-          }
-        ],
-        tabListv2: [
-          {
-            name: '互动',
-            num: 20,
-            icon: 'http://img1.imgtn.bdimg.com/it/u=2807759535,2554808012&fm=26&gp=0.jpg',
-            content: '好期待的直播！好犀利!!!'
-          },
-          {
-            name: '介绍',
-            num: 10,
-            icon: 'http://img1.imgtn.bdimg.com/it/u=2807759535,2554808012&fm=26&gp=0.jpg',
-            content: '好期待的直播！好犀利'
-          },
-          {
-            name: '互动',
-            num: 40,
-            icon: 'http://img1.imgtn.bdimg.com/it/u=2807759535,2554808012&fm=26&gp=0.jpg',
-            content: '好期待的直播！好犀利'
-          }
-        ],
-        tabListv3: [
-          {
-            name: '互动',
-            title: '主播',
-            num: 10,
-            icon: 'http://img1.imgtn.bdimg.com/it/u=2807759535,2554808012&fm=26&gp=0.jpg',
-            img: 'http://img1.imgtn.bdimg.com/it/u=2807759535,2554808012&fm=26&gp=0.jpg'
           }
         ],
         actiove: 0,
@@ -155,8 +137,8 @@
           fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
           sources: [{
             type: 'application/x-mpegURL',
-            src: 'http://edu.ufutx.com/653481/132131869423118771/live.m3u8'
-            // src: 'play_url'
+            src: ''
+            // src: this.play_url
           }],
           poster: 'https://images.ufutx.com/201909/12/ee972fdefd0d65c2a43fb2ea2bd7e56c.png', // 你的封面地址
           width: document.documentElement.clientWidth,
@@ -189,6 +171,19 @@
         let vm = this
         this.$http.get(`/official/arenas/` + this.arena_id + `?page=${page.num}`).then(({data}) => {
           vm.arena = data.arena
+          vm.guest_avatar = vm.arena.guest_avatar
+          vm.guest_name = vm.arena.guest_name
+          vm.intro = vm.arena.intro
+          vm.qrcode_intro = vm.arena.qrcode_intro
+          vm.qrcode = vm.arena.qrcode
+          vm.ranking = data.list.data.map((item) => {
+            return {
+              circle_avatar: item.user.circle_avatar,
+              share_num: item.share_num,
+              name: item.user.name
+            }
+          })
+          console.log(vm.ranking, '000')
           vm.status = vm.arena.status
           this.comments = page.num === 1 ? [] : this.comments
           let comments = data.comments.data.map((item) => {
@@ -439,7 +434,7 @@
     .tab-li {
       float: left;
       display: inline-block;
-      width: 28%;
+      width: 24.9%;
       height: 80px;
       font-weight: bold;
       text-align: center;
@@ -449,8 +444,8 @@
     }
     /*点击后样式*/
     .Active{
-      color: #D92553;
-      border-bottom: 3px solid #D92553;
+      color: #ffffff;
+      background: #D92553;
     }
     .attention{
       float: left;
@@ -543,6 +538,22 @@
     .z_poster{
       width: 100vw;
       height: 422px;
+      margin-bottom: 20px;
+    }
+  }
+  .z_attention{
+    text-align: center;
+    margin-top: 44%;
+    .z_qrcode_title{
+      margin-bottom: 30px;
+      color: #D92553;
+      font-size: 30px;
+      font-weight: bold;
+    }
+    .z_qrcode{
+      width: 340px;
+      height: 340px;
+      border-right: 6px;
     }
   }
   .z_list{

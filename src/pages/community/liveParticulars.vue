@@ -19,12 +19,16 @@
     </div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div v-if="actiove === 0" class="z_interaction">
-        <div v-for="item in comments" class="z_data">
-          <img :src="item.photo" alt="" class="z_head">
-          <p class="z_name">{{item.name}}</p>
-          <div class="z_dialog1"></div>
-          <div class="z_dialog"></div>
-          <div class="z_dialog_box">{{item.comment}}</div>
+        <div class="j_page" v-for="item in comments">
+          <p class="text-center z_time">{{item.created_at}}</p>
+          <div class="clearfix">
+            <div class="Avatar flo_l backCover" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}" ></div>
+            <div class="z_name flo_l">{{item.name}}</div>
+            <div class="z_message flo_l">
+              {{item.comment}}
+            </div>
+            <div class="clearfloat"></div>
+          </div>
         </div>
       </div>
       <div v-if="actiove === 1" class="z_introduce">
@@ -97,6 +101,8 @@
         qrcode: '',
         qrcode_intro: '',
         ranking: [],
+        time: '',
+        photo: '',
         comments: [],
         content: '',
         status: '',
@@ -179,6 +185,7 @@
           vm.qrcode = vm.arena.qrcode
           vm.ranking = data.list.data.map((item) => {
             return {
+              created_at: item.created_at,
               circle_avatar: item.user.circle_avatar,
               share_num: item.share_num,
               name: item.user.name
@@ -188,6 +195,7 @@
           this.comments = page.num === 1 ? [] : this.comments
           let comments = data.comments.data.map((item) => {
             return {
+              created_at: item.created_at,
               id: item.user.id,
               photo: item.user.photo,
               name: item.user.name,
@@ -199,9 +207,7 @@
           } else {
             vm.play_url = vm.arena.playback_url
           }
-          // console.log(vm.play_url, '000')
           this.comments.push(...comments)
-          console.log(this.comments)
           $loadingHide(false)
           vm.$nextTick(() => {
             mescroll.endSuccess(data.comments ? data.comments.data : 1)
@@ -213,15 +219,15 @@
           content: this.content
         }
         this.$http.post(`official/comment/arenas/` + this.arena_id, data).then(({data}) => {
-          // console.log(this.comments, '000')
-          // this.comments.push(
-          //   {
-          //     comment: this.content,
-          //     id: 7776,
-          //     name: 'Hankin',
-          //     photo: 'https://local-pictures.oss-cn-shenzhen.aliyuncs.com/201909/11/wxc41491431733671e.o6zAJs45uCvxsPLFAIsrDaPJGer0.BjFMpdBN0pd186f71a9c619169e73f650c65a69d1516.png'
-          //   }
-          // )
+          this.comments.push(
+            {
+              comment: this.content,
+              id: JSON.parse(localStorage.userInfo).id,
+              name: JSON.parse(localStorage.userInfo).name,
+              photo: this.photo,
+              created_at: this.time
+            }
+          )
           this.content = ''
         }).catch((error) => {
           console.log(error)
@@ -473,55 +479,64 @@
   }
   .z_interaction{
     background: #f6f6f6;
-    .z_data{
-      position: relative;
-      padding: 24px 0 30px 30px;
-      .z_head{
+    .j_page{
+      padding: 30px 30px 0 30px;
+      .z_time{
+        font-size: 24px;
+        color: #666666;
+        margin-bottom: 12px;
+      }
+      .Avatar {
         width: 84px;
         height: 84px;
         border-radius: 50%;
       }
       .z_name{
-        position: absolute;
-        top: 24px;
-        left: 134px;
-        font-size: 20px;
+        font-size: 24px;
+        margin-left: 20px;
+        color: #666666;
       }
-      .z_dialog{
-        z-index: 1;
-        position: absolute;
-        top: 90px;
-        left: 114px;
-        width: 0px;
-        height: 0px;
-        border-top: 12px solid transparent;
-        border-left: 20px solid transparent;
-        border-right: 20px solid white;
-        border-bottom: 12px solid transparent;
+      .clearfix{
+        margin-bottom: 12px;
       }
-      .z_dialog1{
-        position: absolute;
-        top: 84px;
-        left: 105px;
-        width: 0px;
-        height: 0px;
-        border-top: 18px solid transparent;
-        border-left: 26px solid transparent;
-        border-right: 26px solid #b0b0b0;
-        border-bottom: 18px solid transparent;
-      }
-      .z_dialog_box{
-        max-width: 300px;
+      .z_message{
+        color: #666666;
+        font-size: 24px;
+        max-width: 400px;
         word-wrap: break-word;
-        padding: 20px;
-        font-size: 20px;
-        position: absolute;
-        color: #D92553;
+        padding: 10px;
+        margin-left: -28px;
+        margin-top: 44px;
         border: 1px solid #b0b0b0;
-        top: 70px;
-        left: 150px;
-        border-radius: 12px;
         background: white;
+        line-height: 40px;
+        border-radius: 8px;
+        position: relative;
+        &:before{
+          content: ' ';
+          position: absolute;
+          left: -40px;
+          top: 14px;
+          width: 0;
+          height: 0;
+          border-top: 12px solid transparent;
+          border-right: 20px solid #b0b0b0;
+          border-left: 20px solid transparent;
+          border-bottom: 12px solid transparent;
+        }
+        &:after{
+          content: ' ';
+          z-index: 222;
+          position: absolute;
+          left: -34px;
+          top: 16px;
+          width: 0;
+          height: 0;
+          border-top: 10px solid transparent;
+          border-right: 18px solid #ffffff;
+          border-left: 18px solid transparent;
+          border-bottom: 10px solid transparent;
+        }
       }
     }
   }

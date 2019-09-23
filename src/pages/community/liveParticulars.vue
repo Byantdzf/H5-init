@@ -3,7 +3,7 @@
     <div class="player-container text-center">
       <video-player class="vjs-custom-skin" :options="playerOptions"></video-player>
       <div class="z_person">
-        <span class="parent_num">1232</span>
+        <span class="parent_num">{{click_num}}</span>
         <img src="https://images.ufutx.com/201909/18/b9db8ba4f8b6134a8df2748c14dbcdf8.png" alt="" class="icon_person">
       </div>
       <div class="z_home" @click="$router.push({path: `/live`})">
@@ -42,11 +42,11 @@
         </div>
       </div>
       <div v-if="actiove === 2" class="z_list">
-        <div v-for="items in medal">
-          <img :src="items.one" alt="" class="medal_one" v-if="ranking.length >= 1">
-          <img :src="items.two" alt="" class="medal_two" v-if="ranking.length >= 2">
-          <img :src="items.three" alt="" class="medal_three" v-if="ranking.length > 3">
-        </div>
+        <!--<div v-for="items in medal">-->
+          <!--<img :src="items.one" alt="" class="medal_one" v-if="ranking.length >= 1">-->
+          <!--<img :src="items.two" alt="" class="medal_two" v-if="ranking.length >= 2">-->
+          <!--<img :src="items.three" alt="" class="medal_three" v-if="ranking.length > 3">-->
+        <!--</div>-->
         <div v-for="item in ranking" class="z_list_data">
           <img :src="item.circle_avatar" alt="" class="z_list_head">
           <span class="z_list_name">{{item.name}}</span>
@@ -119,12 +119,14 @@
         ],
         actiove: 0,
         host: '',
+        click_num: 0,
         file: {},
         page: 1,
+        select: false,
         mescroll: null, //  mescroll实例对象
         mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
         mescrollUp: { // 上拉加载的配置.
-          callback: this.getParticulars, // 上拉回调,此处简写; 相当于 callback: function(page, mescroll) { }
+          callback: this.getinteraction, // 上拉回调,此处简写; 相当于 callback: function(page, mescroll) { }
           // 以下是一些常用的配置,当然不写也可以的.
           page: {
             num: 0, // 当前页 默认0,回调之前会加1; 即callback(page)会从1开始
@@ -176,27 +178,11 @@
           console.log(error)
         })
       },
-      getParticulars (page, mescroll) {
+      getinteraction (page, mescroll) {
         let vm = this
-        this.$http.get(`/official/arenas/` + this.arena_id + `?page=${page.num}`).then(({data}) => {
-          vm.playerOptions.sources[0].src = data.arena.play_url
-          vm.arena = data.arena
-          vm.guest_avatar = vm.arena.guest_avatar
-          vm.guest_name = vm.arena.guest_name
-          vm.intro = vm.arena.intro
-          vm.qrcode_intro = vm.arena.qrcode_intro
-          vm.qrcode = vm.arena.qrcode
-          vm.ranking = data.list.data.map((item) => {
-            return {
-              created_at: item.created_at,
-              circle_avatar: item.user.circle_avatar,
-              share_num: item.share_num,
-              name: item.user.name
-            }
-          })
-          vm.status = vm.arena.status
+        this.$http.get(`official/arenas/` + this.arena_id + `/comments?page=${page.num}`).then(({data}) => {
           this.comments = page.num === 1 ? [] : this.comments
-          let comments = data.comments.data.map((item) => {
+          let comments = data.data.map((item) => {
             return {
               created_at: item.created_at,
               id: item.user.id,
@@ -205,16 +191,48 @@
               comment: item.comment
             }
           })
+          this.comments.push(...comments)
+          $loadingHide(false)
+          vm.$nextTick(() => {
+            mescroll.endSuccess(data ? data.data : 1)
+          })
+        })
+      },
+      getList () {
+        let vm = this
+        this.$http.get(`official/arenas/` + this.arena_id + `/lists`).then(({data}) => {
+          vm.ranking = data.map((item) => {
+            return {
+              created_at: item.created_at,
+              circle_avatar: item.user.circle_avatar,
+              share_num: item.share_num,
+              name: item.user.name
+            }
+          })
+          $loadingHide(false)
+          // vm.$nextTick(() => {
+          //   mescroll.endSuccess(data.data ? data.data : 1)
+          // })
+        })
+      },
+      getParticulars () {
+        let vm = this
+        this.$http.get(`/official/arenas/` + this.arena_id).then(({data}) => {
+          vm.playerOptions.sources[0].src = data.arena.play_url
+          vm.arena = data.arena
+          vm.click_num = vm.arena.click_num
+          vm.guest_avatar = vm.arena.guest_avatar
+          vm.guest_name = vm.arena.guest_name
+          vm.intro = vm.arena.intro
+          vm.qrcode_intro = vm.arena.qrcode_intro
+          vm.qrcode = vm.arena.qrcode
+          vm.status = vm.arena.status
           if (vm.status === 1) {
             vm.play_url = vm.arena.play_url
           } else {
             vm.play_url = vm.arena.playback_url
           }
-          this.comments.push(...comments)
           $loadingHide(false)
-          vm.$nextTick(() => {
-            mescroll.endSuccess(data.comments ? data.comments.data : 1)
-          })
         })
       },
       onSend () {
@@ -236,6 +254,7 @@
             }
           )
           this.content = ''
+          this.getinteraction({num: 1}, this.mescroll)
         }).catch((error) => {
           console.log(error)
         })
@@ -243,6 +262,8 @@
     },
     mounted () {
       this.arena_id = this.$route.params.id
+      this.getParticulars()
+      this.getList()
       // console.log(this.playerOptions)
       // console.log(this.$store.state.intercept)
       // if (this.$store.state.intercept === 'true') {
@@ -432,6 +453,7 @@
         top: 24px;
         right: 20px;
         .parent_num{
+          width: 66px;
           position: absolute;
           top: 6px;
           right: 14px;
@@ -652,9 +674,11 @@
       bottom: 20px;
       width: 78%;
       height: 44px;
-      border-left-width: 0px;
-      border-top-width: 0px;
-      border-right-width: 0px;
+      box-shadow:0 0 0 rgba(0,0,0,0);
+      -webkit-appearance:none;
+      border-left-width: 0;
+      border-top-width: 0;
+      border-right-width: 0;
     }
     .z_btn{
       z-index: 2222;

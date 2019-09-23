@@ -23,9 +23,9 @@
           <p class="text-center z_time">{{item.created_at}}</p>
           <div class="clearfix">
             <div class="Avatar flo_l backCover" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}" ></div>
-            <div class="z_name flo_l">{{item.name}}</div>
-            <div class="z_message flo_l">
-              {{item.comment}}
+            <div class="z_message_box flo_l">
+              <div class="z_name">{{item.name}}</div>
+              <div class="z_message">{{item.comment}}</div>
             </div>
             <div class="clearfloat"></div>
           </div>
@@ -103,6 +103,9 @@
         ranking: [],
         time: '',
         photo: '',
+        commented_name: '',
+        commented_id: '',
+        created_at: '',
         comments: [],
         content: '',
         status: '',
@@ -219,13 +222,17 @@
           content: this.content
         }
         this.$http.post(`official/comment/arenas/` + this.arena_id, data).then(({data}) => {
+          this.photo = data.user.photo
+          this.commented_name = data.user.name
+          this.commented_id = data.user.id
+          this.created_at = data.created_at
           this.comments.push(
             {
               comment: this.content,
-              id: JSON.parse(localStorage.userInfo).id,
-              name: JSON.parse(localStorage.userInfo).name,
+              id: this.commented_id,
+              name: this.commented_name,
               photo: this.photo,
-              created_at: this.time
+              created_at: this.created_at
             }
           )
           this.content = ''
@@ -486,56 +493,58 @@
         color: #666666;
         margin-bottom: 12px;
       }
-      .Avatar {
-        width: 84px;
-        height: 84px;
-        border-radius: 50%;
-      }
-      .z_name{
-        font-size: 24px;
-        margin-left: 20px;
-        color: #666666;
-      }
       .clearfix{
         margin-bottom: 12px;
-      }
-      .z_message{
-        color: #666666;
-        font-size: 24px;
-        max-width: 400px;
-        word-wrap: break-word;
-        padding: 10px;
-        margin-left: -28px;
-        margin-top: 44px;
-        border: 1px solid #b0b0b0;
-        background: white;
-        line-height: 40px;
-        border-radius: 8px;
-        position: relative;
-        &:before{
-          content: ' ';
-          position: absolute;
-          left: -40px;
-          top: 14px;
-          width: 0;
-          height: 0;
-          border-top: 12px solid transparent;
-          border-right: 20px solid #b0b0b0;
-          border-left: 20px solid transparent;
-          border-bottom: 12px solid transparent;
+        .Avatar {
+          width: 84px;
+          height: 84px;
+          border-radius: 50%;
         }
-        &:after{
-          content: ' ';
-          z-index: 222;
-          position: absolute;
-          left: -34px;
-          top: 16px;
-          width: 0;
-          height: 0;
-          border-top: 10px solid transparent;
-          border-right: 18px solid #ffffff;
-          border-left: 18px solid transparent;
-          border-bottom: 10px solid transparent;
+        .z_message_box{
+          .z_name{
+            font-size: 24px;
+            margin-left: 20px;
+            color: #666666;
+          }
+          .z_message{
+            color: #666666;
+            font-size: 24px;
+            max-width: 400px;
+            word-wrap: break-word;
+            padding: 10px;
+            margin-left: 38px;
+            margin-top: 10px;
+            border: 1px solid #b0b0b0;
+            background: white;
+            line-height: 40px;
+            border-radius: 8px;
+            position: relative;
+            &:before{
+              content: ' ';
+              position: absolute;
+              left: -40px;
+              top: 14px;
+              width: 0;
+              height: 0;
+              border-top: 12px solid transparent;
+              border-right: 20px solid #b0b0b0;
+              border-left: 20px solid transparent;
+              border-bottom: 12px solid transparent;
+            }
+            &:after{
+              content: ' ';
+              z-index: 222;
+              position: absolute;
+              left: -34px;
+              top: 16px;
+              width: 0;
+              height: 0;
+              border-top: 10px solid transparent;
+              border-right: 18px solid #ffffff;
+              border-left: 18px solid transparent;
+              border-bottom: 10px solid transparent;
+            }
+          }
         }
       }
     }

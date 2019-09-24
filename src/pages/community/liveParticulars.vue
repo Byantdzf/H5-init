@@ -1,6 +1,6 @@
 <template>
   <div class="z_box">
-    <div class="right"></div>
+    <div class="zone"></div>
     <div class="player-container text-center">
       <video-player class="vjs-custom-skin" :options="playerOptions"></video-player>
       <div class="z_person">
@@ -11,7 +11,7 @@
         <img src="https://images.ufutx.com/201909/18/982e873c34b48881d10519435e0c0188.png" alt="" class="icon_home">
       </div>
     </div>
-    <div class="left"></div>
+    <div class="zone1"></div>
     <div class="tab-list">
       <div class="tab-li"
            :class="actiove == index ?'Active' : '' "
@@ -32,6 +32,7 @@
             <div class="clearfloat"></div>
           </div>
         </div>
+        <div class="zone3"></div>
       </div>
       <div v-if="actiove === 1" class="z_introduce">
         <div class="z_introduce_data">
@@ -68,7 +69,7 @@
   import {Group, Cell, XHeader, Swiper, XInput, SwiperItem, Tab, TabItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import swiperComponent from '../../components/swiper'
-  import {$loadingHide} from '../../config/util'
+  import {$loadingHide, $loadingShow} from '../../config/util'
   // import {$toastText} from '../../config/util'
   // 引入video样式
   import 'video.js/dist/video-js.css'
@@ -179,16 +180,22 @@
         })
       },
       getinteraction (page, mescroll) {
-        console.log(page, '00')
+        let pageV = 1
+        pageV = page.num
+        if (!page.num) {
+          pageV = 1
+        }
         let vm = this
-        this.$http.get(`official/arenas/` + this.arena_id + `/comments?page=${page.num}`).then(({data}) => {
-          if (page.num === 1) {
-            this.comments = []
-          } else {
-            this.comments = this.comments
+        this.$http.get(`official/arenas/` + this.arena_id + `/comments?page=${pageV}`).then(({data}) => {
+          let dataV = pageV === 1 ? [] : vm.comments
+          dataV.push(...data.data)
+          vm.comments = dataV
+          if (mescroll) {
+            vm.$nextTick(() => {
+              mescroll.endSuccess(data.data.length)
+            })
           }
-          console.log(this.comments, '55')
-          let comments = data.data.map((item) => {
+          vm.comments = data.data.map((item) => {
             return {
               created_at: item.created_at,
               id: item.user.id,
@@ -197,15 +204,7 @@
               comment: item.comment
             }
           })
-          if (page.num === 1) {
-            this.comments = comments
-          } else {
-            this.comments.push(...comments)
-          }
           $loadingHide(false)
-          vm.$nextTick(() => {
-            mescroll.endSuccess(data ? data.data : 1)
-          })
         })
       },
       getList () {
@@ -219,7 +218,6 @@
               name: item.user.name
             }
           })
-          console.log(vm.ranking.length, '000')
           $loadingHide(false)
           // vm.$nextTick(() => {
           //   mescroll.endSuccess(data.data ? data.data : 1)
@@ -243,7 +241,6 @@
           } else {
             vm.playerOptions.sources[0].src = data.arena.playback_url
           }
-          console.log(vm.playerOptions.sources[0].src, '8996')
           $loadingHide(false)
         })
       },
@@ -266,7 +263,7 @@
             }
           )
           this.content = ''
-          this.getinteraction({num: 1}, this.mescroll)
+          // this.getinteraction({num: 1}, this.mescroll)
         }).catch((error) => {
           console.log(error)
         })
@@ -457,7 +454,7 @@
     height: 100vh;
     position: relative;
     background: #f6f6f6;
-    .right{
+    .zone{
       height: 420px;
     }
     .player-container{
@@ -493,7 +490,7 @@
       }
     }
   }
-  .left{
+  .zone1{
     height: 100px;
   }
   .tab-list{

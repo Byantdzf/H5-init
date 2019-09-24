@@ -261,11 +261,11 @@
     width: 138px;
     height: 48px;
     border-radius: 25px;
-    border: 1px solid #666666;
+    border: 1px solid #eeeeee;
     text-align: center;
     line-height: 48px;
     font-size: 24px;
-    color: #666666;
+    color: #b0b0b0;
     margin-top: 30px;
     margin-left: 20px;
     background:#ffffff;
@@ -292,7 +292,7 @@
   .wire{
     width: 100%;
     height: 1px;
-    background: #b0b0b0;
+    background: #eeeeee;
   }
   .tab-listV2{
     width: 98%;
@@ -317,17 +317,18 @@
   /*点击后样式*/
   .ActiveV2{
     display: inline-block;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: center;
     width: 320px;
     height: 200px;
     border-radius: 6px;
-    border: 1px solid #666666;
     text-align: center;
     line-height: 200px;
     font-size: 24px;
     color: #D92553;
     margin-top: 30px;
     margin-left: 20px;
-    background:#000000;
   }
   .z_box{
     position: relative;

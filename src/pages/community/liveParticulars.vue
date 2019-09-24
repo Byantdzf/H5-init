@@ -57,10 +57,10 @@
         <p class="z_qrcode_title">{{qrcode_intro}}</p>
         <img :src="qrcode" alt="" class="z_qrcode">
       </div>
-      <div class="z_button" v-if="actiove === 0">
-        <input type="text" class="wire" v-model="content">
-        <div class="z_btn" @click="onSend">发送</div>
-      </div>
+      <!--<div class="z_button" v-if="actiove === 0">-->
+        <!--<input type="text" class="wire" v-model="content">-->
+        <!--<div class="z_btn" @click="onSend">发送</div>-->
+      <!--</div>-->
     </mescroll-vue>
   </div>
 </template>
@@ -179,9 +179,15 @@
         })
       },
       getinteraction (page, mescroll) {
+        console.log(page, '00')
         let vm = this
         this.$http.get(`official/arenas/` + this.arena_id + `/comments?page=${page.num}`).then(({data}) => {
-          this.comments = page.num === 1 ? [] : this.comments
+          if (page.num === 1) {
+            this.comments = []
+          } else {
+            this.comments = this.comments
+          }
+          console.log(this.comments, '55')
           let comments = data.data.map((item) => {
             return {
               created_at: item.created_at,
@@ -194,7 +200,7 @@
           this.comments.push(...comments)
           $loadingHide(false)
           vm.$nextTick(() => {
-            mescroll.endSuccess(data ? data.data : 3)
+            mescroll.endSuccess(data ? data.data : 1)
           })
         })
       },
@@ -219,7 +225,7 @@
       getParticulars () {
         let vm = this
         this.$http.get(`/official/arenas/` + this.arena_id).then(({data}) => {
-          vm.playerOptions.sources[0].src = data.arena.play_url
+          // vm.playerOptions.sources[0].src = data.arena.play_url
           vm.arena = data.arena
           vm.click_num = vm.arena.click_num
           vm.guest_avatar = vm.arena.guest_avatar
@@ -229,9 +235,9 @@
           vm.qrcode = vm.arena.qrcode
           vm.status = vm.arena.status
           if (vm.status === 1) {
-            vm.play_url = vm.arena.play_url
+            vm.playerOptions.sources[0].src = data.arena.play_url
           } else {
-            vm.play_url = vm.arena.playback_url
+            vm.playerOptions.sources[0].src = data.arena.playback_url
           }
           $loadingHide(false)
         })

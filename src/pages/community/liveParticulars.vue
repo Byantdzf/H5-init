@@ -57,10 +57,10 @@
         <p class="z_qrcode_title">{{qrcode_intro}}</p>
         <img :src="qrcode" alt="" class="z_qrcode">
       </div>
-      <!--<div class="z_button" v-if="actiove === 0">-->
-        <!--<input type="text" class="wire" v-model="content">-->
-        <!--<div class="z_btn" @click="onSend">发送</div>-->
-      <!--</div>-->
+      <div class="z_button" v-if="actiove === 0">
+        <input type="text" class="wire" v-model="content">
+        <div class="z_btn" @click="onSend">发送</div>
+      </div>
     </mescroll-vue>
   </div>
 </template>

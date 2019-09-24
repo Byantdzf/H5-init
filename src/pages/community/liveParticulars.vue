@@ -42,13 +42,11 @@
         </div>
       </div>
       <div v-if="actiove === 2" class="z_list">
-        <!--<div v-for="items in medal">-->
-          <!--<img :src="items.one" alt="" class="medal_one" v-if="ranking.length >= 1">-->
-          <!--<img :src="items.two" alt="" class="medal_two" v-if="ranking.length >= 2">-->
-          <!--<img :src="items.three" alt="" class="medal_three" v-if="ranking.length > 3">-->
-        <!--</div>-->
-        <div v-for="item in ranking" class="z_list_data">
-          <img :src="item.circle_avatar" alt="" class="z_list_head">
+        <div v-for="item,index in ranking" class="z_list_data" :key="index">
+          <img src="https://images.ufutx.com/201909/18/b9691d848e448093cad649450ca710da.png" alt="" class="medal_one" v-if="index === 0">
+          <img src="https://images.ufutx.com/201909/18/26c5e78bb28316e3b46f5beda4cd06ad.png" alt="" class="medal_two" v-if="index === 1">
+          <img src="https://images.ufutx.com/201909/18/0d8fc057c1169eb336ff01a789e8471a.png" alt="" class="medal_three" v-if="index === 2">
+          <img :src="item.photo" alt="" class="z_list_head">
           <span class="z_list_name">{{item.name}}</span>
           <p class="z_invite">邀请<span style="color: #D92553">{{item.share_num}}</span>人</p>
         </div>
@@ -204,11 +202,12 @@
           vm.ranking = data.map((item) => {
             return {
               created_at: item.created_at,
-              circle_avatar: item.user.circle_avatar,
+              photo: item.user.photo,
               share_num: item.share_num,
               name: item.user.name
             }
           })
+          console.log(vm.ranking.length, '000')
           $loadingHide(false)
           // vm.$nextTick(() => {
           //   mescroll.endSuccess(data.data ? data.data : 1)
@@ -617,27 +616,18 @@
   }
   .z_list{
     overflow: hidden;
-    .medal_two, .medal_one, .medal_three{
-      width: 50px;
-      position: fixed;
-      margin-left: 30px;
-    }
-    .medal_one{
-      margin-top: 26px;
-    }
-    .medal_two{
-      margin-top: 166px;
-    }
-    .medal_three{
-      margin-top: 306px;
-    }
     .z_list_data{
       overflow: hidden;
       width: 100vw;
       height: 140px;
       border-bottom: 1px solid #b6b6b6;
+      .medal_two, .medal_one, .medal_three{
+        width: 50px;
+        position: absolute;
+        margin-left: 30px;
+        margin-top: 24px;
+      }
       .z_list_head{
-        float: left;
         margin-top: 30px;
         margin-left: 110px;
         width: 84px;
@@ -645,7 +635,6 @@
         border-radius: 50%;
       }
       .z_list_name{
-        float: left;
         margin-top: 54px;
         margin-left: 20px;
         font-size: 24px;

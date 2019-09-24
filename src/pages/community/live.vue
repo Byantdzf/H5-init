@@ -2,8 +2,13 @@
   <div>
     <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
       <div class="tab-list">
+        <!--<div class="tab-li"-->
+             <!--:class="item.isSelected !== false ? 'Active' : '' "-->
+             <!--v-for="(item,index) in labels" @click="cutTabClick(item, index)"-->
+             <!--:key="index">{{item.title}}-->
+        <!--</div>-->
         <div class="tab-li"
-             :class="item.isSelected !== false ? 'Active' : '' "
+             :class="actiove == index ? 'Active' : '' "
              v-for="(item,index) in labels" @click="cutTabClick(item, index)"
              :key="index">{{item.title}}
         </div>
@@ -29,8 +34,9 @@
           </div>
           <div class="athletics">
             <div class="z_arena">
-              <img src="https://images.ufutx.com/201909/17/012c27c91295fb26c225f2bd21b70d0b.png" alt="icon"
+              <img src="https://images.ufutx.com/201909/24/b2590e58e3f1c9d80e7dea19d9cfd2e9.png" alt=""
                    class="icon">
+              <span class="z_sub_title">{{item.sub_title}}</span>
               <span class="z_title">{{item.title}}</span>
             </div>
             <div class="head_portrait">
@@ -170,14 +176,14 @@
     methods: {
       cutTabClick (item, index) {
         this.actiove = index
-        item.isSelected = !item.isSelected
-        let IDs = []
-        for (let itemV of this.labels) {
-          if (itemV.isSelected) {
-            IDs.push(itemV.id)
-          }
-        }
-        this.labelsID = IDs
+        // item.isSelected = !item.isSelected
+        // let IDs = []
+        // for (let itemV of this.labels) {
+        //   if (itemV.isSelected) {
+        //     IDs.push(itemV.id)
+        //   }
+        // }
+        // this.labelsID = IDs
         this.getathletics({num: 1}, this.mescroll)
       },
       cutTabV2Click (item, index) {
@@ -214,6 +220,7 @@
               male_team_num: item.male_team_num,
               male_team: item.male_team,
               start_time: item.start_time,
+              sub_title: item.sub_title,
               status: item.status,
               title: item.title
             }
@@ -360,11 +367,20 @@
     width: 100vw;
     height: 306px;
     .z_arena{
+      position: relative;
       margin: 42px 0 20px 106px;
       .icon{
-        width: 40px;
-        height: 26px;
+        width: 80px;
         vertical-align: middle;
+      }
+      .z_sub_title{
+        width: 50px;
+        text-align: center;
+        position: absolute;
+        top: 8px;
+        left: 14px;
+        color: #666666;
+        font-size: 24px;
       }
       .z_title{
         color: #666666;

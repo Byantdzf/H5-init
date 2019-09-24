@@ -197,7 +197,11 @@
               comment: item.comment
             }
           })
-          this.comments.push(...comments)
+          if (page.num === 1) {
+            this.comments = comments
+          } else {
+            this.comments.push(...comments)
+          }
           $loadingHide(false)
           vm.$nextTick(() => {
             mescroll.endSuccess(data ? data.data : 1)
@@ -239,6 +243,7 @@
           } else {
             vm.playerOptions.sources[0].src = data.arena.playback_url
           }
+          console.log(vm.playerOptions.sources[0].src, '8996')
           $loadingHide(false)
         })
       },

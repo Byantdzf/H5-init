@@ -427,7 +427,7 @@
     }
   }
   ::-webkit-scrollbar {
-    width: 0px;
+    width: 0;
     display: none;
     background-color: #fff;
   }
@@ -435,9 +435,10 @@
     margin-top: 30px !important;
   }
   .mescroll {
-    height: 63%;
+    height: auto;
     position: relative;
-    bottom: 0;
+    background: #f6f6f6;
+    padding-bottom: 0;
   }
   .z_box{
     height: 100vh;
@@ -481,7 +482,7 @@
     .tab-li {
       float: left;
       display: inline-block;
-      width: 24.9%;
+      width: 24.99%;
       height: 80px;
       font-weight: bold;
       text-align: center;
@@ -601,7 +602,7 @@
   }
   .z_attention{
     text-align: center;
-    margin-top: 44%;
+    margin-top: 32%;
     .z_qrcode_title{
       margin-bottom: 30px;
       color: #D92553;

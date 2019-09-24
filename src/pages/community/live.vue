@@ -10,7 +10,7 @@
       </div>
       <div class="wire" v-if="labels !== [] && groups !== []"></div>
       <div class="tab-listV2">
-        <div class="tab-liV2" v-bind:style="{backgroundImage:'url(' + item.image_url + ')'}"
+        <div class="tab-liV2 backCover" v-bind:style="{backgroundImage:'url(' + item.image_url + ')'}"
              :class="actioveV2 == index ?'ActiveV2' : '' "
              v-for="(item,index) in groups" @click="cutTabV2Click(item, index)">{{item.title}}
         </div>

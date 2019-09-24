@@ -19,7 +19,7 @@
            :key="index">{{item}}
       </div>
     </div>
-    <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">
+    <!--<mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">-->
       <div v-if="actiove === 0" class="z_interaction">
         <div class="j_page" v-for="item in comments">
           <p class="text-center z_time">{{item.created_at}}</p>
@@ -62,14 +62,14 @@
         <input type="text" class="wire" v-model="content">
         <div class="z_btn" @click="onSend">发送</div>
       </div>
-    </mescroll-vue>
+    <!--</mescroll-vue>-->
   </div>
 </template>
 <script>
   import {Group, Cell, XHeader, Swiper, XInput, SwiperItem, Tab, TabItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import swiperComponent from '../../components/swiper'
-  import {$loadingHide, $loadingShow} from '../../config/util'
+  import {$loadingHide} from '../../config/util'
   // import {$toastText} from '../../config/util'
   // 引入video样式
   import 'video.js/dist/video-js.css'
@@ -179,23 +179,11 @@
           console.log(error)
         })
       },
-      getinteraction (page, mescroll) {
-        let pageV = 1
-        pageV = page.num
-        if (!page.num) {
-          pageV = 1
-        }
+      getinteraction (page) {
         let vm = this
-        this.$http.get(`official/arenas/` + this.arena_id + `/comments?page=${pageV}`).then(({data}) => {
-          let dataV = pageV === 1 ? [] : vm.comments
-          dataV.push(...data.data)
-          vm.comments = dataV
-          if (mescroll) {
-            vm.$nextTick(() => {
-              mescroll.endSuccess(data.data.length)
-            })
-          }
-          vm.comments = data.data.map((item) => {
+        this.$http.get(`official/arenas/` + this.arena_id + `/comments?page=${this.page}`).then(({data}) => {
+          vm.comments = this.page === 1 ? [] : vm.comments
+          let comments = data.data.map((item) => {
             return {
               created_at: item.created_at,
               id: item.user.id,
@@ -204,6 +192,7 @@
               comment: item.comment
             }
           })
+          vm.comments.push(...comments)
           $loadingHide(false)
         })
       },
@@ -241,6 +230,7 @@
           } else {
             vm.playerOptions.sources[0].src = data.arena.playback_url
           }
+          console.log(vm.playerOptions.sources[0].src, '0000')
           $loadingHide(false)
         })
       },
@@ -262,8 +252,9 @@
               created_at: this.created_at
             }
           )
+          console.log(this.comments)
           this.content = ''
-          // this.getinteraction({num: 1}, this.mescroll)
+          this.getinteraction()
         }).catch((error) => {
           console.log(error)
         })
@@ -272,6 +263,7 @@
     mounted () {
       this.arena_id = this.$route.params.id
       this.getParticulars()
+      this.getinteraction()
       this.getList()
       // console.log(this.playerOptions)
       // console.log(this.$store.state.intercept)
@@ -532,6 +524,9 @@
   }
   .z_interaction{
     background: #f6f6f6;
+    .zone3{
+      height: 90px;
+    }
     .j_page{
       padding: 0px 30px 0 30px;
       .z_time{

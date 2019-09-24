@@ -1,5 +1,6 @@
 <template>
   <div class="z_box">
+    <div class="right"></div>
     <div class="player-container text-center">
       <video-player class="vjs-custom-skin" :options="playerOptions"></video-player>
       <div class="z_person">
@@ -10,6 +11,7 @@
         <img src="https://images.ufutx.com/201909/18/982e873c34b48881d10519435e0c0188.png" alt="" class="icon_home">
       </div>
     </div>
+    <div class="left"></div>
     <div class="tab-list">
       <div class="tab-li"
            :class="actiove == index ?'Active' : '' "
@@ -444,9 +446,15 @@
     height: 100vh;
     position: relative;
     background: #f6f6f6;
+    .right{
+      height: 420px;
+    }
     .player-container{
       z-index: 999;
-      position: relative;
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
       .z_person{
         position: relative;
         position: absolute;
@@ -474,8 +482,16 @@
       }
     }
   }
+  .left{
+    height: 100px;
+  }
   .tab-list{
     background: #fff;
+    z-index: 9999;
+    position: fixed;
+    top: 420px;
+    left: 0;
+    right: 0;
     width: 100%;
     margin: auto;
     overflow: hidden;
@@ -509,11 +525,14 @@
   .z_interaction{
     background: #f6f6f6;
     .j_page{
-      padding: 30px 30px 0 30px;
+      padding: 0px 30px 0 30px;
       .z_time{
         font-size: 24px;
         color: #666666;
         margin-bottom: 12px;
+      }
+      .clearfloat{
+        margin-bottom: 30px;
       }
       .clearfix{
         margin-bottom: 12px;
@@ -602,7 +621,7 @@
   }
   .z_attention{
     text-align: center;
-    margin-top: 32%;
+    margin-top: 28%;
     .z_qrcode_title{
       margin-bottom: 30px;
       color: #D92553;

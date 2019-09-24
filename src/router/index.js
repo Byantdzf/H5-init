@@ -130,9 +130,9 @@ export default new Router({
       component: (resolve) => require(['@/pages/community/live'], resolve)
     },
     {
-      path: '/liveV2', // 直播视频
-      name: 'liveV2',
-      component: (resolve) => require(['@/pages/community/liveV2'], resolve)
+      path: '/liveParticulars/:id', // 直播视频
+      name: 'liveParticulars',
+      component: (resolve) => require(['@/pages/community/liveParticulars'], resolve)
     },
     {
       path: '/test', // 直播测试

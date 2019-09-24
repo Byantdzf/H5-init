@@ -32,6 +32,9 @@
             <div class="clearfloat"></div>
           </div>
         </div>
+        <div class="text-center  color6">
+          <p class="moreMessage inline-block font28" @click="getinteraction">{{text}}</p>
+        </div>
         <div class="zone3"></div>
       </div>
       <div v-if="actiove === 1" class="z_introduce">
@@ -69,8 +72,7 @@
   import {Group, Cell, XHeader, Swiper, XInput, SwiperItem, Tab, TabItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import swiperComponent from '../../components/swiper'
-  import {$loadingHide} from '../../config/util'
-  // import {$toastText} from '../../config/util'
+  import {$loadingShow, $loadingHide} from '../../config/util'
   // 引入video样式
   import 'video.js/dist/video-js.css'
   import 'vue-video-player/src/custom-theme.css'
@@ -94,6 +96,7 @@
         loading: false,
         ossConfig: {},
         arena_id: '',
+        text: '加载更多',
         tabList: ['互动', '介绍', '榜单', '关注'],
         arena: [],
         guest_avatar: '',
@@ -179,20 +182,29 @@
           console.log(error)
         })
       },
-      getinteraction (page) {
+      getinteraction () {
         let vm = this
-        this.$http.get(`official/arenas/` + this.arena_id + `/comments?page=${this.page}`).then(({data}) => {
-          vm.comments = this.page === 1 ? [] : vm.comments
-          let comments = data.data.map((item) => {
-            return {
-              created_at: item.created_at,
-              id: item.user.id,
-              photo: item.user.photo,
-              name: item.user.name,
-              comment: item.comment
-            }
-          })
+        vm.$http.get(`official/arenas/` + vm.arena_id + `/comments?page=${vm.page}`).then(({data}) => {
+          vm.comments = vm.page === 1 ? [] : vm.comments
+          if (data.data.length < 1) {
+            this.text = '暂无评论'
+            return
+          }
+          let comments = []
+          for (let item of data.data) {
+            comments.push(
+              {
+                created_at: item.created_at,
+                id: item.user.id,
+                photo: item.user.photo,
+                name: item.user.name,
+                comment: item.comment
+              }
+            )
+          }
+          console.log(comments)
           vm.comments.push(...comments)
+          vm.page ++
           $loadingHide(false)
         })
       },
@@ -243,7 +255,7 @@
           this.commented_name = data.user.name
           this.commented_id = data.user.id
           this.created_at = data.created_at
-          this.comments.push(
+          this.comments.unshift(
             {
               comment: this.content,
               id: this.commented_id,
@@ -254,7 +266,7 @@
           )
           console.log(this.comments)
           this.content = ''
-          this.getinteraction()
+          // this.getinteraction()
         }).catch((error) => {
           console.log(error)
         })
@@ -521,6 +533,13 @@
       background: #D92553;
       font-size: 24px;
     }
+  }
+  .moreMessage{
+    background: #d3d3d3;
+    margin: auto;
+    padding: 4px 22px;
+    margin-bottom: 32px;
+    border-radius: 6px;
   }
   .z_interaction{
     background: #f6f6f6;

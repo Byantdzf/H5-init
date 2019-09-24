@@ -147,7 +147,7 @@
       },
       loginFn () {
         this.$http.get('/official/login').then(({data}) => {
-          if (!data.official_openid) {
+          if (!data.official_openid && this.$isWeiXin() === true) {
             const baseURL = process.env.NODE_ENV === 'development' ? 'http://love.hankin.ufutx.cn' : 'https://love.ufutx.com'
             console.log(`${baseURL}/wechat/auth?type=login`)
             window.location.href = `${baseURL}/wechat/auth?type=login`

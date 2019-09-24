@@ -194,7 +194,7 @@
           this.comments.push(...comments)
           $loadingHide(false)
           vm.$nextTick(() => {
-            mescroll.endSuccess(data ? data.data : 1)
+            mescroll.endSuccess(data ? data.data : 3)
           })
         })
       },
@@ -446,15 +446,15 @@
     height: 100vh;
     position: relative;
     background: #f6f6f6;
-    /*.right{*/
-      /*height: 420px;*/
-    /*}*/
+    .right{
+      height: 420px;
+    }
     .player-container{
-      /*z-index: 999;*/
-      /*position: fixed;*/
-      /*top: 0;*/
-      /*right: 0;*/
-      /*left: 0;*/
+      z-index: 999;
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
       .z_person{
         position: relative;
         position: absolute;
@@ -482,16 +482,16 @@
       }
     }
   }
-  /*.left{*/
-    /*height: 100px;*/
-  /*}*/
+  .left{
+    height: 100px;
+  }
   .tab-list{
     background: #fff;
-    /*z-index: 9999;*/
-    /*position: fixed;*/
-    /*top: 420px;*/
-    /*left: 0;*/
-    /*right: 0;*/
+    z-index: 9999;
+    position: fixed;
+    top: 420px;
+    left: 0;
+    right: 0;
     width: 100%;
     margin: auto;
     overflow: hidden;

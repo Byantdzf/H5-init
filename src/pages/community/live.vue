@@ -379,7 +379,7 @@
         position: absolute;
         top: 8px;
         left: 14px;
-        color: #666666;
+        color: #ffffff;
         font-size: 24px;
       }
       .z_title{

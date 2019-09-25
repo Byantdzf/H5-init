@@ -1,8 +1,9 @@
 <template>
-  <div class="z_box">
+  <div class="z_box" id="orderFullScreen">
     <div class="zone"></div>
     <div class="player-container text-center">
-      <video-player class="vjs-custom-skin" :options="playerOptions"></video-player>
+      <video-player class="vjs-custom-skin vjs-custom-skin" :options="playerOptions" ref="videoPlayer"
+      :playsinline="true"></video-player>
       <div class="z_person">
         <span class="parent_num">{{click_num}}</span>
         <img src="https://images.ufutx.com/201909/18/b9db8ba4f8b6134a8df2748c14dbcdf8.png" alt="" class="icon_person">
@@ -21,6 +22,7 @@
     </div>
     <!--<mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">-->
       <div v-if="actiove === 0" class="z_interaction">
+        <img class="go_top" @click="go_to_top" src="https://images.ufutx.com/201909/25/64b7c423dca3a3d796931bb2996ec69a.png" v-if="page >= 3">
         <div class="j_page" v-for="item in comments">
           <p class="text-center z_time">{{item.created_at}}</p>
           <div class="clearfix">
@@ -72,7 +74,7 @@
   import {Group, Cell, XHeader, Swiper, XInput, SwiperItem, Tab, TabItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import swiperComponent from '../../components/swiper'
-  import {$loadingShow, $loadingHide} from '../../config/util'
+  import {$loadingHide} from '../../config/util'
   // 引入video样式
   import 'video.js/dist/video-js.css'
   import 'vue-video-player/src/custom-theme.css'
@@ -207,6 +209,7 @@
           console.log(comments)
           vm.comments.push(...comments)
           vm.page ++
+          console.log(vm.page, '00')
           $loadingHide(false)
         })
       },
@@ -230,7 +233,6 @@
       getParticulars () {
         let vm = this
         this.$http.get(`/official/arenas/` + this.arena_id).then(({data}) => {
-          vm.playerOptions.sources[0].src = data.arena.play_url
           vm.arena = data.arena
           vm.click_num = vm.arena.click_num
           vm.guest_avatar = vm.arena.guest_avatar
@@ -246,7 +248,6 @@
             vm.playerOptions.sources[0].src = data.arena.playback_url
             vm.playerOptions.sources[0].type = 'video/mp4'
           }
-          console.log(vm.playerOptions.sources[0].type, '0000')
           $loadingHide(false)
         })
       },
@@ -270,13 +271,18 @@
           )
           console.log(this.comments)
           this.content = ''
-          // this.getinteraction()
         }).catch((error) => {
           console.log(error)
         })
+      },
+      handleScroll () {
+      },
+      go_to_top () {
+        document.getElementById('orderFullScreen').scrollTop = 0
       }
     },
     mounted () {
+      document.getElementById('orderFullScreen').addEventListener('scroll', this.handleScroll, true)
       this.arena_id = this.$route.params.id
       this.getParticulars()
       this.getinteraction()
@@ -459,8 +465,13 @@
     padding-bottom: 0;
   }
   .z_box{
-    height: 100vh;
-    position: relative;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: auto;
     background: #f6f6f6;
     .zone{
       height: 420px;
@@ -499,7 +510,7 @@
     }
   }
   .zone1{
-    height: 100px;
+    height: 80px;
   }
   .tab-list{
     background: #fff;
@@ -549,6 +560,13 @@
     background: #f6f6f6;
     .zone3{
       height: 90px;
+    }
+    .go_top{
+      width: 80px;
+      height: 80px;
+      position: fixed;
+      bottom: 140px;
+      right: 50px;
     }
     .j_page{
       padding: 0px 30px 0 30px;
@@ -674,15 +692,16 @@
         margin-top: 24px;
       }
       .z_list_head{
-        margin-top: 30px;
+        margin-top: 28px;
         margin-left: 110px;
         width: 84px;
         height: 84px;
         border-radius: 50%;
       }
       .z_list_name{
-        margin-top: 54px;
-        margin-left: 20px;
+        position: relative;
+        bottom: 30px;
+        left: 10px;
         font-size: 24px;
       }
       .z_invite{

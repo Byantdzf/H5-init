@@ -153,11 +153,10 @@
           aspectRatio: '16:9', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
           fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
           sources: [{
-            // type: '',
-            type: 'video/mp4',
-            // src: 'http://edu.ufutx.com/653481/132126762748928094/live.m3u8'
-            src: 'http://pili-vod.vod.gmall88.com/de55d1d3039a4689a3b9f1059d4715bd.mp4'
-            // src: ''
+            type: '',
+            src: ''
+            // type: 'video/mp4',
+            // src: 'http://pili-vod.vod.gmall88.com/de55d1d3039a4689a3b9f1059d4715bd.mp4'
           }],
           poster: 'http://images.ufutx.com/201909/12/ee972fdefd0d65c2a43fb2ea2bd7e56c.png', // 你的封面地址
           width: document.documentElement.clientWidth,
@@ -212,7 +211,6 @@
               }
             )
           }
-          console.log(comments)
           vm.comments.push(...comments)
           vm.page ++
           $loadingHide(false)
@@ -229,7 +227,6 @@
               name: item.user.name
             }
           })
-          console.log(data, '32316')
           $loadingHide(false)
           // vm.$nextTick(() => {
           //   mescroll.endSuccess(data.data ? data.data : 1)
@@ -247,13 +244,13 @@
           vm.qrcode_intro = vm.arena.qrcode_intro
           vm.qrcode = vm.arena.qrcode
           vm.status = vm.arena.status
-          // if (vm.status === 1) {
-          //   vm.playerOptions.sources[0].src = data.arena.play_url
-          //   vm.playerOptions.sources[0].type = 'application/x-mpegURL'
-          // } else {
-          //   vm.playerOptions.sources[0].src = data.arena.playback_url
-          //   vm.playerOptions.sources[0].type = 'video/mp4'
-          // }
+          if (vm.status === 1) {
+            vm.playerOptions.sources[0].src = data.arena.play_url
+            vm.playerOptions.sources[0].type = 'application/x-mpegURL'
+          } else {
+            vm.playerOptions.sources[0].src = data.arena.playback_url
+            vm.playerOptions.sources[0].type = 'video/mp4'
+          }
           $loadingHide(false)
         })
       },
@@ -275,9 +272,9 @@
               created_at: this.created_at
             }
           )
-          console.log(this.comments)
           this.content = ''
           document.getElementById('orderFullScreen').scrollTop = 0
+          this.page = 1
           this.getinteraction()
         }).catch((error) => {
           console.log(error)

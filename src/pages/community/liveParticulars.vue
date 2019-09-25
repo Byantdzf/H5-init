@@ -2,10 +2,9 @@
   <div class="z_box" id="orderFullScreen">
     <div class="zone"></div>
     <div class="player-container text-center">
-      <video-player class="vjs-custom-skin vjs-custom-skin" :options="playerOptions" ref="videoPlayer"
-      :playsinline="true"></video-player>
+      <video-player class="vjs-custom-skin" :options="playerOptions" webkit-playsinline playsinline x5-playsinline x-webkit-airplay='allow'></video-player>
       <div class="z_person">
-        <span class="parent_num">{{click_num}}</span>
+        <span class="parent_num">{{click_num}}12</span>
         <img src="https://images.ufutx.com/201909/18/b9db8ba4f8b6134a8df2748c14dbcdf8.png" alt="" class="icon_person">
       </div>
       <div class="z_home" @click="$router.push({path: `/live`})">
@@ -22,7 +21,7 @@
     </div>
     <!--<mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">-->
       <div v-if="actiove === 0" class="z_interaction">
-        <img class="go_top" @click="go_to_top" src="https://images.ufutx.com/201909/25/64b7c423dca3a3d796931bb2996ec69a.png" v-if="page >= 3">
+        <!--<img class="go_top" @click="go_to_top" src="https://images.ufutx.com/201909/25/64b7c423dca3a3d796931bb2996ec69a.png" v-if="page >= 3">-->
         <div class="j_page" v-for="item in comments">
           <p class="text-center z_time">{{item.created_at}}</p>
           <div class="clearfix">
@@ -127,6 +126,7 @@
         host: '',
         click_num: 0,
         file: {},
+        top: 0,
         page: 1,
         select: false,
         mescroll: null, //  mescroll实例对象
@@ -144,7 +144,7 @@
         list: [],
         playerOptions: {
           playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度
-          autoplay: false, // 如果true,浏览器准备好时开始回放。
+          autoplay: true, // 如果true,浏览器准备好时开始回放。
           controls: true, // 控制条
           preload: 'auto', // 视频预加载
           muted: false, // 默认情况下将会消除任何音频。
@@ -153,11 +153,11 @@
           aspectRatio: '16:9', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
           fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
           sources: [{
-            type: '',
-            // type: 'video/mp4',
+            // type: '',
+            type: 'video/mp4',
             // src: 'http://edu.ufutx.com/653481/132126762748928094/live.m3u8'
-            // src: 'https://vzan.com/live/tvchat-519358661?v=0.17986899416553248#/'
-            src: ''
+            src: 'http://pili-vod.vod.gmall88.com/de55d1d3039a4689a3b9f1059d4715bd.mp4'
+            // src: ''
           }],
           poster: 'http://images.ufutx.com/201909/12/ee972fdefd0d65c2a43fb2ea2bd7e56c.png', // 你的封面地址
           width: document.documentElement.clientWidth,
@@ -209,7 +209,6 @@
           console.log(comments)
           vm.comments.push(...comments)
           vm.page ++
-          console.log(vm.page, '00')
           $loadingHide(false)
         })
       },
@@ -241,13 +240,13 @@
           vm.qrcode_intro = vm.arena.qrcode_intro
           vm.qrcode = vm.arena.qrcode
           vm.status = vm.arena.status
-          if (vm.status === 1) {
-            vm.playerOptions.sources[0].src = data.arena.play_url
-            vm.playerOptions.sources[0].type = 'application/x-mpegURL'
-          } else {
-            vm.playerOptions.sources[0].src = data.arena.playback_url
-            vm.playerOptions.sources[0].type = 'video/mp4'
-          }
+          // if (vm.status === 1) {
+          //   vm.playerOptions.sources[0].src = data.arena.play_url
+          //   vm.playerOptions.sources[0].type = 'application/x-mpegURL'
+          // } else {
+          //   vm.playerOptions.sources[0].src = data.arena.playback_url
+          //   vm.playerOptions.sources[0].type = 'video/mp4'
+          // }
           $loadingHide(false)
         })
       },
@@ -271,11 +270,14 @@
           )
           console.log(this.comments)
           this.content = ''
+          document.getElementById('orderFullScreen').scrollTop = 0
         }).catch((error) => {
           console.log(error)
         })
       },
       handleScroll () {
+        // this.top = document.getElementById('orderFullScreen').scrollTop
+        // console.log(document.getElementById('orderFullScreen').scrollTop)
       },
       go_to_top () {
         document.getElementById('orderFullScreen').scrollTop = 0
@@ -511,6 +513,7 @@
   }
   .zone1{
     height: 80px;
+    margin-bottom: 30px;
   }
   .tab-list{
     background: #fff;
@@ -579,7 +582,6 @@
         margin-bottom: 30px;
       }
       .clearfix{
-        margin-bottom: 12px;
         .Avatar {
           width: 84px;
           height: 84px;

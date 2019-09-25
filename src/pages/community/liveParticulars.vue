@@ -2,7 +2,7 @@
   <div class="z_box" id="orderFullScreen">
     <div class="zone"></div>
     <div class="player-container text-center">
-      <video-player class="vjs-custom-skin" :options="playerOptions" webkit-playsinline playsinline x5-playsinline x-webkit-airplay='allow'></video-player>
+      <video-player class="vjs-custom-skin" :options="playerOptions" playsinline x5-playsinline x-webkit-airplay='allow'></video-player>
       <div class="z_person">
         <span class="parent_num">{{click_num}}12</span>
         <img src="https://images.ufutx.com/201909/18/b9db8ba4f8b6134a8df2748c14dbcdf8.png" alt="" class="icon_person">
@@ -144,7 +144,7 @@
         list: [],
         playerOptions: {
           playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度
-          autoplay: true, // 如果true,浏览器准备好时开始回放。
+          autoplay: false, // 如果true,浏览器准备好时开始回放。
           controls: true, // 控制条
           preload: 'auto', // 视频预加载
           muted: false, // 默认情况下将会消除任何音频。

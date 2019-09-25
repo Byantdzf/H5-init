@@ -2,9 +2,9 @@
   <div class="z_box" id="orderFullScreen">
     <div class="zone"></div>
     <div class="player-container text-center">
-      <video-player class="vjs-custom-skin" :options="playerOptions" x5-playsinline="" playsinline="" webkit-playsinline=""></video-player>
+      <video-player class="vjs-custom-skin" :options="playerOptions" playsinline x5-playsinline x-webkit-airplay='allow'></video-player>
       <div class="z_person">
-        <span class="parent_num">{{click_num}}99</span>
+        <span class="parent_num">{{click_num}}12</span>
         <img src="https://images.ufutx.com/201909/18/b9db8ba4f8b6134a8df2748c14dbcdf8.png" alt="" class="icon_person">
       </div>
       <div class="z_home" @click="$router.push({path: `/live`})">
@@ -161,7 +161,13 @@
           }],
           poster: 'http://images.ufutx.com/201909/12/ee972fdefd0d65c2a43fb2ea2bd7e56c.png', // 你的封面地址
           width: document.documentElement.clientWidth,
-          notSupportedMessage: '此视频暂无法播放，请稍后再试' // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
+          notSupportedMessage: '此视频暂无法播放，请稍后再试', // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
+          controlBar: {
+            timeDivider: true,
+            durationDisplay: true,
+            remainingTimeDisplay: false,
+            fullscreenToggle: false // 全屏按钮
+          }
         }
       }
     },
@@ -218,11 +224,12 @@
           vm.ranking = data.map((item) => {
             return {
               created_at: item.created_at,
-              photo: item.user.photo,
+              photo: item.user.photo !== 'null' ? item.user.photo : '',
               share_num: item.share_num,
               name: item.user.name
             }
           })
+          console.log(data, '32316')
           $loadingHide(false)
           // vm.$nextTick(() => {
           //   mescroll.endSuccess(data.data ? data.data : 1)

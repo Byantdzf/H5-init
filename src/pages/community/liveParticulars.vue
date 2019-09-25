@@ -2,7 +2,7 @@
   <div class="z_box" id="orderFullScreen">
     <div class="zone"></div>
     <div class="player-container text-center">
-      <video-player class="vjs-custom-skin" :options="playerOptions" x5-playsinline="" playsinline="" webkit-playsinline=""></video-player>
+      <video-player class="vjs-custom-skin" :options="playerOptions" x5-playsinline="" playsinline="" webkit-playsinline="" x5-video-player-type="h5"></video-player>
       <div class="z_person">
         <span class="parent_num">{{click_num}}8</span>
         <img src="https://images.ufutx.com/201909/18/b9db8ba4f8b6134a8df2748c14dbcdf8.png" alt="" class="icon_person">
@@ -278,6 +278,7 @@
           console.log(this.comments)
           this.content = ''
           document.getElementById('orderFullScreen').scrollTop = 0
+          this.getinteraction()
         }).catch((error) => {
           console.log(error)
         })

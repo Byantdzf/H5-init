@@ -2,9 +2,18 @@
   <div class="z_box" id="orderFullScreen">
     <div class="zone"></div>
     <div class="player-container text-center">
-      <video-player class="vjs-custom-skin" :options="playerOptions" x5-playsinline="true" playsinline="true" webkit-playsinline="true"></video-player>
+      <video-player
+        class="vjs-custom-skin"
+        :options="playerOptions"
+        x5-playsinline="true"
+        playsinline="true"
+        x5-video-player-type="h5"
+        x5-video-player-fullscreen="true"
+        x5-video-orientation="portraint"
+        webkit-playsinline="true">
+      </video-player>
       <div class="z_person">
-        <span class="parent_num">{{click_num}}9</span>
+        <span class="parent_num">{{click_num}}0</span>
         <img src="https://images.ufutx.com/201909/18/b9db8ba4f8b6134a8df2748c14dbcdf8.png" alt="" class="icon_person">
       </div>
       <div class="z_home" @click="$router.push({path: `/live`})">

@@ -175,15 +175,20 @@
     },
     methods: {
       cutTabClick (item, index) {
+        let IDs = []
         this.actiove = index
+        if (this.actiove === index) {
+          IDs.push(item.id)
+        }
         // item.isSelected = !item.isSelected
-        // let IDs = []
         // for (let itemV of this.labels) {
         //   if (itemV.isSelected) {
         //     IDs.push(itemV.id)
         //   }
         // }
-        // this.labelsID = IDs
+        this.labelsID = IDs
+        console.log(this.labelsID, '111')
+        console.log(item, '111')
         this.getathletics({num: 1}, this.mescroll)
       },
       cutTabV2Click (item, index) {

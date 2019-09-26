@@ -7,9 +7,9 @@
         :options="playerOptions"
         x5-playsinline="true"
         playsinline="true"
-        x5-video-player-type="h5"
-        x5-video-player-fullscreen="true"
-        x5-video-orientation="portraint"
+        preload="auto"
+        controls="controls"
+        loop="loop"
         webkit-playsinline="true">
       </video-player>
       <div class="z_person">

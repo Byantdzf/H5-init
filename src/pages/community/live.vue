@@ -13,7 +13,7 @@
              :key="index">{{item.title}}
         </div>
       </div>
-      <div class="wire" v-if="labels !== [] && groups !== []"></div>
+      <div class="wire" v-if="display"></div>
       <div class="tab-listV2">
         <div class="tab-liV2 backCover" v-bind:style="{backgroundImage:'url(' + item.image_url + ')'}"
              :class="actioveV2 == index ?'ActiveV2' : '' "
@@ -153,6 +153,7 @@
         labelsID: [],
         arenaID: '',
         arenas: [],
+        display: false,
         information: [],
         page: 1,
         mescroll: null, //  mescroll实例对象
@@ -231,6 +232,7 @@
             }
           })
           this.information.push(...information)
+          this.display = true
           vm.orgTotal = vm.arenas.total
           $loadingHide(false)
           vm.$nextTick(() => {

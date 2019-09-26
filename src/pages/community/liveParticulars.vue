@@ -5,12 +5,15 @@
       <video-player
         class="vjs-custom-skin"
         :options="playerOptions"
-        x5-playsinline="true"
-        playsinline="true"
         preload="auto"
+        poster=""
+        x5-video-player-fullscreen="true"
+        x-webkit-airplay="true"
+        playsinline="true"
         controls="controls"
-        loop="loop"
-        webkit-playsinline="true">
+        x5-playsinline="true"
+        webkit-playsinline="true"
+        style="width: 100%;">
       </video-player>
       <div class="z_person">
         <span class="parent_num">{{click_num}}0</span>
@@ -681,7 +684,7 @@
   }
   .z_attention{
     text-align: center;
-    margin-top: 28%;
+    margin-top: 18%;
     .z_qrcode_title{
       margin-bottom: 30px;
       color: #D92553;

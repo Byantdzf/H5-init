@@ -5,12 +5,7 @@
       <video-player
         class="vjs-custom-skin"
         :options="playerOptions"
-        preload="auto"
-        poster=""
-        x5-video-player-fullscreen="true"
-        x-webkit-airplay="true"
         playsinline="true"
-        controls="controls"
         x5-playsinline="true"
         webkit-playsinline="true"
         style="width: 100%;">
@@ -56,8 +51,8 @@
           <p class="z_introduce_name">{{guest_name}}</p>
           <p class="z_type">主播</p>
         </div>
-        <div v-for="item in intro">
-          <img :src="item" alt="" class="z_poster">
+        <div v-for="item in intro" class="backCover">
+          <img :src="item" alt="" width="100%" class="z_poster">
         </div>
       </div>
       <div v-if="actiove === 2" class="z_list">
@@ -677,8 +672,6 @@
       }
     }
     .z_poster{
-      width: 100vw;
-      height: 422px;
       margin-bottom: 20px;
     }
   }

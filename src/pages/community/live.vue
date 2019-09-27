@@ -150,7 +150,7 @@
         profile6: ['z_min6_1', 'z_min6_2', 'z_min6_3', 'z_min6_4', 'z_min6_5', 'z_min6_6'],
         labels: [],
         groupsID: 0,
-        labelsID: [],
+        labelsID: 0,
         arenaID: '',
         arenas: [],
         display: false,
@@ -176,20 +176,17 @@
     },
     methods: {
       cutTabClick (item, index) {
-        let IDs = []
+        // let IDs = []
         this.actiove = index
-        if (this.actiove === index) {
-          IDs.push(item.id)
-        }
-        // item.isSelected = !item.isSelected
+        // if (this.actiove === index) {
+        //   IDs.push(item.id)
+        // }
         // for (let itemV of this.labels) {
         //   if (itemV.isSelected) {
         //     IDs.push(itemV.id)
         //   }
         // }
-        this.labelsID = IDs
-        console.log(this.labelsID, '111')
-        console.log(item, '111')
+        this.labelsID = item.id
         this.getathletics({num: 1}, this.mescroll)
       },
       cutTabV2Click (item, index) {
@@ -203,7 +200,6 @@
       getclassify () {
         let vm = this
         this.$http.get(`/official/square`).then(({data}) => {
-          vm.groups = data.groups
           vm.labels = data.labels
           for (let item of vm.labels) {
             item.isSelected = false
@@ -212,7 +208,9 @@
       },
       getathletics (page, mescroll) {
         let vm = this
-        this.$http.get(`/official/arenas?group_id=${vm.groupsID}&label_ids=${vm.labelsID}&page=${page.num}`).then(({data}) => {
+        console.log(this.labels, '666')
+        this.$http.get(`/official/arenas?group_id=${vm.groupsID}&label_id=${vm.labelsID}&page=${page.num}`).then(({data}) => {
+          vm.groups = data.groups
           this.page = page.num
           vm.arenas = data.arenas
           this.information = page.num === 1 ? [] : this.information
@@ -233,6 +231,7 @@
           })
           this.information.push(...information)
           this.display = true
+          this.groupsID = 0
           vm.orgTotal = vm.arenas.total
           $loadingHide(false)
           vm.$nextTick(() => {

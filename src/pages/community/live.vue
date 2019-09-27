@@ -250,8 +250,6 @@
       }
     },
     mounted () {
-      let time = new Date().toLocaleString().split(' ')[0].replace('/', '年').replace('/', '月') + '日' + new Date().toLocaleTimeString()
-      console.log(time, '00221')
       this.getclassify()
     }
   }

@@ -29,7 +29,7 @@
         <div v-for="item in information">
           <div class="time">
             <span
-              v-text="new Date(item.start_time).toLocaleString().split(' ')[0].replace('/', '年').replace('/', '月')+'日'">
+              v-text="new Date(item.start_time).toLocaleString().split(' ')[0].replace('/', '年').replace('/', '月')+'日'.replace(' ', '时') + '  ' + new Date(item.start_time).toLocaleTimeString()">
             </span>
           </div>
           <div class="athletics">
@@ -250,6 +250,8 @@
       }
     },
     mounted () {
+      let time = new Date().toLocaleString().split(' ')[0].replace('/', '年').replace('/', '月') + '日' + new Date().toLocaleTimeString()
+      console.log(time, '00221')
       this.getclassify()
     }
   }

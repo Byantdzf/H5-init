@@ -1,10 +1,17 @@
 <template>
-  <div class="z_box">
+  <div class="z_box" id="orderFullScreen">
     <div class="zone"></div>
     <div class="player-container text-center">
-      <video-player class="vjs-custom-skin" :options="playerOptions"></video-player>
+      <video-player
+        class="vjs-custom-skin"
+        :options="playerOptions"
+        playsinline="true"
+        x5-playsinline="true"
+        webkit-playsinline="true"
+        style="width: 100%;">
+      </video-player>
       <div class="z_person">
-        <span class="parent_num">{{click_num}}</span>
+        <span class="parent_num">{{click_num}}0</span>
         <img src="https://images.ufutx.com/201909/18/b9db8ba4f8b6134a8df2748c14dbcdf8.png" alt="" class="icon_person">
       </div>
       <div class="z_home" @click="$router.push({path: `/live`})">
@@ -21,6 +28,7 @@
     </div>
     <!--<mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView">-->
       <div v-if="actiove === 0" class="z_interaction">
+        <!--<img class="go_top" @click="go_to_top" src="https://images.ufutx.com/201909/25/64b7c423dca3a3d796931bb2996ec69a.png" v-if="page >= 3">-->
         <div class="j_page" v-for="item in comments">
           <p class="text-center z_time">{{item.created_at}}</p>
           <div class="clearfix">
@@ -43,8 +51,8 @@
           <p class="z_introduce_name">{{guest_name}}</p>
           <p class="z_type">主播</p>
         </div>
-        <div v-for="item in intro">
-          <img :src="item" alt="" class="z_poster">
+        <div v-for="item in intro" class="backCover">
+          <img :src="item" alt="" width="100%" class="z_poster">
         </div>
       </div>
       <div v-if="actiove === 2" class="z_list">
@@ -72,7 +80,7 @@
   import {Group, Cell, XHeader, Swiper, XInput, SwiperItem, Tab, TabItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import swiperComponent from '../../components/swiper'
-  import {$loadingShow, $loadingHide} from '../../config/util'
+  import {$loadingHide} from '../../config/util'
   // 引入video样式
   import 'video.js/dist/video-js.css'
   import 'vue-video-player/src/custom-theme.css'
@@ -125,6 +133,7 @@
         host: '',
         click_num: 0,
         file: {},
+        top: 0,
         page: 1,
         select: false,
         mescroll: null, //  mescroll实例对象
@@ -142,7 +151,7 @@
         list: [],
         playerOptions: {
           playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度
-          autoplay: false, // 如果true,浏览器准备好时开始回放。
+          autoplay: true, // 如果true,浏览器准备好时开始回放。
           controls: true, // 控制条
           preload: 'auto', // 视频预加载
           muted: false, // 默认情况下将会消除任何音频。
@@ -152,14 +161,19 @@
           fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
           sources: [{
             type: '',
-            // type: 'video/mp4',
-            // src: 'http://edu.ufutx.com/653481/132126762748928094/live.m3u8'
-            // src: 'https://vzan.com/live/tvchat-519358661?v=0.17986899416553248#/'
             src: ''
+            // type: 'video/mp4',
+            // src: 'http://pili-vod.vod.gmall88.com/de55d1d3039a4689a3b9f1059d4715bd.mp4'
           }],
           poster: 'http://images.ufutx.com/201909/12/ee972fdefd0d65c2a43fb2ea2bd7e56c.png', // 你的封面地址
           width: document.documentElement.clientWidth,
-          notSupportedMessage: '此视频暂无法播放，请稍后再试' // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
+          notSupportedMessage: '此视频暂无法播放，请稍后再试', // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
+          controlBar: {
+            timeDivider: true,
+            durationDisplay: true,
+            remainingTimeDisplay: false,
+            fullscreenToggle: false // 全屏按钮
+          }
         }
       }
     },
@@ -204,7 +218,6 @@
               }
             )
           }
-          console.log(comments)
           vm.comments.push(...comments)
           vm.page ++
           $loadingHide(false)
@@ -216,7 +229,7 @@
           vm.ranking = data.map((item) => {
             return {
               created_at: item.created_at,
-              photo: item.user.photo,
+              photo: item.user.photo !== 'null' ? item.user.photo : '',
               share_num: item.share_num,
               name: item.user.name
             }
@@ -230,7 +243,6 @@
       getParticulars () {
         let vm = this
         this.$http.get(`/official/arenas/` + this.arena_id).then(({data}) => {
-          vm.playerOptions.sources[0].src = data.arena.play_url
           vm.arena = data.arena
           vm.click_num = vm.arena.click_num
           vm.guest_avatar = vm.arena.guest_avatar
@@ -246,7 +258,6 @@
             vm.playerOptions.sources[0].src = data.arena.playback_url
             vm.playerOptions.sources[0].type = 'video/mp4'
           }
-          console.log(vm.playerOptions.sources[0].type, '0000')
           $loadingHide(false)
         })
       },
@@ -268,15 +279,24 @@
               created_at: this.created_at
             }
           )
-          console.log(this.comments)
           this.content = ''
-          // this.getinteraction()
+          document.getElementById('orderFullScreen').scrollTop = 0
+          this.page = 1
+          this.getinteraction()
         }).catch((error) => {
           console.log(error)
         })
+      },
+      handleScroll () {
+        // this.top = document.getElementById('orderFullScreen').scrollTop
+        // console.log(document.getElementById('orderFullScreen').scrollTop)
+      },
+      go_to_top () {
+        document.getElementById('orderFullScreen').scrollTop = 0
       }
     },
     mounted () {
+      document.getElementById('orderFullScreen').addEventListener('scroll', this.handleScroll, true)
       this.arena_id = this.$route.params.id
       this.getParticulars()
       this.getinteraction()
@@ -459,8 +479,13 @@
     padding-bottom: 0;
   }
   .z_box{
-    height: 100vh;
-    position: relative;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: auto;
     background: #f6f6f6;
     .zone{
       height: 420px;
@@ -479,7 +504,7 @@
         .parent_num{
           width: 66px;
           position: absolute;
-          top: 6px;
+          top: 10px;
           right: 14px;
           font-size: 22px;
           color: white;
@@ -499,7 +524,8 @@
     }
   }
   .zone1{
-    height: 100px;
+    height: 80px;
+    margin-bottom: 30px;
   }
   .tab-list{
     background: #fff;
@@ -550,6 +576,13 @@
     .zone3{
       height: 90px;
     }
+    .go_top{
+      width: 80px;
+      height: 80px;
+      position: fixed;
+      bottom: 140px;
+      right: 50px;
+    }
     .j_page{
       padding: 0px 30px 0 30px;
       .z_time{
@@ -561,7 +594,6 @@
         margin-bottom: 30px;
       }
       .clearfix{
-        margin-bottom: 12px;
         .Avatar {
           width: 84px;
           height: 84px;
@@ -640,14 +672,12 @@
       }
     }
     .z_poster{
-      width: 100vw;
-      height: 422px;
       margin-bottom: 20px;
     }
   }
   .z_attention{
     text-align: center;
-    margin-top: 28%;
+    margin-top: 18%;
     .z_qrcode_title{
       margin-bottom: 30px;
       color: #D92553;
@@ -674,15 +704,16 @@
         margin-top: 24px;
       }
       .z_list_head{
-        margin-top: 30px;
+        margin-top: 28px;
         margin-left: 110px;
         width: 84px;
         height: 84px;
         border-radius: 50%;
       }
       .z_list_name{
-        margin-top: 54px;
-        margin-left: 20px;
+        position: relative;
+        bottom: 30px;
+        left: 10px;
         font-size: 24px;
       }
       .z_invite{

@@ -56,15 +56,16 @@
           muted: false, // 默认情况下将会消除任何音频。
           loop: false, // 导致视频一结束就重新开始。
           language: 'zh-CN',
-          aspectRatio: '9:20', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+          // aspectRatio: '16:9', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
           fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
           sources: [{
-            type: 'application/x-mpegURL',
+            type: '',
             // http://babylife.qiniudn.com/FtRVyPQHHocjVYjeJSrcwDkApTLQ
             // http://vjs.zencdn.net/v/oceans.mp4
             src: 'http://pili-live-hls.vod.gmall88.com/gcard/dx0115w2l_792a966e-1b87-41c7-8b77-cec5e4ea8f7c.m3u8'
           }],
           poster: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1570771393678&di=e6aed649aec047e03d70c9f9088475eb&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01a5ed580f28dfa84a0e282bfd744c.jpg%401280w_1l_2o_100sh.jpg', // 你的封面地址
+          height: document.documentElement.clientHeight,
           width: document.documentElement.clientWidth,
           notSupportedMessage: '此视频暂无法播放，请稍后再试' // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
         }

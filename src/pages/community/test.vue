@@ -1,8 +1,6 @@
 <template>
   <div class="text-center">
-    <br/>
-    <h3 class="color6">视频播放测试</h3>
-    <br/><hr/>
+    <!--<h3 class="color6">视频播放测试</h3>-->
     <div class="player-container">
       <video-player class="vjs-custom-skin" :options="playerOptions"></video-player>
     </div>
@@ -58,13 +56,15 @@
           muted: false, // 默认情况下将会消除任何音频。
           loop: false, // 导致视频一结束就重新开始。
           language: 'zh-CN',
-          aspectRatio: '16:9', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+          aspectRatio: '9:20', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
           fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
           sources: [{
-            type: 'application/x-mpegURL',
-            src: 'http://pili-live-hls.vod.gmall88.com/gcard/dx0115w2l_277ed9b4-ba03-404f-8748-3b266f00fc24.m3u8'
+            type: '',
+            // http://babylife.qiniudn.com/FtRVyPQHHocjVYjeJSrcwDkApTLQ
+            // http://vjs.zencdn.net/v/oceans.mp4
+            src: 'http://pili-live-hls.vod.gmall88.com/gcard/dx0115w2l_276312e7-1e08-4a63-8673-c65970741c7d.m3u8'
           }],
-          poster: 'https://images.ufutx.com/201909/12/ee972fdefd0d65c2a43fb2ea2bd7e56c.png', // 你的封面地址
+          poster: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1570771393678&di=e6aed649aec047e03d70c9f9088475eb&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01a5ed580f28dfa84a0e282bfd744c.jpg%401280w_1l_2o_100sh.jpg', // 你的封面地址
           width: document.documentElement.clientWidth,
           notSupportedMessage: '此视频暂无法播放，请稍后再试' // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
         }
@@ -96,162 +96,31 @@
 </script>
 
 <style lang="less" scoped>
-  body {
-    background: #f7f7f7 !important;
-
-    .announcementIcon {
-      margin-bottom: 8px;
-      vertical-align: middle;
-    }
+  .video-js .vjs-big-play-button{
+    font-size: 2.5em;
+    line-height: 2.3em;
+    height: 2.5em;
+    width: 2.5em;
+    -webkit-border-radius: 2.5em;
+    -moz-border-radius: 2.5em;
+    border-radius: 2.5em;
+    background-color: #73859f;
+    background-color: rgba(115,133,159,.5);
+    border-width: 0.15em;
+    margin-top: -1.25em;
+    margin-left: -1.75em;
   }
-  .main-member{
-    padding: 28px 22px 28px 44px ;
-    border-bottom: 1px solid #b0b0b0;
-    overflow: hidden;
-    .img{
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      margin-right: 12px;
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
-    p{
-      margin-top: 8px;
-    }
+  /* 中间的播放箭头 */
+  .vjs-big-play-button .vjs-icon-placeholder {
+    font-size: 1.63em;
   }
-  .main-input{
-    width: 86vw;
-    background: #EBEAEA;
-    margin: 28px auto;
-    padding: 0 12px;
-    border-radius: 12px;
-    padding-left: 43px;
-    position: relative;
-    &:after{
-      content: '';
-      width: 42px;
-      height: 42px;
-      position: absolute;
-      left: 6px;
-      top: 10px;
-      background-image: url("https://images.ufutx.com/201907/20/f8b7d5da439d74b54f56121eabf93246.png");
-      background-size: contain;
-      background-repeat: no-repeat;
-    }
-    ::-webkit-input-placeholder {
-      color: #b0b0b0;
-    }
-    ::-moz-placeholder {
-      color: #b0b0b0;
-    }
-    :-ms-input-placeholder {
-      color: #b0b0b0;
-    }
-    input{
-      background: none;
-      border: none;
-      width: 100%;
-      height: 62px;
-      padding-top: 2px;
-    }
-  }
-  .main-creation{
-    overflow: hidden;
-    padding: 36px  28px 28px 28px;
-    img{
-      width: 90px;
-      height: 90px;
-      margin-right: 22px;
-      border-radius: 50%;
-    }
-    p{
-      margin-top: 8px;
-    }
-    .infor{
-      width: 80%;
-      margin-top: 28px;
-      .infor-item{
-        width: 33%;
-        position: relative;
-        &:nth-child(1),&:nth-child(2){
-          &:before{
-            content: ' ';
-            width: 1px;
-            height: 52px;
-            background: #e2e2e2;
-            position: absolute;
-            right: 0;
-            top: 12px;
-          }
-        }
-      }
-    }
-  }
-  .bc_num{
-    background: #f6f6f6;
-    height: 14px;
-  }
-  .animationData {
-    animation: myMove2 800ms linear;
-    animation-fill-mode: forwards;
-  }
-
-  @keyframes myMove2 {
-    from {
-      height: 302px;
-    }
-    to {
-      height: 347px;
-    }
-  }
-
-  .animationData2 {
-    animation: myMove1 800ms linear;
-    animation-fill-mode: forwards;
-
-  }
-
-  @keyframes myMove1 {
-    from {
-      height: 347px;
-    }
-    to {
-      height: 302px;
-
-    }
-  }
-
-
-  .vessel {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, .7);
-    .close{
-      width: 60px;
-      position: absolute;
-      top: 20%;
-      right: 12%;
-    }
-    .modal-vessel {
-      background-image: url("http://images.ufutx.com/201907/09/7f45e1fa8d1774f7f1e9f30b7516221d.png");
-      background-size: contain;
-      background-repeat: no-repeat;
-      animation: myMove 300ms linear;
-      animation-fill-mode: forwards;
-      @keyframes myMove {
-        from {
-          width: 0;
-          height: 0;
-          margin: 27% auto;
-        }
-        to {
-          width: 86%;
-          height: 72%;
-          margin: 30% auto;
-        }
-      }
-    }
+  /* 加载圆圈 */
+  .vjs-loading-spinner {
+    font-size: 2.5em;
+    width: 2em;
+    height: 2em;
+    border-radius: 1em;
+    margin-top: -1em;
+    margin-left: -1.5em;
   }
 </style>

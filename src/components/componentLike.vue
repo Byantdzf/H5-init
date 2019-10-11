@@ -88,8 +88,8 @@
       // 飘心
       let _this = this
       let ctx = document.getElementById('cvs').getContext('2d');
-      (ctx.canvas.width = _this.width),
-      (ctx.canvas.height = _this.height),
+      (ctx.canvas.width = _this.width);
+      (ctx.canvas.height = _this.height);
       (function loop () {
         ctx.clearRect(0, 0, _this.width, _this.height)
         _this.heartList.forEach(function (item) {

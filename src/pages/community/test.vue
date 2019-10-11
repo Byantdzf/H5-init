@@ -49,7 +49,6 @@
         },
         list: [],
         playerOptions: {
-          height: '',
           playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度
           autoplay: false, // 如果true,浏览器准备好时开始回放。
           controls: true, // 控制条
@@ -57,7 +56,7 @@
           muted: false, // 默认情况下将会消除任何音频。
           loop: false, // 导致视频一结束就重新开始。
           language: 'zh-CN',
-          // aspectRatio: '8:18', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+          aspectRatio: '9:20', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
           fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
           sources: [{
             type: '',
@@ -72,7 +71,6 @@
       }
     },
     methods: {
-
       onChange (event) { // 移动端仅支持单文件上传
         this.file = event.target.files[0]
         if (!this.file) return
@@ -93,7 +91,7 @@
       // if (this.$store.state.intercept === 'true') {
       //   return false
       // }
-      this.playerOptions.height = document.documentElement.clientHeight
+      // this.playerOptions.height = document.documentElement.clientHeight
     }
   }
 </script>

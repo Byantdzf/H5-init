@@ -70,7 +70,7 @@
             type: '',
             // http://babylife.qiniudn.com/FtRVyPQHHocjVYjeJSrcwDkApTLQ
             // http://vjs.zencdn.net/v/oceans.mp4
-            src: 'http://love.ufutx.com/653481/132126762748928094/live.m3u8'
+            src: 'http://edu.ufutx.com/653481/132126762748928094/live.m3u8'
           }],
           // poster: 'http://img2.imgtn.bdimg.com/it/u=1449347812,1523653846&fm=15&gp=0.jpg', // 你的封面地址
           width: document.documentElement.clientWidth,

@@ -44,15 +44,15 @@
           </span>
           <span slot="label">首页</span>
         </tabbar-item>
-        <!--<tabbar-item :link="{path:'/plaza'}" :selected="path === '/plaza'" v-if="paasName === '' || paasName === 'FL'">-->
-          <!--<span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">-->
-            <!--<img src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="home">-->
-          <!--</span>-->
-          <!--<span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">-->
-            <!--<img src="https://images.ufutx.com/201907/20/e0e896fda78195fbaa95f23e3af5c516.png" alt="home">-->
-          <!--</span>-->
-          <!--<span slot="label">广场</span>-->
-        <!--</tabbar-item>-->
+        <tabbar-item :link="{path:'/live'}" :selected="path === '/live'" v-if="paasName === '' || paasName === 'FL'">
+          <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
+            <img src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="home">
+          </span>
+          <span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">
+            <img src="https://images.ufutx.com/201907/20/e0e896fda78195fbaa95f23e3af5c516.png" alt="home">
+          </span>
+          <span slot="label">广场</span>
+        </tabbar-item>
         <tabbar-item :link="{path:'/activity'}" :selected="path === '/activity'" v-if="paasName != '' && paasName != 'FL'">
           <span class="demo-icon-22" slot="icon" style="position:relative;bottom: -3px">
             <img src="../src/assets/icon/attention.png" alt="home">

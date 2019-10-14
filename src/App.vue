@@ -274,6 +274,13 @@
     background: white;
   }
 
+  .vjs-poster{
+    display: inline-block !important;
+    background-repeat: no-repeat !important;
+    background-size: 100% !important;
+    background-position-y: center !important;
+  }
+
   input, button, select, textarea {
     outline: none;
   }

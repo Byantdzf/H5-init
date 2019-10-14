@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="chat_message_click">
-        <input type="text" class="chat_content" v-model="content">
+        <input type="text" class="chat_content" v-model="content" maxlength="30">
         <div class="chat_send" @click="onSend">发送</div>
       </div>
     </div>
@@ -31,6 +31,7 @@
     data () {
       return {
         content: '',
+        timeout: null,
         src: 'http://tx.haiqq.com/uploads/allimg/170505/0424395200-4.jpg',
         chat: [],
         comments: [],
@@ -151,7 +152,7 @@
     padding: 4px 10px;
     font-size: 22px;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     margin-left: 10px;
     background-color: rgba(0, 0, 0, 0.6);
   }
@@ -160,12 +161,14 @@
     color: #D92553;
   }
   .chat_message_click{
-    display: flex;
-    width: 400px;
-    margin-top: 30px;
+    overflow: hidden;
+    width: 500px;
+    margin-top: 20px;
     margin-left: 10px;
   }
   .chat_content{
+    float: left;
+    width: 300px;
     height: 40px;
     border: none;
     border-radius: 6px 0 0 6px;
@@ -173,6 +176,7 @@
     outline: none;
   }
   .chat_send{
+    float: left;
     width: 80px;
     height: 40px;
     text-align: center;

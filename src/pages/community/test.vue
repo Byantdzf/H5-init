@@ -42,19 +42,6 @@
         ossConfig: {},
         host: '',
         file: {},
-        mescroll: null, //  mescroll实例对象
-        mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
-        mescrollUp: { // 上拉加载的配置.
-          callback: this.getOrderList, // 上拉回调,此处简写; 相当于 callback: function(page, mescroll) { }
-          // 以下是一些常用的配置,当然不写也可以的.
-          page: {
-            num: 0, // 当前页 默认0,回调之前会加1; 即callback(page)会从1开始
-            size: 15 // 每页数据条数,默认10
-          },
-          htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>', // 上拉加载中的布局
-          htmlNodata: '<p class="upwarp-nodata">-- 加载完毕 --</p>' // 无数据的布局
-        },
-        list: [],
         playerOptions: {
           playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度
           autoplay: false, // 如果true,浏览器准备好时开始回放。

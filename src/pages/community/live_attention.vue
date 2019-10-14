@@ -27,25 +27,49 @@
         <span class="flow_num">{{click_num}}</span>
       </div>
     </div>
-    <!--<img :src="qrcode" alt="" class="attention_qrcode" v-model="show_qrcode" @click="onshow">-->
+    <!--<div class="introduce_box">-->
+      <!--<div class="bc_swiper">-->
+        <!--<swiper :list="intro" :min-moving-distance="120" :show-desc-mask="false" height="320px" :auto="true"-->
+                <!--dots-position="center" :interval="2000">-->
+        <!--</swiper>-->
+      <!--</div>-->
+    <!--</div>-->
     <div>
       <div class="mask" v-if="showModal" @click="showModal=false"></div>
     </div>
   </div>
 </template>
 <script>
+  import {Swiper} from 'vux'
   import componentLike from '../../components/componentLike'
   import {$loadingHide} from '../../config/util'
 
   export default {
     name: 'scroll',
-    components: {componentLike},
+    components: {componentLike, Swiper},
     data () {
       return {
         arena: [],
         guest_avatar: '',
         guest_name: '',
-        intro: [],
+        intro: [
+          {
+            url: 'javascript:',
+            img: 'http://img5.imgtn.bdimg.com/it/u=2967113123,3272767240&fm=26&gp=0.jpg'
+          },
+          {
+            url: 'javascript:',
+            img: 'http://img5.imgtn.bdimg.com/it/u=2967113123,3272767240&fm=26&gp=0.jpg'
+          },
+          {
+            url: 'javascript:',
+            img: 'http://img5.imgtn.bdimg.com/it/u=2967113123,3272767240&fm=26&gp=0.jpg'
+          },
+          {
+            url: 'javascript:',
+            img: 'http://img5.imgtn.bdimg.com/it/u=2967113123,3272767240&fm=26&gp=0.jpg'
+          }
+        ],
         showModal: false,
         click_num: '',
         arena_id: '',
@@ -62,11 +86,12 @@
           vm.click_num = vm.arena.click_num
           vm.guest_avatar = vm.arena.guest_avatar
           vm.guest_name = vm.arena.guest_name
-          vm.intro = vm.arena.intro
+          // vm.intro = vm.arena.intro
           vm.qrcode_intro = vm.arena.qrcode_intro
           vm.qrcode = vm.arena.qrcode
           vm.status = vm.arena.status
           $loadingHide(false)
+          console.log(vm.intro, '000')
         })
       }
     },
@@ -141,6 +166,14 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
+  }
+  .introduce_box{
+    position: absolute;
+    bottom: 0;
+    z-index: 99;
+  }
+  .bc_swiper{
+    width: 100vw;
   }
   .flow_box{
     position: absolute;

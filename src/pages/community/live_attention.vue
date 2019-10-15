@@ -122,7 +122,7 @@
     white-space: nowrap;
     overflow-x:scroll;
     top: 20px;
-    right: 20px;
+    right: 30px;
     z-index: 99;
   }
   ::-webkit-scrollbar {
@@ -136,6 +136,7 @@
   .user_photo{
     width: 80px;
     height: 80px;
+    margin-left: 14px;
     border-radius: 50%;
   }
   .introduce_box{

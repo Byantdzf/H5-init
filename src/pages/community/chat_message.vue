@@ -66,7 +66,6 @@
             )
           }
           vm.comments.unshift(...comments)
-          console.log(vm.comments, '11')
           this.$nextTick(() => {
             let msg = document.getElementById('gundong') // 获取对象
             msg.scrollTop = msg.scrollHeight // 滚动高度
@@ -75,18 +74,18 @@
         })
       },
       tokenFn () {
-        $toastText('你尚未登录...')
         let cookieArr = document.cookie.split('; ')
         let cookieobj = {}
         cookieArr.forEach((i) => {
           let arr = i.split('=')
           cookieobj[arr[0]] = arr[1]
         })
-        setTimeout(() => {
-          if (!cookieArr.ACCESS_TOKEN) {
+        if (!cookieobj.ACCESS_TOKEN) {
+          $toastText('你尚未登录...')
+          setTimeout(() => {
             window.location.href = window.location.href.split('#/')[0] + '#/login'
-          }
-        }, 800)
+          }, 800)
+        }
       },
       onSend () {
         let data = {
@@ -118,12 +117,7 @@
         }).catch((error) => {
           console.log(error)
         })
-      },
-      realTime () {
-        setTimeout(() => {
-          this.getinteraction()
-        }, 800)
-      },
+      }
       // send () {
       //   let info = {info: this.content, src: 'http://tx.haiqq.com/uploads/allimg/170505/0424395200-4.jpg'}
       //   this.chat.push(info)
@@ -137,10 +131,17 @@
       //   this.getinteraction()
       // }
     },
+    created () {
+      this.timer = setInterval(() => {
+        this.getinteraction()
+      }, 3000)
+    },
+    beforeDestroy () {
+      clearInterval(this.timer)
+    },
     mounted () {
       this.arena_id = this.$route.params.id
       this.getinteraction()
-      this.realTime()
     }
   }
 </script>

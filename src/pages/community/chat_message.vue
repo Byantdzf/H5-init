@@ -44,7 +44,6 @@
       }
     },
     methods: {
-      
       getinteraction () {
         let vm = this
         vm.$http.get(`official/arenas/` + vm.arena_id + `/comments?page=${vm.page}`).then(({data}) => {
@@ -119,7 +118,12 @@
         }).catch((error) => {
           console.log(error)
         })
-      }
+      },
+      realTime () {
+        setTimeout(() => {
+          this.getinteraction()
+        }, 800)
+      },
       // send () {
       //   let info = {info: this.content, src: 'http://tx.haiqq.com/uploads/allimg/170505/0424395200-4.jpg'}
       //   this.chat.push(info)
@@ -136,6 +140,7 @@
     mounted () {
       this.arena_id = this.$route.params.id
       this.getinteraction()
+      this.realTime()
     }
   }
 </script>

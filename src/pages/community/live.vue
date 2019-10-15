@@ -176,7 +176,7 @@
     },
     methods: {
       gotoDetail (id) {
-        const URL = process.env.NODE_ENV === 'development' ? `http://localhost:8081/#/square_live/${id}` : `http://love.ufutx.com/mobile/#/square_live/${id}`
+        const URL = process.env.NODE_ENV === 'development' ? window.location.href.split('#/')[0] + `#/square_live/${id}` : `http://love.ufutx.com/mobile/#/square_live/${id}`
         window.location.href = URL
       },
       cutTabClick (item, index) {

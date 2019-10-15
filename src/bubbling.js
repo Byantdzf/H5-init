@@ -3,7 +3,7 @@ class HeartsFlow {
     this.el = document.querySelector(data.canvasEl)
     this.w = 200
     this.h = 400
-    this.ctx = this.el.getContext('2d')
+    this.ctx = this.el.getContext("2d")
     // this.colors = [
     // '255, 137, 164', // '#FF89A4',
     // '239, 121, 138', // '#EF798A',

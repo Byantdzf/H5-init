@@ -9,14 +9,15 @@
         <div v-for="item in comments" style="overflow: hidden">
           <img :src="item.photo" alt="" class="chat_photo flo_l">
           <div class="chat_message flo_l">
-            <div style="color: white" ><span class="chat_name">{{item.name}}：</span>{{item.comment}}</div>
+            <div style="color: white"><span class="chat_name">{{item.name}}：</span>{{item.comment}}</div>
           </div>
         </div>
       </div>
       <div class="chat_message_click">
-        <input type="text" class="chat_content" v-model="content" maxlength="30">
+        <input type="text" class="chat_content" v-model="content" maxlength="30" @click="tokenFn">
         <div class="chat_send" @click="onSend">发送</div>
-        <img src="https://images.ufutx.com/201909/18/982e873c34b48881d10519435e0c0188.png" alt="" @click="$router.push({path: `/live`})" class="icon_home">
+        <img src="https://images.ufutx.com/201909/18/982e873c34b48881d10519435e0c0188.png" alt=""
+             @click="$router.push({path: `/live`})" class="icon_home">
       </div>
     </div>
     <!--<componentLike></componentLike>-->
@@ -24,7 +25,7 @@
 </template>
 <script>
   import componentLike from '../../components/componentLike'
-  import {$loadingHide} from '../../config/util'
+  import {$toastText, $loadingHide} from '../../config/util'
 
   export default {
     name: 'scroll',
@@ -43,6 +44,7 @@
       }
     },
     methods: {
+      
       getinteraction () {
         let vm = this
         vm.$http.get(`official/arenas/` + vm.arena_id + `/comments?page=${vm.page}`).then(({data}) => {
@@ -72,6 +74,20 @@
           })
           $loadingHide(false)
         })
+      },
+      tokenFn () {
+        $toastText('你尚未登录...')
+        let cookieArr = document.cookie.split('; ')
+        let cookieobj = {}
+        cookieArr.forEach((i) => {
+          let arr = i.split('=')
+          cookieobj[arr[0]] = arr[1]
+        })
+        setTimeout(() => {
+          if (!cookieArr.ACCESS_TOKEN) {
+            window.location.href = window.location.href.split('#/')[0] + '#/login'
+          }
+        }, 800)
       },
       onSend () {
         let data = {
@@ -124,28 +140,32 @@
   }
 </script>
 <style scoped>
-  .z_box{
+  .z_box {
     position: absolute;
     bottom: 20px;
     z-index: 99;
   }
-  .chat_box{
+
+  .chat_box {
     width: 100vw;
     max-height: 380px;
     overflow: auto;
   }
-  .moreMessage{
+
+  .moreMessage {
     margin-left: 200px;
     margin-bottom: 12px;
     border-radius: 6px;
     background-color: rgba(0, 0, 0, 0.6);
   }
-  .chat_photo{
+
+  .chat_photo {
     width: 44px;
     height: 44px;
     margin-left: 10px;
     border-radius: 50%;
   }
+
   .chat_message {
     max-width: 460px;
     word-wrap: break-word;
@@ -157,26 +177,30 @@
     margin-left: 10px;
     background-color: rgba(0, 0, 0, 0.6);
   }
-  .chat_name{
+
+  .chat_name {
     font-size: 22px;
     color: #D92553;
   }
-  .chat_message_click{
+
+  .chat_message_click {
     overflow: hidden;
     width: 500px;
     margin-top: 20px;
     margin-left: 76px;
   }
-  .chat_content{
+
+  .chat_content {
     float: left;
     width: 300px;
     height: 40px;
     border: none;
     border-radius: 6px 0 0 6px;
-    -webkit-appearance:none;
+    -webkit-appearance: none;
     outline: none;
   }
-  .chat_send{
+
+  .chat_send {
     float: left;
     width: 80px;
     height: 40px;
@@ -187,7 +211,8 @@
     color: #ffffff;
     font-size: 22px;
   }
-  .icon_home{
+
+  .icon_home {
     width: 38px;
     height: 38px;
     border: 1px solid #fff;

@@ -157,6 +157,7 @@
           if (!data.token) {
             return
           }
+          document.cookie = `ACCESS_TOKEN=${data.token}`
           this.mobile = data.user.mobile
           localStorage.setItem('ACCESS_TOKEN', data.token)
           localStorage.setItem('official_openid', data.official_openid)

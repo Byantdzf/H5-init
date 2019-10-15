@@ -29,7 +29,6 @@ const api = () => {
       let arr = i.split('=')
       cookieobj[arr[0]] = arr[1]
     })
-    console.log(cookieobj.ACCESS_TOKEN)
     // config.headers['Authorization'] = 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
     config.headers['Authorization'] = 'Bearer ' + cookieobj.ACCESS_TOKEN
     let data = {

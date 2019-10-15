@@ -23,7 +23,7 @@
   import swiperComponent from '../../components/swiper'
   import testV2 from './testV2'
   import componentLike from '../../components/componentLike'
-  import '../../router/bubbling.js'
+  // import '../../bubbling.js'
   // import {$toastText} from '../../config/util'
   // 引入video样式
   import 'video.js/dist/video-js.css'

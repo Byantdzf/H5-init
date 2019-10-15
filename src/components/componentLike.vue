@@ -31,17 +31,17 @@
         this.heartCount++
         let positionArray = [
           {
-            x: 50,
+            x: 160,
             y: 400,
-            endX: 100,
-            endY: 100
+            endX: 200,
+            endY: 200
           }
         ]
         let img = new Image()
         // img.src = "../../static/img/" + Math.ceil(Math.random() * 2) + ".png";
         img.src = `../../static/img/${Math.ceil(Math.random() * 5)}.png`
         let p1 = {
-          x: 300 + this.getRandomDis(),
+          x: 400 + this.getRandomDis(),
           y: 200 + this.getRandomDis()
         }
         let p2 = {

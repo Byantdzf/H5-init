@@ -76,8 +76,8 @@
               <div class="z_score_head">
                 <div class="z_score">{{item.male_team_num}} : {{item.female_team_num}}</div>
                 <button class="z_btn" @click="onJoin(item.id)" v-if="item.status == 0">{{join}}</button>
-                <button class="z_btn" @click="$router.push({path: `/square_live/${item.id}`})" v-if="item.status == 1">进入直播</button>
-                <button class="z_btn" @click="$router.push({path: `/square_live/${item.id}`})" v-if="item.status == 2">查看回放</button>
+                <button class="z_btn" @click="gotoDetail(item.id)" v-if="item.status == 1">进入直播</button>
+                <button class="z_btn" @click="gotoDetail(item.id)" v-if="item.status == 2">查看回放</button>
               </div>
               <div class="z_woman_head">
                 <div class="z_woman" @click="$router.push({path: `/liveParticulars/${item.id}`})">
@@ -175,6 +175,10 @@
     watch: {
     },
     methods: {
+      gotoDetail (id) {
+        const URL = process.env.NODE_ENV === 'development' ? `http://localhost:8081/#/square_live/${id}` : `http://love.ufutx.com/mobile/#/square_live/${id}`
+        window.location.href = URL
+      },
       cutTabClick (item, index) {
         // let IDs = []
         this.actiove = index

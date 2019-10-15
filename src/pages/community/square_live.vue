@@ -54,6 +54,7 @@
         ossConfig: {},
         host: '',
         file: {},
+        arena: [],
         list: [],
         playerOptions: {
           height: '',
@@ -68,9 +69,10 @@
           fluid: false, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
           sources: [{
             type: '',
+            // type: 'video/mp4',
             // http://babylife.qiniudn.com/FtRVyPQHHocjVYjeJSrcwDkApTLQ
             // http://vjs.zencdn.net/v/oceans.mp4
-            src: 'http://edu.ufutx.com/653481/132126762748928094/live.m3u8'
+            src: ''
           }],
           // poster: 'http://img2.imgtn.bdimg.com/it/u=1449347812,1523653846&fm=15&gp=0.jpg', // 你的封面地址
           width: document.documentElement.clientWidth,
@@ -79,10 +81,25 @@
       }
     },
     methods: {
+      getParticulars () {
+        let vm = this
+        this.$http.get(`/official/arenas/` + this.arena_id).then(({data}) => {
+          vm.arena = data.arena
+          vm.status = vm.arena.status
+          if (vm.status === 1) {
+            vm.playerOptions.sources[0].src = data.arena.play_url
+            vm.playerOptions.sources[0].type = 'application/x-mpegURL'
+          } else {
+            vm.playerOptions.sources[0].src = data.arena.playback_url
+            vm.playerOptions.sources[0].type = 'video/mp4'
+          }
+        })
+      },
     },
     mounted () {
       this.playerOptions.height = document.documentElement.clientHeight
       this.arena_id = this.$route.params.id
+      this.getParticulars()
     }
   }
 </script>

@@ -13,12 +13,7 @@
     </div>
     <div class="user_box">
       <div class="photo_box">
-        <img src="http://tx.haiqq.com/uploads/allimg/170505/0424395200-4.jpg" alt="" class="user_photo">
-        <img src="http://tx.haiqq.com/uploads/allimg/170505/0424395200-4.jpg" alt="" class="user_photo">
-        <img src="http://tx.haiqq.com/uploads/allimg/170505/0424395200-4.jpg" alt="" class="user_photo">
-        <img src="http://tx.haiqq.com/uploads/allimg/170505/0424395200-4.jpg" alt="" class="user_photo">
-        <img src="http://tx.haiqq.com/uploads/allimg/170505/0424395200-4.jpg" alt="" class="user_photo">
-        <img src="http://tx.haiqq.com/uploads/allimg/170505/0424395200-4.jpg" alt="" class="user_photo">
+        <img :src="item.circle_avatar" alt="" class="user_photo" v-for="item in user_list">
       </div>
     </div>
     <div class="flow_box">
@@ -27,13 +22,6 @@
         <span class="flow_num">{{click_num}}</span>
       </div>
     </div>
-    <!--<div class="introduce_box">-->
-      <!--<div class="bc_swiper">-->
-        <!--<swiper :list="intro" :min-moving-distance="120" :show-desc-mask="false" height="320px" :auto="true"-->
-                <!--dots-position="center" :interval="2000">-->
-        <!--</swiper>-->
-      <!--</div>-->
-    <!--</div>-->
     <div>
       <div class="mask" v-if="showModal" @click="showModal=false"></div>
     </div>
@@ -52,26 +40,9 @@
         arena: [],
         guest_avatar: '',
         guest_name: '',
-        intro: [
-          {
-            url: 'javascript:',
-            img: 'http://img5.imgtn.bdimg.com/it/u=2967113123,3272767240&fm=26&gp=0.jpg'
-          },
-          {
-            url: 'javascript:',
-            img: 'http://img5.imgtn.bdimg.com/it/u=2967113123,3272767240&fm=26&gp=0.jpg'
-          },
-          {
-            url: 'javascript:',
-            img: 'http://img5.imgtn.bdimg.com/it/u=2967113123,3272767240&fm=26&gp=0.jpg'
-          },
-          {
-            url: 'javascript:',
-            img: 'http://img5.imgtn.bdimg.com/it/u=2967113123,3272767240&fm=26&gp=0.jpg'
-          }
-        ],
         showModal: false,
         click_num: '',
+        user_list: [],
         arena_id: '',
         qrcode: '',
         qrcode_intro: '',
@@ -87,6 +58,7 @@
           vm.guest_avatar = vm.arena.guest_avatar
           vm.guest_name = vm.arena.guest_name
           // vm.intro = vm.arena.intro
+          vm.user_list = data.user_list
           vm.qrcode_intro = vm.arena.qrcode_intro
           vm.qrcode = vm.arena.qrcode
           vm.status = vm.arena.status

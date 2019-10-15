@@ -130,7 +130,7 @@
   }
   .chat_box{
     width: 100vw;
-    max-height: 500px;
+    max-height: 380px;
     overflow: auto;
   }
   .moreMessage{
@@ -164,7 +164,7 @@
     overflow: hidden;
     width: 500px;
     margin-top: 20px;
-    margin-left: 10px;
+    margin-left: 76px;
   }
   .chat_content{
     float: left;

@@ -68,11 +68,11 @@
           // aspectRatio: '8:15', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
           fluid: false, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
           sources: [{
-            type: 'application/x-mpegURL',
+            type: '',
             // type: 'video/mp4',
             // http://babylife.qiniudn.com/FtRVyPQHHocjVYjeJSrcwDkApTLQ
             // http://vjs.zencdn.net/v/oceans.mp4
-            src: 'http://pili-live-hls.vod.gmall88.com/gcard/dx0115w2l_69cc977f-c054-4731-b111-ef87d9a639c4.m3u8'
+            src: ''
           }],
           // poster: 'http://img2.imgtn.bdimg.com/it/u=1449347812,1523653846&fm=15&gp=0.jpg', // 你的封面地址
           width: document.documentElement.clientWidth,
@@ -81,27 +81,28 @@
       }
     },
     methods: {
-      // getParticulars () {
-      //   let vm = this
-      //   this.$http.get(`/official/arenas/` + this.arena_id).then(({data}) => {
-      //     vm.arena = data.arena
-      //     vm.status = vm.arena.status
-      //     if (vm.status === 1) {
-      //       vm.playerOptions.sources[0].src = data.arena.play_url
-      //       vm.playerOptions.sources[0].type = 'application/x-mpegURL'
-      //       console.log(vm.playerOptions.sources[0].src, '000')
-      //     } else {
-      //       vm.playerOptions.sources[0].src = data.arena.playback_url
-      //       vm.playerOptions.sources[0].type = 'video/mp4'
-      //       console.log(vm.playerOptions.sources[0].src, '111')
-      //     }
-      //   })
-      // },
+      getParticulars () {
+        let vm = this
+        this.$http.get(`/official/arenas/` + this.arena_id).then(({data}) => {
+          vm.arena = data.arena
+          vm.status = vm.arena.status
+          console.log(vm.status, '666')
+          if (vm.status === 1) {
+            vm.playerOptions.sources[0].src = data.arena.play_url
+            vm.playerOptions.sources[0].type = 'application/x-mpegURL'
+            console.log(vm.playerOptions.sources[0].src, '000')
+          } else {
+            vm.playerOptions.sources[0].src = data.arena.playback_url
+            vm.playerOptions.sources[0].type = 'video/mp4'
+            console.log(vm.playerOptions.sources[0].src, '111')
+          }
+        })
+      }
     },
     mounted () {
       this.playerOptions.height = document.documentElement.clientHeight
       this.arena_id = this.$route.params.id
-      // this.getParticulars()
+      this.getParticulars()
     }
   }
 </script>

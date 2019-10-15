@@ -85,7 +85,7 @@
         let vm = this
         this.$http.get(`/official/arenas/` + this.arena_id).then(({data}) => {
           vm.arena = data.arena
-          vm.status = vm.arena.status
+          vm.status = vm.arena.status + ''
           console.log(vm.status, '666')
           if (vm.status === '1') {
             vm.playerOptions.sources[0].src = data.arena.play_url

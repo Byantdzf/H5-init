@@ -89,9 +89,11 @@
           if (vm.status === 1) {
             vm.playerOptions.sources[0].src = data.arena.play_url
             vm.playerOptions.sources[0].type = 'application/x-mpegURL'
+            console.log(vm.playerOptions.sources[0].src, '000')
           } else {
             vm.playerOptions.sources[0].src = data.arena.playback_url
             vm.playerOptions.sources[0].type = 'video/mp4'
+            console.log(vm.playerOptions.sources[0].src, '111')
           }
         })
       },

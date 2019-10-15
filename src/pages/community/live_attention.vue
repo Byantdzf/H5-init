@@ -63,7 +63,6 @@
           vm.qrcode = vm.arena.qrcode
           vm.status = vm.arena.status
           $loadingHide(false)
-          console.log(vm.intro, '000')
         })
       }
     },

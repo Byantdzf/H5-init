@@ -51,7 +51,7 @@
     this.width = opt.width
     this.angle = 0
     this.angleLeft = opt.angleLeft
-    this.angelBegin = opt.angelBegin || (-20 + rand(1, 2))
+    this.angelBegin = opt.angelBegin || (-200 + rand(1, 2))
     this.angelEnd = opt.angelEnd || (20 + rand(1, 4))
     this.scale = 0
     this.scaleDis = opt.scaleDis || 50

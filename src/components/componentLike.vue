@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="canvas_box">
     <canvas id="cvs"></canvas>
   </div>
 </template>
@@ -22,16 +22,16 @@
     methods: {
       getRandomDis () {
         if (Math.random() > 0.5) {
-          return -(Math.random() * 43)
+          return -(Math.random() * 12)
         } else {
-          return +(Math.random() * 43)
+          return +(Math.random() * 12)
         }
       },
       createHeart () {
         this.heartCount++
         let positionArray = [
           {
-            x: 100,
+            x: 50,
             y: 400,
             endX: 100,
             endY: 100
@@ -39,14 +39,14 @@
         ]
         let img = new Image()
         // img.src = "../../static/img/" + Math.ceil(Math.random() * 2) + ".png";
-        img.src = `../../static/img/${Math.ceil(Math.random() * 7)}.png`
+        img.src = `../../static/img/${Math.ceil(Math.random() * 5)}.png`
         let p1 = {
-          x: 100 + this.getRandomDis(),
-          y: 300 + this.getRandomDis()
+          x: 300 + this.getRandomDis(),
+          y: 200 + this.getRandomDis()
         }
         let p2 = {
-          x: 100 + this.getRandomDis(),
-          y: 200 + this.getRandomDis()
+          x: 10 + this.getRandomDis(),
+          y: 50 + this.getRandomDis()
         }
         return new LikeHeart({
           id: this.heartCount,
@@ -113,4 +113,9 @@
 </script>
 
 <style lang="less" scoped>
+  .canvas_box{
+    width: 50px;
+    height: 50px;
+    background: #D92553;
+  }
 </style>

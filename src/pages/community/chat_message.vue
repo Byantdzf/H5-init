@@ -16,6 +16,7 @@
       <div class="chat_message_click">
         <input type="text" class="chat_content" v-model="content" maxlength="30">
         <div class="chat_send" @click="onSend">发送</div>
+        <img src="https://images.ufutx.com/201909/18/982e873c34b48881d10519435e0c0188.png" alt="" @click="$router.push({path: `/live`})" class="icon_home">
       </div>
     </div>
     <!--<componentLike></componentLike>-->
@@ -185,5 +186,12 @@
     border-radius: 0 6px 6px 0;
     color: #ffffff;
     font-size: 22px;
+  }
+  .icon_home{
+    width: 38px;
+    height: 38px;
+    border: 1px solid #fff;
+    margin-left: 30px;
+    border-radius: 50%;
   }
 </style>

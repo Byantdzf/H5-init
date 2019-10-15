@@ -2,8 +2,9 @@
   <div>
     <!--<h3 class="color6">视频播放测试</h3>-->
     <div class="player-container">
-      <video-player class="vjs-custom-skin" :options="playerOptions"></video-player>
+      <!--<video-player class="vjs-custom-skin" :options="playerOptions"></video-player>-->
       <testV2></testV2>
+      <componentLike></componentLike>
     </div>
   </div>
 </template>
@@ -12,6 +13,7 @@
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import swiperComponent from '../../components/swiper'
   import testV2 from './testV2'
+  import componentLike from '../../components/componentLike'
   // import {$toastText} from '../../config/util'
   // 引入video样式
   import 'video.js/dist/video-js.css'
@@ -30,6 +32,7 @@
       Tab,
       TabItem,
       swiperComponent,
+      componentLike,
       MescrollVue
     },
     data () {

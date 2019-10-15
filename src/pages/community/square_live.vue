@@ -87,7 +87,7 @@
           vm.arena = data.arena
           vm.status = vm.arena.status
           console.log(vm.status, '666')
-          if (vm.status === 1) {
+          if (vm.status === '1') {
             vm.playerOptions.sources[0].src = data.arena.play_url
             vm.playerOptions.sources[0].type = 'application/x-mpegURL'
             console.log(vm.playerOptions.sources[0].src, '000')

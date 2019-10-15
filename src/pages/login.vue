@@ -117,6 +117,7 @@
           } else {
             localStorage.removeItem('official_openid')
           }
+          document.cookie = `ACCESS_TOKEN=${data.token}`
           localStorage.setItem('ACCESS_TOKEN', data.token)
           localStorage.setItem('mobile', data.user.mobile)
           if (data.avatar) {

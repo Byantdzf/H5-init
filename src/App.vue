@@ -274,6 +274,9 @@
     background: white;
   }
 
+  .vjs-custom-skin>.video-js .vjs-big-play-button{
+    top: 40% !important;
+  }
   .vjs-poster{
     display: inline-block !important;
     background-repeat: no-repeat !important;

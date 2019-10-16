@@ -66,6 +66,14 @@
         })
       }
     },
+    created () {
+      this.timer = setInterval(() => {
+        this.getParticulars()
+      }, 30000)
+    },
+    beforeDestroy () {
+      clearInterval(this.timer)
+    },
     mounted () {
       this.arena_id = this.$route.params.id
       this.getParticulars()

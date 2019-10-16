@@ -18,18 +18,31 @@
         <div class="chat_send" @click="onSend">发送</div>
         <img src="https://images.ufutx.com/201909/18/982e873c34b48881d10519435e0c0188.png" alt=""
              @click="$router.push({path: `/live`})" class="icon_home">
+        <div class="canvas_box">
+          <div class="liker">
+            <canvas class="hearts-canvas"></canvas>
+            <button class="btn backCover" style="background-image:url('https://images.ufutx.com/201910/16/46a780836c3f06378cd5fe55b3a596d1.png')">
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-    <!--<componentLike></componentLike>-->
+    <!--<div class="canvas_box">-->
+      <!--<div class="liker">-->
+        <!--<canvas class="hearts-canvas"></canvas>-->
+        <!--<button class="btn backCover" style="background-image:url('https://images.ufutx.com/201910/16/46a780836c3f06378cd5fe55b3a596d1.png')">-->
+        <!--</button>-->
+      <!--</div>-->
+    <!--</div>-->
   </div>
 </template>
 <script>
-  import componentLike from '../../components/componentLike'
+  import '../../javascript/bubbling'
   import {$toastText, $loadingHide} from '../../config/util'
 
   export default {
     name: 'scroll',
-    components: {componentLike},
+    components: {},
     data () {
       return {
         content: '',
@@ -159,6 +172,22 @@
   }
 </script>
 <style scoped>
+  @import '../../assets/style/bubbling.css';
+  .hearts-canvas{
+    margin-left: 436px;
+  }
+  .hearts-canvas{
+    width: 200px;
+    height: 400px;
+  }
+  .btn{
+    margin-left: 220px;
+    margin-top: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #000;
+  }
   .z_box {
     position: absolute;
     bottom: 20px;
@@ -167,7 +196,7 @@
 
   .chat_box {
     width: 100vw;
-    max-height: 350px;
+    max-height: 400px;
     overflow: auto;
   }
 

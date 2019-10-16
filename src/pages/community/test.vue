@@ -1,18 +1,14 @@
 <template>
   <div>
     <!--<h3 class="color6">视频播放测试</h3>-->
-    <div class="player-container">
-      <!--<video-player class="vjs-custom-skin" :options="playerOptions"></video-player>-->
-      <testV2></testV2>
-      <!--<componentLike></componentLike>-->
+    <div class="liker_box">
       <div class="liker">
-        <canvas class="hearts-canvas" width="200" height="400"></canvas>
+        <canvas class="hearts-canvas" id="canvas" width="200" height="400"></canvas>
         <button class="btn">
           <svg width="24" height="24" viewBox="0 0 24 24">
             <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
           </svg>
         </button>
-        <span>点击查看</span>
       </div>
     </div>
   </div>
@@ -29,6 +25,7 @@
   import 'vue-video-player/src/custom-theme.css'
   // 引入hls.js
   import 'videojs-contrib-hls.js/src/videojs.hlsjs'
+  import '../../javascript/bubbling'
   export default {
     components: {
       testV2,
@@ -84,6 +81,11 @@
 
 <style lang="less" scoped>
   @import '../../assets/style/bubbling.css';
+  /*.liker_box{*/
+    /*position: absolute;*/
+    /*bottom: 480px;*/
+    /*right: 100px;*/
+  /*}*/
   .video-js .vjs-big-play-button{
     font-size: 2.5em;
     line-height: 2.3em;

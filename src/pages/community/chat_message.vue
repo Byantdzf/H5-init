@@ -37,10 +37,23 @@
         src: 'http://tx.haiqq.com/uploads/allimg/170505/0424395200-4.jpg',
         chat: [],
         comments: [],
+        top: '',
         page: 1,
-        inft: [],
+        msg_scrollTop: '',
+        inft: true,
         text: '加载更多',
         arena_id: ''
+      }
+    },
+    watch: {
+      top: function () {
+        if (this.top !== this.msg_scrollTop) {
+          clearInterval(this.timer)
+        } else {
+          this.timer = setInterval(() => {
+            this.getinteraction()
+          }, 3000)
+        }
       }
     },
     methods: {
@@ -69,6 +82,7 @@
           this.$nextTick(() => {
             let msg = document.getElementById('gundong') // 获取对象
             msg.scrollTop = msg.scrollHeight // 滚动高度
+            this.msg_scrollTop = msg.scrollTop
           })
           $loadingHide(false)
         })
@@ -117,6 +131,9 @@
         }).catch((error) => {
           console.log(error)
         })
+      },
+      handleScroll () {
+        this.top = document.getElementById('gundong').scrollTop
       }
       // send () {
       //   let info = {info: this.content, src: 'http://tx.haiqq.com/uploads/allimg/170505/0424395200-4.jpg'}
@@ -131,15 +148,11 @@
       //   this.getinteraction()
       // }
     },
-    created () {
-      this.timer = setInterval(() => {
-        this.getinteraction()
-      }, 3000)
-    },
     beforeDestroy () {
       clearInterval(this.timer)
     },
     mounted () {
+      document.getElementById('gundong').addEventListener('scroll', this.handleScroll)
       this.arena_id = this.$route.params.id
       this.getinteraction()
     }
@@ -154,7 +167,7 @@
 
   .chat_box {
     width: 100vw;
-    max-height: 380px;
+    max-height: 350px;
     overflow: auto;
   }
 
@@ -162,7 +175,8 @@
     margin-left: 200px;
     margin-bottom: 12px;
     border-radius: 6px;
-    background-color: rgba(0, 0, 0, 0.6);
+    color: #b0b0b0;
+    background-color: rgba(255, 255, 255, 0.4);
   }
 
   .chat_photo {

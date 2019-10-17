@@ -54,6 +54,8 @@
         ossConfig: {},
         host: '',
         file: {},
+        guest_name: '',
+        title: '',
         arena: [],
         list: [],
         playerOptions: {
@@ -85,6 +87,8 @@
         let vm = this
         this.$http.get(`/official/arenas/` + this.arena_id).then(({data}) => {
           vm.arena = data.arena
+          vm.guest_name = vm.arena.guest_name
+          vm.title = vm.arena.title
           vm.status = vm.arena.status + ''
           console.log(vm.status, '666')
           if (vm.status === '1') {
@@ -96,7 +100,7 @@
             vm.playerOptions.sources[0].type = 'video/mp4'
             console.log(vm.playerOptions.sources[0].src, '111')
           }
-          vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', `square_live/${vm.arena_id}`, '用科技让交友变简单', '121212')
+          vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', `square_live/${vm.arena_id}`, vm.title, `${vm.guest_name}邀请你进入直播`)
         })
       }
     },

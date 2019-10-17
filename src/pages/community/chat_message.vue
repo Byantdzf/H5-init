@@ -169,7 +169,7 @@
   .canvas_box{
     position: absolute;
     z-index: 99;
-    bottom: 474px;
+    bottom: 484px;
     right: 80px;
   }
   .hearts-canvas{
@@ -177,8 +177,8 @@
     height: 400px;
   }
   .btn{
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     background-color: #000;
   }
@@ -235,7 +235,7 @@
   .chat_content {
     float: left;
     width: 420px;
-    height: 40px;
+    height: 50px;
     border: none;
     border-radius: 6px 0 0 6px;
     -webkit-appearance: none;
@@ -245,9 +245,9 @@
   .chat_send {
     float: left;
     width: 80px;
-    height: 40px;
+    height: 50px;
     text-align: center;
-    line-height: 40px;
+    line-height: 50px;
     background: #D92553;
     border-radius: 0 6px 6px 0;
     color: #ffffff;
@@ -255,8 +255,8 @@
   }
 
   .icon_home {
-    width: 38px;
-    height: 38px;
+    width: 48px;
+    height: 48px;
     border: 1px solid #fff;
     margin-left: 50px;
     border-radius: 50%;

@@ -24,7 +24,7 @@
     </div>
     <div v-if="showModal" @click="showModal=false" class="text-center qrcode_box">
       <p class="qrcode_text">{{qrcode_intro}}</p>
-      <div class="qrcode" v-bind:style="{backgroundImage:'url(' + qrcode + ')'}"></div>
+      <img :src="qrcode" alt="" class="qrcode">
     </div>
   </div>
 </template>

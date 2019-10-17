@@ -59,7 +59,6 @@
         arena: [],
         list: [],
         playerOptions: {
-          height: '',
           playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度
           autoplay: false, // 如果true,浏览器准备好时开始回放。
           controls: false, // 控制条
@@ -78,6 +77,7 @@
           }],
           // poster: 'http://img2.imgtn.bdimg.com/it/u=1449347812,1523653846&fm=15&gp=0.jpg', // 你的封面地址
           width: document.documentElement.clientWidth,
+          height: document.documentElement.clientHeight,
           notSupportedMessage: '此视频暂无法播放，请稍后再试' // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
         }
       }

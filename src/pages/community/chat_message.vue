@@ -7,7 +7,7 @@
           <p class="moreMessage inline-block font28" @click="page++,getinteraction()">{{text}}</p>
         </div>
         <div v-for="item in comments" style="overflow: hidden">
-          <img :src="item.photo" alt="" class="chat_photo flo_l" @click="$router.push({path: `/userCommunityClass/${item.id}`})">
+          <img :src="item.photo" alt="" class="chat_photo flo_l" @click="$router.push({path: `/information/${item.id}`})">
           <div class="chat_message flo_l">
             <div style="color: white"><span class="chat_name">{{item.name}}：</span>{{item.comment}}</div>
           </div>

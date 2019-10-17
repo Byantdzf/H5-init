@@ -13,7 +13,7 @@
     </div>
     <div class="user_box">
       <div class="photo_box">
-        <img :src="item.circle_avatar" alt="" class="user_photo" v-for="item in user_list" @click="$router.push({path: `/userCommunityClass/${item.id}`})">
+        <img :src="item.circle_avatar" alt="" class="user_photo" v-for="item in user_list" @click="$router.push({path: `/information/${item.id}`})">
       </div>
     </div>
     <div class="flow_box">

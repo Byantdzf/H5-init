@@ -274,9 +274,9 @@
     background: white;
   }
 
-  .video-js.vjs-fill, .video-js .vjs-tech {
-    width: initial !important;
-  }
+  /*.video-js.vjs-fill, .video-js .vjs-tech {*/
+    /*width: initial !important;*/
+  /*}*/
 
   .vjs-custom-skin>.video-js .vjs-big-play-button{
     top: 40% !important;

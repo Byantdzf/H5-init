@@ -7,7 +7,7 @@
           <p class="moreMessage inline-block font28" @click="page++,getinteraction()">{{text}}</p>
         </div>
         <div v-for="item in comments" style="overflow: hidden">
-          <img :src="item.photo" alt="" class="chat_photo flo_l">
+          <img :src="item.photo" alt="" class="chat_photo flo_l" @click="$router.push({path: `/userCommunityClass/${item.id}`})">
           <div class="chat_message flo_l">
             <div style="color: white"><span class="chat_name">{{item.name}}：</span>{{item.comment}}</div>
           </div>
@@ -18,22 +18,15 @@
         <div class="chat_send" @click="onSend">发送</div>
         <img src="https://images.ufutx.com/201909/18/982e873c34b48881d10519435e0c0188.png" alt=""
              @click="$router.push({path: `/live`})" class="icon_home">
-        <div class="canvas_box">
-          <div class="liker">
-            <canvas class="hearts-canvas"></canvas>
-            <button class="btn backCover" style="background-image:url('https://images.ufutx.com/201910/16/46a780836c3f06378cd5fe55b3a596d1.png')">
-            </button>
-          </div>
-        </div>
       </div>
     </div>
-    <!--<div class="canvas_box">-->
-      <!--<div class="liker">-->
-        <!--<canvas class="hearts-canvas"></canvas>-->
-        <!--<button class="btn backCover" style="background-image:url('https://images.ufutx.com/201910/16/46a780836c3f06378cd5fe55b3a596d1.png')">-->
-        <!--</button>-->
-      <!--</div>-->
-    <!--</div>-->
+    <div class="canvas_box">
+      <div class="liker">
+        <canvas class="hearts-canvas"></canvas>
+        <button class="btn backCover" style="background-image:url('https://images.ufutx.com/201910/16/46a780836c3f06378cd5fe55b3a596d1.png')">
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -173,16 +166,17 @@
 </script>
 <style scoped>
   @import '../../assets/style/bubbling.css';
-  .hearts-canvas{
-    margin-left: 436px;
+  .canvas_box{
+    position: absolute;
+    z-index: 99;
+    bottom: 474px;
+    right: 80px;
   }
   .hearts-canvas{
     width: 200px;
     height: 400px;
   }
   .btn{
-    margin-left: 220px;
-    margin-top: 16px;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -234,14 +228,13 @@
 
   .chat_message_click {
     overflow: hidden;
-    width: 500px;
     margin-top: 20px;
-    margin-left: 76px;
+    margin-left: 12px;
   }
 
   .chat_content {
     float: left;
-    width: 300px;
+    width: 420px;
     height: 40px;
     border: none;
     border-radius: 6px 0 0 6px;
@@ -265,7 +258,7 @@
     width: 38px;
     height: 38px;
     border: 1px solid #fff;
-    margin-left: 30px;
+    margin-left: 50px;
     border-radius: 50%;
   }
 </style>

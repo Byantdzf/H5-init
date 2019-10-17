@@ -13,7 +13,7 @@
     </div>
     <div class="user_box">
       <div class="photo_box">
-        <img :src="item.circle_avatar" alt="" class="user_photo" v-for="item in user_list">
+        <img :src="item.circle_avatar" alt="" class="user_photo" v-for="item in user_list" @click="$router.push({path: `/userCommunityClass/${item.id}`})">
       </div>
     </div>
     <div class="flow_box">
@@ -22,8 +22,9 @@
         <span class="flow_num">{{click_num}}</span>
       </div>
     </div>
-    <div>
-      <div class="mask" v-if="showModal" @click="showModal=false"></div>
+    <div v-if="showModal" @click="showModal=false" class="text-center qrcode_box">
+      <p class="qrcode_text">{{qrcode_intro}}</p>
+      <div class="qrcode" v-bind:style="{backgroundImage:'url(' + qrcode + ')'}"></div>
     </div>
   </div>
 </template>
@@ -182,13 +183,22 @@
     margin-left: 4px;
     margin-right: 14px;
   }
-  .mask{
+  .qrcode_box{
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    z-index: 999;
+  }
+  .qrcode_text{
+    color: #D92553;
+    font-size: 30px;
+    margin-bottom: 30px;
+   }
+  .qrcode{
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: center;
     width: 320px;
     height: 320px;
-    position: absolute;
-    top: 35%;
-    left: 30%;
-    background: white;
-    z-index: 999;
   }
 </style>

@@ -96,6 +96,7 @@
             vm.playerOptions.sources[0].type = 'video/mp4'
             console.log(vm.playerOptions.sources[0].src, '111')
           }
+          vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', `square_live/${vm.arena_id}`, '用科技让交友变简单', '121212')
         })
       }
     },

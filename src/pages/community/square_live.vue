@@ -91,6 +91,8 @@
           vm.title = vm.arena.title
           vm.status = vm.arena.status + ''
           console.log(vm.status, '666')
+          let href = window.location.href
+          vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `${vm.guest_name}邀请你进入直播`)
           if (vm.status === '1') {
             vm.playerOptions.sources[0].src = data.arena.play_url
             vm.playerOptions.sources[0].type = 'application/x-mpegURL'
@@ -100,7 +102,6 @@
             vm.playerOptions.sources[0].type = 'video/mp4'
             console.log(vm.playerOptions.sources[0].src, '111')
           }
-          vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', `square_live/${vm.arena_id}`, vm.title, `${vm.guest_name}邀请你进入直播`)
         })
       }
     },

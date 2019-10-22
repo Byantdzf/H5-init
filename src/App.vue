@@ -275,7 +275,7 @@
   }
 
   .video-js.vjs-fill, .video-js .vjs-tech {
-    width: initial !important;
+    height: initial !important;
   }
 
   .vjs-custom-skin>.video-js .vjs-big-play-button{

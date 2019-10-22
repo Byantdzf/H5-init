@@ -60,7 +60,7 @@
         let vm = this
         this.$http.get(`/official/arenas/` + vm.arena_id).then(({data}) => {
           vm.arena = data.arena
-          vm.click_num = 100000
+          vm.click_num = vm.arena.click_num
           if (this.click_num >= 10000) {
             this.click_num = '1万'
           } else if (this.click_num >= 100000) {
@@ -119,7 +119,7 @@
     width: 80px;
     position: absolute;
     left: 94px;
-    top: 10px;
+    top: 14px;
   }
   .attention_photo{
     width: 80px;
@@ -131,12 +131,12 @@
     top: 4px;
   }
   .attention_name{
-    font-size: 18px;
+    font-size: 22px;
     font-weight: bold;
     color: white;
   }
   .attention_type{
-    font-size: 12px;
+    font-size: 18px;
     color: #fff;
   }
   .attention_click{
@@ -195,15 +195,16 @@
     background-color: rgba(0, 0, 0, 0.6);
   }
   .audience{
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
+    margin-bottom: 4px;
     color: white;
   }
   .attention_flow{
-    margin-top: 10px;
+    margin-top: 14px;
   }
   .flow_num{
-    font-size: 12px;
+    font-size: 14px;
     color: white;
   }
   .qrcode_box{

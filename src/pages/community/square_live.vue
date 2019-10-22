@@ -3,14 +3,7 @@
     <!--<h3 class="color6">视频播放测试</h3>-->
     <div class="player-container">
       <video-player class="vjs-custom-skin" id="player"
-                    :options="playerOptions"
-                    width="100%"
-                    height="100"
-                    x5-video-player-type="h5"
-                    webkit-playsinline
-                    playsinline
-                    x5-playsinline
-                    x5-video-player-fullscreen="true"></video-player>
+                    :options="playerOptions"></video-player>
       <liveAttention></liveAttention>
       <chatMessage></chatMessage>
     </div>
@@ -115,7 +108,7 @@
 
 <style lang="less" scoped>
   #player{
-    object-fit: fill !important;
+    /*object-fit: fill !important;*/
   }
   .video-js .vjs-big-play-button{
     font-size: 2.5em;

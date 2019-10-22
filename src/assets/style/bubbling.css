@@ -29,13 +29,13 @@ body {
   border: none;
   position: absolute;
   cursor: pointer;
-  left: 50%;
-  transform: translate(-50%, -10%);
-  background-color: #FF4D80;
-  color: #fff;
+  /*left: 50%;*/
+  /*transform: translate(-50%, -10%);*/
+  /*background-color: #FF4D80;*/
+  /*color: #fff;*/
   outline: none;
   transition: 0.3s ease;
-  box-shadow: 0 3px 10px #F92A82;
+  /*box-shadow: 0 3px 10px #F92A82;*/
 }
 .btn svg {
   fill: #fff;

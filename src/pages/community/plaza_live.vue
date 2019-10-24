@@ -2,8 +2,8 @@
   <div class="container_box" id="video_box">
     <div class="van_swipe">
       <!--vant van-swipe 滑动组件 -->
-      <van-swipe :show-indicators="false" @change="onChange" vertical :loop="false">
-        <van-swipe-item v-for="(item, index) in videoList" :key="index" class="product_swiper">
+      <!--<van-swipe :show-indicators="false" @change="onChange" vertical :loop="false">-->
+        <!--<van-swipe-item v-for="(item, index) in videoList" :key="index" class="product_swiper">-->
           <div class="video_container">
             <!--video属性
         webkit-playsinline ios 小窗播放，使视频不脱离文本流，安卓则无效
@@ -17,18 +17,18 @@
         -->
             <video class="video_box" width="100%" height="100%" webkit-playsinline="true" x5-playsinline=""
                    x5-video-player-type="h5" x5-video-player-fullscreen="" playsinline preload="auto"
-                   :poster="item.cover" :playOrPause="playOrPause" x-webkit-airplay="allow"
+                   :poster="video_cover" :playOrPause="playOrPause" x-webkit-airplay="allow"
                    x5-video-orientation="portrait" @click="pauseVideo" @ended="onPlayerEnded($event)"
                    loop="loop">
               <!--<source-->
                 <!--:src="item.url"-->
                 <!--type="video/mp4">-->
               <source
-                :src="item.url"
-                type="application/x-mpegURL">
+                :src="video_url"
+                :type="video_type">
             </video>
             <!-- 封面 -->
-            <img v-show="isVideoShow" class="play" @click="playvideo" :src="item.cover"/>
+            <img v-show="isVideoShow" class="play" @click="playvideo" :src="video_cover"/>
             <!-- 播放暂停按钮 -->
             <img v-show="iconPlayShow" class="icon_play" @click="playvideo" :src="video_icon"/>
           </div>
@@ -52,8 +52,8 @@
           <!--年轻的时候要注意‘养生’，少玩手机多睡觉！少玩手机多睡觉！少玩手机多睡觉！切记少玩手机多睡觉！少玩手机多睡觉！少玩手机多睡觉！@ 抖音小助手-->
           <!--</div>-->
           <!--</div>-->
-        </van-swipe-item>
-      </van-swipe>
+        <!--</van-swipe-item>-->
+      <!--</van-swipe>-->
       <!--底部操作栏-->
       <!--<div class="container_bottom">-->
       <!--<div class="bottom_tab" :class="tabIndex==0?'tab_active':''" @click="changeTab(0)">-->
@@ -123,6 +123,9 @@
           cover: '',
           follow: false
         }],
+        video_cover: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571893521626&di=0a0678666b462d657b8af128287d6177&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F013874554968730000019ae9c3a22f.jpg',
+        video_url: 'http://pili-live-hls.vod.gmall88.com/gcard/dx0115w2l_c13a16ed-6322-4429-a2c7-511fe6ed6dcb.m3u8',
+        video_type: 'application/x-mpegURL',
         video_icon: 'https://images.ufutx.com/201910/24/c63e38e87f28494b657c592584c7bdd8.png',
         isVideoShow: true,
         playOrPause: true,

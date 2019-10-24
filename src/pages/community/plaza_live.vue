@@ -129,11 +129,11 @@
           vm.arena = data.arena
           vm.guest_name = vm.arena.guest_name
           vm.title = vm.arena.title
-          vm.status = vm.arena.status
+          vm.status = vm.arena.status + ''
           console.log(vm.status, '666')
           let href = window.location.href
           vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `${vm.guest_name}邀请你进入直播`)
-          if (vm.status === 1) {
+          if (vm.status === '1') {
             vm.video_url = data.arena.play_url
             vm.video_type = 'application/x-mpegURL'
             console.log(vm.video_url, '000')

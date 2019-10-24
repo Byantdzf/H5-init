@@ -107,9 +107,9 @@
       return {
         current: 0,
         video_cover: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571893521626&di=0a0678666b462d657b8af128287d6177&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F013874554968730000019ae9c3a22f.jpg',
-        video_url: 'http://pili-vod.vod.gmall88.com/de55d1d3039a4689a3b9f1059d4715bd.mp4',
+        video_url: 'http://pili-live-hls.vod.gmall88.com/gcard/dx0115w2l_b2057154-e542-4c65-84aa-52ca2584ec10.m3u8',
         // video_url: '',
-        video_type: 'video/mp4',
+        video_type: 'application/x-mpegURL',
         // video_type: '',
         video_icon: 'https://images.ufutx.com/201910/24/c63e38e87f28494b657c592584c7bdd8.png',
         isVideoShow: true,

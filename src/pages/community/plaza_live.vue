@@ -17,15 +17,15 @@
         -->
             <video class="video_box" width="100%" height="100%" webkit-playsinline="true" x5-playsinline=""
                    x5-video-player-type="h5" x5-video-player-fullscreen="" playsinline preload="auto"
-                   :poster="video_cover" :playOrPause="playOrPause" x-webkit-airplay="allow"
+                   :poster="video_cover" :src="video_url" :type="video_type" :playOrPause="playOrPause" x-webkit-airplay="allow"
                    x5-video-orientation="portrait" @click="pauseVideo" @ended="onPlayerEnded($event)"
                    loop="loop">
               <!--<source-->
                 <!--:src="video_url"-->
                 <!--type="video/mp4">-->
-              <source
-                :src="video_url"
-                :type="video_type">
+              <!--<source-->
+                <!--:src="video_url"-->
+                <!--:type="video_type">-->
             </video>
             <!-- 封面 -->
             <img v-show="isVideoShow" class="play" @click="playvideo" :src="video_cover"/>

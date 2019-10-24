@@ -106,26 +106,11 @@
       let u = navigator.userAgent
       return {
         current: 0,
-        videoList: [{
-          url: 'http://pili-live-hls.vod.gmall88.com/gcard/dx0115w2l_c13a16ed-6322-4429-a2c7-511fe6ed6dcb.m3u8',
-          cover: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571893521626&di=0a0678666b462d657b8af128287d6177&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F013874554968730000019ae9c3a22f.jpg',
-          follow: false
-        }, {
-          url: 'http://pili-live-hls.vod.gmall88.com/gcard/dx0115w2l_c13a16ed-6322-4429-a2c7-511fe6ed6dcb.m3u8',
-          cover: '',
-          follow: true
-        }, {
-          url: 'http://pili-live-hls.vod.gmall88.com/gcard/dx0115w2l_c13a16ed-6322-4429-a2c7-511fe6ed6dcb.m3u8',
-          cover: '',
-          follow: false
-        }, {
-          url: 'http://pili-live-hls.vod.gmall88.com/gcard/dx0115w2l_c13a16ed-6322-4429-a2c7-511fe6ed6dcb.m3u8',
-          cover: '',
-          follow: false
-        }],
         video_cover: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571893521626&di=0a0678666b462d657b8af128287d6177&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F013874554968730000019ae9c3a22f.jpg',
-        video_url: 'http://pili-live-hls.vod.gmall88.com/gcard/dx0115w2l_c13a16ed-6322-4429-a2c7-511fe6ed6dcb.m3u8',
-        video_type: 'application/x-mpegURL',
+        // video_url: 'http://pili-live-hls.vod.gmall88.com/gcard/dx0115w2l_c13a16ed-6322-4429-a2c7-511fe6ed6dcb.m3u8',
+        video_url: '',
+        // video_type: 'video/mp4',
+        video_type: '',
         video_icon: 'https://images.ufutx.com/201910/24/c63e38e87f28494b657c592584c7bdd8.png',
         isVideoShow: true,
         playOrPause: true,
@@ -221,20 +206,20 @@
           let href = window.location.href
           vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `${vm.guest_name}邀请你进入直播`)
           if (vm.status === '1') {
-            vm.playerOptions.sources[0].src = data.arena.play_url
-            vm.playerOptions.sources[0].type = 'application/x-mpegURL'
-            console.log(vm.playerOptions.sources[0].src, '000')
+            vm.video_url = data.arena.play_url
+            vm.video_type = 'application/x-mpegURL'
+            console.log(vm.video_url, '000')
           } else {
-            vm.playerOptions.sources[0].src = data.arena.playback_url
-            vm.playerOptions.sources[0].type = 'video/mp4'
-            console.log(vm.playerOptions.sources[0].src, '111')
+            vm.video_url = data.arena.playback_url
+            vm.video_type = 'video/mp4'
+            console.log(vm.video_url, '111')
           }
         })
       }
     },
     mounted () {
-      // this.arena_id = this.$route.params.id
-      this.arena_id = 19
+      this.arena_id = this.$route.params.id
+      // this.arena_id = 19
     }
   }
 </script>

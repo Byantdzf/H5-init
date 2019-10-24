@@ -65,22 +65,22 @@
       <!--</div>-->
       <!--分享弹框-->
       <!-- <div class="share_hover" v-show="showShareBox"></div> -->
-      <div class="share_box" :class="showShareBox?'share_active':''">
-        <div class="share_tips">分享到</div>
-        <ul class="share_ul">
-          <li class="share_li pengyouquan_li">
-            <i class="iconfont icon-pengyouquan pengyouquan"></i>
-          </li>
-          <li class="share_li">
-            <i class="iconfont icon-weixin weixin"></i>
-          </li>
-          <li class="share_li" @click="copyUrl">
-            <i class="iconfont icon-lianjie lianjie"></i>
-          </li>
-          <div class="clear"></div>
-        </ul>
-        <div class="share_cancel" @click="cancelShare">取消</div>
-      </div>
+      <!--<div class="share_box" :class="showShareBox?'share_active':''">-->
+        <!--<div class="share_tips">分享到</div>-->
+        <!--<ul class="share_ul">-->
+          <!--<li class="share_li pengyouquan_li">-->
+            <!--<i class="iconfont icon-pengyouquan pengyouquan"></i>-->
+          <!--</li>-->
+          <!--<li class="share_li">-->
+            <!--<i class="iconfont icon-weixin weixin"></i>-->
+          <!--</li>-->
+          <!--<li class="share_li" @click="copyUrl">-->
+            <!--<i class="iconfont icon-lianjie lianjie"></i>-->
+          <!--</li>-->
+          <!--<div class="clear"></div>-->
+        <!--</ul>-->
+        <!--<div class="share_cancel" @click="cancelShare">取消</div>-->
+      <!--</div>-->
     </div>
     <liveAttention></liveAttention>
     <chatMessage></chatMessage>
@@ -146,44 +146,45 @@
           }
         })
       },
-      // 改变菜单
-      changeTab (index) {
-        this.tabIndex = index
-      },
-      // 改变收藏状态
-      changeFollow (item, index) {
-        this.videoList[index].follow = !this.videoList[index].follow
-      },
-      // 展示分享弹窗
-      changeShare () {
-        this.showShareBox = true
-      },
-      // 取消分享
-      cancelShare () {
-        this.showShareBox = false
-      },
+      // // 改变菜单
+      // changeTab (index) {
+      //   this.tabIndex = index
+      // },
+      // // 改变收藏状态
+      // changeFollow (item, index) {
+      //   this.videoList[index].follow = !this.videoList[index].follow
+      // },
+      // // 展示分享弹窗
+      // changeShare () {
+      //   this.showShareBox = true
+      // },
+      // // 取消分享
+      // cancelShare () {
+      //   this.showShareBox = false
+      // },
       // 滑动改变播放的视频
-      onChange (index) {
-        // 改变的时候 暂停当前播放的视频
-        let video = document.querySelectorAll('video')[this.current]
-        video.pause()
-        this.playOrPause = false
-        this.current = index
-        if (this.isiOS) {
-          // ios切换直接自动播放下一个
-          this.isVideoShow = false
-          this.pauseVideo()
-        } else {
-          // 安卓播放时重置显示封面。图标等
-          this.isVideoShow = true
-          this.iconPlayShow = true
-        }
-      },
+      // onChange (index) {
+      //   // 改变的时候 暂停当前播放的视频
+      //   let video = document.querySelectorAll('video')[this.current]
+      //   video.pause()
+      //   this.playOrPause = false
+      //   this.current = index
+      //   if (this.isiOS) {
+      //     // ios切换直接自动播放下一个
+      //     this.isVideoShow = false
+      //     this.pauseVideo()
+      //   } else {
+      //     // 安卓播放时重置显示封面。图标等
+      //     this.isVideoShow = true
+      //     this.iconPlayShow = true
+      //   }
+      // },
       playvideo (event) {
         let video = document.querySelectorAll('video')[this.current]
         console.log('playvideo：' + this.current)
         this.isVideoShow = false
         this.iconPlayShow = false
+        this.getParticulars()
         video.play()
         window.onresize = function () {
           video.style.width = window.innerWidth + 'px'
@@ -197,6 +198,7 @@
           video.pause()
           this.iconPlayShow = true
         } else {
+          this.getParticulars()
           video.play()
           this.iconPlayShow = false
         }
@@ -205,19 +207,19 @@
       onPlayerEnded (player) { // 视频结束
         this.isVideoShow = true
         this.current += this.current
-      },
-      // 复制当前链接
-      copyUrl () {
-        let httpUrl = window.location.href
-        var oInput = document.createElement('input')
-        oInput.value = httpUrl
-        document.body.appendChild(oInput)
-        oInput.select() // 选择对象
-        document.execCommand('Copy') // 执行浏览器复制命令
-        oInput.className = 'oInput'
-        oInput.style.display = 'none'
-        alert('链接复制成功')
       }
+      // 复制当前链接
+      // copyUrl () {
+      //   let httpUrl = window.location.href
+      //   var oInput = document.createElement('input')
+      //   oInput.value = httpUrl
+      //   document.body.appendChild(oInput)
+      //   oInput.select() // 选择对象
+      //   document.execCommand('Copy') // 执行浏览器复制命令
+      //   oInput.className = 'oInput'
+      //   oInput.style.display = 'none'
+      //   alert('链接复制成功')
+      // }
     },
     mounted () {
       this.arena_id = this.$route.params.id

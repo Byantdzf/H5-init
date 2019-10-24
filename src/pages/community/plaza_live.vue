@@ -219,6 +219,7 @@
     },
     mounted () {
       this.arena_id = this.$route.params.id
+      this.getParticulars()
       // this.arena_id = 19
     }
   }

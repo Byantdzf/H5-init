@@ -140,6 +140,11 @@ export default new Router({
       component: (resolve) => require(['@/pages/community/square_live'], resolve)
     },
     {
+      path: '/plaza_live/:id', // 直播测试
+      name: 'plaza_live',
+      component: (resolve) => require(['@/pages/community/plaza_live'], resolve)
+    },
+    {
       path: '/test', // 直播测试
       name: 'test',
       component: (resolve) => require(['@/pages/community/test'], resolve)

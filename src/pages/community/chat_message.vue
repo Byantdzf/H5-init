@@ -238,7 +238,6 @@
   }
   .chat_message_back{
     max-width: 100vw;
-    margin-top: 20px;
     height: 104px;
     background-color: rgba(0, 0, 0, 0.1);
   }

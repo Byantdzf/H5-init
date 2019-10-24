@@ -196,7 +196,7 @@
   }
   .quit{
     background-color: rgba(0, 0, 0, 0.1);
-    width: 32px;
+    width: 40px;
     border-radius: 50%;
     position: absolute;
     top: 14px;

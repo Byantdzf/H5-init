@@ -20,12 +20,12 @@
                    :poster="video_cover" :playOrPause="playOrPause" x-webkit-airplay="allow"
                    x5-video-orientation="portrait" @click="pauseVideo" @ended="onPlayerEnded($event)"
                    loop="loop">
-              <source
-                :src="video_url"
-                type="video/mp4">
               <!--<source-->
                 <!--:src="video_url"-->
-                <!--:type="video_type">-->
+                <!--type="video/mp4">-->
+              <source
+                :src="video_url"
+                :type="video_type">
             </video>
             <!-- 封面 -->
             <img v-show="isVideoShow" class="play" @click="playvideo" :src="video_cover"/>
@@ -107,10 +107,10 @@
       return {
         current: 0,
         video_cover: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571893521626&di=0a0678666b462d657b8af128287d6177&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F013874554968730000019ae9c3a22f.jpg',
-        video_url: 'http://pili-live-hls.vod.gmall88.com/gcard/dx0115w2l_b2057154-e542-4c65-84aa-52ca2584ec10.m3u8',
-        // video_url: '',
-        video_type: 'application/x-mpegURL',
-        // video_type: '',
+        // video_url: 'http://pili-live-hls.vod.gmall88.com/gcard/dx0115w2l_b2057154-e542-4c65-84aa-52ca2584ec10.m3u8',
+        video_url: '',
+        // video_type: 'application/x-mpegURL',
+        video_type: '',
         video_icon: 'https://images.ufutx.com/201910/24/c63e38e87f28494b657c592584c7bdd8.png',
         isVideoShow: true,
         playOrPause: true,
@@ -123,6 +123,29 @@
       }
     },
     methods: {
+      getParticulars () {
+        let vm = this
+        this.$http.get(`/official/arenas/` + this.arena_id).then(({data}) => {
+          vm.arena = data.arena
+          vm.guest_name = vm.arena.guest_name
+          vm.title = vm.arena.title
+          vm.status = vm.arena.status
+          console.log(vm.status, '666')
+          let href = window.location.href
+          vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `${vm.guest_name}邀请你进入直播`)
+          if (vm.status === 1) {
+            vm.video_url = data.arena.play_url
+            vm.video_type = 'application/x-mpegURL'
+            console.log(vm.video_url, '000')
+            console.log(vm.video_type, '000')
+          } else {
+            vm.video_url = data.arena.playback_url
+            vm.video_type = 'video/mp4'
+            console.log(vm.video_url, '111')
+            console.log(vm.video_type, '111')
+          }
+        })
+      },
       // 改变菜单
       changeTab (index) {
         this.tabIndex = index
@@ -194,27 +217,6 @@
         oInput.className = 'oInput'
         oInput.style.display = 'none'
         alert('链接复制成功')
-      },
-      getParticulars () {
-        let vm = this
-        this.$http.get(`/official/arenas/` + this.arena_id).then(({data}) => {
-          vm.arena = data.arena
-          vm.guest_name = vm.arena.guest_name
-          vm.title = vm.arena.title
-          vm.status = vm.arena.status + ''
-          console.log(vm.status, '666')
-          let href = window.location.href
-          vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `${vm.guest_name}邀请你进入直播`)
-          // if (vm.status === '1') {
-          //   vm.video_url = data.arena.play_url
-          //   vm.video_type = 'application/x-mpegURL'
-          //   console.log(vm.video_url, '000')
-          // } else {
-          //   vm.video_url = data.arena.playback_url
-          //   vm.video_type = 'video/mp4'
-          //   console.log(vm.video_url, '111')
-          // }
-        })
       }
     },
     mounted () {

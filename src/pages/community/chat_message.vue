@@ -55,15 +55,15 @@
       }
     },
     watch: {
-      // top: function () {
-      //   if (this.top !== this.msg_scrollTop) {
-      //     clearInterval(this.timer)
-      //   } else {
-      //     this.timer = setInterval(() => {
-      //       this.getinteraction()
-      //     }, 3000)
-      //   }
-      // }
+      top: function () {
+        if (this.top !== this.msg_scrollTop) {
+          clearInterval(this.timer)
+        } else {
+          this.timer = setInterval(() => {
+            this.getinteraction()
+          }, 3000)
+        }
+      }
     },
     methods: {
       getinteraction () {

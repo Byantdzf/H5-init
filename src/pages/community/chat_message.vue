@@ -55,15 +55,15 @@
       }
     },
     watch: {
-      top: function () {
-        if (this.top !== this.msg_scrollTop) {
-          clearInterval(this.timer)
-        } else {
-          this.timer = setInterval(() => {
-            this.getinteraction()
-          }, 3000)
-        }
-      }
+      // top: function () {
+      //   if (this.top !== this.msg_scrollTop) {
+      //     clearInterval(this.timer)
+      //   } else {
+      //     this.timer = setInterval(() => {
+      //       this.getinteraction()
+      //     }, 3000)
+      //   }
+      // }
     },
     methods: {
       getinteraction () {
@@ -213,18 +213,18 @@
 
   .chat_message {
     display: flex;
-    max-width: 480px;
+    max-width: 520px;
     line-height: 42px;
     padding: 4px 10px;
-    font-size: 22px;
+    font-size: 26px;
     border-radius: 24px;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
     margin-left: 24px;
     background-color: rgba(0, 0, 0, 0.6);
   }
   .chat_name {
     max-width: 110px;
-    font-size: 22px;
+    font-size: 26px;
     margin-left: 10px;
     overflow: hidden;
     text-overflow:ellipsis;
@@ -232,7 +232,7 @@
     color: #fda6a6;
   }
   .chat_comment{
-    max-width: 300px;
+    max-width: 330px;
     margin-left: 10px;
     color: #fff;
   }
@@ -246,21 +246,18 @@
     overflow: hidden;
     line-height: 104px;
     text-align: center;
-    /*position: absolute;*/
   }
   .chat_content {
-    /*position: relative;*/
-    /*top: 26px;*/
     float: left;
     margin-left: 24px;
     margin-top: 26px;
     padding: 0 90px 0 10px;
-    width: 340px;
+    width: 400px;
     height: 54px;
     border: none;
     color: #EDEDED;
     border-radius: 18px;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.6);
   }
 
   .chat_send {
@@ -282,7 +279,7 @@
   .icon_home {
     float: left;
     width: 42px;
-    margin-left: 110px;
+    margin-left: 50px;
     margin-top: 30px;
   }
 </style>

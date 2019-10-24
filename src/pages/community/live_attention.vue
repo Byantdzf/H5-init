@@ -1,4 +1,3 @@
-<!-- 这是一个简易的范例，重点突出自动滚动底部 -->
 <template>
   <div>
     <div class="z_box">
@@ -27,6 +26,7 @@
         <p class="flow_num">{{click_num}}</p>
       </div>
     </div>
+    <img src="https://images.ufutx.com/201910/24/164d54c743402d422ed57b6e5887aba4.png" alt="" class="quit" @click="$router.push({path: `/live`})">
     <div v-if="showModal" @click="showModal=false" class="text-center qrcode_box">
       <p class="qrcode_text">{{qrcode_intro}}</p>
       <img :src="qrcode" alt="" class="qrcode">
@@ -137,7 +137,7 @@
   }
   .attention_type{
     font-size: 18px;
-    color: #fff;
+    color: #D92553;
   }
   .attention_click{
     width: 80px;
@@ -158,7 +158,7 @@
     white-space: nowrap;
     overflow-x:scroll;
     top: 24px;
-    right: 120px;
+    right: 156px;
     z-index: 99;
   }
   ::-webkit-scrollbar {
@@ -172,7 +172,7 @@
   .user_photo{
     width: 80px;
     height: 80px;
-    margin-left: 14px;
+    margin-left: 4px;
     border-radius: 50%;
   }
   .introduce_box{
@@ -186,13 +186,22 @@
   .flow_box{
     position: absolute;
     top: 24px;
-    right: 24px;
+    right: 70px;
     z-index: 99;
     width: 80px;
     text-align: center;
     height: 80px;
     border-radius: 50%;
     background-color: rgba(0, 0, 0, 0.6);
+  }
+  .quit{
+    background-color: rgba(0, 0, 0, 0.1);
+    width: 32px;
+    border-radius: 50%;
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    z-index: 99;
   }
   .audience{
     font-size: 20px;

@@ -172,7 +172,7 @@
   .canvas_box{
     position: absolute;
     z-index: 99;
-    bottom: 47%;
+    bottom: 670px;
     right: 60px;
   }
   .hearts-canvas{

@@ -26,7 +26,7 @@
         <p class="flow_num">{{click_num}}</p>
       </div>
     </div>
-    <img src="https://images.ufutx.com/201910/24/164d54c743402d422ed57b6e5887aba4.png" alt="" class="quit" @click="$router.push({path: `/live`})">
+    <img src="https://images.ufutx.com/201910/28/204f5df1d48ca38406f44646173b6a79.png" alt="" class="quit" @click="$router.push({path: `/live`})">
     <div v-if="showModal" @click="showModal=false" class="text-center qrcode_box">
       <p class="qrcode_text">{{qrcode_intro}}</p>
       <img :src="qrcode" alt="" class="qrcode">
@@ -195,11 +195,9 @@
     background-color: rgba(0, 0, 0, 0.6);
   }
   .quit{
-    background-color: rgba(0, 0, 0, 0.1);
     width: 40px;
-    border-radius: 50%;
     position: absolute;
-    top: 14px;
+    top: 40px;
     right: 20px;
     z-index: 99;
   }

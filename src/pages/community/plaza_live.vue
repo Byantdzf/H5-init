@@ -20,12 +20,6 @@
                    :poster="video_cover" :src="video_url" :type="video_type" :playOrPause="playOrPause" x-webkit-airplay="allow"
                    x5-video-orientation="portrait" @click="pauseVideo" @ended="onPlayerEnded($event)"
                    loop="loop">
-              <!--<source-->
-                <!--:src="video_url"-->
-                <!--type="video/mp4">-->
-              <!--<source-->
-                <!--:src="video_url"-->
-                <!--:type="video_type">-->
             </video>
             <!-- 封面 -->
             <img v-show="isVideoShow" class="play" @click="playvideo" :src="video_cover"/>
@@ -229,6 +223,14 @@
   }
 </script>
 <style scoped>
+  .video_container{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+  }
   .clear {
     clear: both;
   }

@@ -100,7 +100,7 @@
       let u = navigator.userAgent
       return {
         current: 0,
-        video_cover: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571893521626&di=0a0678666b462d657b8af128287d6177&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F013874554968730000019ae9c3a22f.jpg',
+        video_cover: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572260647649&di=197142c86907063369deffe6f22ba28e&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20171121%2Fa2800bac1813410d9d6edb2c12225c91.jpeg',
         // video_url: 'http://pili-live-hls.vod.gmall88.com/gcard/dx0115w2l_b2057154-e542-4c65-84aa-52ca2584ec10.m3u8',
         video_url: '',
         // video_type: 'application/x-mpegURL',

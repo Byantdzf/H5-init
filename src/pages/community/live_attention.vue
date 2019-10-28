@@ -197,7 +197,7 @@
   .quit{
     width: 40px;
     position: absolute;
-    top: 40px;
+    top: 44px;
     right: 20px;
     z-index: 99;
   }

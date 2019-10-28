@@ -18,8 +18,6 @@
         <div class="chat_message_click">
           <input type="text" class="chat_content" v-model="content" maxlength="20" @click="tokenFn">
           <div class="chat_send" @click="onSend">发送</div>
-          <img src="https://images.ufutx.com/201910/21/44641052ec087246a15e8551df3adfac.png" alt=""
-               @click="$router.push({path: `/live`})" class="icon_home">
         </div>
       </div>
     </div>
@@ -30,6 +28,8 @@
         </div>
       </div>
     </div>
+    <img src="https://images.ufutx.com/201910/21/44641052ec087246a15e8551df3adfac.png" alt=""
+         @click="$router.push({path: `/live`})" class="icon_home">
   </div>
 </template>
 <script>
@@ -172,8 +172,8 @@
   .canvas_box{
     position: absolute;
     z-index: 99;
-    bottom: 484px;
-    right: 80px;
+    bottom: 47%;
+    right: 60px;
   }
   .hearts-canvas{
     width: 200px;
@@ -181,8 +181,8 @@
   }
   .btn{
     margin-left: 80px;
-    width: 44px;
-    height: 44px;
+    width: 50px;
+    height: 50px;
   }
   .z_box {
     position: absolute;
@@ -234,6 +234,7 @@
   .chat_comment{
     max-width: 330px;
     margin-left: 10px;
+    font-weight: 600;
     color: #fff;
   }
   .chat_message_back{
@@ -249,10 +250,10 @@
   .chat_content {
     float: left;
     margin-left: 24px;
-    margin-top: 26px;
+    margin-top: 20px;
     padding: 0 90px 0 10px;
-    width: 400px;
-    height: 54px;
+    width: 600px;
+    height: 64px;
     border: none;
     color: #EDEDED;
     border-radius: 18px;
@@ -263,22 +264,23 @@
     /*position: relative;*/
     /*top: -22px;*/
     float: left;
-    margin-top: 32px;
-    margin-left: -80px;
+    margin-top: 26px;
+    margin-left: -100px;
     left: 388px;
-    width: 68px;
-    height: 42px;
+    width: 82px;
+    height: 52px;
     text-align: center;
-    line-height: 42px;
+    line-height: 52px;
     background: #D92553;
-    border-radius: 24px;
+    border-radius: 18px;
     color: #ffffff;
     font-size: 22px;
   }
   .icon_home {
-    float: left;
-    width: 42px;
-    margin-left: 50px;
-    margin-top: 30px;
+    position: absolute;
+    z-index: 99;
+    bottom: 300px;
+    right: 30px;
+    width: 50px;
   }
 </style>

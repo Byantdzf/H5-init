@@ -16,7 +16,7 @@
       </div>
       <div class="chat_message_back">
         <div class="chat_message_click">
-          <input type="text" class="chat_content" v-model="content" maxlength="20" @click="tokenFn">
+          <input type="text" class="chat_content" v-model="content" maxlength="20" @click="tokenFn" @blur="fixScroll" placeholder="请输入内容">
           <div class="chat_send" @click="onSend">发送</div>
         </div>
       </div>
@@ -66,6 +66,13 @@
       }
     },
     methods: {
+      fixScroll () {
+        let u = navigator.userAgent
+        let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
+        if (isiOS) {
+          window.scrollTo(0, 0)
+        }
+      },
       getinteraction () {
         let vm = this
         vm.$http.get(`official/arenas/` + vm.arena_id + `/comments?page=${vm.page}`).then(({data}) => {

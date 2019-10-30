@@ -194,7 +194,7 @@
   .z_box {
     position: absolute;
     bottom: 0;
-    z-index: 999;
+    z-index: 99;
   }
 
   .chat_box {

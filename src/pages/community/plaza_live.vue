@@ -15,7 +15,7 @@
         poster：封面
         src：播放地址
         -->
-            <video class="video_box" width="100%" height="100%" webkit-playsinline="true" x5-playsinline="true"
+            <video class="video_box" webkit-playsinline="true" x5-playsinline="true"
                    x5-video-player-type="h5" x5-video-player-fullscreen="true" playsinline preload="auto"
                    :poster="video_cover" :src="video_url" :type="video_type" :playOrPause="playOrPause" x-webkit-airplay="allow"
                    x5-video-orientation="portrait" @click="pauseVideo" @ended="onPlayerEnded($event)"
@@ -261,7 +261,7 @@
   }
 
   .video_box {
-    object-fit: fill !important;
+    /*object-fit: fill !important;*/
     z-index: 999;
     width: 100%;
     height: 100%;

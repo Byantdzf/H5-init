@@ -98,11 +98,11 @@
     position: absolute;
     top: 20px;
     left: 24px;
-    z-index: 99;
+    z-index: 999;
   }
   .back_roundness{
     position: absolute;
-    z-index: 1;
+    z-index: 999;
     width: 88px;
     height: 88px;
   }
@@ -126,7 +126,7 @@
     height: 80px;
     border-radius: 50%;
     position: absolute;
-    z-index: 2;
+    z-index: 999;
     left: 4px;
     top: 4px;
   }
@@ -159,7 +159,7 @@
     overflow-x:scroll;
     top: 24px;
     right: 156px;
-    z-index: 99;
+    z-index: 999;
   }
   ::-webkit-scrollbar {
     width: 0;
@@ -178,7 +178,7 @@
   .introduce_box{
     position: absolute;
     bottom: 0;
-    z-index: 99;
+    z-index: 999;
   }
   .bc_swiper{
     width: 100vw;
@@ -187,7 +187,7 @@
     position: absolute;
     top: 24px;
     right: 70px;
-    z-index: 99;
+    z-index: 999;
     width: 80px;
     text-align: center;
     height: 80px;
@@ -199,7 +199,7 @@
     position: absolute;
     top: 44px;
     right: 20px;
-    z-index: 99;
+    z-index: 999;
   }
   .audience{
     font-size: 20px;

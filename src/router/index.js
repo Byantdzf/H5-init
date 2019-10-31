@@ -120,6 +120,11 @@ export default new Router({
       component: (resolve) => require(['@/pages/user/myCommunityV2'], resolve)
     },
     {
+      path: '/matching/:id', // 大数据匹配
+      name: 'matching',
+      component: (resolve) => require(['@/pages/user/matching'], resolve)
+    },
+    {
       path: '/communityMember', // 群组成员
       name: 'communityMember',
       component: (resolve) => require(['@/pages/community/member'], resolve)

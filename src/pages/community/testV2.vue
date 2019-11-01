@@ -1,7 +1,22 @@
 <!-- 这是一个简易的范例，重点突出自动滚动底部 -->
 <template>
   <div>
-    自己想~~~~~~~~~
+    <!-- 聊天窗体 -->
+    <div class="test" id="gundong">
+      <div v-for="item in chat">{{item.info}}</div>
+    </div>
+    <!-- 输入窗体 -->
+    <input type="text">
+    <!-- 确认按钮 -->
+    <button @click="take">发送</button>
+    <br/>
+    <router-link to="test">
+      直播
+    </router-link>
+    <componentLike></componentLike>
+    <div style="margin-left: 80px;margin-top: -32px;" class="bold">
+      <img src="../../../static/img/4.png" alt="" width="42px" height="42px">
+    </div>
   </div>
 </template>
 <script>

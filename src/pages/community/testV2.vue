@@ -1,6 +1,9 @@
 <!-- 这是一个简易的范例，重点突出自动滚动底部 -->
 <template>
   <div>
+    自己想~~~~~~~~~
+
+
     <!-- 聊天窗体 -->
     <div class="test" id="gundong">
       <div v-for="item in chat">{{item.info}}</div>

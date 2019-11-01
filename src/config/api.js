@@ -4,7 +4,7 @@ import {AjaxPlugin} from 'vux'
 import {$toastWarn, $loadingHide} from '../../src/config/util'
 
 const api = () => {
-  const baseURL = process.env.NODE_ENV === 'development' ? 'http://love.hankin.ufutx.cn/api' : 'https://love.ufutx.com/api/'
+  const baseURL = process.env.NODE_ENV === 'development' ? '//love.hankin.ufutx.cn/api' : '//love.ufutx.com/api/'
   // const baseURL = 'http://love.hankin.ufutx.cn/api'
   AjaxPlugin.$http.defaults.baseURL = baseURL
 //   AjaxPlugin.$http.defaults.headers = {'X-Custom-Header': 'foobar'}
@@ -23,7 +23,14 @@ const api = () => {
 // POST传参序列化(添加请求拦截器)
 // http request 拦截器
   AjaxPlugin.$http.interceptors.request.use((config) => {
-    config.headers['Authorization'] = 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
+    let cookieArr = document.cookie.split('; ')
+    let cookieobj = {}
+    cookieArr.forEach((i) => {
+      let arr = i.split('=')
+      cookieobj[arr[0]] = arr[1]
+    })
+    // config.headers['Authorization'] = 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
+    config.headers['Authorization'] = 'Bearer ' + cookieobj.ACCESS_TOKEN
     let data = {
       paas: localStorage.getItem('paasName'), // 平台名字
       from_user_id: localStorage.getItem('from_user_id'), // 推荐人id

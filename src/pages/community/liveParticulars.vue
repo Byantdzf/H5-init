@@ -167,13 +167,13 @@
           }],
           poster: 'http://images.ufutx.com/201909/12/ee972fdefd0d65c2a43fb2ea2bd7e56c.png', // 你的封面地址
           width: document.documentElement.clientWidth,
-          notSupportedMessage: '此视频暂无法播放，请稍后再试', // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
-          controlBar: {
-            timeDivider: true,
-            durationDisplay: true,
-            remainingTimeDisplay: false,
-            fullscreenToggle: false // 全屏按钮
-          }
+          notSupportedMessage: '此视频暂无法播放，请稍后再试' // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
+          // controlBar: {
+          //   timeDivider: true,
+          //   durationDisplay: true,
+          //   remainingTimeDisplay: false,
+          //   fullscreenToggle: false // 全屏按钮
+          // }
         }
       }
     },

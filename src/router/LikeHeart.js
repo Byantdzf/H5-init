@@ -54,12 +54,12 @@
     this.angelBegin = opt.angelBegin || (-20 + rand(1, 2))
     this.angelEnd = opt.angelEnd || (20 + rand(1, 4))
     this.scale = 0
-    this.scaleDis = opt.scaleDis || 50
-    this.opacityDis = opt.opacityDis || 40
+    this.scaleDis = opt.scaleDis || 30
+    this.opacityDis = opt.opacityDis || 20
     this.noScale = opt.noScale
     this.noAngel = opt.noAngel
     this.opacity = 1
-    this.speed = opt.speed || 0.0027
+    this.speed = opt.speed || 0.0017
     this.bezierPoint = opt.bezierPoint
     this.bezierDis = 0
     this.onFadeOut = opt.onFadeOut

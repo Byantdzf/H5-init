@@ -120,6 +120,11 @@ export default new Router({
       component: (resolve) => require(['@/pages/user/myCommunityV2'], resolve)
     },
     {
+      path: '/matching/:id', // 大数据匹配
+      name: 'matching',
+      component: (resolve) => require(['@/pages/user/matching'], resolve)
+    },
+    {
       path: '/communityMember', // 群组成员
       name: 'communityMember',
       component: (resolve) => require(['@/pages/community/member'], resolve)
@@ -133,6 +138,16 @@ export default new Router({
       path: '/liveParticulars/:id', // 直播视频
       name: 'liveParticulars',
       component: (resolve) => require(['@/pages/community/liveParticulars'], resolve)
+    },
+    {
+      path: '/square_live/:id', // 直播测试
+      name: 'square_live',
+      component: (resolve) => require(['@/pages/community/square_live'], resolve)
+    },
+    {
+      path: '/plaza_live/:id', // 直播测试
+      name: 'plaza_live',
+      component: (resolve) => require(['@/pages/community/plaza_live'], resolve)
     },
     {
       path: '/test', // 直播测试

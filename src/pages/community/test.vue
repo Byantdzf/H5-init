@@ -1,8 +1,15 @@
 <template>
-  <div class="text-center">
+  <div>
     <!--<h3 class="color6">视频播放测试</h3>-->
-    <div class="player-container">
-      <video-player class="vjs-custom-skin" :options="playerOptions"></video-player>
+    <div class="liker_box">
+      <div class="liker">
+        <canvas class="hearts-canvas" id="canvas" width="200" height="400"></canvas>
+        <button class="btn">
+          <svg width="24" height="24" viewBox="0 0 24 24">
+            <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -10,14 +17,18 @@
   import {Group, Cell, XHeader, Swiper, XInput, SwiperItem, Tab, TabItem} from 'vux'
   import MescrollVue from 'mescroll.js/mescroll.vue'
   import swiperComponent from '../../components/swiper'
+  import testV2 from './testV2'
+  import componentLike from '../../components/componentLike'
   // import {$toastText} from '../../config/util'
   // 引入video样式
   import 'video.js/dist/video-js.css'
   import 'vue-video-player/src/custom-theme.css'
   // 引入hls.js
   import 'videojs-contrib-hls.js/src/videojs.hlsjs'
+  import '../../javascript/bubbling'
   export default {
     components: {
+      testV2,
       Group,
       Cell,
       XHeader,
@@ -27,47 +38,19 @@
       Tab,
       TabItem,
       swiperComponent,
+      componentLike,
       MescrollVue
     },
     data () {
       return {
+        content: '',
+        src: 'http://tx.haiqq.com/uploads/allimg/170505/0424395200-4.jpg',
+        chat: [],
+        i: 1,
         loading: false,
         ossConfig: {},
         host: '',
-        file: {},
-        mescroll: null, //  mescroll实例对象
-        mescrollDown: {}, // 下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
-        mescrollUp: { // 上拉加载的配置.
-          callback: this.getOrderList, // 上拉回调,此处简写; 相当于 callback: function(page, mescroll) { }
-          // 以下是一些常用的配置,当然不写也可以的.
-          page: {
-            num: 0, // 当前页 默认0,回调之前会加1; 即callback(page)会从1开始
-            size: 15 // 每页数据条数,默认10
-          },
-          htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>', // 上拉加载中的布局
-          htmlNodata: '<p class="upwarp-nodata">-- 加载完毕 --</p>' // 无数据的布局
-        },
-        list: [],
-        playerOptions: {
-          playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度
-          autoplay: false, // 如果true,浏览器准备好时开始回放。
-          controls: true, // 控制条
-          preload: 'auto', // 视频预加载
-          muted: false, // 默认情况下将会消除任何音频。
-          loop: false, // 导致视频一结束就重新开始。
-          language: 'zh-CN',
-          aspectRatio: '9:20', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
-          fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
-          sources: [{
-            type: '',
-            // http://babylife.qiniudn.com/FtRVyPQHHocjVYjeJSrcwDkApTLQ
-            // http://vjs.zencdn.net/v/oceans.mp4
-            src: 'http://pili-live-hls.vod.gmall88.com/gcard/dx0115w2l_276312e7-1e08-4a63-8673-c65970741c7d.m3u8'
-          }],
-          poster: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1570771393678&di=e6aed649aec047e03d70c9f9088475eb&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01a5ed580f28dfa84a0e282bfd744c.jpg%401280w_1l_2o_100sh.jpg', // 你的封面地址
-          width: document.documentElement.clientWidth,
-          notSupportedMessage: '此视频暂无法播放，请稍后再试' // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
-        }
+        file: {}
       }
     },
     methods: {
@@ -91,11 +74,18 @@
       // if (this.$store.state.intercept === 'true') {
       //   return false
       // }
+      // this.playerOptions.height = document.documentElement.clientHeight
     }
   }
 </script>
 
 <style lang="less" scoped>
+  @import '../../assets/style/bubbling.css';
+  /*.liker_box{*/
+    /*position: absolute;*/
+    /*bottom: 480px;*/
+    /*right: 100px;*/
+  /*}*/
   .video-js .vjs-big-play-button{
     font-size: 2.5em;
     line-height: 2.3em;
@@ -122,5 +112,58 @@
     border-radius: 1em;
     margin-top: -1em;
     margin-left: -1.5em;
+  }
+  .z_box{
+    position: absolute;
+    bottom: 20px;
+    z-index: 99;
+    .chat_box{
+      width: 100vw;
+      max-height: 500px;
+      overflow: auto;
+      .chat_photo{
+        width: 44px;
+        height: 44px;
+        margin-left: 10px;
+        border-radius: 50%;
+      }
+      .chat_message {
+        max-width: 460px;
+        word-wrap: break-word;
+        line-height: 42px;
+        padding: 4px 10px;
+        font-size: 22px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        margin-left: 10px;
+        background-color: rgba(0,0,0,0.6);
+        .chat_name{
+          font-size: 22px;
+          color: #D92553;
+        }
+      }
+    }
+    .chat_content{
+      height: 40px;
+      border-radius: 6px;
+      -webkit-appearance:none;
+      outline: none;
+      margin-left: 10px;
+      width: 400px;
+      margin-top: 30px
+    }
+    .chat_send{
+      display: inline-block;
+      width: 80px;
+      height: 40px;
+      margin-bottom: 20px;
+      text-align: center;
+      line-height: 40px;
+      background: #D92553;
+      border: 1px solid #D92553;
+      border-radius: 6px;
+      color: #ffffff;
+      font-size: 22px;
+    }
   }
 </style>

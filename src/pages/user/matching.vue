@@ -6,9 +6,9 @@
           <div class="z_box">
             <div class="list-item" v-for="item in list" @click="$router.push({path: `/information/${item.user_id}`})">
               <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + '?x-oss-process=style/scale1' + ')'}"></div>
-              <p style="margin-top: 8px;">
-                <span class="font32">{{item.name}}</span>
-                <span class="font20 colorb">{{item.sex ? item.sex : ''}} {{item.age? item.age + '岁': ''}} {{item.belief ? item.belief : ''}} {{item.stature ? item.stature + 'cm' : ''}} {{item.degree ? item.degree: ''}} {{item.province ? item.province : ''}} {{item.city ? item.city : ''}}</span>
+              <p style="margin-top: 8px;overflow: hidden">
+                <span class="font32 text_name flo_l">{{item.name}}</span>
+                <span class="font20 colorb flo_l text_data">{{item.sex ? item.sex : ''}} {{item.age? item.age + '岁': ''}} {{item.belief ? item.belief : ''}} {{item.stature ? item.stature + 'cm' : ''}} {{item.degree ? item.degree: ''}} {{item.province ? item.province : ''}} {{item.city ? item.city : ''}}</span>
               </p>
               <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
             </div>
@@ -206,7 +206,16 @@
       background-size: cover;
     }
   }
-
+  .text_name{
+    width: 100px;
+    margin-right: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .text_data{
+    margin-top: 6px;
+  }
   .recommend-image {
     width: 100%;
     height: 100%;

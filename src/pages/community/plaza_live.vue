@@ -17,9 +17,8 @@
         -->
             <video class="video_box" webkit-playsinline="true" x5-playsinline="true"
                    x5-video-player-type="h5" x5-video-player-fullscreen="true" playsinline preload="auto"
-                   :poster="video_cover" :src="video_url" :type="video_type" :playOrPause="playOrPause" x-webkit-airplay="allow"
-                   x5-video-orientation="portrait" @click="pauseVideo" @ended="onPlayerEnded($event)"
-                   loop="loop">
+                   :src="video_url" :type="video_type" :playOrPause="playOrPause" x-webkit-airplay="allow"
+                   x5-video-orientation="portrait" @click="pauseVideo" @ended="onPlayerEnded($event)">
             </video>
             <!-- 封面 -->
             <img v-show="isVideoShow" class="play" @click="playvideo" :src="video_cover"/>
@@ -184,6 +183,8 @@
           video.style.width = window.innerWidth + 'px'
           video.style.height = window.innerHeight + 'px'
         }
+        console.log(window.innerWidth, '1')
+        console.log(window.innerHeight, '2')
       },
       pauseVideo () { // 暂停\播放
         let video = document.querySelectorAll('video')[this.current]
@@ -261,7 +262,7 @@
   }
 
   .video_box {
-    /*object-fit: fill !important;*/
+    object-fit: fill !important;
     z-index: 999;
     width: 100%;
     height: 100%;

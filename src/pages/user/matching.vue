@@ -207,8 +207,8 @@
     }
   }
   .text_name{
-    width: 100px;
-    margin-right: 4px;
+    max-width: 100px;
+    margin-right: 10px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

@@ -21,7 +21,7 @@
                    <!--x5-video-orientation="portrait" @click="pauseVideo" @ended="onPlayerEnded($event)">-->
             <!--</video>-->
             <video class="video_box" width="100%" height="100%" webkit-playsinline="true" x5-playsinline=""
-                   playsinline preload="auto"
+                   playsinline preload="auto" x5-video-player-fullscreen=""
                    :src="video_url" :type="video_type" :playOrPause="playOrPause" x-webkit-airplay="allow"
                    x5-video-orientation="portrait" @click="pauseVideo" @ended="onPlayerEnded($event)">
             </video>
@@ -227,6 +227,11 @@
   }
 </script>
 <style scoped>
+  html, body{
+    width: 100%;
+    height: 100%;
+    overflow: hidden !important;
+  }
   .video_container{
     width: 100%;
     height: 100%;

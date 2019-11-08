@@ -16,7 +16,7 @@
         src：播放地址
         -->
             <video class="video_box" width="100%" height="100%" webkit-playsinline="true" x5-playsinline=""
-                   x5-video-player-type="h5" x5-video-player-fullscreen="" preload="auto"
+                   x5-video-player-type="h5" x5-video-player-fullscreen="" playsinline preload="auto"
                    :src="video_url" :type="video_type" :playOrPause="playOrPause" x-webkit-airplay="allow"
                    x5-video-orientation="portrait" @click="pauseVideo" @ended="onPlayerEnded($event)">
             </video>

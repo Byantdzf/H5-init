@@ -15,15 +15,11 @@
         poster：封面
         src：播放地址
         -->
-            <!--<video class="video_box" width="100%" height="100%" webkit-playsinline="true" x5-playsinline=""-->
-                   <!--x5-video-player-type="h5" x5-video-player-fullscreen="" playsinline preload="auto"-->
-                   <!--:src="video_url" :type="video_type" :playOrPause="playOrPause" x-webkit-airplay="allow"-->
-                   <!--x5-video-orientation="portrait" @click="pauseVideo" @ended="onPlayerEnded($event)">-->
-            <!--</video>-->
-            <video class="video_box" webkit-playsinline="true" x5-playsinline="true"
-                   playsinline preload="auto"
-                   :src="video_url" :type="video_type" :playOrPause="playOrPause" x-webkit-airplay="allow"
-                   x5-video-orientation="portrait" @click="pauseVideo" @ended="onPlayerEnded($event)">
+            <video class="video_box" width="100%" height="100%" webkit-playsinline="true" x5-playsinline=""
+                   x5-video-player-fullscreen="" playsinline preload="auto"
+                   :poster="video_cover" :src="video_url" :type="video_type" :playOrPause="playOrPause" x-webkit-airplay="allow"
+                   x5-video-orientation="portrait" @click="pauseVideo" @ended="onPlayerEnded($event)"
+                   loop="loop">
             </video>
             <!-- 封面 -->
             <img v-show="isVideoShow" class="play" @click="playvideo" :src="video_cover"/>
@@ -227,11 +223,6 @@
   }
 </script>
 <style scoped>
-  html, body{
-    width: 100%;
-    height: 100%;
-    overflow: hidden !important;
-  }
   .video_container{
     width: 100%;
     height: 100%;

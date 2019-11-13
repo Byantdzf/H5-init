@@ -1,15 +1,19 @@
-<!-- 这是一个简易的范例，重点突出自动滚动底部 -->
 <template>
   <div>
     <div class="z_box">
-      <div class="attention_box">
-        <img :src="guest_avatar" alt="" class="attention_photo flo_l">
-        <div class="attention_data">
-          <p class="attention_name">{{guest_name}}</p>
-          <p class="attention_type">主播</p>
-        </div>
-        <div class="attention_click" @click="showModal=true">+关注</div>
+      <img src="https://images.ufutx.com/201910/21/5a66b63ff83c94d3e7974ed5214e95d7.png" alt="" class="back_roundness">
+      <div class="back_rectangle"></div>
+      <img :src="guest_avatar" alt="" class="attention_photo">
+      <div class="attention_data">
+        <p class="attention_name">{{guest_name}}</p>
+        <p class="attention_type">主播</p>
       </div>
+      <div class="attention_click" @click="showModal=true">关注</div>-->
+      <!--<div class="attention_box">-->
+
+
+        <!--<div class="attention_click" @click="showModal=true">+关注</div>-->
+      <!--</div>-->
     </div>
     <div class="user_box">
       <div class="photo_box">
@@ -18,10 +22,11 @@
     </div>
     <div class="flow_box">
       <div class="attention_flow">
-        <img src="https://images.ufutx.com/201910/11/dd96c9e230e21b346c019454510eb02c.png" class="flow_icon" alt="">
-        <span class="flow_num">{{click_num}}</span>
+        <p class="audience">观众</p>
+        <p class="flow_num">{{click_num}}</p>
       </div>
     </div>
+    <img src="https://images.ufutx.com/201910/28/204f5df1d48ca38406f44646173b6a79.png" alt="" class="quit" @click="$router.push({path: `/live`})">
     <div v-if="showModal" @click="showModal=false" class="text-center qrcode_box">
       <p class="qrcode_text">{{qrcode_intro}}</p>
       <img :src="qrcode" alt="" class="qrcode">
@@ -56,6 +61,13 @@
         this.$http.get(`/official/arenas/` + vm.arena_id).then(({data}) => {
           vm.arena = data.arena
           vm.click_num = vm.arena.click_num
+          if (this.click_num >= 10000) {
+            this.click_num = '1万'
+          } else if (this.click_num >= 100000) {
+            this.click_num = '10万'
+          } else if (this.click_num >= 1000000) {
+            this.click_num = '100万'
+          }
           vm.guest_avatar = vm.arena.guest_avatar
           vm.guest_name = vm.arena.guest_name
           // vm.intro = vm.arena.intro
@@ -85,67 +97,82 @@
   .z_box{
     position: absolute;
     top: 20px;
+    left: 24px;
     z-index: 99;
   }
-  .attention_box{
-    overflow: hidden;
-    width: 350px;
-    margin-left: 14px;
-    border-radius: 40px;
-    height: 80px;
-    background-color: rgba(255, 255, 255, 0.6);
+  .back_roundness{
+    position: absolute;
+    z-index: 1;
+    width: 88px;
+    height: 88px;
+  }
+  .back_rectangle{
+    position: absolute;
+    top: 10px;
+    left: 54px;
+    width: 224px;
+    background: #000;
+    border-radius: 26px;
+    height: 70px;
   }
   .attention_data{
-    text-align: center;
-    float: left;
-    margin-left: 10px;
+    width: 80px;
+    position: absolute;
+    left: 94px;
+    top: 14px;
   }
   .attention_photo{
     width: 80px;
     height: 80px;
     border-radius: 50%;
+    position: absolute;
+    z-index: 2;
+    left: 4px;
+    top: 4px;
   }
   .attention_name{
-    font-size: 26px;
-    margin-top: 6px;
+    font-size: 22px;
+    font-weight: bold;
     color: white;
   }
   .attention_type{
-    font-size: 20px;
+    font-size: 18px;
     color: #D92553;
   }
   .attention_click{
-    width: 120px;
-    height: 80px;
+    width: 80px;
+    height: 52px;
     text-align: center;
-    line-height: 80px;
-    font-size: 30px;
-    -webkit-border-top-right-radius: 40px;
-    float: right;
+    line-height: 52px;
+    border-radius: 26px;
+    font-size: 22px;
     color: white;
-    background: #E4573E;
+    position: absolute;
+    top: 19px;
+    left: 190px;
+    background: #D92553;
   }
   .user_box{
     position: absolute;
     color: white;
     white-space: nowrap;
     overflow-x:scroll;
-    top: 20px;
-    right: 30px;
+    top: 24px;
+    right: 156px;
     z-index: 99;
   }
   ::-webkit-scrollbar {
-    width: 0px;
+    width: 0;
     display: none;
     background-color: #fff;
   }
   .photo_box{
-    width: 340px;
+    width: 286px;
   }
   .user_photo{
     width: 80px;
     height: 80px;
-    margin-left: 14px;
+    margin-left: 4px;
     border-radius: 50%;
   }
   .introduce_box{
@@ -158,36 +185,40 @@
   }
   .flow_box{
     position: absolute;
-    top: 120px;
+    top: 24px;
+    right: 70px;
+    z-index: 99;
+    width: 80px;
+    text-align: center;
+    height: 80px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  .quit{
+    width: 40px;
+    position: absolute;
+    top: 44px;
+    right: 20px;
     z-index: 99;
   }
-  .attention_flow{
-    overflow: hidden;
-    max-width: 150px;
-    height: 30px;
-    line-height: 30px;
-    margin-left: 14px;
-    border-radius: 15px;
-    background-color: rgba(255, 255, 255, 0.6);
-
+  .audience{
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    color: white;
   }
-  .flow_icon{
-    width: 32px;
-    height: 32px;
-    float: left;
+  .attention_flow{
+    margin-top: 14px;
   }
   .flow_num{
-    font-size: 20px;
+    font-size: 14px;
     color: white;
-    float: left;
-    margin-left: 4px;
-    margin-right: 14px;
   }
   .qrcode_box{
     position: absolute;
     top: 30%;
     left: 30%;
-    z-index: 999;
+    z-index: 99;
   }
   .qrcode_text{
     color: #D92553;

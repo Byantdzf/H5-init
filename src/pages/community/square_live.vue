@@ -115,7 +115,7 @@
 
 <style lang="less" scoped>
   #player{
-    object-fit: fill !important;
+    /*object-fit: fill !important;*/
   }
   .video-js .vjs-big-play-button{
     font-size: 2.5em;

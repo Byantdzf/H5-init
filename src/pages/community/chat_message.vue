@@ -7,26 +7,29 @@
           <p class="moreMessage inline-block font28" @click="page++,getinteraction()">{{text}}</p>
         </div>
         <div v-for="item in comments" style="overflow: hidden">
-          <img :src="item.photo" alt="" class="chat_photo flo_l" @click="$router.push({path: `/information/${item.id}`})">
           <div class="chat_message flo_l">
-            <div style="color: white"><span class="chat_name">{{item.name}}：</span>{{item.comment}}</div>
+            <img :src="item.photo" alt="" class="chat_photo" @click="$router.push({path: `/information/${item.id}`})">
+            <div class="chat_name">{{item.name}}</div>
+            <div class="chat_comment">{{item.comment}}</div>
           </div>
         </div>
       </div>
-      <div class="chat_message_click">
-        <input type="text" class="chat_content" v-model="content" maxlength="30" @click="tokenFn">
-        <div class="chat_send" @click="onSend">发送</div>
-        <img src="https://images.ufutx.com/201909/18/982e873c34b48881d10519435e0c0188.png" alt=""
-             @click="$router.push({path: `/live`})" class="icon_home">
+      <div class="chat_message_back">
+        <div class="chat_message_click">
+          <input type="text" class="chat_content" v-model="content" maxlength="20" @click="tokenFn" @blur="fixScroll" placeholder="请输入内容">
+          <div class="chat_send" @click="onSend">发送</div>
+        </div>
       </div>
     </div>
     <div class="canvas_box">
       <div class="liker">
         <canvas class="hearts-canvas"></canvas>
-        <button class="btn backCover" style="background-image:url('https://images.ufutx.com/201910/16/46a780836c3f06378cd5fe55b3a596d1.png')">
-        </button>
+        <div class="btn backCover" style="background-image:url('https://images.ufutx.com/201910/21/57b3cf74b4d32c109b4926ae3aea030b.png')">
+        </div>
       </div>
     </div>
+    <img src="https://images.ufutx.com/201910/21/44641052ec087246a15e8551df3adfac.png" alt=""
+         @click="$router.push({path: `/live`})" class="icon_home">
   </div>
 </template>
 <script>
@@ -63,6 +66,13 @@
       }
     },
     methods: {
+      fixScroll () {
+        let u = navigator.userAgent
+        let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
+        if (isiOS) {
+          window.scrollTo(0, 0)
+        }
+      },
       getinteraction () {
         let vm = this
         vm.$http.get(`official/arenas/` + vm.arena_id + `/comments?page=${vm.page}`).then(({data}) => {
@@ -169,22 +179,21 @@
   .canvas_box{
     position: absolute;
     z-index: 99;
-    bottom: 484px;
-    right: 80px;
+    bottom: 670px;
+    right: 60px;
   }
   .hearts-canvas{
     width: 200px;
     height: 400px;
   }
   .btn{
+    margin-left: 80px;
     width: 50px;
     height: 50px;
-    border-radius: 50%;
-    background-color: #000;
   }
   .z_box {
     position: absolute;
-    bottom: 20px;
+    bottom: 0;
     z-index: 99;
   }
 
@@ -203,62 +212,82 @@
   }
 
   .chat_photo {
-    width: 44px;
-    height: 44px;
-    margin-left: 10px;
+    width: 42px;
+    height: 42px;
+    margin-left: 14px;
     border-radius: 50%;
   }
 
   .chat_message {
-    max-width: 460px;
-    word-wrap: break-word;
+    display: flex;
+    max-width: 520px;
     line-height: 42px;
     padding: 4px 10px;
-    font-size: 22px;
-    border-radius: 10px;
-    margin-bottom: 12px;
+    font-size: 26px;
+    border-radius: 24px;
+    margin-bottom: 6px;
+    margin-left: 24px;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  .chat_name {
+    max-width: 110px;
+    font-size: 26px;
     margin-left: 10px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    color: #fda6a6;
+  }
+  .chat_comment{
+    max-width: 330px;
+    margin-left: 10px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .chat_message_back{
+    max-width: 100vw;
+    height: 104px;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  .chat_message_click {
+    overflow: hidden;
+    line-height: 104px;
+    text-align: center;
+  }
+  .chat_content {
+    float: left;
+    margin-left: 24px;
+    margin-top: 20px;
+    padding: 0 90px 0 10px;
+    width: 600px;
+    height: 64px;
+    border: none;
+    color: #EDEDED;
+    border-radius: 18px;
     background-color: rgba(0, 0, 0, 0.6);
   }
 
-  .chat_name {
-    font-size: 22px;
-    color: #D92553;
-  }
-
-  .chat_message_click {
-    overflow: hidden;
-    margin-top: 20px;
-    margin-left: 12px;
-  }
-
-  .chat_content {
-    float: left;
-    width: 420px;
-    height: 50px;
-    border: none;
-    border-radius: 6px 0 0 6px;
-    -webkit-appearance: none;
-    outline: none;
-  }
-
   .chat_send {
+    /*position: relative;*/
+    /*top: -22px;*/
     float: left;
-    width: 80px;
-    height: 50px;
+    margin-top: 26px;
+    margin-left: -100px;
+    left: 388px;
+    width: 82px;
+    height: 52px;
     text-align: center;
-    line-height: 50px;
+    line-height: 52px;
     background: #D92553;
-    border-radius: 0 6px 6px 0;
+    border-radius: 18px;
     color: #ffffff;
     font-size: 22px;
   }
-
   .icon_home {
-    width: 48px;
-    height: 48px;
-    border: 1px solid #fff;
-    margin-left: 50px;
-    border-radius: 50%;
+    position: absolute;
+    z-index: 99;
+    bottom: 300px;
+    right: 30px;
+    width: 50px;
   }
 </style>

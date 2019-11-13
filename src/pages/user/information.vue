@@ -22,6 +22,9 @@
         <span class="font26 colorbe">{{information.age? information.age + '岁 ' : ''}} {{information.city? '· ' + information.city : ''}} {{information.stature? '· ' + information.stature + 'cm' : ''}}</span>
       </p>
     </div>
+    <div class="matching text-center" @click="$router.push({path: `/matching/${id}`})">
+      <div class=" theme_bc font28" style="width: 18%;border: 1px solid #D92553;border-radius: 3px;color: #fff">為Ta匹配</div>
+    </div>
     <div class="introduction">
       <p style="width: 20%" class="font28 flo_l theme_clo">自我介绍</p>
       <p class="colorbe flo_r font26" style="width: 80%">{{information.introduction}}</p>
@@ -272,6 +275,10 @@
         border-bottom: 1px solid #D2D2D2;
         padding-bottom: 30px;
       }
+    }
+
+    .matching{
+      padding: 0 30px 16px 26px;
     }
 
     .introduction, .basics {

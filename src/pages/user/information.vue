@@ -22,7 +22,7 @@
         <span class="font26 colorbe">{{information.age? information.age + '岁 ' : ''}} {{information.city? '· ' + information.city : ''}} {{information.stature? '· ' + information.stature + 'cm' : ''}}</span>
       </p>
     </div>
-    <div class="matching text-center" @click="$router.push({path: `/matching/${id}`})">
+    <div class="matching text-center" @click="$router.push({path: `/goldmatching/${id}`})">
       <div class=" theme_bc font28" style="width: 18%;border: 1px solid #D92553;border-radius: 3px;color: #fff">為Ta匹配</div>
     </div>
     <div class="introduction">

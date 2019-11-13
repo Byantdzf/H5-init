@@ -21,7 +21,7 @@
                    x5-video-orientation="portrait" @click="pauseVideo" @ended="onPlayerEnded($event)"
                    loop="loop">
             </video>
-            <!-- 封面 -->
+            <!-- 封面 -->3
             <img v-show="isVideoShow" class="play" @click="playvideo" :src="video_cover"/>
             <!-- 播放暂停按钮 -->
             <img v-show="iconPlayShow" class="icon_play" @click="playvideo" :src="video_icon"/>

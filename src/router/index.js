@@ -122,6 +122,9 @@ export default new Router({
     {
       path: '/goldmatching/:id', // 大数据匹配
       name: 'goldmatching',
+      meta: {
+        keepAlive: true// 需要被缓存
+      },
       component: (resolve) => require(['@/pages/user/goldmatching'], resolve)
     },
     {

@@ -2,7 +2,7 @@
   <div>
     <div class="tab" v-cloak>
       <div>
-        <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView" >
+        <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView" id="z_box_top">
           <div class="z_box">
             <div class="list-item" v-for="item in list" @click="$router.push({path: `/information/${item.user_id}`})">
               <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + '?x-oss-process=style/scale1' + ')'}"></div>
@@ -42,6 +42,7 @@
         number: 0,
         init: false,
         id: '',
+        top: '',
         noData: false,
         showList: 'false',
         listNum: 1,
@@ -121,10 +122,25 @@
             mescroll.endSuccess(data.data ? data.data : 1)
           })
         })
+      },
+      handleScroll () {
+        console.log(document.getElementById('z_box_top').scrollTop)
       }
     },
     mounted () {
       this.id = this.$route.params.id
+      // document.getElementById('z_box_top').addEventListener('scroll', this.handleScroll)
+    },
+    beforeRouteLeave (to, from, next) {
+      this.scrollTop = document.querySelector('#z_box_top').scrollTop
+      // 保存滚动条元素div的scrollTop值
+      next()
+    },
+    beforeRouteEnter (to, from, next) {
+      next(vm => {
+        document.querySelector('#z_box_top').scrollTop = vm.scrollTop
+        // 为div元素重新设置保存的scrollTop值
+      })
     }
   }
 </script>

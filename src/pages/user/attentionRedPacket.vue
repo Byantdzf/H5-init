@@ -7,13 +7,17 @@
         <div class="z_head_box">
           <!--未开启-->
           <div v-if="deblocking == 0" @click="onPacket" class="modal-amin">
-            <img  src="https://images.ufutx.com/201911/28/e1097f3ec06f485a67564db016a48622.png" alt="" class="z_head_pic1">
-            <p class="attention_text">立即关注</p>
+            <img  src="https://images.ufutx.com/201911/28/e1097f3ec06f485a67564db016a48622.png" alt="" class="z_head_pic1"  :class="image_amin?'image_amin':''">
+            <div class="attention_box">
+              <p class="attention_text">点击领取</p>
+            </div>
           </div>
           <!--开启-->
-          <div v-else @click="onPacket" class="modal-amin">
-            <img src="https://images.ufutx.com/201911/29/306caf03f3bec2bb282509ae75ba5d8b.png" alt="" :class="image_amin?'image_amin':''" @click.stop="onPacket">
-            <p class="attention_text">立即关注</p>
+          <div v-else class="modal-amin" @click="toastText('你已领取过啦，快去分享吧...')">
+            <img src="https://images.ufutx.com/201911/29/306caf03f3bec2bb282509ae75ba5d8b.png" alt="">
+            <div class="attention_box">
+              <p class="attention_text">已领取</p>
+            </div>
           </div>
         </div>
       </div>
@@ -39,7 +43,7 @@
                 <!--用户头像-->
                 <img src="http://b-ssl.duitang.com/uploads/item/201508/28/20150828005332_jGE5c.png" alt="" class="z_user_photo flo_l">
                 <p style="font-weight: bold;color: #333333;margin-top: 6%" class="flo_l font30 user_text">邓智锋</p>
-                <p class="flo_r acquisition_text">获得￥0.15</p>
+                <p class="flo_r acquisition_text">获得￥{{gain_money}}</p>
               </div>
             </div>
           </div>
@@ -64,6 +68,7 @@
 
 <script>
   // import {$loadingShow, $loadingHide, $toastSuccess, $toastWarn} from '../../config/util'
+  import {$toastWarn} from '../../config/util'
   import shareModal from '../../components/shareMoadl'
   import CountDown from 'vue2-countdown'
 
@@ -87,23 +92,34 @@
         showPic: false, // 遮罩红包图片
         image_amin: true, // 红包开启后状态
         showModalTimeUp: false, // 弹框
-        deblocking: 0 // 开启红包
+        deblocking: 0, // 开启红包
+        gain_money: 0.18
       }
     },
     watch: {
 
     },
     methods: {
-      getdata () {
+      toastText (title) {
+        $toastWarn(title)
+      },
+      getData () {
         let vm = this
-        let href = window.location.href + '?form_openid=' + vm.form_openid
-        vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你抢红包`)
+        vm.$http.get(`http://love.cn/wechatoauth`)
+          .then(({data}) => {
+            let href = window.location.href + '?form_openid=' + vm.form_openid
+            vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你抢红包`)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
       },
       hideShare (value) {
         this.showShare = value
       },
       onPacket () {
         this.showModalTimeUp = true
+        this.deblocking = 1
       },
       showshare () {
         this.showShare = true
@@ -113,8 +129,8 @@
       }
     },
     mounted () {
-      this.getdata()
-      console.log(this.$route.query)
+      this.getData()
+      // window.location.href = 'http://love.cn/wechatoauth'
     }
   }
 </script>
@@ -142,7 +158,7 @@
         width: 686px;
         height: 380px;
         border-radius: 10px;
-        background-image: url(https://images.ufutx.com/201912/02/8528b91a6e5c60393b2672e547cc71b6.png);
+        background-image: url(https://images.ufutx.com/201912/03/9ebb19bbc98f7f0c5aa39d2cc7d8499c.png);
         background-size: cover;
         background-repeat: no-repeat;
         margin: -30px auto 0 auto;
@@ -151,14 +167,22 @@
           animation-fill-mode: forwards;
           img{
             width: 240px;
-            padding-top: 2%;
+            padding-top: 5%;
             margin: 0 auto;
           }
-          .attention_text{
-            color: #fff;
+          .attention_box{
+            width: 160px;
+            height: 60px;
+            background-color: #fbda30;
+            line-height: 60px;
             text-align: center;
-            letter-spacing: 2px;
-            font-size: 32px
+            margin: 0 auto;
+            border-radius: 10px;
+            .attention_text{
+              color: #fff;
+              letter-spacing: 2px;
+              font-size: 28px
+            }
           }
           .image_amin {
             animation:move 3s 0s infinite;

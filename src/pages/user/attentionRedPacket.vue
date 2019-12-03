@@ -121,7 +121,7 @@
       },
       getData () {
         let vm = this
-        let href = 'http://localhost:8081/#/attentionRedPacket' + '?form_openid=' + vm.oppen_id
+        let href = 'https://love.ufutx.com/mobile/#/attentionRedPacket' + '?form_openid=' + vm.oppen_id
         vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你抢红包`)
         vm.$http.get(`/redinspect?openid=${this.open_id}`)
           .then(({code}) => {
@@ -178,7 +178,7 @@
       this.open_id = obj.openid
       this.form_openid = obj.fromopenid ? obj.fromopenid : ''
       if (!this.open_id) {
-        window.location.href = 'http://wlj.test/wechatoauth'
+        window.location.href = 'https://love.ufutx.com/wechatoauth'
       }
       this.getData()
       this.getRed()

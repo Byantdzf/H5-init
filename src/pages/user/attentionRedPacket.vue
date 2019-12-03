@@ -4,7 +4,7 @@
       <div class="z_head">
         <!--关注公众号领红包-->
         <div class="z_head_pic">
-          <p>关注公众号领红包{{deblocking}}</p>
+          <p>关注公众号领红包</p>
         </div>
         <div class="z_head_box">
           <!--未开启-->
@@ -123,8 +123,6 @@
       },
       getData () {
         let vm = this
-        let href = 'https://love.ufutx.com/mobile/#/attentionRedPacket' + '?form_openid=' + vm.oppen_id
-        vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你抢红包`)
         vm.$http.get(`/redinspect?openid=${this.open_id}`)
           .then(({code}) => {
             if (code === '0') {
@@ -147,6 +145,8 @@
         vm.$http.get(`/sharelist?openid=${this.test}`)
           .then(({data}) => {
             vm.shareList = data.list.data
+            let href = 'https://love.ufutx.com/mobile/#/attentionRedPacket' + '?form_openid=' + vm.oppen_id
+            vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你抢红包`)
             console.log(vm.shareList, '456')
           })
           .catch((error) => {
@@ -189,8 +189,9 @@
       this.form_openid = obj.fromopenid ? obj.fromopenid : ''
       if (!this.open_id) {
         window.location.href = 'https://love.ufutx.com/wechatoauth'
-        // window.location.href = 'https://wlj.test.com/wechatoauth'
+        // window.location.href = 'http://wlj.test/wechatoauth'
       }
+      console.log(this.open_id, 'open_id6456456464')
       this.getData()
       this.getShare()
     }

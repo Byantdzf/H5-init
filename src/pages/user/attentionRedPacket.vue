@@ -3,14 +3,17 @@
     <div class="z_box_bg">
       <div class="z_head">
         <!--关注公众号领红包-->
-        <img src="https://images.ufutx.com/201911/28/a476514032105b403e95b93412a2a339.png" alt="" class="z_head_pic">
+        <div class="z_head_pic">
+          <p>关注公众号领红包</p>
+        </div>
+        <!--<img src="https://images.ufutx.com/201911/28/a476514032105b403e95b93412a2a339.png" alt="" class="z_head_pic">-->
         <div class="z_head_box">
           <!--未开启-->
           <div v-if="deblocking == 0" class="modal-amin">
             <img  src="https://images.ufutx.com/201911/28/e1097f3ec06f485a67564db016a48622.png" alt="" class="z_head_pic1"  :class="image_amin?'image_amin':''">
             <div class="attention_box">
-              <p class="attention_text" @click="onPacket" v-if="attention == 1">点击领取</p>
-              <p class="attention_text" @click="toastText('请先关注公众号...')" v-else>点击领取</p>
+              <p class="attention_text" @click="onPacket" v-if="attention == 0">点击领取</p>
+              <p class="attention_text" @click="toastText('请先关注公众号')" v-else>点击领取</p>
             </div>
           </div>
           <!--开启-->
@@ -24,7 +27,10 @@
       </div>
       <div class="z_end">
         <!--分享赢红包-->
-        <img src="https://images.ufutx.com/201911/28/f22fc6094272816a8f5fc941ad767cfc.png" alt="" class="z_end_pic">
+        <div class="z_end_pic">
+          <p>更多红包等你赢</p>
+        </div>
+        <!--<img src="https://images.ufutx.com/201911/28/f22fc6094272816a8f5fc941ad767cfc.png" alt="" class="z_end_pic">-->
         <div class="z_share_box">
           <div class="font28 exclusive">专属活动</div>
           <div class="z_share_within">
@@ -35,7 +41,7 @@
               <button class="z_bottom flo_r" @click="showshare">立即分享</button>
               <!--<img src="https://images.ufutx.com/201911/28/ab5d63359906c5d2586ece01468a6e4d.png" alt="" class="z_bottom_pic flo_r" @click="showshare">-->
               <div class="z_share_text">
-                <p class="text_invite">邀请好友得红包</p>
+                <p class="text_invite">参与红包传递</p>
                 <p class="text_wait">10万红包等你拿</p>
               </div>
             </div>
@@ -113,7 +119,7 @@
         let vm = this
         let href = 'http://localhost:8081/#/attentionRedPacket' + '?form_openid=' + vm.oppen_id
         vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你抢红包`)
-        vm.$http.get(`/receivered?openid=${this.oppen_id}&fromopenid=${this.form_openid}`)
+        vm.$http.get(`/redinspect?openid=${this.oppen_id}`)
           .then(({data}) => {
           })
           .catch((error) => {
@@ -147,7 +153,7 @@
       this.oppen_id = obj.openid
       this.form_openid = obj.fromopenid ? obj.fromopenid : ''
       if (!this.oppen_id) {
-        window.location.href = 'http://love.cn/wechatoauth'
+        // window.location.href = 'http://love.cn/wechatoauth'
       }
       this.getData()
     }
@@ -165,13 +171,25 @@
     background: url(https://images.ufutx.com/201912/02/230ec6d3c7e284b178b1bf898851990d.png) center top no-repeat;
     background-size: cover;
     .z_head{
-      padding-top: 44%;
+      padding-top: 42%;
       img{
         display: block;
       }
       .z_head_pic{
+        position: relative;
         width: 412px;
+        height: 80px;
+        line-height: 80px;
+        text-align: center;
+        border-radius: 10px;
+        background-image: linear-gradient(#fff, #fee0a4);
         margin: 0 auto;
+        p{
+          color: #542326;
+          font-weight: bold;
+          letter-spacing: 3px;
+          font-size: 32px;
+        }
       }
       .z_head_box{
         width: 686px;
@@ -198,7 +216,8 @@
             margin: 0 auto;
             border-radius: 10px;
             .attention_text{
-              color: #fff;
+              color: #fd5d37;
+              font-weight: bold;
               letter-spacing: 2px;
               font-size: 28px
             }
@@ -295,9 +314,20 @@
     margin-top: 8%;
     margin-bottom: 5%;
     .z_end_pic{
+      position: relative;
       width: 412px;
-      display: block;
+      height: 80px;
+      line-height: 80px;
+      text-align: center;
+      border-radius: 10px;
+      background-image: linear-gradient(#fff, #fee0a4);
       margin: 0 auto;
+      p{
+        color: #542326;
+        letter-spacing: 3px;
+        font-weight: bold;
+        font-size: 32px;
+      }
     }
     .z_share_box{
       width: 686px;

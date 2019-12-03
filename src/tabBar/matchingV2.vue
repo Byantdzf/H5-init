@@ -2,7 +2,7 @@
   <div>
     <div class="tab" v-cloak>
       <div v-if="idx === 0">
-        <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView" >
+        <mescroll-vue ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit" class="scrollView" id="z_box_top">
           <div v-if="listNum > 0" class="z_box">
             <div v-if="type === 'single'">
               <div class="btn" :class="{active:index==idx}" v-for="(val,index) in btnText" @click="selTab(index)">{{val}}</div>
@@ -195,6 +195,17 @@
     mounted () {
       this.paas = localStorage.getItem('paasName')
       this.gain()
+    },
+    beforeRouteLeave (to, from, next) {
+      this.scrollTop = document.querySelector('#z_box_top').scrollTop
+      // 保存滚动条元素div的scrollTop值
+      next()
+    },
+    beforeRouteEnter (to, from, next) {
+      next(vm => {
+        document.querySelector('#z_box_top').scrollTop = vm.scrollTop
+        // 为div元素重新设置保存的scrollTop值
+      })
     }
   }
 </script>

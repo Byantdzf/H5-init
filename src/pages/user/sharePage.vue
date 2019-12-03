@@ -218,7 +218,7 @@
     },
     methods: {
       gotoLink () {
-        window.location.href = 'https://mp.weixin.qq.com/s/-73opJk-qoTCgjLVFxFVQg '
+        window.location.href = 'https://mp.weixin.qq.com/s/-73opJk-qoTCgjLVFxFVQg'
       },
       toastText (title) {
         $toastWarn(title)
@@ -385,6 +385,7 @@
     mounted () {
       // this.information.is_register = this.$route.query.is_register
       let officialOpenid = localStorage.getItem('official_openid') ? localStorage.getItem('official_openid') : this.$route.query.official_openid
+      console.log(officialOpenid, '123')
       this.information.official_openid = officialOpenid
       console.log(this.information)
       this.getData()  // 数据

@@ -61,12 +61,12 @@
       <!--</swiper-item>-->
       <!--</swiper>-->
       <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
-        <div class="image" v-bind:style="{backgroundImage:'url(' + item.photo + ')'}"></div>
+        <div class="image" v-bind:style="{backgroundImage:'url(' + item.other_user.photo + ')'}"></div>
         <p style="margin-top: 8px;">
-          <span class="font32">{{item.name}}</span>
-          <span class="font20 colorb">{{item.age? item.age+ '岁 ': ''}} {{item.stature? '· ' +item.stature +'cm': ''}} {{item.city? '· '+item.city: ''}}</span>
+          <span class="font32">{{item.other_user.name}}</span>
+          <span class="font20 colorb">{{item.other_user.age? item.other_user.age+ '岁 ': ''}} {{item.other_user.profile_courtship.stature? '· ' +item.other_user.profile_courtship.stature +'cm': ''}} {{item.other_user.profile_courtship.city? '· '+item.other_user.profile_courtship.city: ''}}</span>
         </p>
-        <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.introduction}}</p>
+        <p class="font26 color6 ellipsis_1" style="margin-top: 4px">{{item.other_user.profile_courtship.introduction}}</p>
       </div>
       <div class="height160"></div>
     </mescroll-vue>
@@ -284,7 +284,7 @@
                 mescroll.endSuccess(data.data.length)
               })
             }
-            console.log(vm.list)
+            console.log(vm.list, '123')
             vm.getMessageNum()
           }).catch((error) => {
             console.log(error)

@@ -6,17 +6,18 @@
         <img src="https://images.ufutx.com/201911/28/a476514032105b403e95b93412a2a339.png" alt="" class="z_head_pic">
         <div class="z_head_box">
           <!--未开启-->
-          <div v-if="deblocking == 0" @click="onPacket" class="modal-amin">
+          <div v-if="deblocking == 0" class="modal-amin">
             <img  src="https://images.ufutx.com/201911/28/e1097f3ec06f485a67564db016a48622.png" alt="" class="z_head_pic1"  :class="image_amin?'image_amin':''">
             <div class="attention_box">
-              <p class="attention_text">点击领取</p>
+              <p class="attention_text" @click="onPacket" v-if="attention == 1">点击领取</p>
+              <p class="attention_text" @click="toastText('请先关注公众号...')" v-else>点击领取</p>
             </div>
           </div>
           <!--开启-->
-          <div v-else class="modal-amin" @click="toastText('你已领取过啦，快去分享吧...')">
+          <div v-else class="modal-amin">
             <img src="https://images.ufutx.com/201911/29/306caf03f3bec2bb282509ae75ba5d8b.png" alt="">
             <div class="attention_box">
-              <p class="attention_text">已领取</p>
+              <p class="attention_text" @click="toastText('你已领取过啦，快去分享吧...')">已领取</p>
             </div>
           </div>
         </div>
@@ -57,7 +58,10 @@
         <div class="modal-vessel">
           <div v-if="!showPic">
             <img src="https://images.ufutx.com/201911/28/c36ade1d37a2bb088343568428490042.png" alt="">
-            <p class="colorff text-center" style="margin: -120px auto 0 auto;font-size: 30px;font-weight: bold">￥0.56<span>元</span></p>
+            <div>
+              <p class="colorff text-center gain_money">￥0.56<span>元</span></p>
+              <button class="confirm" @click="hideModal">确定</button>
+            </div>
           </div>
         </div>
       </div>
@@ -87,13 +91,15 @@
     data () {
       return {
         title: '福恋',
-        form_openid: '123',
+        form_openid: '',
+        attention: 1,
         showShare: false, // 指引分享
         showPic: false, // 遮罩红包图片
         image_amin: true, // 红包开启后状态
         showModalTimeUp: false, // 弹框
         deblocking: 0, // 开启红包
-        gain_money: 0.18
+        gain_money: 0.18,
+        oppen_id: ''
       }
     },
     watch: {
@@ -105,10 +111,10 @@
       },
       getData () {
         let vm = this
-        vm.$http.get(`http://love.cn/wechatoauth`)
+        let href = 'http://localhost:8081/#/attentionRedPacket' + '?form_openid=' + vm.oppen_id
+        vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你抢红包`)
+        vm.$http.get(`/receivered?openid=${this.oppen_id}&fromopenid=${this.form_openid}`)
           .then(({data}) => {
-            let href = window.location.href + '?form_openid=' + vm.form_openid
-            vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你抢红包`)
           })
           .catch((error) => {
             console.log(error)
@@ -129,8 +135,21 @@
       }
     },
     mounted () {
+      let loc = location.href
+      let obj = {}
+      let n2 = loc.indexOf('?') + 1
+      let str = loc.substr(n2)
+      let arr = str.split('&')
+      for (let i = 0; i < arr.length; i++) {
+        var arr2 = arr[i].split('=')
+        obj[arr2[0]] = arr2[1]
+      }
+      this.oppen_id = obj.openid
+      this.form_openid = obj.fromopenid ? obj.fromopenid : ''
+      if (!this.oppen_id) {
+        window.location.href = 'http://love.cn/wechatoauth'
+      }
       this.getData()
-      // window.location.href = 'http://love.cn/wechatoauth'
     }
   }
 </script>
@@ -158,7 +177,7 @@
         width: 686px;
         height: 380px;
         border-radius: 10px;
-        background-image: url(https://images.ufutx.com/201912/03/9ebb19bbc98f7f0c5aa39d2cc7d8499c.png);
+        background-image: url(https://images.ufutx.com/201912/03/467c8520d88e521c3a22ad747c4f8a20.png);
         background-size: cover;
         background-repeat: no-repeat;
         margin: -30px auto 0 auto;
@@ -362,13 +381,38 @@
     right: 12%;
   }
   .modal-vessel{
+    position: relative;
     animation: myMove 300ms linear;
     animation-fill-mode: forwards;
     img {
       width: 80%;
+      position: absolute;
+      top: 300px;
+      left: 12%;
       display: block;
-      padding-top: 46%;
-      margin: auto;
+    }
+    .gain_money{
+      position: absolute;
+      top: 630px;
+      left: 39%;
+      font-size: 42px;
+      font-weight: bold
+    }
+    .confirm{
+      position: absolute;
+      top: 740px;
+      left: 42%;
+      width: 140px;
+      border-radius: 10px;
+      border: none;
+      color: #fff;
+      letter-spacing: 5px;
+      font-size: 28px;
+      font-weight: bold;
+      background-color: #fbda30;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
     }
   }
 </style>

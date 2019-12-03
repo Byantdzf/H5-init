@@ -142,7 +142,7 @@
       },
       getShare () {
         let vm = this
-        vm.$http.get(`/sharelist?openid=${this.test}`)
+        vm.$http.get(`/sharelist?openid=${this.open_id}`)
           .then(({data}) => {
             vm.shareList = data.list.data
             let href = 'https://love.ufutx.com/mobile/#/attentionRedPacket' + '?form_openid=' + vm.oppen_id

@@ -50,11 +50,11 @@
               </div>
             </div>
             <div class="z_share_user">
-              <div style="border-bottom: 1px solid #fee1a8;overflow: hidden">
+              <div style="border-bottom: 1px solid #fee1a8;overflow: hidden" v-for="item,index in shareList">
                 <!--用户头像-->
-                <img src="http://b-ssl.duitang.com/uploads/item/201508/28/20150828005332_jGE5c.png" alt="" class="z_user_photo flo_l">
-                <p style="font-weight: bold;color: #333333;margin-top: 6%" class="flo_l font30 user_text">邓智锋</p>
-                <p class="flo_r acquisition_text">获得￥{{gain_money}}</p>
+                <img :src="item.from_wechat.avatar" alt="" class="z_user_photo flo_l">
+                <p style="font-weight: bold;color: #333333;margin-top: 6%" class="flo_l font30 user_text">{{item.from_wechat.nickname}}</p>
+                <p class="flo_r acquisition_text">获得￥{{item.amount}}</p>
               </div>
             </div>
           </div>
@@ -109,7 +109,9 @@
         showModalTimeUp: false, // 弹框
         deblocking: '', // 开启红包
         gain_money: 0.18,
-        open_id: ''
+        open_id: '',
+        shareList: [],
+        test: 'ou713vx7f8dkEO3gOXRI2JeEcsf8'
       }
     },
     watch: {
@@ -125,11 +127,11 @@
         vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你抢红包`)
         vm.$http.get(`/redinspect?openid=${this.open_id}`)
           .then(({code}) => {
-            if (code == 0) {
+            if (code === '0') {
               this.deblocking = '0'
-            } else if (code == 4) {
+            } else if (code === '4') {
               this.deblocking = '1'
-            } else if (code == 5) {
+            } else if (code === '5') {
               this.deblocking = '2'
             }
           })
@@ -140,6 +142,17 @@
       hideShare (value) {
         this.showShare = value
       },
+      getShare () {
+        let vm = this
+        vm.$http.get(`/sharelist?openid=${this.test}`)
+          .then(({data}) => {
+            vm.shareList = data.list.data
+            console.log(vm.shareList, '456')
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      },
       getRed () {
         let vm = this
         vm.$http.get(`/receivered?openid=${this.open_id}&fromopenid=${this.form_openid}`)
@@ -149,9 +162,6 @@
           .catch((error) => {
             console.log(error)
           })
-      },
-      departAttention () {
-        window.location.href = 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAwMTAzNTAwMA==#wechat_redirect'
       },
       onPacket () {
         this.getRed()
@@ -178,10 +188,11 @@
       this.open_id = obj.openid
       this.form_openid = obj.fromopenid ? obj.fromopenid : ''
       if (!this.open_id) {
-        window.location.href = 'https://love.ufutx.com/wechatoauth'
+        // window.location.href = 'https://love.ufutx.com/wechatoauth'
+        window.location.href = 'https://wlj.test.com/wechatoauth'
       }
       this.getData()
-      this.getRed()
+      this.getShare()
     }
   }
 </script>

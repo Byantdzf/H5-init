@@ -14,7 +14,7 @@
       <div class="main-share" @click="showSharefn">
         <img src="https://images.ufutx.com/201907/20/8e47e7087d1ecd592028786df6dbc60f.png" alt="">
       </div>
-      <div class="groupicon" >
+      <div class="groupicon">
         <div class="item-icon" v-for="item,index in list" @click="goToDetail(item)"  >
           <div class="logo" v-bind:style="{backgroundImage:'url(' + item.logo + ')'}" ></div>
           <div class="font22 color6 title">{{item.title}}</div>

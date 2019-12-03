@@ -1,0 +1,350 @@
+<template>
+  <div>
+    <div class="z_box_bg">
+      <div class="z_head">
+        <!--关注公众号领红包-->
+        <img src="https://images.ufutx.com/201911/28/a476514032105b403e95b93412a2a339.png" alt="" class="z_head_pic">
+        <div class="z_head_box">
+          <!--未开启-->
+          <div v-if="deblocking == 0" @click="onPacket" class="modal-amin">
+            <img  src="https://images.ufutx.com/201911/28/e1097f3ec06f485a67564db016a48622.png" alt="" class="z_head_pic1">
+            <p class="attention_text">立即关注</p>
+          </div>
+          <!--开启-->
+          <div v-else @click="onPacket" class="modal-amin">
+            <img src="https://images.ufutx.com/201911/29/306caf03f3bec2bb282509ae75ba5d8b.png" alt="" :class="image_amin?'image_amin':''" @click.stop="onPacket">
+            <p class="attention_text">立即关注</p>
+          </div>
+        </div>
+      </div>
+      <div class="z_end">
+        <!--分享赢红包-->
+        <img src="https://images.ufutx.com/201911/28/f22fc6094272816a8f5fc941ad767cfc.png" alt="" class="z_end_pic">
+        <div class="z_share_box">
+          <div class="font28 exclusive">专属活动</div>
+          <div class="z_share_within">
+            <div style="border-bottom: 1px solid #fee1a8;overflow: hidden">
+              <!--立即分享ICON-->
+              <img src="https://images.ufutx.com/201911/28/1cdf9defb4efad7b232631758ac4629e.png" alt="" class="z_share_pic flo_l">
+              <!--立即分享bottom-->
+              <button class="z_bottom flo_r" @click="showshare">立即分享</button>
+              <!--<img src="https://images.ufutx.com/201911/28/ab5d63359906c5d2586ece01468a6e4d.png" alt="" class="z_bottom_pic flo_r" @click="showshare">-->
+              <div class="z_share_text">
+                <p class="text_invite">邀请好友得红包</p>
+                <p class="text_wait">10万红包等你拿</p>
+              </div>
+            </div>
+            <div class="z_share_user">
+              <div style="border-bottom: 1px solid #fee1a8;overflow: hidden">
+                <!--用户头像-->
+                <img src="http://b-ssl.duitang.com/uploads/item/201508/28/20150828005332_jGE5c.png" alt="" class="z_user_photo flo_l">
+                <p style="font-weight: bold;color: #333333;margin-top: 6%" class="flo_l font30 user_text">邓智锋</p>
+                <p class="flo_r acquisition_text">获得￥0.15</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="vessel" v-if="showModalTimeUp">
+        <!--弹框红包取消icon-->
+        <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close"
+             @click="hideModal">
+        <!--弹框红包-->
+        <div class="modal-vessel">
+          <div v-if="!showPic">
+            <img src="https://images.ufutx.com/201911/28/c36ade1d37a2bb088343568428490042.png" alt="">
+            <p class="colorff text-center" style="margin: -120px auto 0 auto;font-size: 30px;font-weight: bold">￥0.56<span>元</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <shareModal :show.sync="showShare" @hideModal="hideShare"></shareModal>
+  </div>
+</template>
+
+<script>
+  // import {$loadingShow, $loadingHide, $toastSuccess, $toastWarn} from '../../config/util'
+  import shareModal from '../../components/shareMoadl'
+  import CountDown from 'vue2-countdown'
+
+  export default {
+    name: 'attentionRedPacket',
+    components: {shareModal, CountDown},
+    directives: {
+      focus: { // 自定义指令 获取焦点
+        inserted (el, {value}) {
+          if (value) {
+            el.focus()
+          }
+        }
+      }
+    },
+    data () {
+      return {
+        title: '福恋',
+        form_openid: '123',
+        showShare: false, // 指引分享
+        showPic: false, // 遮罩红包图片
+        image_amin: true, // 红包开启后状态
+        showModalTimeUp: false, // 弹框
+        deblocking: 0 // 开启红包
+      }
+    },
+    watch: {
+
+    },
+    methods: {
+      getdata () {
+        let vm = this
+        let href = window.location.href + '?form_openid=' + vm.form_openid
+        vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你抢红包`)
+      },
+      hideShare (value) {
+        this.showShare = value
+      },
+      onPacket () {
+        this.showModalTimeUp = true
+      },
+      showshare () {
+        this.showShare = true
+      },
+      hideModal () {
+        this.showModalTimeUp = false
+      }
+    },
+    mounted () {
+      this.getdata()
+      console.log(this.$route.query)
+    }
+  }
+</script>
+
+<style lang="less">
+  @import '../../assets/style/csshake.css';
+  body{
+    background: #ff1e6f;
+  }
+  .z_box_bg{
+    width: 100vw;
+    height: 100vh;
+    background: url(https://images.ufutx.com/201912/02/230ec6d3c7e284b178b1bf898851990d.png) center top no-repeat;
+    background-size: cover;
+    .z_head{
+      padding-top: 44%;
+      img{
+        display: block;
+      }
+      .z_head_pic{
+        width: 412px;
+        margin: 0 auto;
+      }
+      .z_head_box{
+        width: 686px;
+        height: 380px;
+        border-radius: 10px;
+        background-image: url(https://images.ufutx.com/201912/02/8528b91a6e5c60393b2672e547cc71b6.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+        margin: -30px auto 0 auto;
+        .modal-amin{
+          animation: myMove 300ms linear;
+          animation-fill-mode: forwards;
+          img{
+            width: 240px;
+            padding-top: 2%;
+            margin: 0 auto;
+          }
+          .attention_text{
+            color: #fff;
+            text-align: center;
+            letter-spacing: 2px;
+            font-size: 32px
+          }
+          .image_amin {
+            animation:move 3s 0s infinite;
+            -webkit-animation:move 3s 0s infinite;
+            transform-origin:bottom;
+            -webkit-transform-origin:bottom;
+            display:block;
+            @keyframes move
+            {
+              0%, 65%{
+                -webkit-transform:rotate(0deg);
+                transform:rotate(0deg);
+              }
+              70% {
+                -webkit-transform:rotate(6deg);
+                transform:rotate(6deg);
+              }
+              75% {
+                -webkit-transform:rotate(-6deg);
+                transform:rotate(-6deg);
+              }
+              80% {
+                -webkit-transform:rotate(6deg);
+                transform:rotate(6deg);
+              }
+              85% {
+                -webkit-transform:rotate(-6deg);
+                transform:rotate(-6deg);
+              }
+              90% {
+                -webkit-transform:rotate(6deg);
+                transform:rotate(6deg);
+              }
+              95% {
+                -webkit-transform:rotate(-6deg);
+                transform:rotate(-6deg);
+              }
+              100% {
+                -webkit-transform:rotate(0deg);
+                transform:rotate(0deg);
+              }
+            }
+
+            @-webkit-keyframes move
+            {
+              0%, 65%{
+                -webkit-transform:rotate(0deg);
+                transform:rotate(0deg);
+              }
+              70% {
+                -webkit-transform:rotate(6deg);
+                transform:rotate(6deg);
+              }
+              75% {
+                -webkit-transform:rotate(-6deg);
+                transform:rotate(-6deg);
+              }
+              80% {
+                -webkit-transform:rotate(6deg);
+                transform:rotate(6deg);
+              }
+              85% {
+                -webkit-transform:rotate(-6deg);
+                transform:rotate(-6deg);
+              }
+              90% {
+                -webkit-transform:rotate(6deg);
+                transform:rotate(6deg);
+              }
+              95% {
+                -webkit-transform:rotate(-6deg);
+                transform:rotate(-6deg);
+              }
+              100% {
+                -webkit-transform:rotate(0deg);
+                transform:rotate(0deg);
+              }
+            }
+          }
+        }
+      }
+      .z_head_pic1{
+        width: 240px;
+        padding-top: 2%;
+        margin: 0 auto;
+      }
+    }
+  }
+  .z_end{
+    position: relative;
+    margin-top: 8%;
+    margin-bottom: 5%;
+    .z_end_pic{
+      width: 412px;
+      display: block;
+      margin: 0 auto;
+    }
+    .z_share_box{
+      width: 686px;
+      height: 650px;
+      border-radius: 10px;
+      background-color: #fff;
+      margin: -30px auto 0 auto;
+      .exclusive{
+        width: 100%;
+        text-align: center;
+        padding: 42px 0 10px 0;color: #666666
+      }
+      .z_share_within{
+        width: 644px;
+        height: 520px;
+        border-radius: 10px;
+        background-color: #fffdf6;
+        border: 1px solid #fee1a8;
+        margin: 0 auto;
+        .z_share_pic{
+          width: 98px;
+          display: block;
+          margin: 3% 10px 0 20px;
+        }
+        .z_bottom{
+          width: 156px;
+          height: 56px;
+          font-size: 20px;
+          background-color: #ff416a;
+          color: #fff;
+          border-radius: 10px;
+          border: none;
+          margin: 7% 30px 0 0;
+        }
+        .z_share_text{
+          margin: 5% 0 30px 0;
+          .text_invite{
+            font-size: 26px;
+            font-weight: bold;
+            color: #333333
+          }
+          .text_wait{
+            font-size: 20px;
+            color: #666666
+          }
+        }
+        .z_share_user{
+          width: 100%;
+          height: 380px;
+          overflow: auto;
+          .z_user_photo{
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 3% 20px 2% 30px;
+          }
+          .acquisition_text{
+            font-size: 26px;
+            color: #ff416a;
+            margin-top: 6%;
+            margin-right: 36px;
+            font-weight: bold
+          }
+        }
+      }
+    }
+  }
+  .vessel{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, .7);
+    z-index: 99;
+  }
+  .close {
+    width: 60px;
+    position: absolute;
+    top: 15%;
+    right: 12%;
+  }
+  .modal-vessel{
+    animation: myMove 300ms linear;
+    animation-fill-mode: forwards;
+    img {
+      width: 80%;
+      display: block;
+      padding-top: 46%;
+      margin: auto;
+    }
+  }
+</style>

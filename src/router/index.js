@@ -57,6 +57,9 @@ export default new Router({
     {
       path: '/matchingV2',
       name: 'matchingV2',
+      meta: {
+        keepAlive: true// 需要被缓存
+      },
       component: (resolve) => require(['@/tabBar/matchingV2'], resolve)
     },
     {
@@ -122,6 +125,9 @@ export default new Router({
     {
       path: '/goldmatching/:id', // 大数据匹配
       name: 'goldmatching',
+      meta: {
+        keepAlive: true// 需要被缓存
+      },
       component: (resolve) => require(['@/pages/user/goldmatching'], resolve)
     },
     {
@@ -350,7 +356,11 @@ export default new Router({
       path: '/shareList',
       name: 'sharelist',
       component: (resolve) => require(['@/pages/user/shareList'], resolve)
+    },
+    { // 关注领红包
+      path: '/attentionRedPacket',
+      name: 'attentionRedPacket',
+      component: (resolve) => require(['@/pages/user/attentionRedPacket'], resolve)
     }
-
   ]
 })

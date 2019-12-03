@@ -278,7 +278,7 @@
     }
 
     .matching{
-      padding: 0 30px 16px 26px;
+      padding: 0 30px 16px 22px;
     }
 
     .introduction, .basics {

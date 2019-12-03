@@ -188,8 +188,8 @@
       this.open_id = obj.openid
       this.form_openid = obj.fromopenid ? obj.fromopenid : ''
       if (!this.open_id) {
-        // window.location.href = 'https://love.ufutx.com/wechatoauth'
-        window.location.href = 'https://wlj.test.com/wechatoauth'
+        window.location.href = 'https://love.ufutx.com/wechatoauth'
+        // window.location.href = 'https://wlj.test.com/wechatoauth'
       }
       this.getData()
       this.getShare()

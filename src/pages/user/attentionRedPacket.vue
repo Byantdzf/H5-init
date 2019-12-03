@@ -4,20 +4,24 @@
       <div class="z_head">
         <!--关注公众号领红包-->
         <div class="z_head_pic">
-          <p>关注公众号领红包</p>
+          <p>关注公众号领红包{{deblocking}}</p>
         </div>
-        <!--<img src="https://images.ufutx.com/201911/28/a476514032105b403e95b93412a2a339.png" alt="" class="z_head_pic">-->
         <div class="z_head_box">
           <!--未开启-->
-          <div v-if="deblocking == 0" class="modal-amin">
+          <div v-if="deblocking == 0"  class="modal-amin">
             <img  src="https://images.ufutx.com/201911/28/e1097f3ec06f485a67564db016a48622.png" alt="" class="z_head_pic1"  :class="image_amin?'image_amin':''">
             <div class="attention_box">
-              <p class="attention_text" @click="onPacket" v-if="attention == 0">点击领取</p>
-              <p class="attention_text" @click="toastText('请先关注公众号')" v-else>点击领取</p>
+              <p class="attention_text" @click="onPacket">点击领取</p>
+            </div>
+          </div>
+          <div class="modal-amin" v-if="deblocking == 1">
+            <img src="https://images.ufutx.com/201912/03/36179c8d52af5857afebee79bf605c61.jpeg" alt="" class="z_head_pic1">
+            <div class="attention_box">
+              <p class="attention_text">长按识别</p>
             </div>
           </div>
           <!--开启-->
-          <div v-else class="modal-amin">
+          <div v-if="deblocking == 2" class="modal-amin">
             <img src="https://images.ufutx.com/201911/29/306caf03f3bec2bb282509ae75ba5d8b.png" alt="">
             <div class="attention_box">
               <p class="attention_text" @click="toastText('你已领取过啦，快去分享吧...')">已领取</p>
@@ -98,14 +102,14 @@
       return {
         title: '福恋',
         form_openid: '',
-        attention: 1,
+        attention: '', // 关注状态
         showShare: false, // 指引分享
         showPic: false, // 遮罩红包图片
         image_amin: true, // 红包开启后状态
         showModalTimeUp: false, // 弹框
-        deblocking: 0, // 开启红包
+        deblocking: '', // 开启红包
         gain_money: 0.18,
-        oppen_id: ''
+        open_id: ''
       }
     },
     watch: {
@@ -119,8 +123,15 @@
         let vm = this
         let href = 'http://localhost:8081/#/attentionRedPacket' + '?form_openid=' + vm.oppen_id
         vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你抢红包`)
-        vm.$http.get(`/redinspect?openid=${this.oppen_id}`)
-          .then(({data}) => {
+        vm.$http.get(`/redinspect?openid=${this.open_id}`)
+          .then(({code}) => {
+            if (code == 0) {
+              this.deblocking = '0'
+            } else if (code == 4) {
+              this.deblocking = '1'
+            } else if (code == 5) {
+              this.deblocking = '2'
+            }
           })
           .catch((error) => {
             console.log(error)
@@ -129,7 +140,21 @@
       hideShare (value) {
         this.showShare = value
       },
+      getRed () {
+        let vm = this
+        vm.$http.get(`/receivered?openid=${this.open_id}&fromopenid=${this.form_openid}`)
+          .then(({data}) => {
+            console.log(data, '456')
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      },
+      departAttention () {
+        window.location.href = 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAwMTAzNTAwMA==#wechat_redirect'
+      },
       onPacket () {
+        this.getRed()
         this.showModalTimeUp = true
         this.deblocking = 1
       },
@@ -150,12 +175,13 @@
         var arr2 = arr[i].split('=')
         obj[arr2[0]] = arr2[1]
       }
-      this.oppen_id = obj.openid
+      this.open_id = obj.openid
       this.form_openid = obj.fromopenid ? obj.fromopenid : ''
-      if (!this.oppen_id) {
-        // window.location.href = 'http://love.cn/wechatoauth'
+      if (!this.open_id) {
+        window.location.href = 'http://wlj.test/wechatoauth'
       }
       this.getData()
+      this.getRed()
     }
   }
 </script>
@@ -204,7 +230,7 @@
           animation-fill-mode: forwards;
           img{
             width: 240px;
-            padding-top: 5%;
+            padding-top: 6%;
             margin: 0 auto;
           }
           .attention_box{
@@ -213,7 +239,7 @@
             background-color: #fbda30;
             line-height: 60px;
             text-align: center;
-            margin: 0 auto;
+            margin: 10px auto 0 auto;
             border-radius: 10px;
             .attention_text{
               color: #fd5d37;

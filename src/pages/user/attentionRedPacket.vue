@@ -157,7 +157,7 @@
         let vm = this
         vm.$http.get(`/receivered?openid=${this.open_id}&fromopenid=${this.form_openid}`)
           .then(({data}) => {
-            this.money = data.amount
+            this.money = parseFloat(data.amount).toFixed(2)
             console.log(this.money, '456')
           })
           .catch((error) => {

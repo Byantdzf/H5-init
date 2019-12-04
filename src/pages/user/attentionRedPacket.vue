@@ -152,13 +152,13 @@
         let vm = this
         vm.$http.get(`/receivered?openid=${this.open_id}&fromopenid=${this.form_openid}`)
           .then(({data}) => {
-            if (data.status === 0) {
+            if (data.status == 0) {
               this.money = parseFloat(data.msg).toFixed(2)
-            } else if (data.status === 1) {
-              $loadingShow('请先关注公众号...')
+            } else if (data.status == 1) {
+              $toastWarn('请先关注公众号...')
               this.deblocking = 1
             } else {
-              $loadingShow('您已领取过啦，快去分享吧...')
+              $toastWarn('您已领取过啦，快去分享吧...')
             }
           })
           .catch((error) => {

@@ -152,6 +152,7 @@
         let vm = this
         vm.$http.get(`/receivered?openid=${this.open_id}&fromopenid=${this.form_openid}`)
           .then(({data}) => {
+            console.log(data.status, '123')
             if (data.status == 0) {
               this.money = parseFloat(data.msg).toFixed(2)
             } else if (data.status == 1) {

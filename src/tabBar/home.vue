@@ -60,7 +60,7 @@
       <!--</div>-->
       <!--</swiper-item>-->
       <!--</swiper>-->
-      <div class="list-item" v-for="item in list" @click="routeToDetail(item.type, item.id)">
+      <div class="list-item" v-for="item in list" @click="routeToDetail(item.other_user.type, item.other_user.id)">
         <div class="image" v-bind:style="{backgroundImage:'url(' + item.other_user.photo + ')'}"></div>
         <p style="margin-top: 8px;">
           <span class="font32">{{item.other_user.name}}</span>

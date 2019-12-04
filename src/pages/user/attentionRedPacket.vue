@@ -3,27 +3,38 @@
     <div class="z_box_bg">
       <div class="z_head">
         <!--关注公众号领红包-->
-        <img src="https://images.ufutx.com/201911/28/a476514032105b403e95b93412a2a339.png" alt="" class="z_head_pic">
+        <div class="z_head_pic">
+          <p>关注公众号领红包</p>
+        </div>
         <div class="z_head_box">
           <!--未开启-->
-          <div v-if="deblocking == 0" @click="onPacket" class="modal-amin">
+          <div v-if="deblocking == 0"  class="modal-amin">
             <img  src="https://images.ufutx.com/201911/28/e1097f3ec06f485a67564db016a48622.png" alt="" class="z_head_pic1"  :class="image_amin?'image_amin':''">
             <div class="attention_box">
-              <p class="attention_text">点击领取</p>
+              <p class="attention_text" @click="onPacket">点击领取</p>
+            </div>
+          </div>
+          <div class="modal-amin" v-if="deblocking == 1">
+            <img src="https://images.ufutx.com/201912/03/36179c8d52af5857afebee79bf605c61.jpeg" alt="" class="z_head_pic1">
+            <div class="attention_box">
+              <p class="attention_text">长按识别</p>
             </div>
           </div>
           <!--开启-->
-          <div v-else class="modal-amin" @click="toastText('你已领取过啦，快去分享吧...')">
+          <div v-if="deblocking == 2" class="modal-amin">
             <img src="https://images.ufutx.com/201911/29/306caf03f3bec2bb282509ae75ba5d8b.png" alt="">
             <div class="attention_box">
-              <p class="attention_text">已领取</p>
+              <p class="attention_text" @click="toastText('你已领取过啦，快去分享吧...')">已领取</p>
             </div>
           </div>
         </div>
       </div>
       <div class="z_end">
         <!--分享赢红包-->
-        <img src="https://images.ufutx.com/201911/28/f22fc6094272816a8f5fc941ad767cfc.png" alt="" class="z_end_pic">
+        <div class="z_end_pic">
+          <p>更多红包等你赢</p>
+        </div>
+        <!--<img src="https://images.ufutx.com/201911/28/f22fc6094272816a8f5fc941ad767cfc.png" alt="" class="z_end_pic">-->
         <div class="z_share_box">
           <div class="font28 exclusive">专属活动</div>
           <div class="z_share_within">
@@ -32,18 +43,17 @@
               <img src="https://images.ufutx.com/201911/28/1cdf9defb4efad7b232631758ac4629e.png" alt="" class="z_share_pic flo_l">
               <!--立即分享bottom-->
               <button class="z_bottom flo_r" @click="showshare">立即分享</button>
-              <!--<img src="https://images.ufutx.com/201911/28/ab5d63359906c5d2586ece01468a6e4d.png" alt="" class="z_bottom_pic flo_r" @click="showshare">-->
               <div class="z_share_text">
-                <p class="text_invite">邀请好友得红包</p>
+                <p class="text_invite">参与红包传递</p>
                 <p class="text_wait">10万红包等你拿</p>
               </div>
             </div>
             <div class="z_share_user">
-              <div style="border-bottom: 1px solid #fee1a8;overflow: hidden">
+              <div style="border-bottom: 1px solid #fee1a8;overflow: hidden" v-for="item,index in shareList">
                 <!--用户头像-->
-                <img src="http://b-ssl.duitang.com/uploads/item/201508/28/20150828005332_jGE5c.png" alt="" class="z_user_photo flo_l">
-                <p style="font-weight: bold;color: #333333;margin-top: 6%" class="flo_l font30 user_text">邓智锋</p>
-                <p class="flo_r acquisition_text">获得￥{{gain_money}}</p>
+                <img :src="item.from_wechat.avatar" alt="" class="z_user_photo flo_l">
+                <p style="font-weight: bold;color: #333333;margin-top: 6%" class="flo_l font30 user_text">{{item.from_wechat.nickname}}</p>
+                <p class="flo_r acquisition_text">获得￥{{item.amount}}</p>
               </div>
             </div>
           </div>
@@ -54,10 +64,13 @@
         <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close"
              @click="hideModal">
         <!--弹框红包-->
-        <div class="modal-vessel">
-          <div v-if="!showPic">
+        <div class="modal-vessel" v-if="showPic">
+          <div>
             <img src="https://images.ufutx.com/201911/28/c36ade1d37a2bb088343568428490042.png" alt="">
-            <p class="colorff text-center" style="margin: -120px auto 0 auto;font-size: 30px;font-weight: bold">￥0.56<span>元</span></p>
+            <div>
+              <p v-if="money != ''" class="colorff text-center gain_money">￥{{money}}<span> 元</span></p>
+              <button class="confirm" @click="hideModal">确定</button>
+            </div>
           </div>
         </div>
       </div>
@@ -67,8 +80,8 @@
 </template>
 
 <script>
-  // import {$loadingShow, $loadingHide, $toastSuccess, $toastWarn} from '../../config/util'
-  import {$toastWarn} from '../../config/util'
+  import {$loadingShow, $loadingHide, $toastSuccess, $toastWarn} from '../../config/util'
+  // import {$toastWarn} from '../../config/util'
   import shareModal from '../../components/shareMoadl'
   import CountDown from 'vue2-countdown'
 
@@ -87,13 +100,17 @@
     data () {
       return {
         title: '福恋',
-        form_openid: '123',
+        form_openid: '',
+        attention: '', // 关注状态
         showShare: false, // 指引分享
         showPic: false, // 遮罩红包图片
-        image_amin: true, // 红包开启后状态
+        image_amin: true, // 红包左右抖动状态
         showModalTimeUp: false, // 弹框
-        deblocking: 0, // 开启红包
-        gain_money: 0.18
+        deblocking: '', // 开启红包
+        open_id: '',
+        money: '',
+        shareList: []
+        // test: 'ou713vx7f8dkEO3gOXRI2JeEcsf8'
       }
     },
     watch: {
@@ -105,10 +122,11 @@
       },
       getData () {
         let vm = this
-        vm.$http.get(`http://love.cn/wechatoauth`)
-          .then(({data}) => {
-            let href = window.location.href + '?form_openid=' + vm.form_openid
-            vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你抢红包`)
+        vm.$http.get(`/redinspect?openid=${this.open_id}`)
+          .then(({code, data}) => {
+            if (code === 0) {
+              this.deblocking = data.status
+            }
           })
           .catch((error) => {
             console.log(error)
@@ -117,9 +135,44 @@
       hideShare (value) {
         this.showShare = value
       },
+      getShare () {
+        let vm = this
+        vm.$http.get(`/sharelist?openid=${this.open_id}`)
+          .then(({data}) => {
+            vm.shareList = data.list.data
+            let href = `https://love.ufutx.com/mobile/#/attentionRedPacket?fromopenid=${this.open_id}`
+            vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你抢红包`)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      },
+      getRed () {
+        let vm = this
+        vm.form_openid = localStorage.getItem('official_openid')
+        vm.$http.get(`/receivered?openid=${this.open_id}&fromopenid=${this.form_openid}`)
+          .then(({data}) => {
+            if (data.status.toString() === '1') {
+              $toastWarn('请先关注公众号...')
+            } else if (data.status.toString() === '2') {
+              $toastWarn('您已领取过啦，快去分享吧...')
+              this.deblocking = 1
+            } else {
+              this.money = data.msg.toFixed(2)
+              setTimeout(() => {
+                vm.showPic = true
+                vm.image_amin = false
+              }, 800)
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      },
       onPacket () {
+        this.getRed()
         this.showModalTimeUp = true
-        this.deblocking = 1
+        this.deblocking = 2
       },
       showshare () {
         this.showShare = true
@@ -129,8 +182,26 @@
       }
     },
     mounted () {
+      let loc = location.href
+      let obj = {}
+      let n2 = loc.indexOf('?') + 1
+      let str = loc.substr(n2)
+      let arr = str.split('&')
+      for (let i = 0; i < arr.length; i++) {
+        var arr2 = arr[i].split('=')
+        obj[arr2[0]] = arr2[1]
+      }
+      this.open_id = obj.openid
+      this.form_openid = obj.fromopenid ? obj.fromopenid : ''
+      localStorage.setItem('official_openid', this.open_id)
+      // localStorage.setItem('from_official_openid', this.open_id)
+      if (!this.open_id) {
+        window.location.href = 'https://love.ufutx.com/wechatoauth'
+        // window.location.href = 'http://wlj.test/wechatoauth'
+      }
+      console.log(this.open_id, 'open_id6456456464')
       this.getData()
-      // window.location.href = 'http://love.cn/wechatoauth'
+      this.getShare()
     }
   }
 </script>
@@ -139,6 +210,7 @@
   @import '../../assets/style/csshake.css';
   body{
     background: #ff1e6f;
+    ::-webkit-scrollbar {display:none}
   }
   .z_box_bg{
     width: 100vw;
@@ -146,19 +218,31 @@
     background: url(https://images.ufutx.com/201912/02/230ec6d3c7e284b178b1bf898851990d.png) center top no-repeat;
     background-size: cover;
     .z_head{
-      padding-top: 44%;
+      padding-top: 42%;
       img{
         display: block;
       }
       .z_head_pic{
+        position: relative;
         width: 412px;
+        height: 80px;
+        line-height: 80px;
+        text-align: center;
+        border-radius: 10px;
+        background-image: linear-gradient(#fff, #fee0a4);
         margin: 0 auto;
+        p{
+          color: #542326;
+          font-weight: bold;
+          letter-spacing: 3px;
+          font-size: 32px;
+        }
       }
       .z_head_box{
         width: 686px;
         height: 380px;
         border-radius: 10px;
-        background-image: url(https://images.ufutx.com/201912/03/9ebb19bbc98f7f0c5aa39d2cc7d8499c.png);
+        background-image: url(https://images.ufutx.com/201912/03/467c8520d88e521c3a22ad747c4f8a20.png);
         background-size: cover;
         background-repeat: no-repeat;
         margin: -30px auto 0 auto;
@@ -167,7 +251,7 @@
           animation-fill-mode: forwards;
           img{
             width: 240px;
-            padding-top: 5%;
+            padding-top: 6%;
             margin: 0 auto;
           }
           .attention_box{
@@ -176,10 +260,11 @@
             background-color: #fbda30;
             line-height: 60px;
             text-align: center;
-            margin: 0 auto;
+            margin: 10px auto 0 auto;
             border-radius: 10px;
             .attention_text{
-              color: #fff;
+              color: #fd5d37;
+              font-weight: bold;
               letter-spacing: 2px;
               font-size: 28px
             }
@@ -276,9 +361,20 @@
     margin-top: 8%;
     margin-bottom: 5%;
     .z_end_pic{
+      position: relative;
       width: 412px;
-      display: block;
+      height: 80px;
+      line-height: 80px;
+      text-align: center;
+      border-radius: 10px;
+      background-image: linear-gradient(#fff, #fee0a4);
       margin: 0 auto;
+      p{
+        color: #542326;
+        letter-spacing: 3px;
+        font-weight: bold;
+        font-size: 32px;
+      }
     }
     .z_share_box{
       width: 686px;
@@ -362,13 +458,38 @@
     right: 12%;
   }
   .modal-vessel{
+    position: relative;
     animation: myMove 300ms linear;
     animation-fill-mode: forwards;
     img {
       width: 80%;
+      position: absolute;
+      top: 300px;
+      left: 12%;
       display: block;
-      padding-top: 46%;
-      margin: auto;
+    }
+    .gain_money{
+      position: absolute;
+      top: 630px;
+      left: 39%;
+      font-size: 42px;
+      font-weight: bold
+    }
+    .confirm{
+      position: absolute;
+      top: 740px;
+      left: 42%;
+      width: 140px;
+      border-radius: 10px;
+      border: none;
+      color: #fff;
+      letter-spacing: 5px;
+      font-size: 28px;
+      font-weight: bold;
+      background-color: #fbda30;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
     }
   }
 </style>

@@ -134,7 +134,7 @@
           <div class="flo_l colorb0 info font26 ellipsis_2 infoH">{{item.intro}}</div>
           <div class="flo_l color6 info font22" style="margin-top: 8px;">
             <img src="http://images.ufutx.com/201907/09/8506a4b082060d9a03dadec282cca3d2.png" alt="" class="icon">
-            入群会员：<span class="colorb0">{{item.member_num}}</span>
+            群会员：<span class="colorb0">{{item.member_num}}</span>
             <img src="http://images.ufutx.com/201907/09/b0fce85bcff15a7798fd96f7bd4a3085.png" alt="" class="icon"
                  style="margin-left: 8px;">
             <span class="colorb0">{{item.click_num}}</span>

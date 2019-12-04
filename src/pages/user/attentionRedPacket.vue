@@ -43,7 +43,6 @@
               <img src="https://images.ufutx.com/201911/28/1cdf9defb4efad7b232631758ac4629e.png" alt="" class="z_share_pic flo_l">
               <!--立即分享bottom-->
               <button class="z_bottom flo_r" @click="showshare">立即分享</button>
-              <!--<img src="https://images.ufutx.com/201911/28/ab5d63359906c5d2586ece01468a6e4d.png" alt="" class="z_bottom_pic flo_r" @click="showshare">-->
               <div class="z_share_text">
                 <p class="text_invite">参与红包传递</p>
                 <p class="text_wait">10万红包等你拿</p>
@@ -66,7 +65,7 @@
              @click="hideModal">
         <!--弹框红包-->
         <div class="modal-vessel">
-          <div v-if="!showPic">
+          <div v-if="!money">
             <img src="https://images.ufutx.com/201911/28/c36ade1d37a2bb088343568428490042.png" alt="">
             <div>
               <p class="colorff text-center gain_money">￥{{money}}<span>元</span></p>

@@ -65,10 +65,10 @@
              @click="hideModal">
         <!--弹框红包-->
         <div class="modal-vessel">
-          <div v-if="!money">
+          <div v-if="!showPic">
             <img src="https://images.ufutx.com/201911/28/c36ade1d37a2bb088343568428490042.png" alt="">
             <div>
-              <p class="colorff text-center gain_money">￥{{money}}<span>元</span></p>
+              <p v-if="money != ''" class="colorff text-center gain_money">￥{{money}}<span>元</span></p>
               <button class="confirm" @click="hideModal">确定</button>
             </div>
           </div>

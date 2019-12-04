@@ -188,6 +188,7 @@
       }
       this.open_id = obj.openid
       this.form_openid = obj.fromopenid ? obj.fromopenid : ''
+      localStorage.setItem('official_openid', this.open_id)
       if (!this.open_id) {
         window.location.href = 'https://love.ufutx.com/wechatoauth'
         // window.location.href = 'http://wlj.test/wechatoauth'

@@ -81,8 +81,8 @@
 </template>
 
 <script>
-  // import {$loadingShow, $loadingHide, $toastSuccess, $toastWarn} from '../../config/util'
-  import {$toastWarn} from '../../config/util'
+  import {$loadingShow, $loadingHide, $toastSuccess, $toastWarn} from '../../config/util'
+  // import {$toastWarn} from '../../config/util'
   import shareModal from '../../components/shareMoadl'
   import CountDown from 'vue2-countdown'
 
@@ -124,13 +124,9 @@
       getData () {
         let vm = this
         vm.$http.get(`/redinspect?openid=${this.open_id}`)
-          .then(({code}) => {
-            if (code === '0') {
-              this.deblocking = '0'
-            } else if (code === '4') {
-              this.deblocking = '1'
-            } else if (code === '5') {
-              this.deblocking = '2'
+          .then(({code, data}) => {
+            if (code === 0) {
+              this.deblocking = data.status
             }
           })
           .catch((error) => {
@@ -147,7 +143,6 @@
             vm.shareList = data.list.data
             let href = `https://love.ufutx.com/mobile/#/attentionRedPacket?fromopenid=${this.open_id}`
             vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你抢红包`)
-            console.log(vm.shareList, '456')
           })
           .catch((error) => {
             console.log(error)
@@ -157,8 +152,14 @@
         let vm = this
         vm.$http.get(`/receivered?openid=${this.open_id}&fromopenid=${this.form_openid}`)
           .then(({data}) => {
-            this.money = parseFloat(data.amount).toFixed(2)
-            console.log(this.money, '456')
+            if (data.status === 0) {
+              this.money = parseFloat(data.msg).toFixed(2)
+            } else if (data.status === 1) {
+              $loadingShow('请先关注公众号...')
+              this.deblocking = 1
+            } else {
+              $loadingShow('您已领取过啦，快去分享吧...')
+            }
           })
           .catch((error) => {
             console.log(error)
@@ -189,8 +190,8 @@
       this.open_id = obj.openid
       this.form_openid = obj.fromopenid ? obj.fromopenid : ''
       if (!this.open_id) {
-        window.location.href = 'https://love.ufutx.com/wechatoauth'
-        // window.location.href = 'http://wlj.test/wechatoauth'
+        // window.location.href = 'https://love.ufutx.com/wechatoauth'
+        window.location.href = 'http://wlj.test/wechatoauth'
       }
       console.log(this.open_id, 'open_id6456456464')
       this.getData()

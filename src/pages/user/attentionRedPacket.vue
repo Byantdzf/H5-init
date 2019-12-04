@@ -69,7 +69,7 @@
           <div v-if="!showPic">
             <img src="https://images.ufutx.com/201911/28/c36ade1d37a2bb088343568428490042.png" alt="">
             <div>
-              <p class="colorff text-center gain_money">￥0.56<span>元</span></p>
+              <p class="colorff text-center gain_money">￥{{money}}<span>元</span></p>
               <button class="confirm" @click="hideModal">确定</button>
             </div>
           </div>
@@ -105,13 +105,13 @@
         attention: '', // 关注状态
         showShare: false, // 指引分享
         showPic: false, // 遮罩红包图片
-        image_amin: true, // 红包开启后状态
+        image_amin: true, // 红包左右抖动状态
         showModalTimeUp: false, // 弹框
         deblocking: '', // 开启红包
-        gain_money: 0.18,
         open_id: '',
-        shareList: [],
-        test: 'ou713vx7f8dkEO3gOXRI2JeEcsf8'
+        money: '',
+        shareList: []
+        // test: 'ou713vx7f8dkEO3gOXRI2JeEcsf8'
       }
     },
     watch: {
@@ -145,7 +145,7 @@
         vm.$http.get(`/sharelist?openid=${this.open_id}`)
           .then(({data}) => {
             vm.shareList = data.list.data
-            let href = 'https://love.ufutx.com/mobile/#/attentionRedPacket' + '?form_openid=' + vm.oppen_id
+            let href = `https://love.ufutx.com/mobile/#/attentionRedPacket?fromopenid=${this.open_id}`
             vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你抢红包`)
             console.log(vm.shareList, '456')
           })
@@ -157,7 +157,8 @@
         let vm = this
         vm.$http.get(`/receivered?openid=${this.open_id}&fromopenid=${this.form_openid}`)
           .then(({data}) => {
-            console.log(data, '456')
+            this.money = data.amount
+            console.log(this.money, '456')
           })
           .catch((error) => {
             console.log(error)
@@ -166,7 +167,7 @@
       onPacket () {
         this.getRed()
         this.showModalTimeUp = true
-        this.deblocking = 1
+        this.deblocking = 2
       },
       showshare () {
         this.showShare = true
@@ -202,6 +203,7 @@
   @import '../../assets/style/csshake.css';
   body{
     background: #ff1e6f;
+    ::-webkit-scrollbar {display:none}
   }
   .z_box_bg{
     width: 100vw;

@@ -65,10 +65,10 @@
              @click="hideModal">
         <!--弹框红包-->
         <div class="modal-vessel">
-          <div v-if="!showPic">
+          <div v-if="showPic">
             <img src="https://images.ufutx.com/201911/28/c36ade1d37a2bb088343568428490042.png" alt="">
             <div>
-              <p v-if="money != ''" class="colorff text-center gain_money">￥{{money}}<span>元</span></p>
+              <p v-if="money != ''" class="colorff text-center gain_money">￥{{money}}<span> 元</span></p>
               <button class="confirm" @click="hideModal">确定</button>
             </div>
           </div>
@@ -149,6 +149,7 @@
       },
       getRed () {
         let vm = this
+        vm.form_openid = localStorage.getItem('from_official_openid')
         vm.$http.get(`/receivered?openid=${this.open_id}&fromopenid=${this.form_openid}`)
           .then(({data}) => {
             if (data.status.toString() === '1') {
@@ -157,7 +158,11 @@
               $toastWarn('您已领取过啦，快去分享吧...')
               this.deblocking = 1
             } else {
-              this.money = parseFloat(data.msg).toFixed(2)
+              this.money = data.msg.toFixed(2)
+              setTimeout(() => {
+                vm.showPic = true
+                vm.image_amin = false
+              }, 800)
             }
           })
           .catch((error) => {
@@ -189,6 +194,7 @@
       this.open_id = obj.openid
       this.form_openid = obj.fromopenid ? obj.fromopenid : ''
       localStorage.setItem('official_openid', this.open_id)
+      localStorage.setItem('from_official_openid', this.open_id)
       if (!this.open_id) {
         window.location.href = 'https://love.ufutx.com/wechatoauth'
         // window.location.href = 'http://wlj.test/wechatoauth'

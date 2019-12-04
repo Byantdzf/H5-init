@@ -99,7 +99,7 @@
     },
     data () {
       return {
-        title: '福恋',
+        title: '邀请你抢红包助脱单！',
         form_openid: '',
         attention: '', // 关注状态
         showShare: false, // 指引分享
@@ -141,7 +141,7 @@
           .then(({data}) => {
             vm.shareList = data.list.data
             let href = `https://love.ufutx.com/mobile/#/attentionRedPacket?fromopenid=${this.open_id}`
-            vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你抢红包`)
+            vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `分享给身边单身，无限红包还成就美好婚姻！`)
           })
           .catch((error) => {
             console.log(error)

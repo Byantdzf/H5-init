@@ -149,7 +149,7 @@
       },
       getRed () {
         let vm = this
-        vm.form_openid = localStorage.getItem('from_official_openid')
+        vm.form_openid = localStorage.getItem('official_openid')
         vm.$http.get(`/receivered?openid=${this.open_id}&fromopenid=${this.form_openid}`)
           .then(({data}) => {
             if (data.status.toString() === '1') {
@@ -194,7 +194,7 @@
       this.open_id = obj.openid
       this.form_openid = obj.fromopenid ? obj.fromopenid : ''
       localStorage.setItem('official_openid', this.open_id)
-      localStorage.setItem('from_official_openid', this.open_id)
+      // localStorage.setItem('from_official_openid', this.open_id)
       if (!this.open_id) {
         window.location.href = 'https://love.ufutx.com/wechatoauth'
         // window.location.href = 'http://wlj.test/wechatoauth'

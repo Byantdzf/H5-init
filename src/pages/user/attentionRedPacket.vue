@@ -64,8 +64,8 @@
         <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close"
              @click="hideModal">
         <!--弹框红包-->
-        <div class="modal-vessel">
-          <div v-if="showPic">
+        <div class="modal-vessel" v-if="showPic">
+          <div>
             <img src="https://images.ufutx.com/201911/28/c36ade1d37a2bb088343568428490042.png" alt="">
             <div>
               <p v-if="money != ''" class="colorff text-center gain_money">￥{{money}}<span> 元</span></p>

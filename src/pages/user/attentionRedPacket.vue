@@ -65,9 +65,9 @@
              @click="hideModal">
         <!--弹框红包-->
         <div class="modal-vessel">
-          <div v-if="!showPic">
+          <div>
             <img src="https://images.ufutx.com/201911/28/c36ade1d37a2bb088343568428490042.png" alt="">
-            <div>
+            <div v-if="showPic">
               <p class="colorff text-center gain_money">￥{{money}}<span> 元</span></p>
               <button class="confirm" @click="hideModal">确定</button>
             </div>
@@ -81,7 +81,7 @@
 
 <script>
   // import {$loadingShow, $loadingHide, $toastSuccess, $toastWarn} from '../../config/util'
-  import {$loadingHide, $toastSuccess, $toastWarn} from '../../config/util'
+  import {$toastSuccess, $toastWarn} from '../../config/util'
   // import {$toastWarn} from '../../config/util'
   import shareModal from '../../components/shareMoadl'
   import CountDown from 'vue2-countdown'
@@ -140,8 +140,8 @@
         let vm = this
         vm.$http.get(`/sharelist?openid=${this.open_id}`)
           .then(({data}) => {
-            vm.shareList = data.list.data
-            let href = `https://love.ufutx.com/mobile/#/attentionRedPacket?fromopenid=${this.open_id}`
+            vm.shareList = data.list
+            let href = `https://love.ufutx.com/mobile/#/attentionRedPacket?fromopenid=${this.open_id ? this.open_id : ''}`
             vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你来抢红包`)
           })
           .catch((error) => {
@@ -160,10 +160,7 @@
             } else {
               this.money = data.msg.toFixed(2)
               setTimeout(() => {
-                $loadingHide()
-                vm.showPic = true
-                this.deblocking = 2
-                $toastSuccess('领取成功')
+                this.showPic = true
                 vm.image_amin = false
               }, 500)
             }
@@ -199,8 +196,8 @@
       // localStorage.setItem('official_openid', this.open_id)
       // localStorage.setItem('from_official_openid', this.open_id)
       if (!this.open_id) {
-        window.location.href = `https://love.ufutx.com/wechatoauth`
-        // window.location.href = `http://wlj.test/wechatoauth`
+        // window.location.href = `https://love.ufutx.com/wechatoauth`
+        window.location.href = `http://wlj.test/wechatoauth`
       }
       console.log(this.open_id, 'open_id6456456464')
       this.getData()

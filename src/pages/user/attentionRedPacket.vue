@@ -138,7 +138,7 @@
         vm.$http.get(`/sharelist?openid=${this.open_id}`)
           .then(({data}) => {
             vm.shareList = data.list
-            let href = `https://love.ufutx.com/mobile/#/attentionRedPacket?fromopenid=${this.open_id ? this.open_id : ''}`
+            let href = `https://love.ufutx.com/wechatoauth?fromopenid=${this.open_id}`
             vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你来抢红包`)
           })
           .catch((error) => {
@@ -153,7 +153,7 @@
               $toastWarn('请先关注公众号...')
             } else if (data.status.toString() === '2') {
               $toastWarn('您已领取过啦，分享领取更多红包...')
-              this.deblocking = 1
+              this.deblocking = 2
             } else {
               this.money = data.msg.toFixed(2)
               setTimeout(() => {
@@ -195,12 +195,11 @@
       // localStorage.setItem('official_openid', this.open_id)
       // localStorage.setItem('from_official_openid', this.open_id)
       if (!this.open_id) {
-        window.location.href = `https://love.ufutx.com/wechatoauth`
+        window.location.href = `https://love.ufutx.com/wechatoauth?fromopenid=${this.form_openid}`
         // window.location.href = `http://wlj.test/wechatoauth`
         return
       }
       console.log(this.open_id, 'open_id6456456464')
-      this.form_openid = this.open_id
       this.getData()
       this.getShare()
     }

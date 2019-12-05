@@ -81,7 +81,7 @@
 
 <script>
   // import {$loadingShow, $loadingHide, $toastSuccess, $toastWarn} from '../../config/util'
-  import {$toastSuccess, $toastWarn} from '../../config/util'
+  import {$toastWarn} from '../../config/util'
   // import {$toastWarn} from '../../config/util'
   import shareModal from '../../components/shareMoadl'
   import CountDown from 'vue2-countdown'
@@ -168,10 +168,9 @@
       },
       onPacket () {
         this.getRed()
-        this.showModalTimeUp = true
-        this.deblocking = 2
-        this.getData()
         this.getShare()
+        this.getData()
+        this.showModalTimeUp = true
       },
       showshare () {
         this.showShare = true

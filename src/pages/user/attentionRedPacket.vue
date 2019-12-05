@@ -191,6 +191,7 @@
         obj[arr2[0]] = arr2[1]
       }
       this.open_id = obj.openid
+      this.form_openid = obj.fromopenid
       // localStorage.setItem('official_openid', this.open_id)
       // localStorage.setItem('from_official_openid', this.open_id)
       if (!this.open_id) {

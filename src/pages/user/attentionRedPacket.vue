@@ -173,6 +173,7 @@
         this.getRed()
         this.showModalTimeUp = true
         this.deblocking = 2
+        this.getData()
         this.getShare()
       },
       showshare () {
@@ -183,6 +184,7 @@
       }
     },
     mounted () {
+      document.title = '福恋助脱单'
       let loc = location.href
       let obj = {}
       let n2 = loc.indexOf('?') + 1

@@ -4,12 +4,12 @@
       <div class="z_head">
         <!--关注公众号领红包-->
         <div class="z_head_pic">
-          <p>关注公众号领红包</p>
+          <p>关注100%有红包</p>
         </div>
         <div class="z_head_box">
           <!--未开启-->
           <div v-if="deblocking == 0"  class="modal-amin">
-            <img  src="https://images.ufutx.com/201911/28/e1097f3ec06f485a67564db016a48622.png" alt="" class="z_head_pic1"  :class="image_amin?'image_amin':''">
+            <img src="https://images.ufutx.com/201911/28/e1097f3ec06f485a67564db016a48622.png" alt="" class="z_head_pic1"  :class="image_amin?'image_amin':''">
             <div class="attention_box">
               <p class="attention_text" @click="onPacket">点击领取</p>
             </div>
@@ -24,7 +24,7 @@
           <div v-if="deblocking == 2" class="modal-amin">
             <img src="https://images.ufutx.com/201911/29/306caf03f3bec2bb282509ae75ba5d8b.png" alt="">
             <div class="attention_box">
-              <p class="attention_text" @click="toastText('你已领取过啦，快去分享吧...')">已领取</p>
+              <p class="attention_text" @click="toastText('您已领取过啦，分享领取更多红包...')">已领取</p>
             </div>
           </div>
         </div>
@@ -32,11 +32,11 @@
       <div class="z_end">
         <!--分享赢红包-->
         <div class="z_end_pic">
-          <p>更多红包等你赢</p>
+          <p>邀请好友赢更多红包</p>
         </div>
         <!--<img src="https://images.ufutx.com/201911/28/f22fc6094272816a8f5fc941ad767cfc.png" alt="" class="z_end_pic">-->
         <div class="z_share_box">
-          <div class="font28 exclusive">专属活动</div>
+          <div class="font28 exclusive">分享-他领你也领</div>
           <div class="z_share_within">
             <div style="border-bottom: 1px solid #fee1a8;overflow: hidden">
               <!--立即分享ICON-->
@@ -44,8 +44,8 @@
               <!--立即分享bottom-->
               <button class="z_bottom flo_r" @click="showshare">立即分享</button>
               <div class="z_share_text">
-                <p class="text_invite">参与红包传递</p>
-                <p class="text_wait">10万红包等你拿</p>
+                <p class="text_invite">我要领更多</p>
+                <p class="text_wait">数10万红包等你拿</p>
               </div>
             </div>
             <div class="z_share_user">
@@ -68,7 +68,7 @@
           <div>
             <img src="https://images.ufutx.com/201911/28/c36ade1d37a2bb088343568428490042.png" alt="">
             <div>
-              <p v-if="money != ''" class="colorff text-center gain_money">￥{{money}}<span> 元</span></p>
+              <p class="colorff text-center gain_money">￥{{money}}<span> 元</span></p>
               <button class="confirm" @click="hideModal">确定</button>
             </div>
           </div>
@@ -80,7 +80,8 @@
 </template>
 
 <script>
-  import {$loadingShow, $loadingHide, $toastSuccess, $toastWarn} from '../../config/util'
+  // import {$loadingShow, $loadingHide, $toastSuccess, $toastWarn} from '../../config/util'
+  import {$toastSuccess, $toastWarn} from '../../config/util'
   // import {$toastWarn} from '../../config/util'
   import shareModal from '../../components/shareMoadl'
   import CountDown from 'vue2-countdown'
@@ -99,7 +100,7 @@
     },
     data () {
       return {
-        title: '福恋',
+        title: '福恋助脱单',
         form_openid: '',
         attention: '', // 关注状态
         showShare: false, // 指引分享
@@ -141,7 +142,7 @@
           .then(({data}) => {
             vm.shareList = data.list.data
             let href = `https://love.ufutx.com/mobile/#/attentionRedPacket?fromopenid=${this.open_id}`
-            vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你抢红包`)
+            vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你来抢红包`)
           })
           .catch((error) => {
             console.log(error)
@@ -149,8 +150,8 @@
       },
       getRed () {
         let vm = this
-        vm.form_openid = localStorage.getItem('official_openid')
-        vm.$http.get(`/receivered?openid=${this.open_id}&fromopenid=${this.form_openid}`)
+        // vm.form_openid = localStorage.getItem('official_openid')
+        vm.$http.get(`/receivered?openid=${this.open_id}`)
           .then(({data}) => {
             if (data.status.toString() === '1') {
               $toastWarn('请先关注公众号...')
@@ -161,6 +162,7 @@
               this.money = data.msg.toFixed(2)
               setTimeout(() => {
                 vm.showPic = true
+                $toastSuccess('领取成功')
                 vm.image_amin = false
               }, 800)
             }
@@ -193,11 +195,11 @@
       }
       this.open_id = obj.openid
       this.form_openid = obj.fromopenid ? obj.fromopenid : ''
-      localStorage.setItem('official_openid', this.open_id)
+      // localStorage.setItem('official_openid', this.open_id)
       // localStorage.setItem('from_official_openid', this.open_id)
       if (!this.open_id) {
-        window.location.href = 'https://love.ufutx.com/wechatoauth'
-        // window.location.href = 'http://wlj.test/wechatoauth'
+        window.location.href = `https://love.ufutx.com/wechatoauth?fromopenid=${this.open_id}`
+        // window.location.href = `http://wlj.test/wechatoauth?fromopenid=${this.open_id}`
       }
       console.log(this.open_id, 'open_id6456456464')
       this.getData()

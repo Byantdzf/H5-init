@@ -51,9 +51,9 @@
             <div class="z_share_user">
               <div style="border-bottom: 1px solid #fee1a8;overflow: hidden" v-for="item,index in shareList">
                 <!--用户头像-->
-                <img :src="item.from_wechat.avatar" alt="" class="z_user_photo flo_l">
-                <p style="font-weight: bold;color: #333333;margin-top: 6%" class="flo_l font30 user_text">{{item.from_wechat.nickname}}</p>
-                <p class="flo_r acquisition_text">获得￥{{item.amount}}</p>
+                <img :src="item.from_wechat.avatar? item.from_wechat.avatar: ''" alt="" class="z_user_photo flo_l">
+                <p style="font-weight: bold;color: #333333;margin-top: 6%" class="flo_l font30 user_text">{{item.from_wechat.nickname? item.from_wechat.nickname : ''}}</p>
+                <p class="flo_r acquisition_text">获得￥{{item.amount? item.amount : ''}}</p>
               </div>
             </div>
           </div>
@@ -64,8 +64,8 @@
         <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close"
              @click="hideModal">
         <!--弹框红包-->
-        <div class="modal-vessel" v-if="showPic">
-          <div>
+        <div class="modal-vessel">
+          <div v-if="!showPic">
             <img src="https://images.ufutx.com/201911/28/c36ade1d37a2bb088343568428490042.png" alt="">
             <div>
               <p class="colorff text-center gain_money">￥{{money}}<span> 元</span></p>
@@ -81,7 +81,7 @@
 
 <script>
   // import {$loadingShow, $loadingHide, $toastSuccess, $toastWarn} from '../../config/util'
-  import {$toastSuccess, $toastWarn} from '../../config/util'
+  import {$loadingHide, $toastSuccess, $toastWarn} from '../../config/util'
   // import {$toastWarn} from '../../config/util'
   import shareModal from '../../components/shareMoadl'
   import CountDown from 'vue2-countdown'
@@ -123,7 +123,7 @@
       },
       getData () {
         let vm = this
-        vm.$http.get(`/redinspect?openid=${this.open_id}`)
+        vm.$http.get(`/redinspect?openid=${this.open_id}&fromopenid=${this.open_id}`)
           .then(({code, data}) => {
             if (code === 0) {
               this.deblocking = data.status
@@ -150,21 +150,22 @@
       },
       getRed () {
         let vm = this
-        // vm.form_openid = localStorage.getItem('official_openid')
         vm.$http.get(`/receivered?openid=${this.open_id}`)
           .then(({data}) => {
             if (data.status.toString() === '1') {
               $toastWarn('请先关注公众号...')
             } else if (data.status.toString() === '2') {
-              $toastWarn('您已领取过啦，快去分享吧...')
+              $toastWarn('您已领取过啦，分享领取更多红包...')
               this.deblocking = 1
             } else {
               this.money = data.msg.toFixed(2)
               setTimeout(() => {
+                $loadingHide()
                 vm.showPic = true
+                this.deblocking = 2
                 $toastSuccess('领取成功')
                 vm.image_amin = false
-              }, 800)
+              }, 500)
             }
           })
           .catch((error) => {
@@ -198,8 +199,8 @@
       // localStorage.setItem('official_openid', this.open_id)
       // localStorage.setItem('from_official_openid', this.open_id)
       if (!this.open_id) {
-        window.location.href = `https://love.ufutx.com/wechatoauth?fromopenid=${this.open_id}`
-        // window.location.href = `http://wlj.test/wechatoauth?fromopenid=${this.open_id}`
+        // window.location.href = `https://love.ufutx.com/wechatoauth`
+        window.location.href = `http://wlj.test/wechatoauth`
       }
       console.log(this.open_id, 'open_id6456456464')
       this.getData()

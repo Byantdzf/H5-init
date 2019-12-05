@@ -168,8 +168,6 @@
       },
       onPacket () {
         this.getRed()
-        this.getShare()
-        this.getData()
         this.showModalTimeUp = true
       },
       showshare () {
@@ -177,6 +175,8 @@
       },
       hideModal () {
         this.showModalTimeUp = false
+        this.getData()
+        this.getShare()
       }
     },
     mounted () {
@@ -192,14 +192,11 @@
       }
       this.open_id = obj.openid
       this.form_openid = obj.fromopenid
-      // localStorage.setItem('official_openid', this.open_id)
-      // localStorage.setItem('from_official_openid', this.open_id)
       if (!this.open_id) {
         window.location.href = `https://love.ufutx.com/wechatoauth?fromopenid=${this.form_openid}`
         // window.location.href = `http://wlj.test/wechatoauth`
         return
       }
-      console.log(this.open_id, 'open_id6456456464')
       this.getData()
       this.getShare()
     }

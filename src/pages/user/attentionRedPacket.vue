@@ -173,6 +173,7 @@
         this.getRed()
         this.showModalTimeUp = true
         this.deblocking = 2
+        this.getShare()
       },
       showshare () {
         this.showShare = true

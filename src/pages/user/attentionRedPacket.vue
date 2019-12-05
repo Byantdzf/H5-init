@@ -195,12 +195,12 @@
         obj[arr2[0]] = arr2[1]
       }
       this.open_id = obj.openid
-      this.form_openid = obj.fromopenid ? obj.fromopenid : ''
       // localStorage.setItem('official_openid', this.open_id)
       // localStorage.setItem('from_official_openid', this.open_id)
       if (!this.open_id) {
-        window.location.href = `https://love.ufutx.com/wechatoauth`
-        // window.location.href = `http://wlj.test/wechatoauth`
+        // window.location.href = `https://love.ufutx.com/wechatoauth`
+        window.location.href = `http://wlj.test/wechatoauth`
+        return
       }
       console.log(this.open_id, 'open_id6456456464')
       this.getData()

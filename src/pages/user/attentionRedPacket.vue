@@ -114,16 +114,13 @@
         // test: 'ou713vx7f8dkEO3gOXRI2JeEcsf8'
       }
     },
-    watch: {
-
-    },
     methods: {
       toastText (title) {
         $toastWarn(title)
       },
       getData () {
         let vm = this
-        vm.$http.get(`/redinspect?openid=${this.open_id}&fromopenid=${this.open_id}`)
+        vm.$http.get(`/redinspect?openid=${this.open_id}&fromopenid=${this.form_openid}`)
           .then(({code, data}) => {
             if (code === 0) {
               this.deblocking = data.status
@@ -203,6 +200,7 @@
         return
       }
       console.log(this.open_id, 'open_id6456456464')
+      this.form_openid = this.open_id
       this.getData()
       this.getShare()
     }

@@ -51,8 +51,8 @@
             <div class="z_share_user">
               <div style="border-bottom: 1px solid #fee1a8;overflow: hidden" v-for="item,index in shareList">
                 <!--用户头像-->
-                <img :src="item.from_wechat.avatar? item.from_wechat.avatar: ''" alt="" class="z_user_photo flo_l">
-                <p style="font-weight: bold;color: #333333;margin-top: 6%" class="flo_l font30 user_text">{{item.from_wechat.nickname? item.from_wechat.nickname : ''}}</p>
+                <img :src="item.from_wechat? item.from_wechat.avatar : ''" alt="" class="z_user_photo flo_l">
+                <p style="font-weight: bold;color: #333333;margin-top: 6%" class="flo_l font30 user_text">{{item.from_wechat? item.from_wechat.nickname : ''}}</p>
                 <p class="flo_r acquisition_text">获得￥{{item.amount? item.amount : ''}}</p>
               </div>
             </div>

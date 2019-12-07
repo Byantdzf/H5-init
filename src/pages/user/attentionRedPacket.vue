@@ -139,7 +139,7 @@
           .then(({data}) => {
             vm.shareList = data.list
             let href = `https://love.ufutx.com/wechatoauth?fromopenid=${this.open_id}`
-            vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你来抢红包`)
+            vm.$shareList('https://images.ufutx.com/201912/07/c77bd4732dc78fc7c635b1a691835ec9.png', href, vm.title, `邀请你来抢红包(福恋助脱单)`)
           })
           .catch((error) => {
             console.log(error)

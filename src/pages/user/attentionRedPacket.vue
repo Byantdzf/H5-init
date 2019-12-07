@@ -48,6 +48,16 @@
                 <p class="text_wait">数10万红包等你拿</p>
               </div>
             </div>
+            <div style="border-bottom: 1px solid #fee1a8;overflow: hidden">
+              <!--立即分享ICON-->
+              <img src="https://images.ufutx.com/201911/16/eaa5a26652a76495715212887b9c4289.png" alt="" class="z_share_pic flo_l">
+              <!--立即分享bottom-->
+              <button class="z_bottom flo_r" @click="showshare">了解福恋</button>
+              <div class="z_share_text">
+                <p class="text_invite">福恋智能高薪招聘</p>
+                <p class="text_wait">加入优秀团队，一起来婚恋行业做件大事！</p>
+              </div>
+            </div>
             <div class="z_share_user">
               <div style="border-bottom: 1px solid #fee1a8;overflow: hidden" v-for="item,index in shareList">
                 <!--用户头像-->

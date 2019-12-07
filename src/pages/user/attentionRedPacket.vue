@@ -433,7 +433,7 @@
         }
         .z_share_user{
           width: 100%;
-          height: 330px;
+          height: 310px;
           overflow: auto;
           .z_user_photo{
             width: 80px;

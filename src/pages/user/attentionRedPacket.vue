@@ -17,7 +17,7 @@
           <div class="modal-amin" v-if="deblocking == 1">
             <img src="https://images.ufutx.com/201912/03/36179c8d52af5857afebee79bf605c61.jpeg" alt="" class="z_head_pic1">
             <div class="attention_box">
-              <p class="attention_text">长按图片识别领红包</p>
+              <p class="attention_text">长按识别</p>
             </div>
           </div>
           <!--开启-->

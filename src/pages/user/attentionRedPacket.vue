@@ -231,7 +231,7 @@
       }
       .z_head_pic{
         position: relative;
-        width: 412px;
+        width: 456px;
         height: 80px;
         line-height: 80px;
         text-align: center;
@@ -369,7 +369,7 @@
     margin-bottom: 5%;
     .z_end_pic{
       position: relative;
-      width: 412px;
+      width: 520px;
       height: 80px;
       line-height: 80px;
       text-align: center;

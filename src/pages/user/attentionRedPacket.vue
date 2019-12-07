@@ -17,7 +17,7 @@
           <div class="modal-amin" v-if="deblocking == 1">
             <img src="https://images.ufutx.com/201912/03/36179c8d52af5857afebee79bf605c61.jpeg" alt="" class="z_head_pic1">
             <div class="attention_box">
-              <p class="attention_text">长按识别</p>
+              <p class="attention_text">长按图片识别领红包</p>
             </div>
           </div>
           <!--开启-->
@@ -100,7 +100,7 @@
     },
     data () {
       return {
-        title: '福恋派红包，邀请你身边人也来领红包，助脱单！',
+        title: '快来分享给身边单身，一起领红包、助脱单啦！',
         form_openid: '',
         attention: '', // 关注状态
         showShare: false, // 指引分享
@@ -139,7 +139,7 @@
           .then(({data}) => {
             vm.shareList = data.list
             let href = `https://love.ufutx.com/wechatoauth?fromopenid=${this.open_id}`
-            vm.$shareList('https://images.ufutx.com/201912/07/c77bd4732dc78fc7c635b1a691835ec9.png', href, vm.title, `邀请你来抢红包(福恋助脱单)`)
+            vm.$shareList('https://images.ufutx.com/201912/07/c77bd4732dc78fc7c635b1a691835ec9.png', href, vm.title, `福恋派红包、助脱单啦！`)
           })
           .catch((error) => {
             console.log(error)
@@ -180,7 +180,7 @@
       }
     },
     mounted () {
-      document.title = '福恋助脱单'
+      document.title = '福恋派红包、助脱单啦！'
       let loc = location.href
       let obj = {}
       let n2 = loc.indexOf('?') + 1

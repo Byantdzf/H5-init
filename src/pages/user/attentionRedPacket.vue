@@ -100,7 +100,7 @@
     },
     data () {
       return {
-        title: '福恋助脱单',
+        title: '福恋派红包，邀请你身边人也来领红包，助脱单！',
         form_openid: '',
         attention: '', // 关注状态
         showShare: false, // 指引分享

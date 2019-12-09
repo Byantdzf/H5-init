@@ -4,7 +4,7 @@
       <div class="z_head">
         <!--关注公众号领红包-->
         <div class="z_head_pic">
-          <p>关注100%有红包</p>
+          <p>福恋派红包、助脱单！</p>
         </div>
         <div class="z_head_box">
           <!--未开启-->
@@ -32,7 +32,7 @@
       <div class="z_end">
         <!--分享赢红包-->
         <div class="z_end_pic">
-          <p>邀请好友赢更多红包</p>
+          <p>分享单身，一起领红包</p>
         </div>
         <!--<img src="https://images.ufutx.com/201911/28/f22fc6094272816a8f5fc941ad767cfc.png" alt="" class="z_end_pic">-->
         <div class="z_share_box">

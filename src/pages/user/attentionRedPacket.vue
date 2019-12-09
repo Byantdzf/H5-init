@@ -48,6 +48,16 @@
                 <p class="text_wait">数10万红包等你拿</p>
               </div>
             </div>
+            <div style="border-bottom: 1px solid #fee1a8;overflow: hidden">
+              <!--立即分享ICON-->
+              <img src="https://images.ufutx.com/201911/16/eaa5a26652a76495715212887b9c4289.png" alt="" class="z_share_pic flo_l">
+              <!--立即分享bottom-->
+              <button class="z_bottom flo_r" @click="goParticulars">了解详情</button>
+              <div class="z_share_text">
+                <p class="text_invite">我要领更多</p>
+                <p class="text_wait">数10万红包等你拿</p>
+              </div>
+            </div>
             <div class="z_share_user">
               <div style="border-bottom: 1px solid #fee1a8;overflow: hidden" v-for="item,index in shareList">
                 <!--用户头像-->
@@ -147,6 +157,9 @@
       },
       hideShare (value) {
         this.showShare = value
+      },
+      goParticulars () {
+        window.location.href = `https://jinshuju.net/f/HlGo3b`
       },
       getShare () {
         let vm = this

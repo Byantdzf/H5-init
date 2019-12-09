@@ -219,8 +219,8 @@
       console.log(this.open_id, '000')
       console.log(this.form_openid, '111')
       if (!this.open_id) {
-        // window.location.href = `https://love.ufutx.com/wechatoauth?fromopenid=${this.form_openid}`
-        window.location.href = `http://wlj.test/wechatoauth`
+        window.location.href = `https://love.ufutx.com/wechatoauth?fromopenid=${this.form_openid}`
+        // window.location.href = `http://wlj.test/wechatoauth`
         return
       }
       this.getData()

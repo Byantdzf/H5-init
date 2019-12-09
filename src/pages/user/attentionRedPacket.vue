@@ -4,7 +4,7 @@
       <div class="z_head">
         <!--关注公众号领红包-->
         <div class="z_head_pic">
-          <p>福恋派红包、助脱单！</p>
+          <p>关注100%有红包</p>
         </div>
         <div class="z_head_box">
           <!--未开启-->
@@ -15,9 +15,9 @@
             </div>
           </div>
           <div class="modal-amin" v-if="deblocking == 1">
-            <img src="https://images.ufutx.com/201912/03/36179c8d52af5857afebee79bf605c61.jpeg" alt="" class="z_head_pic1">
+            <img src="https://images.ufutx.com/201911/28/e1097f3ec06f485a67564db016a48622.png" alt="" class="z_head_pic1">
             <div class="attention_box">
-              <p class="attention_text">长按识别</p>
+              <p class="attention_text" @click="scan">点击领取</p>
             </div>
           </div>
           <!--开启-->
@@ -32,7 +32,7 @@
       <div class="z_end">
         <!--分享赢红包-->
         <div class="z_end_pic">
-          <p>分享单身，一起领红包!</p>
+          <p>邀请好友赢更多红包</p>
         </div>
         <!--<img src="https://images.ufutx.com/201911/28/f22fc6094272816a8f5fc941ad767cfc.png" alt="" class="z_end_pic">-->
         <div class="z_share_box">
@@ -48,16 +48,6 @@
                 <p class="text_wait">数10万红包等你拿</p>
               </div>
             </div>
-            <div style="border-bottom: 1px solid #fee1a8;overflow: hidden">
-              <!--立即分享ICON-->
-              <img src="https://images.ufutx.com/201911/16/eaa5a26652a76495715212887b9c4289.png" alt="" class="z_share_pic flo_l">
-              <!--立即分享bottom-->
-              <button class="z_bottom flo_r" @click="skipParticulars">了解详情</button>
-              <div class="z_share_text">
-                <p class="text_invite">福恋智能高薪招聘</p>
-                <p class="text_wait">加入优秀团队，一起来婚恋行业做件大事！</p>
-              </div>
-            </div>
             <div class="z_share_user">
               <div style="border-bottom: 1px solid #fee1a8;overflow: hidden" v-for="item,index in shareList">
                 <!--用户头像-->
@@ -69,6 +59,17 @@
           </div>
         </div>
       </div>
+      <div class="vessel" v-if="twoDimensionCode">
+        <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close1"
+             @click="hideModal1">
+        <div class="modal-vessel">
+          <div class="twoDimensionCode_text">
+            <img src="https://images.ufutx.com/201912/03/36179c8d52af5857afebee79bf605c61.jpeg" alt="" class="twoDimensionCode">
+            <p>长按识别二维码</p>
+            <p>关注小助手，领取红包</p>
+          </div>
+        </div>
+      </div>
       <div class="vessel" v-if="showModalTimeUp">
         <!--弹框红包取消icon-->
         <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close"
@@ -76,7 +77,7 @@
         <!--弹框红包-->
         <div class="modal-vessel">
           <div>
-            <img src="https://images.ufutx.com/201911/28/c36ade1d37a2bb088343568428490042.png" alt="">
+            <img src="https://images.ufutx.com/201911/28/c36ade1d37a2bb088343568428490042.png" class="red_packet" alt="">
             <div v-if="showPic">
               <p class="colorff text-center gain_money">￥{{money}}<span> 元</span></p>
               <button class="confirm" @click="hideModal">确定</button>
@@ -91,7 +92,7 @@
 
 <script>
   // import {$loadingShow, $loadingHide, $toastSuccess, $toastWarn} from '../../config/util'
-  import {$toastWarn} from '../../config/util'
+  import {$toastWarn, $loadingShow, $loadingHide, $toastSuccess} from '../../config/util'
   // import {$toastWarn} from '../../config/util'
   import shareModal from '../../components/shareMoadl'
   import CountDown from 'vue2-countdown'
@@ -110,10 +111,11 @@
     },
     data () {
       return {
-        title: '快来分享给身边单身，一起领红包、助脱单啦！',
+        title: '福恋助脱单',
         form_openid: '',
         attention: '', // 关注状态
         showShare: false, // 指引分享
+        twoDimensionCode: false,
         showPic: false, // 遮罩红包图片
         image_amin: true, // 红包左右抖动状态
         showModalTimeUp: false, // 弹框
@@ -128,6 +130,9 @@
       toastText (title) {
         $toastWarn(title)
       },
+      scan () {
+        this.twoDimensionCode = true
+      },
       getData () {
         let vm = this
         vm.$http.get(`/redinspect?openid=${this.open_id}&fromopenid=${this.form_openid}`)
@@ -140,9 +145,6 @@
             console.log(error)
           })
       },
-      skipParticulars () {
-        window.location.href = 'https://jinshuju.net/f/HlGo3b'
-      },
       hideShare (value) {
         this.showShare = value
       },
@@ -152,7 +154,7 @@
           .then(({data}) => {
             vm.shareList = data.list
             let href = `https://love.ufutx.com/wechatoauth?fromopenid=${this.open_id}`
-            vm.$shareList('https://images.ufutx.com/201912/07/c77bd4732dc78fc7c635b1a691835ec9.png', href, vm.title, `福恋派红包、助脱单啦！`)
+            vm.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', href, vm.title, `邀请你来抢红包`)
           })
           .catch((error) => {
             console.log(error)
@@ -168,11 +170,17 @@
               $toastWarn('您已领取过啦，分享领取更多红包...')
               this.deblocking = 2
             } else {
-              this.money = data.msg.toFixed(2)
+              $loadingShow('疯抢中...')
               setTimeout(() => {
-                this.showPic = true
-                vm.image_amin = false
-              }, 500)
+                $loadingHide()
+                setTimeout(() => {
+                  this.showModalTimeUp = true
+                  $toastSuccess('领取成功')
+                  this.money = data.msg.toFixed(2)
+                  this.showPic = true
+                  this.image_amin = false
+                }, 500)
+              }, 800)
             }
           })
           .catch((error) => {
@@ -181,33 +189,38 @@
       },
       onPacket () {
         this.getRed()
-        this.showModalTimeUp = true
       },
       showshare () {
         this.showShare = true
+      },
+      hideModal1 () {
+        this.twoDimensionCode = false
       },
       hideModal () {
         this.showModalTimeUp = false
         this.getData()
         this.getShare()
+        this.showshare()
       }
     },
     mounted () {
-      document.title = '福恋派红包、助脱单啦！'
-      let loc = location.href
-      let obj = {}
-      let n2 = loc.indexOf('?') + 1
-      let str = loc.substr(n2)
-      let arr = str.split('&')
-      for (let i = 0; i < arr.length; i++) {
-        var arr2 = arr[i].split('=')
-        obj[arr2[0]] = arr2[1]
-      }
-      this.open_id = obj.openid
-      this.form_openid = obj.fromopenid
+      document.title = '福恋助脱单'
+      // let loc = location.href
+      // let obj = {}
+      // let n2 = loc.indexOf('?') + 1
+      // let str = loc.substr(n2)
+      // let arr = str.split('&')
+      // for (let i = 0; i < arr.length; i++) {
+      //   var arr2 = arr[i].split('=')
+      //   obj[arr2[0]] = arr2[1]
+      // }
+      this.open_id = this.$route.query.openid
+      this.form_openid = this.$route.query.fromopenid ? this.$route.query.fromopenid : ''
+      console.log(this.open_id, '000')
+      console.log(this.form_openid, '111')
       if (!this.open_id) {
-        window.location.href = `https://love.ufutx.com/wechatoauth?fromopenid=${this.form_openid}`
-        // window.location.href = `http://wlj.test/wechatoauth`
+        // window.location.href = `https://love.ufutx.com/wechatoauth?fromopenid=${this.form_openid}`
+        window.location.href = `http://wlj.test/wechatoauth`
         return
       }
       this.getData()
@@ -234,7 +247,7 @@
       }
       .z_head_pic{
         position: relative;
-        width: 456px;
+        width: 412px;
         height: 80px;
         line-height: 80px;
         text-align: center;
@@ -372,7 +385,7 @@
     margin-bottom: 5%;
     .z_end_pic{
       position: relative;
-      width: 520px;
+      width: 412px;
       height: 80px;
       line-height: 80px;
       text-align: center;
@@ -388,9 +401,9 @@
     }
     .z_share_box{
       width: 686px;
-      height: 750px;
       border-radius: 10px;
       background-color: #fff;
+      padding-bottom: 30px;
       margin: -30px auto 0 auto;
       .exclusive{
         width: 100%;
@@ -399,7 +412,6 @@
       }
       .z_share_within{
         width: 644px;
-        height: 620px;
         border-radius: 10px;
         background-color: #fffdf6;
         border: 1px solid #fee1a8;
@@ -433,8 +445,6 @@
         }
         .z_share_user{
           width: 100%;
-          height: 310px;
-          overflow: auto;
           .z_user_photo{
             width: 80px;
             height: 80px;
@@ -461,6 +471,12 @@
     background: rgba(0, 0, 0, .7);
     z-index: 99;
   }
+  .close1{
+    width: 60px;
+    position: absolute;
+    top: 8%;
+    right: 8%;
+  }
   .close {
     width: 60px;
     position: absolute;
@@ -471,10 +487,23 @@
     position: relative;
     animation: myMove 300ms linear;
     animation-fill-mode: forwards;
-    img {
+    .twoDimensionCode_text{
+      width: 100%;
+      text-align: center;
+      font-size: 42px;
+      font-weight: bold;
+      color: #D92553;
+      position: absolute;
+      top: 200px;
+      .twoDimensionCode{
+        width: 60%;
+        margin-bottom: 30px;
+      }
+    }
+    .red_packet {
       width: 80%;
       position: absolute;
-      top: 300px;
+      top: 260px;
       left: 12%;
       display: block;
     }
@@ -503,4 +532,5 @@
     }
   }
 </style>
+
 

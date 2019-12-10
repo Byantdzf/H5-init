@@ -11,7 +11,7 @@
           <div class="modal-amin">
             <img src="https://images.ufutx.com/201911/28/e1097f3ec06f485a67564db016a48622.png" alt="" class="z_head_pic1">
             <div class="attention_box">
-              <p class="attention_text" @click="toastText('本波红包活动已结束，敬请期待下一波红包...')">已领取</p>
+              <p class="attention_text" @click="toastText('本波红包活动已结束，敬请期待下一波红包...')">已结束</p>
             </div>
           </div>
           <!--<div v-if="deblocking == 0"  class="modal-amin">-->

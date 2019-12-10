@@ -8,25 +8,31 @@
         </div>
         <div class="z_head_box">
           <!--未开启-->
-          <div v-if="deblocking == 0"  class="modal-amin">
-            <img src="https://images.ufutx.com/201911/28/e1097f3ec06f485a67564db016a48622.png" alt="" class="z_head_pic1"  :class="image_amin?'image_amin':''">
-            <div class="attention_box">
-              <p class="attention_text" @click="onPacket">点击领取</p>
-            </div>
-          </div>
-          <div class="modal-amin" v-if="deblocking == 1">
+          <div class="modal-amin">
             <img src="https://images.ufutx.com/201911/28/e1097f3ec06f485a67564db016a48622.png" alt="" class="z_head_pic1">
             <div class="attention_box">
-              <p class="attention_text" @click="scan">点击领取</p>
+              <p class="attention_text" @click="toastText('本波红包活动已结束，敬请期待下一波红包...')">已领取</p>
             </div>
           </div>
-          <!--开启-->
-          <div v-if="deblocking == 2" class="modal-amin">
-            <img src="https://images.ufutx.com/201911/29/306caf03f3bec2bb282509ae75ba5d8b.png" alt="">
-            <div class="attention_box">
-              <p class="attention_text" @click="toastText('您已领取过啦，分享领取更多红包...')">已领取</p>
-            </div>
-          </div>
+          <!--<div v-if="deblocking == 0"  class="modal-amin">-->
+            <!--<img src="https://images.ufutx.com/201911/28/e1097f3ec06f485a67564db016a48622.png" alt="" class="z_head_pic1"  :class="image_amin?'image_amin':''">-->
+            <!--<div class="attention_box">-->
+              <!--<p class="attention_text" @click="onPacket">点击领取</p>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="modal-amin" v-if="deblocking == 1">-->
+            <!--<img src="https://images.ufutx.com/201911/28/e1097f3ec06f485a67564db016a48622.png" alt="" class="z_head_pic1">-->
+            <!--<div class="attention_box">-->
+              <!--<p class="attention_text" @click="scan">点击领取</p>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--&lt;!&ndash;开启&ndash;&gt;-->
+          <!--<div v-if="deblocking == 2" class="modal-amin">-->
+            <!--<img src="https://images.ufutx.com/201911/29/306caf03f3bec2bb282509ae75ba5d8b.png" alt="">-->
+            <!--<div class="attention_box">-->
+              <!--<p class="attention_text" @click="toastText('您已领取过啦，分享领取更多红包...')">已领取</p>-->
+            <!--</div>-->
+          <!--</div>-->
         </div>
       </div>
       <div class="z_end">

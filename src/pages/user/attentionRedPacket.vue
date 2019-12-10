@@ -159,7 +159,7 @@
         this.showShare = value
       },
       goParticulars () {
-        window.location.href = `https://jinshuju.net/f/HlGo3b`
+        window.location.href = `https://jinshuju.net/f/HlGo3b?x_field_1=RedPacket`
       },
       getShare () {
         let vm = this

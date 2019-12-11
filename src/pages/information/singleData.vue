@@ -169,7 +169,7 @@
         itemType: '', // 对应的动态赋值
         stateList: [['从未结婚', '离异', '丧偶']],
         workSortList: [['事业单位', '公务员', '央企', '国企', '私企', '外企']],
-        degreeList: [['大专', '本科', '硕士', '博士', '其他']],
+        degreeList: [['小学', '初中', '高中', '中专', '大专', '本科', '硕士', '博士', '其他']],
         residentTypeList: [['城市', '乡村']],
         showAddress: false,
         showAddress_resident: false,

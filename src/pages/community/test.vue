@@ -1,32 +1,20 @@
 <template>
   <div>
-    <div class="vessel" v-if="showModalTimeUp">
-      <img src="http://images.ufutx.com/201907/09/cc558035065ad83a89bb7b5754d918c4.png" alt="" class="close"
-           @click="hideModal">
-      <div class="modal-vessel shake-slow">
-        <div v-if="!showPic">
-          <img src="https://images.ufutx.com/201907/11/403d2174039ff35f9267fa1c3b14a7b7.png" alt="" :class="image_amin?'image_amin':''">
-        </div>
-      </div>
-    </div>
+    123
   </div>
 </template>
 <script>
   export default {
     data () {
       return {
-        showPic: false,
-        image_amin: true,
-        showModalTimeUp: false
+
       }
     },
     methods: {
-      hideModal () {
-        this.showModalTimeUp = false
-      }
+
     },
     mounted () {
-      this.showModalTimeUp = true
+      window.location.href = 'https://api.megvii.com/faceid/lite/do'
     }
   }
 </script>

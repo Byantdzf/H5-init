@@ -20,15 +20,20 @@
         }
         this.$http.post(`official/user/approve/face`, data).then(({data}) => {
           vm.token = data.token
-          if (vm.token != '') {
-            window.location.href = `https://api.megvii.com/faceid/lite/do?token=${this.token}`
-          }
+          console.log(vm.token, '123')
+          setTimeout(() => {
+            if (vm.token) {
+              window.location.href = `https://api.megvii.com/faceid/lite/do?token=${this.token}`
+            }
+          }, 500)
         }).catch((error) => {
           console.log(error)
         })
-      },
+      }
     },
     mounted () {
+      localStorage.clear()
+      this.$router.push({name: 'login'})
       this.confirmPay()
     }
   }

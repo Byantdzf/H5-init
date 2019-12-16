@@ -1,20 +1,36 @@
 <template>
   <div>
-    123
+
   </div>
 </template>
 <script>
   export default {
     data () {
       return {
-
+        name: '黄济',
+        card_num: '421281199402026318',
+        token: ''
       }
     },
     methods: {
-
+      confirmPay () { // 报名
+        let vm = this
+        let data = {
+          name: this.name,
+          card_num: this.card_num
+        }
+        this.$http.post(`official/user/approve/face`, data).then(({data}) => {
+          vm.token = data.token
+          if (vm.token) {
+            window.location.href = `https://api.megvii.com/faceid/lite/do?token=${this.token}`
+          }
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
     },
     mounted () {
-      window.location.href = 'https://api.megvii.com/faceid/lite/do'
+      this.confirmPay()
     }
   }
 </script>

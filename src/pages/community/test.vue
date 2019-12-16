@@ -20,7 +20,7 @@
         }
         this.$http.post(`official/user/approve/face`, data).then(({data}) => {
           vm.token = data.token
-          if (vm.token) {
+          if (vm.token != '') {
             window.location.href = `https://api.megvii.com/faceid/lite/do?token=${this.token}`
           }
         }).catch((error) => {

@@ -33,7 +33,6 @@
     },
     mounted () {
       localStorage.clear()
-      this.$router.push({name: 'login'})
       this.confirmPay()
     }
   }

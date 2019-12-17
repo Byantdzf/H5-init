@@ -60,8 +60,8 @@
               <!--立即分享bottom-->
               <button class="z_bottom flo_r" @click="goParticulars">了解详情</button>
               <div class="z_share_text">
-                <p class="text_invite">我要领更多</p>
-                <p class="text_wait">数10万红包等你拿</p>
+                <p class="text_invite">福恋智能高薪招聘</p>
+                <p class="text_wait">加入优秀团队，一起来婚恋行业做件大事！</p>
               </div>
             </div>
             <div class="z_share_user">

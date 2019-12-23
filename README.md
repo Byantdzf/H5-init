@@ -1,5 +1,5 @@
 
-# H5 【福恋红包项目】
+# H5 【INIT项目】
 
 > A Vue.js project
 

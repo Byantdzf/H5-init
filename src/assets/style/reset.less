@@ -1,0 +1,120 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.theme_bc {background: #D92553 !important;} // 主题色
+.theme_clo {color: #D92553;} // 主题色
+.height160{height: 160px;}
+.font36 {font-size: 36px;}
+.font34 {font-size: 34px;}
+.font32 {font-size: 32px;}
+.font30 {font-size: 30px;}
+.font28 {font-size: 28px;}
+.font26 {font-size: 26px;}
+.font22 {font-size: 22px;}
+.font20 {font-size: 20px;}
+.font18 {font-size: 18px;}
+.colorb{color: #bbbbbb}
+.colorb0{color: #b0b0b0}
+.color6{color: #666666}
+.colorbe{color: #bebebe}
+.colorff{color: #ffffff}
+.color{color: #35495e}
+.colorTheme{color: #D92553}
+.ff{background: #ffffff !important;}
+.subjectColor{background: #35495e}
+.box {
+  width: 100%;
+  height: 100px;
+  background: #d5b781;
+}
+.inline-block {display: inline-block}
+.flo_l {float: left}
+.flo_r {float: right}
+.clearfloat {clear:both}
+.bold{font-weight: bold}
+.middle{
+  vertical-align: middle;
+}
+.fixed_bot{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+}
+.ellipsis_3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.ellipsis_2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.ellipsis_1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.text-right{text-align: right}
+.text-center{text-align: center}
+.text-left{text-align: left}
+.btn_active_V{
+  animation:myMove 500ms 1;
+}
+.backCover{
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: center;
+  //background-position-y: center;
+}
+.text-wrapper {
+  white-space: pre-wrap;
+}
+.doudun{
+  animation: tada 1800ms ease infinite;
+}
+@keyframes tada {
+  0% {
+    transform: scale(1);
+  }
+  10%, 20% {
+    transform: scale(0.9) rotate(-12deg)
+  }
+  30%, 50%, 70%, 90% {
+    transform: scale(1.1) rotate(12deg)
+  }
+  40%, 60%, 80% {
+    transform: scale(1.1) rotate(-12deg)
+  }
+  100% {
+    transform: scale(1) rotate(0)
+  }
+}
+@keyframes  myMove{
+  0%{
+    transform:scale(1,1);
+    -moz-transform:scale(1,1);
+    -webkit-transform:scale(1,1);
+    -o-transform:scale(1,1);
+    -ms-transform:scale(1,1);
+  }
+  50%{
+    transform:scale(1.2,1.2);
+    -moz-transform:scale(1.2,1.2);
+    -webkit-transform:scale(1.2,1.2);
+    -o-transform:scale(1.2,1.2);
+    -ms-transform:scale(1.2,1.2);
+  }
+  100%{
+    transform:scale(1,1);
+    -moz-transform:scale(1,1);
+    -webkit-transform:scale(1,1);
+    -o-transform:scale(1,1);
+    -ms-transform:scale(1,1);
+  }
+}

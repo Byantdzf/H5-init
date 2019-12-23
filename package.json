@@ -1,5 +1,5 @@
 {
-  "name": "h5",
+  "name": "love",
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "DZF <dengzhifeng_63@163.com>",
@@ -27,6 +27,7 @@
     "postcss-write-svg": "^3.0.1",
     "qs": "^6.7.0",
     "sass-loader": "^8.0.0",
+    "slider-verification-code": "^1.0.3",
     "vant": "^2.2.12",
     "video.js": "^7.6.5",
     "videojs-contrib-hls": "^5.15.0",

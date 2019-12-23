@@ -25,71 +25,71 @@
       <!--<x-icon type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>-->
       <!--</span>-->
       <!--</x-header>-->
-      <tabbar class="vux-demo-tabbar" icon-class="vux-center tabbar-icon" v-show="!isTabbarDemo" slot="bottom">
-        <tabbar-item :link="{path:'/community'}" :selected="path === '/community'" v-if="paasName === '' || paasName === 'FL'">
-          <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
-            <img src="../src/assets/icon/home.png" alt="home">
-          </span>
-          <span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">
-            <img src="../src/assets/icon/homeActive.png" alt="home">
-          </span>
-          <span slot="label">首页</span>
-        </tabbar-item>
-        <tabbar-item :link="{path:'/'}" :selected="path === '/'" v-else>
-          <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
-            <img src="../src/assets/icon/home.png" alt="home">
-          </span>
-          <span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">
-            <img src="../src/assets/icon/homeActive.png" alt="home">
-          </span>
-          <span slot="label">首页</span>
-        </tabbar-item>
-        <tabbar-item :link="{path:'/live'}" :selected="path === '/live'" v-if="paasName === '' || paasName === 'FL'">
-          <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
-            <img src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="home">
-          </span>
-          <span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">
-            <img src="https://images.ufutx.com/201907/20/e0e896fda78195fbaa95f23e3af5c516.png" alt="home">
-          </span>
-          <span slot="label">广场</span>
-        </tabbar-item>
-        <tabbar-item :link="{path:'/activity'}" :selected="path === '/activity'" v-if="paasName != '' && paasName != 'FL'">
-          <span class="demo-icon-22" slot="icon" style="position:relative;bottom: -3px">
-            <img src="../src/assets/icon/attention.png" alt="home">
-          </span>
-          <span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">
-            <img src="../src/assets/icon/attentionActive.png" alt="home">
-          </span>
-          <span slot="label">活动</span>
-        </tabbar-item>
-        <tabbar-item :link="{path:'/myCommunity'}" :selected="path === '/myCommunity'" v-if="paasName === '' || paasName === 'FL'">
-        <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
-        <img src="https://images.ufutx.com/201907/26/fdfc54ac12950cd6eaf5674773c32558.png" alt="home">
-        </span>
-          <span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">
-        <img src="https://images.ufutx.com/201907/26/5a6a483301a36d77299120f055ef39b8.png" alt="home">
-        </span>
-          <span slot="label">社群</span>
-        </tabbar-item>
-        <tabbar-item :link="{path:'/chitchat'}" :badge="chat_num == 0?'':chat_num" :selected="path === '/chitchat'" v-else>
-          <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
-            <img src="../src/assets/icon/message.png" alt="home">
-          </span>
-          <span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">
-            <img src="../src/assets/icon/messageActive.png" alt="home">
-          </span>
-          <span slot="label">聊天</span>
-        </tabbar-item>
-        <tabbar-item :link="{path:'/user'}" :badge="notice_num == 0?'':notice_num" :selected="path === '/user'">
-          <span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">
-            <img src="../src/assets/icon/my.png" alt="home">
-          </span>
-          <span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">
-            <img src="../src/assets/icon/myActive.png" alt="home">
-          </span>
-          <span slot="label">我的</span>
-        </tabbar-item>
-      </tabbar>
+      <!--<tabbar class="vux-demo-tabbar" icon-class="vux-center tabbar-icon" v-show="!isTabbarDemo" slot="bottom">-->
+        <!--<tabbar-item :link="{path:'/community'}" :selected="path === '/community'" v-if="paasName === '' || paasName === 'FL'">-->
+          <!--<span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">-->
+            <!--<img src="../src/assets/icon/home.png" alt="home">-->
+          <!--</span>-->
+          <!--<span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">-->
+            <!--<img src="../src/assets/icon/homeActive.png" alt="home">-->
+          <!--</span>-->
+          <!--<span slot="label">首页</span>-->
+        <!--</tabbar-item>-->
+        <!--<tabbar-item :link="{path:'/'}" :selected="path === '/'" v-else>-->
+          <!--<span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">-->
+            <!--<img src="../src/assets/icon/home.png" alt="home">-->
+          <!--</span>-->
+          <!--<span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">-->
+            <!--<img src="../src/assets/icon/homeActive.png" alt="home">-->
+          <!--</span>-->
+          <!--<span slot="label">首页</span>-->
+        <!--</tabbar-item>-->
+        <!--<tabbar-item :link="{path:'/live'}" :selected="path === '/live'" v-if="paasName === '' || paasName === 'FL'">-->
+          <!--<span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">-->
+            <!--<img src="https://images.ufutx.com/201907/20/8a9145f6d331cc5086a19c6dd2646f8e.png" alt="home">-->
+          <!--</span>-->
+          <!--<span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">-->
+            <!--<img src="https://images.ufutx.com/201907/20/e0e896fda78195fbaa95f23e3af5c516.png" alt="home">-->
+          <!--</span>-->
+          <!--<span slot="label">广场</span>-->
+        <!--</tabbar-item>-->
+        <!--<tabbar-item :link="{path:'/activity'}" :selected="path === '/activity'" v-if="paasName != '' && paasName != 'FL'">-->
+          <!--<span class="demo-icon-22" slot="icon" style="position:relative;bottom: -3px">-->
+            <!--<img src="../src/assets/icon/attention.png" alt="home">-->
+          <!--</span>-->
+          <!--<span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">-->
+            <!--<img src="../src/assets/icon/attentionActive.png" alt="home">-->
+          <!--</span>-->
+          <!--<span slot="label">活动</span>-->
+        <!--</tabbar-item>-->
+        <!--<tabbar-item :link="{path:'/myCommunity'}" :selected="path === '/myCommunity'" v-if="paasName === '' || paasName === 'FL'">-->
+        <!--<span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">-->
+        <!--<img src="https://images.ufutx.com/201907/26/fdfc54ac12950cd6eaf5674773c32558.png" alt="home">-->
+        <!--</span>-->
+          <!--<span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">-->
+        <!--<img src="https://images.ufutx.com/201907/26/5a6a483301a36d77299120f055ef39b8.png" alt="home">-->
+        <!--</span>-->
+          <!--<span slot="label">社群</span>-->
+        <!--</tabbar-item>-->
+        <!--<tabbar-item :link="{path:'/chitchat'}" :badge="chat_num == 0?'':chat_num" :selected="path === '/chitchat'" v-else>-->
+          <!--<span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">-->
+            <!--<img src="../src/assets/icon/message.png" alt="home">-->
+          <!--</span>-->
+          <!--<span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">-->
+            <!--<img src="../src/assets/icon/messageActive.png" alt="home">-->
+          <!--</span>-->
+          <!--<span slot="label">聊天</span>-->
+        <!--</tabbar-item>-->
+        <!--<tabbar-item :link="{path:'/user'}" :badge="notice_num == 0?'':notice_num" :selected="path === '/user'">-->
+          <!--<span class="demo-icon-22 vux-demo-tabbar-icon-home" slot="icon" style="position:relative;bottom: -3px">-->
+            <!--<img src="../src/assets/icon/my.png" alt="home">-->
+          <!--</span>-->
+          <!--<span class="demo-icon-22" slot="icon-active" style="position:relative;bottom: -3px">-->
+            <!--<img src="../src/assets/icon/myActive.png" alt="home">-->
+          <!--</span>-->
+          <!--<span slot="label">我的</span>-->
+        <!--</tabbar-item>-->
+      <!--</tabbar>-->
     </view-box>
   </div>
 </template>

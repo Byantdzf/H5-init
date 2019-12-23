@@ -14,13 +14,16 @@ import {$toastWarn, $alert} from './config/util'
 import share from './share'
 import clipboard from 'clipboard' // 复制
 import VideoPlayer from 'vue-video-player'
+import SliderVerificationCode from 'slider-verification-code' // 滑动验证
+import 'slider-verification-code/lib/slider-verification-code.css' // 滑动验证css
+// 导入
 Vue.use(VideoPlayer)
+Vue.use(SliderVerificationCode)
 Vue.prototype.$clipboard = clipboard
 Vue.use(share)
 Vue.prototype.$md5 = md5
 FastClick.attach(document.body)
 require('es6-promise').polyfill()
-
 Vue.use(DatetimePlugin)
 Vue.use(LoadingPlugin)
 Vue.use(ConfirmPlugin)

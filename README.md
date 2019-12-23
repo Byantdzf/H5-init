@@ -1,6 +1,10 @@
-# h5
+# H5 init
 
 > A Vue.js project
+
+> 自适应框架，上传阿里组件，弹框，复制，滑动解锁，下来刷新、上拉加载..框架的集成
+
+> Author: DZF
 
 ## Build Setup
 

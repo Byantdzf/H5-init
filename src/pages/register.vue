@@ -39,7 +39,7 @@
         点击立即注册默认您同意
       </span>
         <span style="color: #cadefc;text-decoration:underline;">
-        <router-link to="protocol" style="color: #D92553; text-decoration: none;">《福恋注册协议》</router-link>
+        <router-link to="protocol" style="color: #D92553; text-decoration: none;">《虎甲律师问答注册协议》</router-link>
       </span>
       </p>
     </div>
@@ -55,7 +55,7 @@
     data () {
       return {
         name: '',
-        paasTitle: '福恋平台',
+        paasTitle: '律师咨询-虎甲律师问答',
         logo: 'https://images.ufutx.com/201907/26/cc3ffebefa449d3555bc8746dcc6123f.png',
         mobile: '',
         code: '',

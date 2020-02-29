@@ -14,11 +14,16 @@ export default new Router({
       name: 'home',
       component: (resolve) => require(['@/tabBar/home'], resolve)
     },
-    { // 用户列表
-      path: '/userList',
-      name: 'userList',
-      component: (resolve) => require(['@/pages/user/userList'], resolve)
+    { // 文章列表
+      path: '/articleList',
+      name: 'articleList',
+      component: (resolve) => require(['@/pages/articleList'], resolve)
     },
+    // { // 用户列表
+    //   path: '/userList',
+    //   name: 'userList',
+    //   component: (resolve) => require(['@/pages/user/userList'], resolve)
+    // },
     { // 上传调试页面
       path: '/upload',
       name: 'upload',

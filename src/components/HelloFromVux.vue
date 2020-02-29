@@ -1,6 +1,6 @@
 <template>
   <div>
-    <x-header class="ignore" :left-options="{showBack: false}">福恋共享平台</x-header>
+    <x-header class="ignore" :left-options="{showBack: false}">律师咨询-虎甲律师问答共享平台</x-header>
     <!--<Search auto-fixed="false" position="absolute"></Search>-->
     <div style="background: rgba(0,0,0,0.4);padding: 10px;padding-bottom: 0px;" class="font30">
       <swiper auto height="30px" direction="vertical" :interval=2000 class="text-scroll" :show-dots="false" >

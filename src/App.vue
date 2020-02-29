@@ -1,6 +1,6 @@
 <template>
   <div id="app" style="height:100%;">
-    <view-box ref="viewBox" :body-padding-bottom="!isTabbarDemo?50:0">
+    <view-box ref="viewBox" :body-padding-bottom="!isTabbarDemo?0:0">
       <div v-transfer-dom>
         <loading v-model="isLoading"></loading>
         <!--<loadingPage :init="!isLoading"></loadingPage>-->
@@ -11,7 +11,7 @@
         </keep-alive>
         <router-view v-if="!$route.meta.keepAlive"></router-view>
       </div>
-      <div style="height: 50px;" v-show="!isTabbarDemo"></div>
+<!--      <div style="height: 50px;" v-show="!isTabbarDemo"></div>-->
       <!--{{entryUrl}}-->
       <!--<x-header-->
       <!--v-if="isShowNav"-->
@@ -166,11 +166,6 @@
         }
       },
       title () {
-        if (this.route.path === '/') return '主页'
-        if (this.route.path === '/activity') return '活动'
-        if (this.route.path === '/chitchat') return '聊天'
-        if (this.route.path === '/user') return '我的'
-        return this.componentName ? `Demo/${this.componentName}` : 'Demo/~~'
       }
     },
     methods: {
@@ -223,8 +218,8 @@
           this.$shareList(localStorage.getItem('logo'), url, localStorage.getItem('paasIntro'), localStorage.getItem('paasTitle'))
           document.title = localStorage.getItem('paasTitle')
         } else {
-          this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '用科技让交友变简单', '福恋交友平台')
-          document.title = '福恋交友平台'
+          this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '律师咨询', '律师咨询-虎甲律师问答')
+          document.title = '律师咨询-虎甲律师问答'
         }
         if (location.href.includes('paas')) {
           // if (localStorage.getItem('paasName') != location.href.split('paas=')[1]) {
@@ -238,8 +233,8 @@
               }
               document.title = data.title
             } else {
-              this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '用科技让交友变简单', '福恋交友平台')
-              document.title = '福恋交友平台'
+              this.$shareList('https://images.ufutx.com/201904/19/80a9db83c65a7c81d95e940ef8a2fd0e.png', url, '律师咨询', '虎甲律师问答')
+              document.title = '虎甲律师问答'
               localStorage.setItem('paasName', 'FL')
             }
           }).catch((error) => {

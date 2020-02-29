@@ -44,7 +44,7 @@
     data () {
       return {
         mobile: '',
-        paasTitle: '福恋平台',
+        paasTitle: '律师咨询-虎甲律师问答',
         logo: 'https://images.ufutx.com/201907/26/cc3ffebefa449d3555bc8746dcc6123f.png',
         code: '',
         value: '',
